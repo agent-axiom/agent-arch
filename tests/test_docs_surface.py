@@ -19132,6 +19132,42 @@ def test_tax_ai_practitioner_correction_eval_loop_is_documented() -> None:
     )
 
 
+def test_google_continuous_agent_eval_loop_is_documented() -> None:
+    chapter_files = (
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_files,
+        (
+            "Online Monitors",
+            "Cloud Trace",
+            "Cloud Logging",
+            "Cloud Monitoring",
+            "evaluate your evals",
+            "trace_id",
+            "grader_version",
+            "failure_mode",
+            "review_required",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Evaluate your agents",
+            "Continuous evaluation with online monitors",
+            "Evaluate agent performance",
+        ),
+    )
+
+
 def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
     chapter_markers = (
         "Project Think",
