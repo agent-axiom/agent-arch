@@ -1264,6 +1264,11 @@ def test_final_book_pass_defines_acronyms_and_notation_before_use() -> None:
         "RACI": "**RACI** — матрица ответственности",
         "SDLC": "**SDLC** — жизненный цикл разработки программного обеспечения",
         "ADLC": "**ADLC** — жизненный цикл агентной системы",
+        "IAM": "**IAM** — управление идентичностью и доступом",
+        "RAG": "**RAG** — генерация с дополнением из найденного контекста",
+        "DLP": "**DLP** — предотвращение утечек данных",
+        "SDK": "**SDK** — комплект средств разработки",
+        "LLM": "**LLM** — большая языковая модель",
     }
     for acronym, definition in definitions.items():
         assert definition in introduction
@@ -2053,3 +2058,111 @@ def test_every_manuscript_table_has_a_numbered_caption() -> None:
             text,
             re.MULTILINE,
         )
+
+
+def test_final_copyedit_repairs_heading_hierarchy_and_agreement() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    for heading in (
+        "#### Сдерживание сильнее бесконечного надзора",
+        "#### MCP-шлюз, приватная достижимость и браузер как поверхность действия",
+        "#### Приватность рассуждений и поисковые фрагменты трассы",
+        "### Стоимость и песочница тоже входят в SLO",
+        "#### Целостность симуляции развертывания и самой оценки",
+        "#### Подтверждение как прерываемый путь выполнения",
+        "### Поддерживаемый стандартный путь должен быть путем по умолчанию",
+    ):
+        assert heading in text
+
+    for dangling_line in (
+        "сдерживание сильнее бесконечного надзора",
+        "MCP-шлюз, приватная достижимость и браузер как поверхность действия",
+        "приватность рассуждений и поисковые фрагменты трассы",
+        "стоимость и песочница тоже входят в SLO",
+        "симуляция развертывания и целостность самой оценки",
+    ):
+        assert not re.search(rf"^(?!#){re.escape(dangling_line)}$", text, re.MULTILINE)
+
+    for residue in (
+        "краткосрочная память можно",
+        "среда исполнения мог ее продолжать",
+    ):
+        assert residue not in text
+
+
+def test_final_language_pass_translates_prose_and_marks_machine_literals() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+
+    for residue in (
+        "webhooks и события",
+        "был ли апдейт подтвержден",
+        "имеют provenance и revision",
+        "попадать в eval schema",
+        "инференс модели",
+        "pointer и preview",
+        "verifier стал",
+        "для cost SLO",
+        "управляемого change management",
+        "automated red teaming",
+        "избегает oversight",
+        "для capability sessions",
+        "кастомных обходов",
+        "хуки политик",
+        "в кастомную реализацию",
+        "локальные ретраи",
+        "resumable работы",
+        "сложный planner",
+        "предложение ToolRequest",
+        "решение allow",
+        "Решения deny",
+        "нативные возможности песочницы доступны: filesystem",
+        "требовать backoff",
+        "* success считают",
+        "* latency видят",
+        "автоматический verdict",
+        "правила privacy filtering",
+        "оценки (evals)",
+        "* low-risk:",
+        "* medium-risk:",
+        "* high-risk:",
+        "снимок экрана, diff",
+    ):
+        assert residue not in prose
+
+    for required in (
+        "вебхуки (HTTP-уведомления)",
+        "было ли обновление подтверждено",
+        "постоянные записи имеют происхождение и ревизию",
+        "какие ветки должны явно попадать в схему оценки",
+        "вызов модели",
+        "проверяющий стал шумным",
+        "Практический минимум для SLO стоимости",
+        "автоматизированное соревновательное тестирование",
+        "поведение истечения срока и повторной инициализации для сессий возможностей",
+        "`verification_result`: `pass`, `fail`, `warning` или `blocked`",
+        "`queued` / `in_progress` / `completed` / `failed` / `canceled`",
+        "предложение `ToolRequest`",
+        "решение `allow`",
+        "Решения `deny`",
+        "файловая система (`filesystem`)",
+        "задержку между повторами (`backoff`)",
+        "* `success` считают",
+        "* `latency` видят",
+        "автоматический вердикт",
+        "правила фильтрации конфиденциальных данных",
+        "оценки (`evals`)",
+        "* `low-risk` (низкий риск):",
+        "* `medium-risk` (средний риск):",
+        "* `high-risk` (высокий риск):",
+        "сравнение изменений (`diff`)",
+    ):
+        assert required in text
+
+
+def test_final_rhythm_pass_uses_deliberate_recurring_callouts() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "Команде не стоит" not in text
+    assert text.count("**Ложный признак зрелости.**") == 16
+    assert len(re.findall(r"\bне просто\b", text, re.IGNORECASE)) < 40
