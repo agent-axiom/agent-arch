@@ -344,6 +344,8 @@ Cloudflare также показывает важную деталь для бу
 
 Минимальный policy matrix для web-capable agent должен поэтому содержать хотя бы четыре решения: allow, block, monetize или audit-only. И каждое решение должно быть связано с целью доступа: Search / Agent / Training. Иначе web access policy быстро превращается в хрупкий список строк, а не в контракт между владельцем ресурса, пользователем и агентной платформой.
 
+Cloudflare Monetization Gateway делает пункт monetize конкретным, особенно для **agent-facing resource**: web page, dataset, API или MCP tool может стать **payment-gated resource** с x402-style payment flow.[^cloudflare-monetization-gateway] Для архитектуры агента это не просто billing feature. Перед тем как выполнить MCP tool call или retrieval request к платному ресурсу, runtime должен принять policy decision before the tool call: разрешен ли spend, кто является payer, какой spending cap действует, где хранится payment proof и какой metering record попадет в audit trail. Иначе agent начинает превращать web/tool access в скрытый расход без reviewable business context.
+
 ### 5.5. Browser as an action surface
 
 GitHub Copilot browser tools в VS Code показывают следующий шаг: live browser становится штатной средой действия агента, а не только внешним способом ручной проверки.[^github-copilot-browser-tools] Если агент может открывать страницы, click/type/hover/drag, читать page content, собирать console errors, делать screenshot и запускать scripted flows, то browser надо считать отдельной execution surface.
@@ -712,6 +714,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^cloudflare-code-mode]: Cloudflare, [Code Mode: give agents an entire API in 1,000 tokens](https://blog.cloudflare.com/code-mode-mcp/)
 
 [^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
+
+[^cloudflare-monetization-gateway]: Cloudflare Blog, [Announcing the Monetization Gateway](https://blog.cloudflare.com/monetization-gateway/)
 
 [^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
 

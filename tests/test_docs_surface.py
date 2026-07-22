@@ -19831,6 +19831,68 @@ def test_cloudflare_ai_traffic_controls_are_documented() -> None:
     )
 
 
+def test_cloudflare_monetization_gateway_for_agent_facing_resources_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "Monetization Gateway",
+            "x402",
+            "agent-facing resource",
+            "payment-gated resource",
+            "MCP tool call",
+            "payment proof",
+            "policy decision before the tool call",
+            "metering record",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Announcing the Monetization Gateway",
+            "blog.cloudflare.com/monetization-gateway",
+        ),
+    )
+
+
+def test_github_agentic_autofix_validation_loop_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "Agentic autofix for code scanning alerts",
+            "Assign to Copilot",
+            "re-running CodeQL",
+            "validation steps",
+            "single pull request",
+            "best-effort validation",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Agentic autofix for code scanning alerts in public preview",
+            "github.blog/changelog/2026-07-10-agentic-autofix-for-code-scanning-alerts-in-public-preview",
+        ),
+    )
+
+
 def test_github_copilot_agentic_harness_evals_are_documented() -> None:
     _assert_files_contain_all(
         (
