@@ -567,6 +567,10 @@ AWS Agent-EvalKit shows a practical version of the same pattern: agent evaluatio
 
 Microsoft Foundry's Open Trust Stack adds a useful link between policies, evals, and runtime controls.[^microsoft-open-trust-stack] ASSERT is a reminder that eval cases should be generated from organizational policies and requirements, not only from ad hoc regression prompts. Agent Control Specification (ACS) complements that with portable control checkpoints: if an eval shows that an agent fails a policy requirement, the fix should not only be a prompt change, but also a control point before a tool call, after a tool result, or before an external action.
 
+Google Cloud's Agent Platform makes the production side of the loop explicit: **Online Monitors** continuously sample deployed-agent traces from Cloud Trace and Cloud Logging, run configured evaluation metrics, write results back to Cloud Logging, and export numeric scores to Cloud Monitoring.[^google-evaluate-agents][^google-agent-online-monitors] The portable contract is not "watch a dashboard"; it is **live trace → sampled eval → score → alert or regression gate → reviewed improvement**. Each sampled row should preserve `trace_id`, `agent_version`, `tool_calls`, `expected_outcome`, `grader_version`, `score`, `failure_mode`, and `review_required`, so the team can replay the decision and compare it across releases.
+
+Google's Discovery Bench work adds a second warning: teams also need to **evaluate your evals**.[^google-evaluate-agent-performance] A benchmark can hide brittle ground truth, unstable difficulty, or a pass/fail threshold that misses the cliff where agents collapse under slightly vaguer user requests. A mature eval loop therefore calibrates the evaluator itself: measure task difficulty, inspect disagreement, version rubrics, and treat grader drift as a release risk.
+
 The important part is not the specific toolkit, but the shape of the loop. Production traces should become more than dashboards; they should become new test cases, regression thresholds, and code-level fixes. If real traffic shows that an agent gives polished answers over empty tool output, that is not only an observability signal. It is a future eval case for faithfulness, tool-use discipline, and fallback behavior.
 
 In a mature loop, after each meaningful change the team should be able to:
@@ -667,4 +671,7 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 [^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
 [^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).
+[^google-agent-online-monitors]: Google Cloud, [Continuous evaluation with online monitors](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-online).
+[^google-evaluate-agents]: Google Cloud, [Evaluate your agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-agents).
+[^google-evaluate-agent-performance]: Google Cloud Blog, [Evaluate agent performance](https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).

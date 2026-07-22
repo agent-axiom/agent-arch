@@ -565,6 +565,10 @@ AWS Agent-EvalKit 展示了同一模式的一个实践版本：agent evaluation 
 
 Microsoft Foundry 的 Open Trust Stack 给 policy、evals 和 runtime controls 之间补了一条实用连接。[^microsoft-open-trust-stack] ASSERT 提醒我们，eval cases 应该从组织 policies and requirements 生成，而不只是来自临时 regression prompts。Agent Control Specification (ACS) 则用 portable control checkpoints 补上运行时侧：如果 eval 显示 agent 没有满足 policy requirement，修复不应该只是一段 prompt change，还应该可能落在 tool call 之前、tool result 之后，或 external action 之前的控制点。
 
+Google Cloud Agent Platform 把这个闭环的 production 侧说得更具体：**Online Monitors** 会持续从 Cloud Trace 和 Cloud Logging 中抽样已部署 agent 的 traces，运行配置好的 evaluation metrics，把结果写回 Cloud Logging，并把数字分数导出到 Cloud Monitoring。[^google-evaluate-agents][^google-agent-online-monitors] 可移植契约不是“看 dashboard”，而是 **live trace → sampled eval → score → alert or regression gate → reviewed improvement**。每条被抽样的记录都应该保留 `trace_id`、`agent_version`、`tool_calls`、`expected_outcome`、`grader_version`、`score`、`failure_mode` 和 `review_required`，这样团队才能复现当时的判断，并跨 release 比较。
+
+Google 的 Discovery Bench 还补了第二个提醒：团队也要 **evaluate your evals**。[^google-evaluate-agent-performance] Benchmark 可能隐藏脆弱的 ground truth、不稳定的难度，或看不见 cliff 的 pass/fail threshold：用户请求只要稍微更模糊，agent 就可能突然崩掉。因此成熟的 eval loop 也要校准 evaluator 本身：测量任务难度，检查 disagreement，版本化 rubrics，并把 grader drift 当成 release risk。
+
 这里重要的不是某个具体 toolkit，而是闭环形状。Production traces 不应该只变成 dashboards；它们还应该变成新的 test cases、regression thresholds 和 code-level fixes。如果真实流量显示 agent 在空 tool output 之上仍然给出漂亮答案，这不只是 observability signal。它也是未来针对 faithfulness、tool-use discipline 和 fallback behavior 的 eval case。
 
 在成熟闭环里，每次有意义的变更之后，团队都应该能做到：
@@ -665,4 +669,7 @@ Microsoft Foundry 的 Open Trust Stack 给 policy、evals 和 runtime controls �
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 [^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
 [^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).
+[^google-agent-online-monitors]: Google Cloud, [Continuous evaluation with online monitors](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-online).
+[^google-evaluate-agents]: Google Cloud, [Evaluate your agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-agents).
+[^google-evaluate-agent-performance]: Google Cloud Blog, [Evaluate agent performance](https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
