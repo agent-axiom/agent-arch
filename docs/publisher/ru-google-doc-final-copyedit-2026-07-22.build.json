@@ -1,0 +1,17 @@
+{
+  "base_docx": "temporary Google Docs export used as the layout source",
+  "bookmarks": 108,
+  "code_lines": 1671,
+  "headings": 627,
+  "images": 56,
+  "internal_hyperlinks": 178,
+  "list_items": 3415,
+  "lists": 742,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8999545,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-final-copyedit-2026-07-22.docx",
+  "output_sha256": "73879f38a9c29f6d37028864f2e6cb6db944e3cb6565f82211154094449ea124",
+  "page_breaks": 30,
+  "paragraphs": 8183,
+  "tables": 10
+}

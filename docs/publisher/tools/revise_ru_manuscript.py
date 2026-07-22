@@ -9645,6 +9645,27 @@ def apply_online_gateway_discovery_pass_2026_07_22(text: str) -> str:
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
+def apply_final_publisher_copyedit_2026_07_22(text: str) -> str:
+    replacements_path = (
+        Path(__file__).resolve().parents[1]
+        / "ru-final-copyedit-replacements-2026-07-22.json"
+    )
+    payload = json.loads(replacements_path.read_text(encoding="utf-8"))
+    if payload.get("schema_version") != 1:
+        raise ValueError("unsupported final copyedit replacement schema")
+
+    for item in payload["replacements"]:
+        old = item["old"]
+        occurrences = text.count(old)
+        if occurrences != 1:
+            raise ValueError(
+                f"{item['id']}: expected one source fragment, found {occurrences}"
+            )
+        text = text.replace(old, item["new"], 1)
+
+    return text
+
+
 def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = source.read_text(encoding="utf-8")
     text = replace_front_matter_and_introduction(text)
@@ -9751,6 +9772,7 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_compaction_continuity_pass_2026_07_21(text)
     text = apply_submission_readiness_pass_2026_07_22(text)
     text = apply_online_gateway_discovery_pass_2026_07_22(text)
+    text = apply_final_publisher_copyedit_2026_07_22(text)
     text = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
 
     output.parent.mkdir(parents=True, exist_ok=True)

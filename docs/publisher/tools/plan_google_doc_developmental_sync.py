@@ -17,12 +17,49 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-from docx import Document
-from docx.oxml.ns import qn
+def _strip_markdown_link_targets(value: str) -> str:
+    parts: list[str] = []
+    cursor = 0
+
+    while cursor < len(value):
+        label_start = value.find("[", cursor)
+        if label_start < 0:
+            parts.append(value[cursor:])
+            break
+
+        label_end = value.find("](", label_start + 1)
+        if label_end < 0:
+            parts.append(value[cursor:])
+            break
+
+        url_start = label_end + 2
+        if not value.startswith(("https://", "http://", "mailto:"), url_start):
+            parts.append(value[cursor:url_start])
+            cursor = url_start
+            continue
+
+        depth = 1
+        url_end = url_start
+        while url_end < len(value) and depth:
+            if value[url_end] == "(":
+                depth += 1
+            elif value[url_end] == ")":
+                depth -= 1
+            url_end += 1
+
+        if depth:
+            parts.append(value[cursor:])
+            break
+
+        parts.append(value[cursor:label_start])
+        parts.append(value[label_start + 1 : label_end])
+        cursor = url_end
+
+    return "".join(parts)
 
 
 def normalize(value: str) -> str:
-    return re.sub(r"\s+", " ", value).strip()
+    return re.sub(r"\s+", " ", _strip_markdown_link_targets(value)).strip()
 
 
 def utf16_length(value: str) -> int:
@@ -43,12 +80,15 @@ class TargetParagraph:
     text: str
     normalized: str
     named_style: str
+    page_break_before: bool
     list_kind: str | None
     nesting_level: int
     runs: tuple[TargetRun, ...]
 
 
-def numbering_formats(document: Document) -> dict[tuple[int, int], str]:
+def numbering_formats(document: Any) -> dict[tuple[int, int], str]:
+    from docx.oxml.ns import qn
+
     root = document.part.numbering_part.element
     abstract_by_num: dict[int, int] = {}
     for number in root.findall(qn("w:num")):
@@ -86,6 +126,8 @@ def docs_named_style(style_name: str) -> str:
 
 
 def load_docx_paragraphs(path: Path) -> list[TargetParagraph]:
+    from docx import Document
+
     document = Document(str(path))
     formats = numbering_formats(document)
     result: list[TargetParagraph] = []
@@ -129,6 +171,9 @@ def load_docx_paragraphs(path: Path) -> list[TargetParagraph]:
                 text=text,
                 normalized=normalize(text),
                 named_style=docs_named_style(paragraph.style.name),
+                page_break_before=bool(
+                    paragraph.paragraph_format.page_break_before
+                ),
                 list_kind=list_kind,
                 nesting_level=nesting_level,
                 runs=tuple(runs),
@@ -291,8 +336,11 @@ def style_requests(
                         "endIndex": style_end,
                         "tabId": tab_id,
                     },
-                    "paragraphStyle": {"namedStyleType": paragraph.named_style},
-                    "fields": "namedStyleType",
+                    "paragraphStyle": {
+                        "namedStyleType": paragraph.named_style,
+                        "pageBreakBefore": paragraph.page_break_before,
+                    },
+                    "fields": "namedStyleType,pageBreakBefore",
                 }
             }
         )
@@ -442,6 +490,7 @@ def main() -> None:
     requests: list[dict[str, Any]] = []
     audit: list[dict[str, Any]] = []
     for operation in operations:
+        request_start = len(requests)
         start = operation["startIndex"]
         end = operation["endIndex"]
         paragraphs = operation.pop("paragraphs")
@@ -471,6 +520,7 @@ def main() -> None:
         audit.append(
             {
                 **operation,
+                "requestRange": [request_start, len(requests)],
                 "insertedParagraphs": len(paragraphs),
                 "insertedTextPreview": paragraphs[0].text[:160] if paragraphs else "",
             }
