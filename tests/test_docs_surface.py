@@ -16887,7 +16887,8 @@ def test_google_agentic_enterprise_control_plane_checklist_is_documented() -> No
             "budget telemetry",
             "MCP",
             "A2A",
-            "identity → registry → gateway → policy → sandbox → evals → cost controls → audit trail",
+            "identity → registry → gateway → policy → sandbox → evals "
+            "→ cost controls → audit trail",
         ),
     )
 
@@ -18698,11 +18699,6 @@ def test_runtime_monitoring_enterprise_mcp_and_secret_scanning_cases_are_documen
 
 
 def test_managed_remote_mcp_and_agentcore_interceptors_are_documented() -> None:
-    chapter_9_files = (
-        "docs/book/part-iv/chapter-9.md",
-        "docs/book/part-iv/chapter-9.en.md",
-        "docs/book/part-iv/chapter-9.zh.md",
-    )
     chapter_17_files = (
         "docs/book/part-vii/chapter-17.md",
         "docs/book/part-vii/chapter-17.en.md",
@@ -18775,9 +18771,11 @@ def test_managed_remote_mcp_and_agentcore_interceptors_are_documented() -> None:
     _assert_files_contain_all(
         source_files,
         (
-            "Build agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP server",
+            "Build agents even faster with Gemini Enterprise Agent Platform’s "
+            "fully-managed, remote MCP server",
             "cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server",
-            "Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway",
+            "Secure AI agents with Policy and Lambda interceptors in Amazon "
+            "Bedrock AgentCore gateway",
             "aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway",
         ),
     )
@@ -19090,7 +19088,8 @@ def test_open_trust_stack_and_fable_jailbreak_severity_are_documented() -> None:
     _assert_files_contain_all(
         source_files,
         (
-            "Build agents you can trust across any framework with open evals and a control standard",
+            "Build agents you can trust across any framework with open evals "
+            "and a control standard",
             "devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents",
             "Redeploying Fable 5",
             "anthropic.com/news/redeploying-fable-5",
@@ -19199,7 +19198,8 @@ def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
             "blog.cloudflare.com/project-think",
             "Run Workflows",
             "developers.cloudflare.com/agents/runtime/execution/run-workflows",
-            "Introducing Dynamic Workflows: durable execution that follows the user, not the other way around",
+            "Introducing Dynamic Workflows: durable execution that follows "
+            "the user, not the other way around",
             "blog.cloudflare.com/dynamic-workflows",
         ),
     )
