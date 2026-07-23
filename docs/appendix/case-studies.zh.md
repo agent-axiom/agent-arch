@@ -137,6 +137,8 @@ GitHub Copilot cloud agent 展示了另一种生产形态：智能体从 GitHub�
 
 更新的 Copilot 变化让这个案例更加 repo-native。Copilot code review 现在会读取 `AGENTS.md`，因此仓库里的 instruction file 变成 living agent contract，而不只是本地 CLI 提示。Copilot cloud agent automations 又增加了从 repository events 或 scheduled triggers 进入 cloud-agent session 的 unattended path；所以 automations 也需要 owner、trigger schema、branch policy、approval boundary 和 trace linkage。Copilot app 的 BYOK 则补齐了这一层：model keys 和 provider routing 变成 provider-neutral control plane 的一部分，而不是单个开发者偏好。
 
+GitHub 关于 Copilot code review 的 case study 进一步明确了这个契约的工具侧：当 review agent 获得通用 Unix-style tool access 时，质量没有自动提升，因为 agent 把更多预算花在宽泛读取仓库上，却缺少足够紧的 review shape。可移植教训是 **workflow-constrained review**：先从 pull request evidence、diff-anchored review questions 和 narrow-before-read 开始，再允许 targeted tools，并保存 `tool_trace`、`review_cost`、evidence refs 和 `quality_gate`。这个回路评估的是 agent 是否证明了关于 diff 的具体假设，而不是它是否只是用了工具。
+
 ### IDE agents 作为受管理的工作队列（managed work queues）
 
 GitHub Copilot in VS Code 的 6 月更新展示了另一个转变：IDE 不再只是人类写 prompt 的地方，也在变成多个 agent work items 的操作员控制台。同一个窗口里出现了 parallel sessions、一个 session 内的多个 chats、用于 agent-driven validation 的 integrated browser、session 与 subagent cost visibility、通过 Marketplace 选择 model/provider、同步的 session history、gutter feedback，以及更能独立推进的 Autopilot。这些不是孤立的界面便利，而是正在形成的 control-plane pattern：agent work 变成可观察的 task queue，而不是一条无限延伸的 chat。

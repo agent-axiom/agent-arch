@@ -298,6 +298,8 @@ Scheduling 这一侧尤其重要：Cloudflare 展示了 delayed、scheduled、cr
 
 GitHub Copilot cloud agent automations 展示了同一边界的 repo-native 形态：unattended work 可以从 repository events 或 scheduled triggers 启动，而不只来自手动请求。[^github-copilot-automations] 如果 automation 启动 Copilot cloud agent，runtime 应该记录 `automation_id`、trigger source、owner、branch policy、allowed events、approval boundary 和 evidence refs。Copilot code review 对 `AGENTS.md` 的支持又补了一条相邻契约：repo instructions 会成为 review agent 的输入，因此应该像 policy-bearing artifact 一样版本化，而不是停留在口头约定。[^github-copilot-agents-md] Copilot app 的 BYOK 把 provider-neutral control plane 扩展到 provider routing：keys、scopes 和 provider choice 应该属于 governed access model，而不是隐藏的 per-user setting。[^github-copilot-byok]
 
+GitHub Copilot code review 还有一个独立教训："better tools" 如果没有任务形状，反而会让 reviewer 变差。GitHub 的 case study 说明，宽泛的 Unix-style tool access 一开始给 review agent 太多读取仓库和消耗预算的路径，却没有给出足够结构来产生有用 finding。[^github-copilot-review-tools] 可移植契约是 **workflow-constrained review**：先通过 pull request evidence、diff-anchored review questions 和 narrow-before-read 缩窄 review，再允许 targeted tool use，并保存 `tool_trace`、`review_cost`、evidence ref 和 `quality_gate`。Review agent 应该证明某个工具检查了哪个 PR fact 或 diff hypothesis，而不是把长日志当成信心证据。
+
 Real-time 这一侧又增加了一条边界：connection state 不等于 agent state。在 Cloudflare Agents WebSocket model 中，一个 connection 有自己的 `id`、`uri`、per-connection `state`、tags、lifecycle hooks，并且可以针对某个 connection 关闭 identity/state/MCP 等 protocol messages。[^cloudflare-websockets] 对 baseline runtime 来说，这意味着 broadcast、presence、approval UI 和 streaming updates 都应该经过 connection-scoped authorization 和可追踪的 fan-out，而不是直接暴露 agent 的整个 durable state。
 
 用 vendor-neutral 的说法，这个模式可以叫 **durable agent actor**：稳定身份、本地持久状态、可恢复 session、scheduled wake-ups，以及到 governed stores 的可追踪 handoff。本地状态可以保存 instance-scoped facts，例如当前 workflow cursor、UI/session preferences、实例队列位置、last processed event、schedule metadata，以及可以重建的小型 cached views。它不应该悄悄成为 user profile memory、tenant knowledge、secrets、policy、audit logs 或 cross-instance facts 的 system of record。这些数据应该属于 governed stores，并带有 provenance、retention、export 和 access-control contracts。
@@ -648,6 +650,8 @@ runtime:
 [^github-copilot-agents-md]: GitHub Changelog, [Copilot code review: AGENTS.md support and UI improvements](https://github.blog/changelog/2026-06-18-copilot-code-review-agents-md-support-and-ui-improvements/)
 
 [^github-copilot-byok]: GitHub Changelog, [GitHub Copilot app support for BYOK](https://github.blog/changelog/2026-06-23-github-copilot-app-support-for-byok/)
+
+[^github-copilot-review-tools]: GitHub Blog, [Better tools made Copilot code review worse. Here's how we actually improved it](https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/)
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 
