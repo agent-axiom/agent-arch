@@ -19540,6 +19540,38 @@ def test_agent_builder_copilot_and_cloudflare_budget_cases_are_documented() -> N
 
     _assert_files_contain_all(
         (
+            "docs/book/part-vii/chapter-16.md",
+            "docs/book/part-vii/chapter-16.en.md",
+            "docs/book/part-vii/chapter-16.zh.md",
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "workflow-constrained review",
+            "pull request evidence",
+            "diff-anchored review questions",
+            "narrow-before-read",
+            "tool_trace",
+            "review_cost",
+            "quality_gate",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Better tools made Copilot code review worse",
+            "github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
             "docs/appendix/case-studies.md",
             "docs/appendix/case-studies.en.md",
             "docs/appendix/case-studies.zh.md",
