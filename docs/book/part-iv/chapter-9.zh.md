@@ -457,6 +457,8 @@ AWS 最近的另一个信号也很有价值：一旦 MCP client 和 server 开�
 
 AWS 关于有状态 MCP 的方向还有一个很有价值的运营教训：难点不只是保存一个会话句柄。[^aws-stateful-mcp] 更难的是，当能力发出进度、请求更多输入，或在工作完成前先过期时，运行时应该如何响应。
 
+AgentCore Gateway extended MCP support 把这一点进一步收紧成 protocol contract。[^aws-agentcore-extended-mcp] Gateway 可以聚合 `tools/list`、`prompts/list`、`resources/list` 和 resource templates，同时保留 `outputSchema` 以及 read-only/destructive 等 annotations。但 dynamic listing 会改变 disclosure 的含义：capability list 可能在调用用户的 identity 下实时计算，而不是来自静态 cache。因此 trace 需要保留 `listing_mode`、`listed_under_principal`、`output_schema_hash`、`tool_annotations`、`Mcp-Session-Id`，以及 invoke 前是否重新检查 authorization。
+
 这通常会迫使平台至少把下面四类情况定义清楚：
 
 - `progress_update`：能力仍在工作，运行时应该暴露存活状态，而不是把它误判成卡死；
@@ -465,6 +467,8 @@ AWS 关于有状态 MCP 的方向还有一个很有价值的运营教训：难�
 - `reinitialized_session`：运行时有意识地重新打开了一个新的能力会话，但仍把它挂在同一个更高层用户运行下。
 
 这些并不是小小的传输细节。它们会直接塑造审批、遥测和操作员响应的行为。
+
+这里还有一个尖锐边缘：使用 SSE streaming 时，HTTP status 由第一个事件固定；mid-stream failure 只能作为 stream 内的 protocol error 返回。Elicitation 需要 streaming 和 sessions，但如果连接在 elicitation 期间断开，具体 tool call 可能无法 resume；client 必须 retry 原始 `tools/call`。因此 runtime contract 应该区分 `resume_existing_session_if_valid`、`retry_original_tool_call` 和 `reinitialize_or_cancel`，否则 human input 可能悄悄变成没有 fresh check 的重复 side effect。
 
 ### 6.3. 好的 MCP 契约必须解释中断之后会发生什么
 
@@ -705,6 +709,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) 与 [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-extended-mcp]: AWS, [Extending MCP support for Amazon Bedrock AgentCore Gateway](https://aws.amazon.com/blogs/machine-learning/extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2/)
 
 [^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) 与 AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 

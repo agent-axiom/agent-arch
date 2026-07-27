@@ -232,6 +232,8 @@ flowchart LR
 
 Cloudflare AI Gateway spend limits показывают, что такой budget gate может жить не только в billing dashboard, но и прямо на runtime path.[^cloudflare-ai-gateway-spend-limits] Если лимит исчерпан, gateway возвращает `429`, а агентная платформа должна трактовать это как нормальный runtime outcome: `budget_exhausted`, а не как таинственный provider failure. В budget-aware gateway SLO должны покрывать retry/backoff, fallback policy, provider/model choice, per-agent spend limits и trace attribution, чтобы оператор видел, какая capability, tenant, run или automation потратила бюджет. Тогда cost SLO становится control plane, а не отчетом задним числом.
 
+Для автономных агентов здесь важна еще одна граница: бюджет должен быть привязан к идентичности агента, а не только к API key или provider account. Если coding agent, support agent и incident agent идут через один AI gateway, SLO должен различать `agent_identity`, `provider_route`, `fallback_reason`, `rate_limit_decision` и режим деградации. Иначе fallback на более дешевую или более доступную модель может незаметно изменить качество, safety posture или задержку, а cost dashboard покажет только, что расход снизился. Хороший контракт выглядит так: **identity-bound spend limit -> provider routing decision -> fallback/degraded mode -> run-level SLO impact -> trace attribution**.
+
 ### 7.3. Sandbox is part of the agent contract
 
 LangChain хорошо формулирует практичный sandbox checklist: песочница для агента — это не просто место, где “можно запускать код”, а часть SLO и risk budget.[^langchain-agent-sandbox] Если агент умеет писать и исполнять программы, SLO безопасности и стоимости должны видеть сам профиль исполнения:
