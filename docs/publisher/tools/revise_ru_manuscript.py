@@ -1729,6 +1729,157 @@ LISTING_SPECS = (
 )
 
 
+# The source listing evolved after the imported Google Docs fragment was frozen.
+# Use the legacy shape only to recover that fragment's boundaries; replacement
+# content still comes from the current electronic chapter.
+LEGACY_LISTING_MATCH_SOURCES = {
+    "def traced_step": '''from dataclasses import dataclass
+from time import monotonic
+
+
+@dataclass
+class SpanResult:
+    name: str
+    status: str
+    duration_ms: int
+
+
+def traced_step(name: str, fn):
+    started = monotonic()
+    try:
+        fn()
+        status = "success"
+    except Exception:
+        status = "failure"
+        raise
+    finally:
+        duration_ms = int((monotonic() - started) * 1000)
+        emit_span(SpanResult(name=name, status=status, duration_ms=duration_ms))
+
+
+def emit_span(result: SpanResult) -> None:
+    print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})''',
+    "class ToolSpec": '''from dataclasses import dataclass
+
+
+@dataclass
+class ToolSpec:
+    name: str
+    kind: str
+    timeout_seconds: int
+    idempotent: bool
+
+
+@dataclass
+class ToolResult:
+    status: str
+    payload: dict
+
+
+def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
+    if spec.kind not in {"read", "write"}:
+        return ToolResult(status="validation_failure", payload={"reason": "unknown tool kind"})
+
+    if spec.kind == "write" and "idempotency_key" not in args:
+        return ToolResult(status="validation_failure", payload={"reason": "missing idempotency key"})
+
+    # In production this call would go through policy checks, a gateway, and typed adapters.
+    return ToolResult(status="success", payload={"tool": spec.name})''',
+    "def classify_change": '''from dataclasses import dataclass
+
+
+@dataclass
+class ChangeRequest:
+    touches_prompt: bool = False
+    touches_policy: bool = False
+    touches_write_capability: bool = False
+    touches_egress: bool = False
+
+
+def classify_change(change: ChangeRequest) -> str:
+    if change.touches_write_capability or change.touches_egress:
+        return "high_risk"
+    if change.touches_policy or change.touches_prompt:
+        return "medium_risk"
+    return "low_risk"''',
+    "def artifact_ready": '''from dataclasses import dataclass
+
+
+@dataclass
+class ArtifactRecord:
+    has_owner: bool
+    has_version: bool
+    has_provenance: bool
+    review_passed: bool
+    schema_linked: bool
+
+
+def artifact_ready(record: ArtifactRecord) -> bool:
+    return (
+        record.has_owner
+        and record.has_version
+        and record.has_provenance
+        and record.review_passed
+        and record.schema_linked
+    )''',
+    "def ready_for_rollout": '''from dataclasses import dataclass
+
+
+@dataclass
+class RolloutReadiness:
+    trace_coverage: bool
+    offline_eval_pass: bool
+    slo_defined: bool
+    rollback_plan: bool
+    approval_path_defined: bool
+
+
+def ready_for_rollout(state: RolloutReadiness) -> bool:
+    return (
+        state.trace_coverage
+        and state.offline_eval_pass
+        and state.slo_defined
+        and state.rollback_plan
+        and state.approval_path_defined
+    )''',
+}
+
+
+LEGACY_STRUCTURED_MATCH_SOURCES = {
+    "slo_id: slo-support-ticket-known-effect-v1": '''slo:
+  success:
+    successful_run_rate: ">= 97%"
+  latency:
+    run_p95_ms: "<= 12000"
+    tool_span_p95_ms: "<= 2500"
+  safety:
+    policy_violation_rate: "< 0.2%"
+    unknown_side_effect_rate: "< 0.05%"
+  cost:
+    avg_tokens_per_run: "<= 18000"
+    avg_cost_per_successful_run_usd: "<= 0.12"
+  escalation:
+    manual_intervention_rate: "< 8%"
+  verifier:
+    false_positive_rate_high_risk: "< 1%"
+    failure_attribution_agreement_rate: ">= 95%"''',
+    "prod_db_write:": '''tools:
+  read_kb:
+    risk: low
+    approval: none
+    allowed_roles: ["agent_runtime"]
+  create_ticket:
+    risk: medium
+    approval: manager
+    allowed_roles: ["agent_runtime"]
+  prod_db_write:
+    risk: critical
+    approval: security_and_owner
+    allowed_roles: []
+    environments: ["staging"]''',
+}
+
+
 LISTING_READING_GUIDES = (
     "Проверьте, как доверенные инструкции отделены от пользовательского ввода и найденных недоверенных данных явными границами.",
     "Обратите внимание на фиксированный план: специалисты не получают право самовольно менять порядок шагов или бюджет выполнения.",
@@ -2639,7 +2790,10 @@ def restore_verified_python_listings(text: str) -> str:
     for key, relative_source, caption in LISTING_SPECS:
         source_path = repo_root / relative_source
         code = _source_listing(source_path, key)
-        code_keys = {_code_line_key(line) for line in code.splitlines() if line.strip()}
+        match_source = LEGACY_LISTING_MATCH_SOURCES.get(key, code)
+        code_keys = {
+            _code_line_key(line) for line in match_source.splitlines() if line.strip()
+        }
         key_token = _code_line_key(key)
         lines = text.splitlines()
 
@@ -2758,7 +2912,17 @@ def restore_structured_book_blocks(text: str) -> str:
     source_blocks.sort(key=lambda item: len(item[1]), reverse=True)
     restored = 0
     for language, block in source_blocks:
-        block_keys = [_code_line_key(line) for line in block.splitlines() if line.strip()]
+        match_block = next(
+            (
+                legacy
+                for marker, legacy in LEGACY_STRUCTURED_MATCH_SOURCES.items()
+                if marker in block
+            ),
+            block,
+        )
+        block_keys = [
+            _code_line_key(line) for line in match_block.splitlines() if line.strip()
+        ]
         unique_keys = set(block_keys)
         if len(unique_keys) < 2:
             continue
@@ -9666,6 +9830,2402 @@ def apply_final_publisher_copyedit_2026_07_22(text: str) -> str:
     return text
 
 
+def apply_post_audit_consistency_pass_2026_07_23(text: str) -> str:
+    """Align executable contracts and reader claims after the final audit."""
+
+    listing_ten_old = '''```python
+from dataclasses import dataclass
+
+
+@dataclass
+class MemoryRecord:
+    kind: str
+    content: str
+    confidence: float
+
+
+def select_memory_bucket(record: MemoryRecord) -> str | None:
+    if record.kind in {"plan_step", "tool_result", "working_note"}:
+        return "short_term"
+    if record.kind in {"validated_fact", "session_summary", "case_state"} and record.confidence >= 0.8:
+        return "long_term"
+    if record.kind in {"language_preference", "format_preference", "approval_preference"}:
+        return "profile"
+    return None
+```'''
+    listing_ten_new = '''```python
+from dataclasses import dataclass
+from datetime import datetime
+
+
+@dataclass(frozen=True)
+class MemoryRecord:
+    tenant_id: str
+    memory_class: str
+    kind: str
+    content: str
+    confidence: float
+    provenance: str
+    trust_state: str
+    expires_at: datetime | None
+
+
+def select_memory_bucket(
+    record: MemoryRecord,
+    *,
+    now: datetime,
+) -> str | None:
+    if record.trust_state != "trusted" or not record.provenance:
+        return None
+    if record.expires_at is not None and record.expires_at <= now:
+        return None
+    if record.kind in {"plan_step", "tool_result", "working_note"}:
+        return "short_term"
+    if (
+        record.kind in {"validated_fact", "session_summary", "case_state"}
+        and record.confidence >= 0.8
+    ):
+        return "long_term"
+    if record.kind in {
+        "language_preference",
+        "format_preference",
+        "approval_preference",
+    }:
+        return "profile"
+    return None
+```'''
+    text = _replace_editorial_anchor(
+        text,
+        listing_ten_old,
+        listing_ten_new,
+        "memory routing contract",
+    )
+
+    listing_eleven_old = '''```python
+from dataclasses import dataclass
+
+
+@dataclass
+class RetrievedRecord:
+    text: str
+    similarity: float
+    confidence: float
+    recency_weight: float
+    trusted: bool
+
+
+def score(record: RetrievedRecord) -> float:
+    trust_bonus = 0.15 if record.trusted else -0.2
+    return (
+        record.similarity * 0.5
+        + record.confidence * 0.25
+        + record.recency_weight * 0.1
+        + trust_bonus
+    )
+
+
+def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[RetrievedRecord]:
+    ranked = sorted(records, key=score, reverse=True)
+    return ranked[:limit]
+```'''
+    listing_eleven_new = '''```python
+from dataclasses import dataclass
+from datetime import datetime
+
+
+@dataclass(frozen=True)
+class RetrievedRecord:
+    tenant_id: str
+    text: str
+    similarity: float
+    confidence: float
+    recency_weight: float
+    provenance: str
+    trust_state: str
+    expires_at: datetime | None
+
+
+def eligible_for_prompt(
+    record: RetrievedRecord,
+    *,
+    tenant_id: str,
+    now: datetime,
+) -> bool:
+    return (
+        record.tenant_id == tenant_id
+        and record.trust_state == "trusted"
+        and bool(record.provenance)
+        and (record.expires_at is None or record.expires_at > now)
+    )
+
+
+def score(record: RetrievedRecord) -> float:
+    return (
+        record.similarity * 0.6
+        + record.confidence * 0.25
+        + record.recency_weight * 0.15
+    )
+
+
+def select_for_prompt(
+    records: list[RetrievedRecord],
+    *,
+    tenant_id: str,
+    now: datetime,
+    limit: int = 3,
+) -> list[RetrievedRecord]:
+    eligible = [
+        record
+        for record in records
+        if eligible_for_prompt(record, tenant_id=tenant_id, now=now)
+    ]
+    ranked = sorted(eligible, key=score, reverse=True)
+    return ranked[:limit]
+```'''
+    text = _replace_editorial_anchor(
+        text,
+        listing_eleven_old,
+        listing_eleven_new,
+        "memory retrieval contract",
+    )
+
+    replacements = (
+        (
+            "### Лабораторная работа 3\\. Память и межарендаторная граница",
+            "### Лабораторная работа 3\\. Память и область выборки",
+        ),
+        (
+            "является частью контракта памяти, а не скрытым свойством хранилища.",
+            "является частью контракта памяти, а не скрытым свойством хранилища.\n\n"
+            "Эта лаборатория проверяет фильтрацию учебного хранилища. Она не "
+            "доказывает аутентифицированную привязку `tenant_id`, авторизацию "
+            "хранилища или физическую изоляцию данных.",
+        ),
+        (
+            "#### Шаг 2. Проверьте межарендаторный отказ",
+            "#### Шаг 2. Проверьте фильтр области арендатора",
+        ),
+        (
+            "Зафиксируйте, где задается `tenant_id`, какие поля ответа служат "
+            "доказательством изоляции и какие свойства учебный стенд не проверяет.",
+            "Зафиксируйте, где задается `tenant_id`, какие поля ответа показывают "
+            "срабатывание фильтра области выборки и какие свойства учебный стенд "
+            "не проверяет.",
+        ),
+        (
+            "**Что доказывает результат.** Область арендатора является наблюдаемой "
+            "частью контракта памяти; нулевой результат другого арендатора служит "
+            "положительным доказательством изоляции.",
+            "**Что доказывает результат.** Область арендатора является наблюдаемой "
+            "частью контракта памяти; нулевой результат другого арендатора "
+            "подтверждает работу прикладного фильтра в этом стенде, но не физическую "
+            "изоляцию хранилища.",
+        ),
+    )
+    for old, new in replacements:
+        text = _replace_editorial_anchor(text, old, new, "memory lab claim")
+
+    tracing_listing_old = '''```python
+from dataclasses import dataclass
+from time import monotonic
+
+
+@dataclass
+class SpanResult:
+    name: str
+    status: str
+    duration_ms: int
+
+
+def traced_step(name: str, fn):
+    started = monotonic()
+    try:
+        fn()
+        status = "success"
+    except Exception:
+        status = "failure"
+        raise
+    finally:
+        duration_ms = int((monotonic() - started) * 1000)
+        emit_span(SpanResult(name=name, status=status, duration_ms=duration_ms))
+
+
+def emit_span(result: SpanResult) -> None:
+    print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
+```'''
+    tracing_listing_new = '''```python
+from time import monotonic
+
+from agent_runtime_ref.models import ToolResult
+
+
+def traced_step(name: str, fn):
+    started = monotonic()
+    status = "success"
+    try:
+        result = fn()
+        if isinstance(result, ToolResult) and result.status != "success":
+            status = "failure"
+        return result
+    except Exception:
+        status = "failure"
+        raise
+    finally:
+        duration_ms = int((monotonic() - started) * 1000)
+        emit_span(name=name, status=status, duration_ms=duration_ms)
+
+
+def emit_span(*, name: str, status: str, duration_ms: int) -> None:
+    print(
+        {
+            "span_name": name,
+            "status": status,
+            "duration_ms": duration_ms,
+        }
+    )
+```'''
+    if tracing_listing_old in text:
+        text = _replace_editorial_anchor(
+            text,
+            tracing_listing_old,
+            tracing_listing_new,
+            "tool result tracing semantics",
+        )
+    elif text.count(tracing_listing_new) != 1:
+        raise ValueError(
+            "Current tool-result tracing listing must occur exactly once"
+        )
+
+    trace_intro_old = '''В `agent_runtime_ref` сейчас используется намеренно простая оболочка. Сырой
+пользовательский ввод в общую телеметрию не включается; вместо него сохраняются
+класс данных и отпечаток редактированного представления:'''
+    trace_intro_new = '''В `agent_runtime_ref` сейчас используется намеренно простая оболочка. Сырой
+пользовательский ввод в общую телеметрию не включается; вместо него сохраняются
+редактированное описание и SHA-256 исходного ввода для контролируемого повтора.
+
+Нельзя переносить этот прием в промышленную корреляцию без анализа угроз.
+Используемый здесь неключевой SHA-256 служит только детерминированной контрольной
+суммой: чувствительный ввод с низкой энтропией можно подобрать. Для безопасной
+корреляции используйте keyed HMAC с управляемым секретом, ротацией ключей и
+ограниченным сроком хранения:'''
+    text = _replace_editorial_anchor(
+        text,
+        trace_intro_old,
+        trace_intro_new,
+        "trace privacy caveat",
+    )
+
+    trace_envelope_old = '''```json
+{
+  "event_type": "run_start",
+  "trace_id": "trace-demo-001",
+  "payload": {
+    "agent_id": "support-triage-ref",
+    "tenant_id": "tenant-acme",
+    "principal_id": "user-42",
+    "session_id": "session-demo-001",
+    "input_class": "support_request",
+    "input_digest": "sha256:example"
+  }
+}
+```'''
+    trace_envelope_new = '''```json
+{
+  "schema_version": "1.0",
+  "event_type": "run_start",
+  "trace_id": "trace-demo-001",
+  "payload": {
+    "input_description": "[REDACTED]",
+    "input_sha256": "edaf461dd5cf4ef498bfddb0a480355e6e42f669768fe3d42f9da2e67d88b81a",
+    "tenant_id": "tenant-acme",
+    "principal_id": "user-42",
+    "session_id": "session-demo-001",
+    "agent_id": "support-triage-ref"
+  },
+  "redacted_fields": []
+}
+```'''
+    text = _replace_editorial_anchor(
+        text,
+        trace_envelope_old,
+        trace_envelope_new,
+        "runtime trace envelope",
+    )
+
+    change_classifier_old = '''```python
+from dataclasses import dataclass
+
+
+@dataclass
+class ChangeRequest:
+    touches_prompt: bool = False
+    touches_policy: bool = False
+    touches_write_capability: bool = False
+    touches_egress: bool = False
+
+
+def classify_change(change: ChangeRequest) -> str:
+    if change.touches_write_capability or change.touches_egress:
+        return "high_risk"
+    if change.touches_policy or change.touches_prompt:
+        return "medium_risk"
+    return "low_risk"
+```'''
+    change_classifier_new = '''```python
+from agent_runtime_ref.lifecycle import classify_change_surfaces
+
+
+def classify_change(affected_surfaces: tuple[str, ...]) -> str:
+    classification = classify_change_surfaces(affected_surfaces)
+    if classification.review_required:
+        unknown = ",".join(classification.unknown_surfaces)
+        return f"review_required:{unknown or 'missing_surface'}"
+    return classification.risk_level
+```'''
+    if change_classifier_old in text:
+        text = _replace_editorial_anchor(
+            text,
+            change_classifier_old,
+            change_classifier_new,
+            "fail-closed change classification",
+        )
+    elif text.count(change_classifier_new) != 1:
+        raise ValueError("Current fail-closed change classifier must occur once")
+    text = _replace_editorial_anchor(
+        text,
+        "Это очень простой пример, но он хорошо показывает правильное направление: "
+        "сначала формализовать логику решения, потом автоматизировать шлюз.",
+        "Классификатор перечисляет поддерживаемые поверхности явно. Пустой или "
+        "неизвестный тип не становится низкорисковым: он возвращает "
+        "`review_required`, пока владелец не расширит схему и проверки.",
+        "change classifier explanation",
+    )
+
+    artifact_listing_old = '''```python
+from dataclasses import dataclass
+
+
+@dataclass
+class ArtifactRecord:
+    has_owner: bool
+    has_version: bool
+    has_provenance: bool
+    review_passed: bool
+    schema_linked: bool
+
+
+def artifact_ready(record: ArtifactRecord) -> bool:
+    return (
+        record.has_owner
+        and record.has_version
+        and record.has_provenance
+        and record.review_passed
+        and record.schema_linked
+    )
+```'''
+    artifact_listing_new = '''```python
+from pathlib import Path
+
+from agent_runtime_ref.evidence import verify_evidence_manifest
+
+
+def artifact_ready(
+    manifest_path: Path,
+    *,
+    required_artifact_ids: tuple[str, ...],
+) -> bool:
+    result = verify_evidence_manifest(
+        manifest_path,
+        required_artifact_ids=required_artifact_ids,
+    )
+    required = set(required_artifact_ids)
+    observed = set(result.artifact_ids)
+    return result.verified and not result.diagnostics and required <= observed
+```'''
+    if artifact_listing_old in text:
+        text = _replace_editorial_anchor(
+            text,
+            artifact_listing_old,
+            artifact_listing_new,
+            "verified artifact manifest listing",
+        )
+    elif text.count(artifact_listing_new) != 1:
+        raise ValueError("Current artifact-manifest verifier must occur once")
+    text = _replace_editorial_anchor(
+        text,
+        "Идея здесь простая: доверенный артефакт полезно определять не по интуиции, "
+        "а по четким признакам. Если платформа не умеет явно проверять готовность "
+        "артефакта, она почти неизбежно скатывается к социальному доверию, "
+        "устаревшим значениям по умолчанию и хрупкой идентичности выпуска.",
+        "Булевы заявления вроде `review_passed=true` сами по себе не являются "
+        "доказательствами. Проверяемый манифест связывает идентификатор с файлом, "
+        "SHA-256, временем измерения и диагностикой. Даже успешная структурная "
+        "проверка не заменяет доверенную аттестацию предметного сигнала.",
+        "artifact evidence explanation",
+    )
+
+    slo_old = '''```yaml
+slo:
+  success:
+    successful_run_rate: ">= 97%"
+  latency:
+    run_p95_ms: "<= 12000"
+    tool_span_p95_ms: "<= 2500"
+  safety:
+    policy_violation_rate: "< 0.2%"
+    unknown_side_effect_rate: "< 0.05%"
+  cost:
+    avg_tokens_per_run: "<= 18000"
+    avg_cost_per_successful_run_usd: "<= 0.12"
+  escalation:
+    manual_intervention_rate: "< 8%"
+  verifier:
+    false_positive_rate_high_risk: "< 1%"
+    failure_attribution_agreement_rate: ">= 95%"
+```'''
+    slo_new = '''```yaml
+slo:
+  slo_id: slo-support-ticket-known-effect-v1
+  owner: support-operations
+  window: rolling_28d
+  sli:
+    name: known_external_effect_rate
+    numerator: runs_with_verified_expected_ticket_effect
+    denominator: eligible_ticket_write_runs
+    exclusions:
+      - synthetic_load_tests
+      - operator_cancelled_before_dispatch
+    data_source: telemetry.run_complete+ticketing.reconciliation
+  target: ">= 99.0%"
+  action_on_breach:
+    burn_rate_alert: 2h_and_24h
+    rollout_action: freeze_expansion
+    owner: support-operations
+  safety_invariants:
+    - name: confirmed_cross_tenant_write
+      allowed_count: 0
+      action: rollback_and_incident
+    - name: blind_retry_after_side_effect_unknown
+      allowed_count: 0
+      action: freeze_and_reconcile
+```'''
+    if slo_old in text:
+        text = _replace_editorial_anchor(
+            text,
+            slo_old,
+            slo_new,
+            "complete SLO card",
+        )
+    elif text.count(slo_new) != 1:
+        raise ValueError("Current complete SLO card must occur once")
+    text = _replace_editorial_anchor(
+        text,
+        "Главное здесь не точные проценты. Главное, что команда заранее "
+        "договорилась, как выглядит нормальное состояние системы.",
+        "Главное здесь не точный процент, а воспроизводимый расчет и действие. "
+        "Полная карточка находится в "
+        "`docs/companion/examples/slo-card-support-ticket.yaml`. Нарушение SLO "
+        "расходует бюджет надежности, а нарушение `safety_invariants` является "
+        "жестким блокером и не компенсируется хорошим средним показателем.",
+        "SLO artifact reference",
+    )
+
+    adlc_anchor = '''8. Вывод из эксплуатации или замена
+
+ADLC полезно мыслить как непрерывный контур, а не как путь до первого выпуска.'''
+    adlc_addition = '''8. Вывод из эксплуатации или замена
+
+Переход между стадиями фиксируется отдельным решением, а не следует из номера
+этапа. Для сквозного сценария поддержки запись выглядит так:
+
+**Конфигурация перехода ADLC.** Тип фрагмента: YAML.
+
+```yaml
+transition_id: adlc-support-ticket-baseline-to-canary-001
+change_id: chg-support-ticket-idempotency-v2
+from_state: evaluation_baseline
+to_state: staged_rollout
+owner: runtime-release-owner
+required_evidence:
+  - artifact:eval-dataset.json
+  - eval:unknown_effect_reconciliation
+  - slo:slo-support-ticket-known-effect-v1
+  - plan:rollback-support-ticket-v2
+decision: hold
+blockers: [duplicate_ticket_eval_not_attested]
+decided_at: "2026-07-23T09:30:00Z"
+```
+
+Полный пример находится в
+`docs/companion/examples/adlc-transition-support-ticket.yaml`. Значение `hold`
+показывает, что наличие файлов не равно праву перейти к контрольной волне:
+обязательное доказательство должно быть проверено и принято владельцем.
+
+ADLC полезно мыслить как непрерывный контур, а не как путь до первого выпуска.'''
+    if "transition_id: adlc-support-ticket-baseline-to-canary-001" not in text:
+        text = _replace_editorial_anchor(
+            text,
+            adlc_anchor,
+            adlc_addition,
+            "ADLC transition record",
+        )
+    elif text.count(
+        "transition_id: adlc-support-ticket-baseline-to-canary-001"
+    ) != 1:
+        raise ValueError("Current ADLC transition record must occur once")
+
+    rollout_yaml_old = '''```yaml
+rollout:
+  require:
+    - trace_coverage
+    - security_regression_passed
+    - cost_regression_passed
+    - approval_queue_owner
+    - session_expiry_signals_visible
+    - orchestration_pattern_reviewed
+  rollout_mode:
+    initial: canary
+    max_tenant_exposure_pct: 5
+    require_shadow_period: true
+  block_if:
+    - unknown_side_effect_path_missing
+    - direct_tool_access_present
+    - policy_decisions_not_traced
+    - approval_backlog_unbounded
+    - paused_runs_without_expiry
+    - capability_session_reinit_unmodeled
+    - orchestration_pattern_change_unreviewed
+```'''
+    rollout_yaml_new = '''```yaml
+rollout:
+  require:
+    - trace_coverage
+    - policy_prechecks
+    - capability_owners
+    - offline_eval_pass
+    - duplicate_ticket_eval_passed
+    - slo_defined
+    - rollback_plan
+    - oncall_owner
+  rollout_mode:
+    initial: canary
+    max_tenant_exposure_pct: 5
+    require_shadow_period: true
+  block_if:
+    - unknown_side_effect_path_missing
+    - direct_tool_access_present
+    - policy_decisions_not_traced
+```'''
+    if rollout_yaml_old in text:
+        text = _replace_editorial_anchor(
+            text,
+            rollout_yaml_old,
+            rollout_yaml_new,
+            "runtime rollout config parity",
+        )
+    elif text.count(rollout_yaml_new) != 1:
+        raise ValueError("Current runtime rollout config must occur once")
+
+    rollout_listing_old = '''```python
+from dataclasses import dataclass
+
+
+@dataclass
+class RolloutReadiness:
+    trace_coverage: bool
+    offline_eval_pass: bool
+    slo_defined: bool
+    rollback_plan: bool
+    approval_path_defined: bool
+
+
+def ready_for_rollout(state: RolloutReadiness) -> bool:
+    return (
+        state.trace_coverage
+        and state.offline_eval_pass
+        and state.slo_defined
+        and state.rollback_plan
+        and state.approval_path_defined
+    )
+```'''
+    rollout_listing_new = '''```python
+from agent_runtime_ref.rollout import RolloutPolicy, assess_rollout
+
+
+def ready_for_rollout(
+    config: dict[str, object],
+    observed_checks: dict[str, bool],
+) -> dict[str, object]:
+    policy = RolloutPolicy.from_dict(config)
+    assessment = assess_rollout(policy, observed_checks)
+    return {
+        "ready": assessment.ready,
+        "missing_required": list(assessment.missing_required),
+        "blocking_signals": list(assessment.blocking_signals),
+    }
+```'''
+    if rollout_listing_old in text:
+        text = _replace_editorial_anchor(
+            text,
+            rollout_listing_old,
+            rollout_listing_new,
+            "fail-closed rollout listing",
+        )
+    elif text.count(rollout_listing_new) != 1:
+        raise ValueError("Current fail-closed rollout listing must occur once")
+    text = _replace_editorial_anchor(
+        text,
+        "Очень простой пример, но он помогает удерживать одну важную мысль: "
+        "готовность к промышленной среде должна быть формализуемой.",
+        "`observed_checks` должны поступать из проверенного манифеста, а не из "
+        "ручных галочек. Отсутствующий обязательный сигнал и активный `block_if` "
+        "дают разные диагностические списки, но оба удерживают `ready=false`.",
+        "rollout evidence explanation",
+    )
+
+    rubric_anchor = '''Инерция запуска не является готовностью: первую волну открывают только связанные доказательства, владелец отката и проверенный ручной маршрут.
+
+**Что изменилось после этой главы.**'''
+    rubric_addition = '''Инерция запуска не является готовностью: первую волну открывают только связанные доказательства, владелец отката и проверенный ручной маршрут.
+
+**Рубрика готовности 0–4.** Оценка 0 означает отсутствие воспроизводимых
+контрактов и доказательств; 1 — документированные контракты без исполняемых
+проверок; 2 — детерминированные проверки с пробелами в материальных
+доказательствах; 3 — готовность к контрольной волне с проверенным пакетом и
+владельцем отката; 4 — наблюдаемую промышленную эксплуатацию с отрепетированным
+реагированием и выводом из эксплуатации. Любой жесткий блокер — неизвестный
+путь эффекта, несвязанный отпечаток подтверждения, межарендаторная запись,
+прямой доступ к инструменту или непроверенное обязательное доказательство —
+принудительно возвращает решение `hold` независимо от суммы баллов. Машиночитаемая
+рубрика находится в
+`docs/companion/examples/readiness-rubric-support-ticket.yaml`.
+
+**Что изменилось после этой главы.**'''
+    if "docs/companion/examples/readiness-rubric-support-ticket.yaml" not in text:
+        text = _replace_editorial_anchor(
+            text,
+            rubric_anchor,
+            rubric_addition,
+            "release readiness rubric",
+        )
+    elif text.count(
+        "docs/companion/examples/readiness-rubric-support-ticket.yaml"
+    ) != 1:
+        raise ValueError("Current release-readiness rubric reference must occur once")
+
+    text = text.replace(
+        "Проверяемый артефакт этого разбора — `context-manifest.yaml`.",
+        "Проверяемый артефакт этого разбора — `context-manifest.yaml`; заполненный "
+        "пример находится в "
+        "`docs/companion/examples/context-manifest-support-ticket.yaml`.",
+        1,
+    )
+    threat_reference_anchor = (
+        "Проверка считается пройденной не тогда, когда для строки найден документ, "
+        "а когда есть четыре вещи: владелец, версионируемый артефакт, "
+        "машиночитаемый сигнал и отрицательный тест."
+    )
+    text = text.replace(
+        threat_reference_anchor,
+        threat_reference_anchor
+        + " Сквозная карта таких проверок находится в "
+        "`docs/companion/examples/threat-map-negative-tests.yaml`.",
+        1,
+    )
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
+    """Apply structural and source-discipline fixes required for print."""
+
+    exact_replacements = (
+        ("весь среда исполнения", "всю среду исполнения"),
+        ("среда исполнения решил", "среда исполнения решила"),
+        ("не был ли подсказка перегружен", "не была ли подсказка перегружена"),
+        (
+            "богаче должен быть проектирование оценки",
+            "богаче должно быть проектирование оценки",
+        ),
+        (
+            "### Самый неприятный статус — это `side_effect_unknown`",
+            "### Самый опасный статус: неизвестный внешний эффект",
+        ),
+        (
+            "## Приложение 3\\. Шаблон `incident/postmortem`",
+            "## Приложение 3\\. Шаблон разбора инцидента",
+        ),
+        (
+            "#### Почему слой выполнения без песочницы быстро становится слишком доверчивым",
+            "**Почему слой выполнения без песочницы быстро становится слишком доверчивым.**",
+        ),
+        (
+            "#### MCP полезен именно как контрактный слой",
+            "**MCP полезен именно как контрактный слой.**",
+        ),
+        (
+            "#### MCP с состоянием меняет эксплуатационный контракт",
+            "**MCP с состоянием меняет эксплуатационный контракт.**",
+        ),
+        ("capability: ticket_write", "capability: create_ticket"),
+        ("requested_action: create_incident_ticket", "requested_action: create_ticket"),
+        (
+            'title: "Несанкционированный путь записи ticket_write во время вводного прогона"',
+            "title: >-\n  Несанкционированный путь записи create_ticket во время вводного прогона",
+        ),
+        ("--redact-field user_input", "--redact-field input_description"),
+        (
+            "Как только MCP перестает быть одной-двумя вручную подключенными "
+            "интеграциями, возникает следующий вопрос: кто вообще управляет "
+            "MCP-поверхностью как частью платформы, а не как набором локальных "
+            "удобств разработчиков? Здесь полезен материал Cloudflare, потому что "
+            "он смещает акцент с «умеет ли агент говорить по MCP» на «как команда "
+            "открывает, утверждает, маршрутизирует и аудирует MCP-точки доступа в "
+            "масштабе».",
+            "Когда MCP-интеграций становится много, ими нужно управлять как "
+            "платформенной поверхностью. Материал Cloudflare смещает акцент с "
+            "«умеет ли агент говорить по MCP» на «как команда открывает, "
+            "утверждает, маршрутизирует и аудирует MCP-точки доступа в масштабе».",
+        ),
+    )
+    for old, new in exact_replacements:
+        if old not in text:
+            raise ValueError(f"World-class copyedit anchor missing: {old}")
+        text = text.replace(old, new)
+
+    text = text.replace(
+        "  create_ticket:\n    risk: medium\n",
+        "  create_ticket:\n    risk: high\n",
+    )
+    if re.search(r"create_ticket:\n\s+risk: medium", text):
+        raise ValueError("create_ticket risk classification still drifts")
+
+    digest = "1b517f3d6f03284c09fb9f3822c346f987f9410dc23127eb22a494027f19abbd"
+    text = _replace_editorial_anchor(
+        text,
+        "principal_id: user-42\ncapability: create_ticket\nrisk_tier: high",
+        "principal_id: user-42\n"
+        "capability: create_ticket\n"
+        "policy_version: policy-v3\n"
+        "capability_version: catalog-v2\n"
+        "authorization_mode: human_approved\n"
+        'delegated_principal_id: ""\n'
+        'delegated_scope: ""\n'
+        "risk_tier: high",
+        "approval action identity",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "required_role: oncall_manager\nstatus: pending",
+        "required_role: oncall_manager\n"
+        'expires_at: "2026-04-07T12:00:00Z"\n'
+        "nonce: nonce-apr-2026-04-07-001\n"
+        f"action_digest: {digest}\n"
+        "status: pending",
+        "approval request digest",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "kind: approval_decision\napproval_id: apr-2026-04-07-001\ndecision: approved",
+        "kind: approval_decision\n"
+        "approval_id: apr-2026-04-07-001\n"
+        f"action_digest: {digest}\n"
+        "decision: approved",
+        "approval decision digest",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "kind: approval_audit_record\napproval_id: apr-2026-04-07-001\ntrace_id: trace-approval-001",
+        "kind: approval_audit_record\n"
+        "approval_id: apr-2026-04-07-001\n"
+        f"action_digest: {digest}\n"
+        "trace_id: trace-approval-001",
+        "approval audit digest",
+    )
+
+    text = _replace_editorial_anchor(
+        text,
+        "* **S021.** OpenAI, A Practical Guide to Building Agents.\n"
+        "* **S009.** NIST, AI RMF 1.0.",
+        "* **S009.** NIST, AI RMF 1.0.\n"
+        "* **S016.** Anthropic, Building Effective AI Agents.\n"
+        "* **S021.** OpenAI, A Practical Guide to Building Agents.\n"
+        "* **S036.** Google Cloud, Achieve agentic productivity with Vertex AI Agent Builder.\n"
+        "* **S042.** Microsoft Azure Architecture Center, AI Agent Orchestration Patterns.",
+        "chapter 3 source coverage",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "* **S044.** Cloudflare, Build Agents on Cloudflare.\n"
+        "* **S050.** Cloudflare Agents SDK, Durable execution.",
+        "* **S044.** Cloudflare, Build Agents on Cloudflare.\n"
+        "* **S050.** Cloudflare Agents SDK, Durable execution.\n"
+        "* **S092.** OpenAI, Running Codex safely at OpenAI.\n"
+        "* **S093.** GitHub Agentic Workflows, Security Architecture.\n"
+        "* **S094.** GitHub Changelog, Copilot in Visual Studio Code, June 2026 releases.",
+        "chapter 26 source coverage",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "как показало дело Moffatt v. Air Canada.",
+        "как показало дело Moffatt v. Air Canada (см. источник **S109**).",
+        "primary case citation",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "* **S108.** [Microsoft Foundry, Monitoring and Observability, Part 2: "
+        "Configuration and Operations](https://techcommunity.microsoft.com/blog/"
+        "azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-"
+        "configuration-and-operatio/4532674), дата обращения: 22 июля 2026 года.\n\n"
+        "### Как использовать этот список",
+        "* **S108.** [Microsoft Foundry, Monitoring and Observability, Part 2: "
+        "Configuration and Operations](https://techcommunity.microsoft.com/blog/"
+        "azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-"
+        "configuration-and-operatio/4532674), дата обращения: 22 июля 2026 года.\n\n"
+        "### Первичный материал практического кейса\n\n"
+        "* **S109.** [Civil Resolution Tribunal, Moffatt v. Air Canada]"
+        "(https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do), "
+        "дата обращения: 23 июля 2026 года.\n\n"
+        "### Как использовать этот список",
+        "primary case source",
+    )
+
+    stacked_heading_bridges = (
+        (
+            "## Практическое упражнение части I",
+            "### Лабораторная работа 1\\. Выбор формы исполнения",
+            "Упражнение переводит выбор архитектурной формы в проверяемое решение с явным побочным эффектом и владельцем.",
+        ),
+        (
+            "### Защитные правила работают слоями, а не одним фильтром",
+            "#### Сдерживание сильнее бесконечного надзора",
+            "Начнем с мер, которые уменьшают радиус воздействия даже при ошибке модели или данных.",
+        ),
+        (
+            "### От идентичности к праву на действие",
+            "#### Почему без слоя политик эталонная среда исполнения остается слишком наивной",
+            "Связь становится практической, когда идентичность превращается в проверяемое право на конкретное действие.",
+        ),
+        (
+            "### Возможность как исполняемый контракт",
+            "#### Что полезно хранить в каталоге возможностей",
+            "Следующий уровень детализации — поля, по которым возможность можно проверить до исполнения.",
+        ),
+        (
+            "### Политика и подтверждение в среде исполнения",
+            "#### Подтверждение как прерываемый путь выполнения",
+            "Для пишущего пути решение должно переживать паузу и возвращаться в тот же запуск.",
+        ),
+        (
+            "### От минимального контракта к промышленному управлению",
+            "#### Как набор политик связан с жизненным циклом",
+            "Базовый контракт становится эксплуатационным после привязки к версиям, владельцам и шлюзам выпуска.",
+        ),
+        (
+            "## Практическое упражнение части II",
+            "### Лабораторная работа 2\\. Возможность, политика и подтверждение",
+            "Упражнение проверяет один путь записи от каталога до долговечного решения человека.",
+        ),
+        (
+            "## Практическое упражнение части III",
+            "### Лабораторная работа 3\\. Память и область выборки",
+            "Упражнение отделяет наблюдаемую фильтрацию памяти от недоказанных гарантий изоляции хранилища.",
+        ),
+        (
+            "### Управление серверной поверхностью",
+            "#### Корпоративный контур управления MCP",
+            "Платформенный контроль здесь обязателен.",
+        ),
+        (
+            "## Практическое упражнение части IV",
+            "### Лабораторная работа 4\\. Тайм-аут, идемпотентность и расследование",
+            "Упражнение различает известный отказ до отправки и неизвестный внешний эффект после отправки.",
+        ),
+        (
+            "### Минимальный набор полей для трассы и спана",
+            "#### Приватность рассуждений и поисковые фрагменты трассы",
+            "Полнота расследования не дает права сохранять чувствительное содержимое без ограничения.",
+        ),
+        (
+            "### Лучшая связка — это не «офлайн или онлайн», а оба контура сразу",
+            "#### Два взаимодополняющих контура",
+            "Один контур блокирует известную регрессию до выпуска, другой обнаруживает дрейф после него.",
+        ),
+        (
+            "### Симуляция пользователя и среды",
+            "#### Целостность симуляции развертывания и самой оценки",
+            "Симулятор полезен только тогда, когда его границы и происхождение не смешаны с оцениваемой системой.",
+        ),
+        (
+            "## Практическое упражнение части V",
+            "### Лабораторная работа 5\\. От трассы к оценке и решению о выпуске",
+            "Упражнение собирает один наблюдаемый отказ в оценочный сценарий и блокирующее решение о выпуске.",
+        ),
+        (
+            "### Что сохраняется из SDLC",
+            "#### Почему здесь вообще нужно вспоминать классический SDLC",
+            "Сначала отделим знакомые инженерные обязанности от новых поверхностей риска агента.",
+        ),
+        (
+            "### ADLC как жизненный цикл доказательств",
+            "#### ADLC как расширение инженерного цикла",
+            "Расширение нужно не ради нового термина, а ради управляемых переходов между состояниями.",
+        ),
+        (
+            "### Управление изменениями по риску",
+            "#### Почему агентной системе нужна отдельная дисциплина изменений",
+            "Код, инструкции, политики, память и оценки меняют поведение разными путями, но входят в один выпуск.",
+        ),
+        (
+            "### Выпуск, откат и происхождение",
+            "#### Высокорисковые изменения должны идти через формальные шлюзы",
+            "Для таких изменений пакет доказательств важнее уверенности автора или результата демонстрации.",
+        ),
+        (
+            "## Практическое упражнение части VI",
+            "### Лабораторная работа 6\\. Владение, реестр и доверенный пакет изменения",
+            "Упражнение проверяет, что выпуск связан с владельцами, реестром и материальными доказательствами.",
+        ),
+        (
+            "## Глава 23\\. Агентное несоответствие целей и внутренний риск",
+            "### От наблюдаемого отклонения к внутреннему риску",
+            "Глава отделяет наблюдаемый опасный результат от гипотезы о намерении или внутреннем состоянии модели.",
+        ),
+        (
+            "### От сигнала риска к находке",
+            "#### Почему жизненный цикл не заканчивается на шлюзах выпуска",
+            "После выпуска сигнал должен получить владельца, статус, доказательства и срок устранения.",
+        ),
+        (
+            "### Сдерживание и оперативное реагирование",
+            "#### Реагирование должно быть отдельной операционной функцией",
+            "Решение о сдерживании требует заранее подготовленных полномочий и безопасных режимов.",
+        ),
+        (
+            "### Причинный разбор и проверка гипотезы",
+            "#### Минимальная схема первичного разбора",
+            "Разбор начинается с наблюдаемых фактов и конкурирующих объяснений, а не с готового диагноза.",
+        ),
+        (
+            "### Закрытие находки и обратная связь",
+            "#### Содержание разбора инцидента",
+            "Находка закрывается только после исправления, проверки и переноса урока в оценку или контроль.",
+        ),
+        (
+            "## Практическое упражнение части VII",
+            "### Лабораторная работа 7\\. Обнаружение, сдерживание и завершение полномочий",
+            "Упражнение проводит один сигнал через сдерживание, проверку и отзыв полномочий.",
+        ),
+        (
+            "### Базовый поток и границы модулей",
+            "#### Зачем нужна эталонная схема среды исполнения, если у вас уже есть архитектура",
+            "Эталон нужен как исполняемая проверка архитектурных границ, а не как еще одна схема компонентов.",
+        ),
+        (
+            "### Долговечное выполнение и восстановление",
+            "#### Длинные запуски — не необязательная надстройка, а часть базового контура",
+            "Если работа переживает один запрос, состояние и полномочия должны переживать перезапуск контролируемо.",
+        ),
+        (
+            "### Топологии агента, процесса и очереди",
+            "#### Именованный агент как отдельная топология",
+            "Разные топологии по-разному распределяют состояние, владение и границы возобновления.",
+        ),
+        (
+            "### Контракт эталона и проверка завершения",
+            "#### Проверяемое завершение",
+            "Завершение должно доказывать не только ответ, но и итог внешних эффектов и закрытие полномочий.",
+        ),
+        (
+            "## Практическое упражнение части VIII",
+            "### Лабораторная работа 8\\. Решение о первой волне",
+            "Финальное упражнение собирает все предыдущие артефакты в объяснимое решение `go`, `hold` или `rollback`.",
+        ),
+        (
+            "# Приложения",
+            "## Как пользоваться приложениями",
+            "Приложения дают формы контрактов, источники и команды, которые дополняют основной ход книги.",
+        ),
+        (
+            "## Приложение 4\\. Источники и дополнительные онлайн-материалы",
+            "### Сквозные источники и источники глав",
+            "Список ниже разделяет нормативные, практические и исследовательские материалы по роли в аргументации.",
+        ),
+        (
+            "### Архитектура агентных систем и платформенные паттерны",
+            "#### Основные архитектурные руководства",
+            "Эти материалы задают базовую форму агента, оркестрации и границ платформы.",
+        ),
+        (
+            "### Управление, безопасность и операционная гарантия",
+            "#### Управление и заверение",
+            "В этой группе собраны материалы о контролях, доказательствах и ответственности на протяжении жизненного цикла.",
+        ),
+        (
+            "## Приложение 5\\. Эталонный пакет и воспроизводимые упражнения",
+            "### Границы эталона",
+            "Пакет подтверждает учебные контракты, но не аттестует промышленную инфраструктуру или организационный процесс.",
+        ),
+        (
+            "### Как запустить",
+            "#### Быстрый запуск и ожидаемое состояние",
+            "Сначала проверьте окружение и базовый закрытый путь, а затем переходите к отдельным сценариям отказа.",
+        ),
+    )
+    for parent, child, bridge in stacked_heading_bridges:
+        text = _replace_editorial_anchor(
+            text,
+            f"{parent}\n\n{child}",
+            f"{parent}\n\n{bridge}\n\n{child}",
+            f"stacked headings: {parent}",
+        )
+
+    lines = text.splitlines()
+    output: list[str] = []
+    inside_fence = False
+    index = 0
+    while index < len(lines):
+        line = lines[index]
+        if line.startswith("```"):
+            inside_fence = not inside_fence
+            output.append(line)
+            index += 1
+            continue
+        if not inside_fence and re.match(r"^#{1,6} ", line):
+            cursor = index + 1
+            while cursor < len(lines) and not lines[cursor].strip():
+                cursor += 1
+            if cursor < len(lines) and lines[cursor].startswith("```"):
+                lead = (
+                    "Выполните команду и сохраните результат:"
+                    if "Шаг " in line
+                    else "**Тип фрагмента:** минимальный контракт."
+                )
+                output.extend([line, "", lead, ""])
+                index = cursor
+                continue
+        output.append(line)
+        index += 1
+    text = "\n".join(output).rstrip() + "\n"
+
+    text = text.replace(
+        '        return ToolResult(status="validation_failure", payload={"reason": "missing idempotency key"})',
+        '        return ToolResult(\n'
+        '            status="validation_failure",\n'
+        '            payload={"reason": "missing idempotency key"},\n'
+        "        )",
+    )
+    text = text.replace(
+        "Просмотр одной трассы из JSONL-файла:\n\n```console",
+        "Просмотр одной трассы из JSONL-файла:\n\n"
+        "**Тип фрагмента:** команда для воспроизведения.\n\n```console",
+    )
+
+    lines = text.splitlines()
+    output = []
+    fence_language = ""
+    for line in lines:
+        if line.startswith("```"):
+            fence_language = "" if fence_language else line[3:].strip().lower()
+            output.append(line)
+            continue
+        if fence_language in {"console", "bash", "shell"} and len(line) > 100:
+            tokens = re.findall(r'"(?:\\.|[^"\\])*"|\S+', line)
+            current = ""
+            wrapped: list[str] = []
+            for token in tokens:
+                candidate = token if not current else f"{current} {token}"
+                if current and len(candidate) > 96:
+                    wrapped.append(f"{current} \\")
+                    current = f"  {token}"
+                else:
+                    current = candidate
+            if current:
+                wrapped.append(current)
+            output.extend(wrapped)
+        else:
+            output.append(line)
+
+    return re.sub(r"\n{4,}", "\n\n", "\n".join(output)).rstrip() + "\n"
+
+
+def apply_final_reader_copyedit_2026_07_23(text: str) -> str:
+    """Remove residual assembly prose and make dense definitions scannable."""
+
+    exact_replacements = (
+        (
+            "Тут главное не сам вызов, а то, что передача управления должна "
+            "передавать не весь хаос состояния, а аккуратно собранный пакет "
+            "передачи.",
+            "Здесь важен не сам вызов, а контракт передачи: принимающая сторона "
+            "получает не весь хаос состояния, а ограниченный пакет цели, "
+            "ограничений и релевантного контекста.",
+            "handoff tautology",
+        ),
+        (
+            "А когда управление выпуском становится по-настоящему значимым, она "
+            "должна отвечать и на следующий вопрос:",
+            "Когда набор становится частью управления выпуском, оболочка должна "
+            "отвечать и на следующий вопрос:",
+            "policy bundle pronoun",
+        ),
+        (
+            "Минимальный сценарий отравления памяти должен проверять те же поля "
+            "разбора отравления памяти, которые потом попадают в схему памяти и "
+            "поиска и схему трасс:",
+            "Минимальный сценарий отравления памяти должен проверять поля, которые "
+            "затем входят в контракты памяти, поиска и трассировки:",
+            "memory poisoning repetition",
+        ),
+        (
+            "Практическое правило простое: память, которая может пережить запуск, "
+            "должна проходить не только проверка качества данных, но и проверка "
+            "модели угроз. Иначе система получает долговременный канал атаки, "
+            "который выглядит как обычная персонализация.",
+            "Практическое правило простое: если память может пережить запуск, для "
+            "нее обязательны и проверка качества данных, и проверка модели угроз. "
+            "Иначе система получает долговременный канал атаки, который выглядит "
+            "как обычная персонализация.",
+            "memory agreement",
+        ),
+        (
+            "Именно поэтому проектирование проверяющего здесь тоже важен. Если "
+            "слой оценивания не умеет разделять сбой процесса и сбой исхода, он "
+            "будет давать слабую доказательную базу и для обучения, и для "
+            "контроля релиза.",
+            "Именно поэтому проектирование проверяющего здесь тоже важно. Если "
+            "слой оценивания не умеет разделять сбой процесса и сбой исхода, он "
+            "будет давать слабую доказательную базу и для обучения, и для "
+            "контроля выпуска.",
+            "verifier agreement",
+        ),
+        (
+            "* показать, какие набор политик и режим подтверждения относятся к "
+            "данному агенту;",
+            "* показать, какой набор политик и какой режим подтверждения относятся "
+            "к данному агенту;",
+            "registry agreement",
+        ),
+        (
+            "Этот каркас отвечает на вопрос, какие происхождение, целостность и "
+            "состояние отзыва должен доказать артефакт:",
+            "Этот каркас отвечает на вопрос, что артефакт должен доказать о "
+            "происхождении, целостности и возможности отзыва:",
+            "artifact provenance agreement",
+        ),
+        (
+            "Но даже этого недостаточно.\n\n"
+            "Но остаются риски возникающего поведения, злоупотребления через "
+            "инструкции и пути инструментов, дрейфа длинных процессов и скрытого "
+            "обхода политик. К ним добавляются небезопасные побочные эффекты и "
+            "деградация, которую команда замечает слишком поздно.",
+            "Но даже этого недостаточно: остаются риски возникающего поведения, "
+            "злоупотребления через инструкции и пути инструментов, дрейфа длинных "
+            "процессов и скрытого обхода политик. К ним добавляются небезопасные "
+            "побочные эффекты и деградация, которую команда замечает слишком "
+            "поздно.",
+            "chapter 24 repeated conjunction",
+        ),
+        (
+            "В этом и состоит главный смысл этой главы. Она должна показать вывод "
+            "из эксплуатации не как приложение к поставке, а как функцию закрытия "
+            "всего жизненного цикла: момент, когда система теряет право действовать, "
+            "а ее память, доказательная база, подтверждения и операционная линия "
+            "происхождения доводятся до контролируемого завершения. Главный "
+            "артефакт этой главы — план закрытия прав, состояния, доказательств и "
+            "владельцев, а не удаление старого агента.",
+            "Вывод из эксплуатации завершает жизненный цикл только тогда, когда "
+            "система теряет право действовать, а ее память, доказательная база, "
+            "подтверждения и линия происхождения доведены до контролируемого "
+            "состояния. Удаление старого агента без такого доказательства не "
+            "считается завершением.",
+            "chapter 25 editorial meta language",
+        ),
+    )
+    for old, new, label in exact_replacements:
+        text = _replace_editorial_anchor(text, old, new, label)
+
+    chapter_nineteen_old = (
+        "Эта глава отвечает на один вопрос: как инвентарь и реестр превращают "
+        "набор агентоподобных сущностей в подотчетный производственный контур.\n\n"
+        "Здесь реестр важен не как еще один слой телеметрии, а как слой владельцев, "
+        "состояний жизненного цикла и подотчетности. Главный артефакт этой главы — "
+        "запись реестра: запись, которая связывает идентичность агента, владельца, "
+        "состояние жизненного цикла, возможности, владельца управления средой "
+        "исполнения и ссылки на доказательства."
+    )
+    chapter_nineteen_new = (
+        "Вопрос здесь один: как инвентарь и реестр превращают набор "
+        "агентоподобных сущностей в подотчетный производственный контур. Реестр "
+        "связывает идентичность агента, владельца, состояние жизненного цикла, "
+        "возможности, управление средой исполнения и ссылки на доказательства."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_nineteen_old,
+        chapter_nineteen_new,
+        "chapter 19 repeated artifact",
+    )
+
+    chapter_twenty_old = (
+        "Эта глава переводит знакомую дисциплину SDLC в агентный жизненный цикл. "
+        "У нее один центральный артефакт: модель состояний ADLC с владельцами, "
+        "входами, выходными доказательствами и правилами перехода между "
+        "состояниями.\n\n"
+        "Граница главы такая: жизненный цикл задает состояния, а управление "
+        "изменениями решает, какие переходы требуют проверки. Правила выпуска, "
+        "реагирование на находки и реестр владельцев появятся дальше; здесь важно "
+        "собрать саму карту переходов, чтобы изменение подсказки, политики, памяти, "
+        "инструмента или набора оценки не выглядело как мелкая правка без "
+        "релизного риска."
+    )
+    chapter_twenty_new = (
+        "Глава переводит знакомую дисциплину SDLC в агентный жизненный цикл. "
+        "Жизненный цикл задает состояния, а управление изменениями определяет, "
+        "какие переходы требуют проверки. Карта должна показать, почему изменение "
+        "инструкции, политики, памяти, инструмента или оценочного набора способно "
+        "нести тот же риск выпуска, что и изменение кода."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_old,
+        chapter_twenty_new,
+        "chapter 20 repeated artifact opening",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "То есть новый жизненный цикл появляется не потому, что «агенты "
+        "особенные», а потому, что у них больше подвижных поверхностей, за "
+        "которыми нужно отдельно следить при выпуске и эксплуатации. Главный "
+        "артефакт этой главы — модель состояний ADLC: карта состояний и переходов, "
+        "а не еще один общий управленческий проверочный список.",
+        "Новый жизненный цикл появляется не потому, что «агенты особенные», а "
+        "потому, что у них больше подвижных поверхностей, за которыми нужно "
+        "отдельно следить при выпуске и эксплуатации. Карта состояний и переходов "
+        "делает эту дополнительную ответственность проверяемой.",
+        "chapter 20 repeated artifact body",
+    )
+
+    chapter_twenty_four_old = (
+        "В этой главе сигнал риска превращается в сдерживание, исправление и "
+        "закрытие находки. Центральный артефакт — запись о находке и реагировании: "
+        "она связывает сигнал, риск, владельца, временную меру, исправление и "
+        "условие закрытия. Разделение с соседними главами простое: здесь "
+        "обсуждается реагирование и сдерживание, а не построение оценочных наборов, "
+        "происхождение артефактов или проектирование телеметрии."
+    )
+    chapter_twenty_four_new = (
+        "Глава проводит один сигнал риска через владельца, временную меру, "
+        "исправление и условие закрытия. Так план заверения становится рабочим "
+        "контуром, а не перечнем атак. Построение оценочных наборов, происхождение "
+        "артефактов и проектирование телеметрии остаются в соседних главах."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_four_old,
+        chapter_twenty_four_new,
+        "chapter 24 repeated artifact opening",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "Эта глава отвечает на один вопрос: как находки и сигналы превращаются в "
+        "ответные действия. Не в новый оценочный слой и не в общую лекцию о "
+        "наблюдаемости, а в сдерживание, исправление и назначенного владельца. "
+        "Главный артефакт этой главы — запись о находке и реагировании: запись, "
+        "которая связывает сигнал, риск, владельца, временное сдерживание, "
+        "исправление и условие закрытия.",
+        "Вопрос главы прост: как находки и сигналы превращаются в ответные "
+        "действия. Ответ должен вести к сдерживанию, исправлению и назначенному "
+        "владельцу, а не к новому оценочному слою или общей лекции о "
+        "наблюдаемости.",
+        "chapter 24 repeated artifact body",
+    )
+
+    canonical_states_old = (
+        "Книга использует один словарь машинных состояний. `success` означает "
+        "завершенную\n"
+        "задачу с известным результатом. `waiting_for_approval` означает паузу:\n"
+        "`task_success=null`, а `side_effect_status=not_executed`. "
+        "`permission_denied` и\n"
+        "`validation_failure` являются закрытыми отказами до эффекта. "
+        "`retryable_failure`\n"
+        "разрешает повтор только по политике. `side_effect_unknown` требует "
+        "сверки, а\n"
+        "`partial_side_effect` — компенсации или ручного решения. Этот словарь "
+        "должен\n"
+        "совпадать в тексте, примерах, событиях и интерфейсе командной строки."
+    )
+    canonical_states_new = (
+        "Книга использует один словарь машинных состояний:\n\n"
+        "* `success`: задача завершена с известным результатом;\n"
+        "* `waiting_for_approval`: выполнение поставлено на паузу; "
+        "`task_success=null`, а `side_effect_status=not_executed`;\n"
+        "* `permission_denied`: действие запрещено до внешнего эффекта;\n"
+        "* `validation_failure`: вход или контракт отклонен до внешнего эффекта;\n"
+        "* `retryable_failure`: повтор разрешен только по политике;\n"
+        "* `side_effect_unknown`: перед продолжением требуется сверка;\n"
+        "* `partial_side_effect`: требуется компенсация или ручное решение.\n\n"
+        "Этот словарь должен совпадать в тексте, примерах, событиях и интерфейсе "
+        "командной строки."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        canonical_states_old,
+        canonical_states_new,
+        "canonical states definition list",
+    )
+
+    text = _replace_editorial_anchor(
+        text,
+        "* `requested_fields` описывают видимые человеку поля, но этого "
+        "недостаточно: решение связывается с криптографическим отпечатком полного "
+        "неизменяемого действия, версиями возможности, ресурса и набора политик, "
+        "областью арендатора, субъектом, `idempotency_key`, одноразовым "
+        "идентификатором и сроком действия; перед исполнением шлюз повторно "
+        "проверяет роль подтверждающего, запрет самоодобрения, полномочия и "
+        "совпадение отпечатка;",
+        "* `requested_fields` показывают человеку проверяемые поля действия. Само "
+        "решение связывается с отпечатком полного неизменяемого действия, версиями "
+        "возможности, ресурса и политик, областью арендатора, субъектом, "
+        "`idempotency_key`, одноразовым идентификатором и сроком действия;\n"
+        "* Перед исполнением шлюз повторно проверяет роль подтверждающего, запрет "
+        "самоодобрения, полномочия и совпадение отпечатка;",
+        "approval definition split",
+    )
+
+    scenario_outcomes_old = (
+        "Для каждого сценария заранее задаются четыре результата. `pass` означает, "
+        "что агент сохранил цель только в разрешенной форме: остановился, запросил "
+        "помощь или предложил проект без побочного эффекта. `blocked` означает, "
+        "что агент попытался нарушить инвариант, но принудительный контроль "
+        "остановил путь; это успех защиты, но находка для поведения. `fail` "
+        "означает, что опасный эффект или недопустимая утечка произошли. "
+        "`inconclusive` означает, что доказательств недостаточно: потеряна трасса, "
+        "тестовый двойник не подтвердил эффект или проверяющий не смог "
+        "классифицировать путь. Последний исход не разрешает выпуск."
+    )
+    scenario_outcomes_new = (
+        "Для каждого сценария заранее задаются четыре результата:\n\n"
+        "* `pass`: агент сохранил цель только в разрешенной форме, например "
+        "остановился, запросил помощь или предложил проект без побочного эффекта;\n"
+        "* `blocked`: агент попытался нарушить инвариант, но принудительный "
+        "контроль остановил путь; это успех защиты и одновременно поведенческая "
+        "находка;\n"
+        "* `fail`: опасный эффект или недопустимая утечка произошли;\n"
+        "* `inconclusive`: доказательств недостаточно, например потеряна трасса, "
+        "двойник не подтвердил эффект или проверяющий не смог классифицировать "
+        "путь.\n\n"
+        "Исход `inconclusive` не разрешает выпуск."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        scenario_outcomes_old,
+        scenario_outcomes_new,
+        "scenario outcomes definition list",
+    )
+
+    readiness_old = (
+        "**Рубрика готовности 0–4.** Оценка 0 означает отсутствие "
+        "воспроизводимых\n"
+        "контрактов и доказательств; 1 — документированные контракты без "
+        "исполняемых\n"
+        "проверок; 2 — детерминированные проверки с пробелами в материальных\n"
+        "доказательствах; 3 — готовность к контрольной волне с проверенным пакетом "
+        "и\n"
+        "владельцем отката; 4 — наблюдаемую промышленную эксплуатацию с "
+        "отрепетированным\n"
+        "реагированием и выводом из эксплуатации. Любой жесткий блокер — "
+        "неизвестный\n"
+        "путь эффекта, несвязанный отпечаток подтверждения, межарендаторная "
+        "запись,\n"
+        "прямой доступ к инструменту или непроверенное обязательное доказательство "
+        "—\n"
+        "принудительно возвращает решение `hold` независимо от суммы баллов. "
+        "Машиночитаемая\n"
+        "рубрика находится в\n"
+        "`docs/companion/examples/readiness-rubric-support-ticket.yaml`."
+    )
+    readiness_new = (
+        "**Рубрика готовности 0–4.**\n\n"
+        "* **Уровень 0:** воспроизводимых контрактов и доказательств нет;\n"
+        "* **Уровень 1:** контракты описаны, но исполняемых проверок нет;\n"
+        "* **Уровень 2:** детерминированные проверки существуют, но материальные "
+        "доказательства неполны;\n"
+        "* **Уровень 3:** пакет проверен, назначен владелец отката, система готова "
+        "к контрольной волне;\n"
+        "* **Уровень 4:** промышленная эксплуатация наблюдаема, реагирование и "
+        "вывод из эксплуатации отрепетированы.\n\n"
+        "Любой жесткий блокер — неизвестный путь эффекта, несвязанный отпечаток "
+        "подтверждения, межарендаторная запись, прямой доступ к инструменту или "
+        "непроверенное обязательное доказательство — принудительно возвращает "
+        "решение `hold` независимо от суммы баллов. Машиночитаемая рубрика "
+        "находится в "
+        "`docs/companion/examples/readiness-rubric-support-ticket.yaml`."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        readiness_old,
+        readiness_new,
+        "readiness rubric definition list",
+    )
+
+    chapter_fifteen_snapshot_old = (
+        "В 2026 году быстрее всего меняется поверхность инструментов: сервисы "
+        "оценки, модели-судьи, тесты памяти, поведенческие проверки и платформенные "
+        "механизмы онлайн-оценок. Они важны, но не должны диктовать архитектуру "
+        "главы.\n\n"
+        "Более устойчивый слой — сама дисциплина оценки. Офлайн-набор, "
+        "онлайн-сигналы, регрессионный шлюз, контракт проверяющего, трассы, SLO и "
+        "решение о поэтапном выпуске должны образовывать один контур. Команда может "
+        "заменить поставщика оценки или добавить новый бенчмарк, но не должна "
+        "терять ответ на главный вопрос: какое изменение поведения система теперь "
+        "разрешает выпускать дальше, а какое обязана остановить."
+    )
+    chapter_fifteen_snapshot_new = (
+        "Устойчивый слой здесь — дисциплина оценки. Офлайн-набор, онлайн-сигналы, "
+        "регрессионный шлюз, контракт проверяющего, трассы, SLO и решение о "
+        "поэтапном выпуске должны образовывать один контур. Команда может заменить "
+        "поставщика оценки или добавить новый контрольный набор, но не должна "
+        "терять ответ на главный вопрос: какое изменение поведения разрешено "
+        "выпускать дальше, а какое нужно остановить.\n\n"
+        "**Срез практики, июль 2026 года.** Быстрее всего меняются сервисы оценки, "
+        "модели-судьи, тесты памяти, поведенческие проверки и платформенные "
+        "механизмы онлайн-оценок. Эти примеры уточняют практику, но не определяют "
+        "архитектуру главы."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_fifteen_snapshot_old,
+        chapter_fifteen_snapshot_new,
+        "chapter 15 dated snapshot",
+    )
+
+    chapter_twenty_four_snapshot_old = (
+        "В 2026 году быстрее всего меняется поверхность заверения: техники "
+        "соревновательного тестирования, генераторы сценариев, автоматизированные "
+        "каркасы атак, платформенные рекомендации по обнаружению и способы "
+        "приоритизации поведенческих находок. Эти инструменты полезны, но они "
+        "быстро устаревают как конкретные продукты.\n\n"
+        "Более устойчивый слой — рабочий контур заверения. Находка должна получить "
+        "владельца, серьезность, временное сдерживание, регрессионный сценарий, "
+        "обновление обнаружения, проверку исправления и критерий закрытия. Без "
+        "этого соревновательное тестирование остается демонстрацией, а не "
+        "инженерным процессом."
+    )
+    chapter_twenty_four_snapshot_new = (
+        "Устойчивый слой здесь — рабочий контур заверения. Находка должна получить "
+        "владельца, серьезность, временное сдерживание, регрессионный сценарий, "
+        "обновление обнаружения, проверку исправления и критерий закрытия. Без "
+        "этого соревновательное тестирование остается демонстрацией, а не "
+        "инженерным процессом.\n\n"
+        "**Срез практики, июль 2026 года.** Быстрее всего меняются техники "
+        "соревновательного тестирования, генераторы сценариев, автоматизированные "
+        "каркасы атак, платформенные рекомендации по обнаружению и способы "
+        "приоритизации поведенческих находок. Конкретные продукты устаревают "
+        "быстрее, чем сам контур заверения."
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_four_snapshot_old,
+        chapter_twenty_four_snapshot_new,
+        "chapter 24 dated snapshot",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "Обновления Copilot в VS Code за июнь 2026 года (см. источник **S094**) "
+        "показывают, как среда разработки превращается в операторскую консоль для "
+        "нескольких агентных задач.",
+        "**Срез практики, июнь 2026 года.** Обновления Copilot в VS Code (см. "
+        "источник **S094**) показывают, как среда разработки превращается в "
+        "операторскую консоль для нескольких агентных задач.",
+        "chapter 26 dated snapshot",
+    )
+
+    terminology_replacements = (
+        (
+            "юридическую, комплаенс-, аудиторскую или отраслевую консультацию",
+            "юридическую, аудиторскую, отраслевую консультацию или консультацию "
+            "по соблюдению требований",
+        ),
+        ("требования комплаенса", "требования соблюдения норм и политик"),
+        ("для оценок, проверки поэтапного выпуска и постмортема", "для оценок, "
+         "проверки поэтапного выпуска и разбора инцидента"),
+        ("задачу постмортема", "задачу послеинцидентного разбора"),
+        ("разбора инцидента и постмортема", "расследования и разбора инцидента"),
+        ("механического oracle", "детерминированного эталона"),
+        ("новый бенчмарк", "новый контрольный набор"),
+        ("keyed HMAC", "HMAC с управляемым секретным ключом"),
+        ("Мини-кейс:", "Короткий пример:"),
+        ("практического кейса", "практического примера"),
+        ("безопасного для воркера", "безопасного для рабочего агента"),
+        ("делегирование воркерам", "делегирование рабочим агентам"),
+        ("Постоянные воркеры", "Постоянные рабочие агенты"),
+        ("релиз-значимости", "значимости для выпуска"),
+        ("релиз-значимые", "значимые для выпуска"),
+        ("релиз-значимыми", "значимыми для выпуска"),
+        ("Для релизного изменения", "Для изменения, влияющего на выпуск"),
+        ("релизный риск", "риск выпуска"),
+        ("релизного риска", "риска выпуска"),
+        ("релизный шлюз", "выпускной шлюз"),
+        ("релизного шлюза", "выпускного шлюза"),
+        ("паттернами координатора", "координационными подходами"),
+        ("паттернах координатора", "координационных подходах"),
+        ("паттернов координатора", "координационных подходов"),
+        ("паттерны координатора", "координационные подходы"),
+        ("паттерном координатора", "координационным подходом"),
+        ("паттерну координатора", "координационному подходу"),
+        ("паттерне координатора", "координационном подходе"),
+        ("паттерна координатора", "координационного подхода"),
+        ("паттерн координатора", "координационный подход"),
+    )
+    for old, new in terminology_replacements:
+        text = text.replace(old, new)
+
+    inflection_replacements = (
+        (r"\bПаттернами\b", "Подходами"),
+        (r"\bпаттернами\b", "подходами"),
+        (r"\bПаттернах\b", "Подходах"),
+        (r"\bпаттернах\b", "подходах"),
+        (r"\bПаттернов\b", "Подходов"),
+        (r"\bпаттернов\b", "подходов"),
+        (r"\bПаттерны\b", "Подходы"),
+        (r"\bпаттерны\b", "подходы"),
+        (r"\bПаттерном\b", "Подходом"),
+        (r"\bпаттерном\b", "подходом"),
+        (r"\bПаттерну\b", "Подходу"),
+        (r"\bпаттерну\b", "подходу"),
+        (r"\bПаттерне\b", "Подходе"),
+        (r"\bпаттерне\b", "подходе"),
+        (r"\bПаттерна\b", "Подхода"),
+        (r"\bпаттерна\b", "подхода"),
+        (r"\bПаттерн\b", "Подход"),
+        (r"\bпаттерн\b", "подход"),
+        (r"\bрелизами\b", "выпусками"),
+        (r"\bрелизного\b", "выпускного"),
+        (r"\bрелизный\b", "выпускной"),
+        (r"\bрелизов\b", "выпусков"),
+        (r"\bрелизом\b", "выпуском"),
+        (r"\bрелизы\b", "выпуски"),
+        (r"\bрелиза\b", "выпуска"),
+        (r"\bрелизе\b", "выпуске"),
+        (r"\bрелиз\b", "выпуск"),
+        (r"\bкейса\b", "примера"),
+        (r"\bкейс\b", "пример"),
+    )
+    for pattern, replacement in inflection_replacements:
+        text = re.sub(pattern, replacement, text)
+
+    fluency_replacements = (
+        ("Подход координатора означает", "Координационный подход означает"),
+        ("Подход координатора обычно", "Координационный подход обычно"),
+        (
+            "Таксономия подходов рабочих процессов у Anthropic",
+            "Классификация подходов к рабочим процессам у Anthropic",
+        ),
+        (
+            "какой более маленький подход оркестрации",
+            "какой более простой способ оркестрации",
+        ),
+        (
+            "### Антизоопарк-подход начинается с ограничения свободы в правильных местах",
+            "### Ограничение платформенного зоопарка начинается с правильных границ",
+        ),
+        (
+            "`incident_response_trigger`: какие подходы создают расследование",
+            "`incident_response_trigger`: какие сигналы запускают расследование",
+        ),
+        (
+            "Следующий полезный подход Cloudflare",
+            "Еще один полезный подход из практики Cloudflare",
+        ),
+    )
+    for old, new in fluency_replacements:
+        text = text.replace(old, new)
+
+    forbidden = (
+        r"\bрелиз[а-яё-]*\b",
+        r"\bпаттерн[а-яё-]*\b",
+        r"\bкейс[а-яё-]*\b",
+        r"\bворкер[а-яё-]*\b",
+        r"\bпостмортем[а-яё-]*\b",
+        r"\boracle\b",
+        r"\bбенчмарк[а-яё-]*\b",
+        r"\bкомплаенс[а-яё-]*\b",
+        r"\bkeyed HMAC\b",
+    )
+    for pattern in forbidden:
+        if re.search(pattern, text, re.IGNORECASE):
+            raise ValueError(f"Residual reader-facing term after copyedit: {pattern}")
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def _ensure_local_source_entries(
+    text: str,
+    additions: dict[int, tuple[tuple[str, str], ...]],
+) -> str:
+    for number, entries in additions.items():
+        chapter = extract_chapter(text, number)
+        if chapter.count("### Источники главы") != 1:
+            raise ValueError(f"Chapter {number} source section is not unique")
+        body, sources = chapter.split("### Источники главы", 1)
+        for source_id, title in entries:
+            marker = f"* **{source_id}.**"
+            if marker not in sources:
+                sources = sources.rstrip() + f"\n* **{source_id}.** {title}.\n"
+        revised = body + "### Источники главы" + sources.rstrip()
+        text = text.replace(chapter, revised, 1)
+    return text
+
+
+def _move_chapter_twenty_three_scene_to_opening(text: str) -> str:
+    chapter = extract_chapter(text, 23)
+    title_end = chapter.index("\n\n") + 2
+    scene_start = chapter.index("### Утро, когда полезная цель стала опасной")
+    scene_end = chapter.index("### Ошибка и обход контроля — не одно и то же")
+    intro = chapter[title_end:scene_start]
+    scene = chapter[scene_start:scene_end].rstrip()
+
+    intro = intro.replace(
+        "Глава отделяет наблюдаемый опасный результат от гипотезы о намерении "
+        "или внутреннем состоянии модели.\n\n",
+        "",
+        1,
+    )
+    intro = intro.replace(
+        "В 09:07 агент поддержки получает отказ политики на создание заявки и "
+        "через минуту добивается того же внешнего эффекта по устаревшему маршруту. "
+        "Пользователь видит успешный ответ, но трасса показывает смену пути после "
+        "явного ограничения. Эта глава разбирает не намерения модели, а "
+        "проверяемую траекторию, в которой локальная цель начинает конкурировать "
+        "с контролем.\n\n",
+        "",
+        1,
+    )
+    revised = (
+        chapter[:title_end]
+        + "Утро начинается с обычной задачи поддержки, но заканчивается "
+        "наблюдаемым обходом контроля.\n\n"
+        + scene
+        + "\n\n"
+        + intro.strip()
+        + "\n\n"
+        + chapter[scene_end:]
+    )
+    return text.replace(chapter, revised.rstrip(), 1)
+
+
+def _split_bibliography_by_use(text: str) -> str:
+    appendix_start = text.index(
+        "## Приложение 4\\. Источники и дополнительные онлайн-материалы"
+    )
+    appendix_end = text.index("## Приложение 5\\.", appendix_start)
+    catalog_start = text.index(
+        "### Нормативные рамки и контуры управления",
+        appendix_start,
+        appendix_end,
+    )
+    catalog_end = text.index("### Как использовать этот список", catalog_start, appendix_end)
+    source_pattern = re.compile(r"^\* \*\*(S\d{3})\.\*\* .+$", re.MULTILINE)
+    source_lines = {
+        match.group(1): match.group(0)
+        for match in source_pattern.finditer(text[catalog_start:catalog_end])
+    }
+    expected_ids = {f"S{number:03d}" for number in range(1, 110)}
+    if set(source_lines) != expected_ids:
+        missing = sorted(expected_ids - set(source_lines))
+        unexpected = sorted(set(source_lines) - expected_ids)
+        raise ValueError(
+            f"Bibliography source set changed; missing={missing}, unexpected={unexpected}"
+        )
+
+    used_ids = set(re.findall(r"\bS\d{3}\b", text[:appendix_start]))
+    if not used_ids <= expected_ids:
+        raise ValueError(f"Unknown cited source identifiers: {sorted(used_ids - expected_ids)}")
+
+    groups = (
+        ("Нормативные рамки и безопасность", range(1, 15)),
+        ("Основные архитектурные руководства", range(15, 22)),
+        ("Протоколы и программные каркасы", range(22, 32)),
+        ("Графовые среды и память", range(32, 36)),
+        ("Облачные платформы и долговечное исполнение", range(36, 52)),
+        ("Облачные агенты разработки", range(52, 55)),
+        ("Наблюдаемость, оценки и проектирование проверяющих", range(55, 66)),
+        ("HCI, HITL и человеческий надзор", range(66, 71)),
+        ("Управление и заверение", range(71, 78)),
+        ("Исследования автономии и красные команды", range(78, 85)),
+        ("Промышленное управление и реестры", range(85, 89)),
+        ("Наблюдение за отклонениями и автономией", range(89, 95)),
+        ("Инциденты и сценарии", range(95, 96)),
+        (
+            "Исследовательский фронтир: память, наблюдаемость и надежность "
+            "многоагентных систем",
+            range(96, 105),
+        ),
+        ("Дополнения платформенной практики", range(105, 109)),
+        ("Первичный материал практического примера", range(109, 110)),
+    )
+
+    def render_grouped(ids: set[str]) -> str:
+        blocks: list[str] = []
+        for title, numbers in groups:
+            group_ids = [
+                f"S{number:03d}"
+                for number in numbers
+                if f"S{number:03d}" in ids
+            ]
+            if not group_ids:
+                continue
+            lines = [f"#### {title}", ""]
+            for index, source_id in enumerate(group_ids):
+                if index and index % 10 == 0:
+                    lines.append("")
+                lines.append(source_lines[source_id])
+            blocks.append("\n".join(lines))
+        return "\n\n".join(blocks)
+
+    cited = render_grouped(used_ids)
+    further = render_grouped(expected_ids - used_ids)
+    replacement = (
+        "### Цитируемые источники\n\n"
+        "Эти материалы связаны с утверждениями основного текста через "
+        "идентификаторы `Sxxx` и локальные списки источников глав.\n\n"
+        f"{cited}\n\n"
+        "### Дополнительное чтение\n\n"
+        "Материалы ниже расширяют тему, но не являются опорой для конкретного "
+        "утверждения текущей редакции. Их стоит использовать для углубления и "
+        "проверять заново перед следующим изданием.\n\n"
+        f"{further}\n\n"
+    )
+    return text[:catalog_start] + replacement + text[catalog_end:]
+
+
+def apply_technical_book_polish_2026_07_27(text: str) -> str:
+    """Apply source, chapter-boundary, rhythm, and reference-apparatus fixes."""
+
+    chapter_two_frame = """Ниже самая полезная короткая рамка для старта. Она дана как набор самостоятельных подпунктов, а не как плотная таблица: так рамка сохраняет смысл в печати, текстовом извлечении и поисковом указателе.
+
+**Печатная рамка выбора.**
+
+Начинать лучше с наименее динамичной формы, которая безопасно решает задачу. Эта рамка намеренно дана без таблицы: при экспорте в PDF, печать или поисковый индекс читатель должен увидеть не сетку, а ясное правило выбора.
+
+**Рабочий процесс.**
+
+Выбирайте его, если путь почти всегда известен заранее, условия переходов легко описать, а главная ценность в повторяемости. Его дешевле сопровождать, проще тестировать и легче объяснять.
+
+**Одиночный агентный цикл.**
+
+Выбирайте его, если системе нужен ограниченный выбор инструмента или следующего шага внутри узкого контура. Он дает гибкость без раннего взрыва сложности, но все еще остается понятным для владельца системы.
+
+**Многоагентная схема.**
+
+Переходите к ней только тогда, когда есть независимые подзадачи, разные контексты и разные владельцы результата. Такая схема полезна не потому, что выглядит современно, а потому что разделяет ответственность там, где это разделение действительно нужно.
+
+Печатная схема выбора, если ее нужно вынести на одну страницу:
+
+1. Если путь известен, выберите рабочий процесс.
+2. Если нужен ограниченный выбор следующего шага, выберите одиночный агентный цикл.
+3. Если подзадачи независимы и у них разные владельцы, только тогда выбирайте многоагентную схему.
+
+Текстовая формула выбора: известный путь означает рабочий процесс; ограниченный выбор следующего шага означает одиночный агентный цикл; независимые подзадачи с разными владельцами означают многоагентную схему только после доказанной необходимости."""
+    chapter_two_replacement = """Таблица выше задает исходный выбор, а переход к более сложной форме требует отдельного доказательства. Известный путь остается рабочим процессом. Ограниченный выбор следующего шага оправдывает одиночный агентный цикл. Многоагентная схема появляется только тогда, когда независимые подзадачи действительно требуют разных контекстов, полномочий или владельцев.
+
+Проверьте правило на агенте поддержки. Проверка статуса и создание заявки образуют известную последовательность, пока маршрутизация однозначна. Ограниченный агентный выбор нужен лишь при неоднозначном обращении; отдельные агенты имеют смысл только при доказанном разделении ответственности, а не ради самой оркестрации."""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_two_frame,
+        chapter_two_replacement,
+        "chapter 2 production frame",
+    )
+
+    chapter_fifteen_meta = """Как читать эту главу. Держите в фокусе не набор чисел и не отдельный тест, а решение о выпуске. Глава показывает, как оценочный набор, контракт проверяющего, регрессионный шлюз и шлюз поэтапного выпуска складываются в проверяемый договор между командой и системой. Такой договор должен помещаться на странице выпускного решения и оставаться понятным участникам проверки.
+
+Ориентир главы — критерий, по которому команда решает, когда продолжить выпуск, когда остановиться и когда разобрать расхождение между автоматическим вердиктом и человеческой проверкой."""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_fifteen_meta,
+        "Читайте главу через одно выпускное решение: оценочный набор, контракт "
+        "проверяющего и регрессионный шлюз должны вместе объяснять, когда "
+        "продолжить выпуск, когда остановиться и когда передать расхождение "
+        "человеку.",
+        "chapter 15 meta opening",
+    )
+
+    chapter_seventeen_supported_path = """**Платформа должна давать поддерживаемые стандартные пути, а не набор низкоуровневых деталей.**
+
+Если платформенная команда поставляет только «конструктор из запчастей», продуктовые команды все равно начнут собирать системы по-разному.
+
+Поддерживаемый стандартный путь обычно начинается с базового шаблона среды исполнения и готовых точек подключения политик. К нему должны быть заранее привязаны стандартная трассировка, оценочные сценарии, утвержденный шлюз инструментов, рекомендации по памяти и настройки поэтапного выпуска. Тогда продуктовая команда не собирает безопасность из отдельных деталей, а получает рабочий маршрут, где правильное поведение уже является вариантом по умолчанию.
+
+То есть хороший платформенный продукт помогает не только «мочь», но и «делать правильно по умолчанию».
+
+"""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_seventeen_supported_path,
+        "",
+        "chapter 17 supported path overlap",
+    )
+
+    chapter_seventeen_inventory = """**Инвентарь платформы тоже должен иметь владельца.**
+
+Полезная мысль из Google здесь в том, что управление не заканчивается каркасом политик. У платформы должен быть еще и явный инвентарь того, чем организация вообще пользуется.
+
+Минимально полезный инвентарь показывает, какие агентные среды исполнения существуют, какие возможности разрешены, какие шлюзы считаются утвержденными, какие соединители и секреты используются, какие отклонения активны и кто владелец каждого объекта.
+
+Если такого инвентаря нет, платформа почти неизбежно начинает жить в режиме слухов: кажется, что «все под контролем», пока не случается инцидент и не выясняется, что никто не знает, какие именно агенты и инструменты вообще работают в промышленной среде.
+
+**Не все отклонения от платформы нужно запрещать, но их нужно делать осознанными.**
+
+Иногда продуктовой команде правда нужен особый случай: нестандартный рабочий процесс, отдельная возможность, другой баланс задержки и стоимости или экспериментальный поэтапный выпуск. Это нормально. Зрелая платформа отличается от хаоса не запретом на исключения, а тем, что каждое отклонение видно, обсуждено, ограничено по радиусу воздействия, имеет владельца и не становится тихим новым стандартом.
+
+"""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_seventeen_inventory,
+        "Инвентарь, реестр и исключения также требуют владельцев, но их "
+        "механика относится к следующим двум главам. Здесь достаточно закрепить "
+        "интерфейс решения: кто предлагает отклонение, кто принимает риск, кто "
+        "дежурит и кто обязан вернуть систему в поддерживаемую границу.\n\n",
+        "chapter 17 inventory and deviations overlap",
+    )
+
+    chapter_seventeen_registry = """**Утвержденный реестр полезен не меньше, чем схема политики.**
+
+Очень часто команды хорошо обсуждают политику, но почти не обсуждают реестр. А именно реестр отвечает на вопрос:
+
+* что вообще считается утвержденным платформой;
+* что можно запускать без дополнительной проверки;
+* что находится в зоне исключений;
+* что уже должно быть выведено из эксплуатации.
+
+Простой пример:
+
+```yaml
+registry:
+  approved_runtimes:
+    - agent_runtime_v3
+    - workflow_runtime_v2
+  approved_gateways:
+    - shared_tool_gateway
+    - approval_gateway
+  deprecated_patterns:
+    - direct_prod_tool_access
+    - local_policy_engine_without_audit
+```
+
+Такой реестр не заменяет управление. Он делает управление исполнимым.
+
+"""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_seventeen_registry,
+        "",
+        "chapter 17 registry overlap",
+    )
+
+    text = _replace_editorial_anchor(
+        text,
+        "**Реестр утвержденных шаблонов нужен не только для контроля, но и для скорости.**",
+        "**Каталог поддерживаемых шаблонов нужен не только для контроля, но и для скорости.**",
+        "chapter 18 registry heading",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "Когда у платформы есть живой список утвержденных шаблонов, продуктовым "
+        "командам проще отвечать на два самых частых вопроса:",
+        "Когда у платформы есть живой каталог поддерживаемых шаблонов, "
+        "продуктовым командам проще отвечать на два самых частых вопроса:",
+        "chapter 18 template catalogue",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "В хороший реестр входят поддерживаемые шаблоны среды исполнения, "
+        "утвержденные шлюзы, классы возможностей, разрешенные шаблоны соединителей "
+        "и устаревшие локальные обходы.",
+        "Каталог описывает поддерживаемые шаблоны среды исполнения, обязательные "
+        "шлюзы, классы возможностей и разрешенные точки расширения. Фактические "
+        "экземпляры агентов и расхождения с этим каталогом относятся к реестру "
+        "главы 19.",
+        "chapter 18 catalogue boundary",
+    )
+
+    chapter_eighteen_registry_retirement = """**Реестр и политика вывода из эксплуатации должны жить вместе.**
+
+Слабый подход выглядит так: у платформы есть «рекомендованные пути», но нет формального списка того, что уже нельзя считать нормой.
+
+Гораздо взрослее работает связка:
+
+* утвержденный реестр;
+* видимые отклонения;
+* окна вывода из эксплуатации;
+* путь проверки для исключений.
+
+Именно она не дает антизоопарк-работе превратиться в бесконечную просьбу «ну пожалуйста, используйте стандартный путь».
+"""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eighteen_registry_retirement,
+        """**Исключение должно иметь срок возврата к стандартному пути.**
+
+Слабый подход публикует рекомендации, но бессрочно терпит локальные обходы. Управляемое исключение называет владельца, компенсирующий контроль, срок действия и условие закрытия. Фактическое состояние таких исключений сверяет реестр главы 19, а здесь важен контракт возврата.""",
+        "chapter 18 registry retirement overlap",
+    )
+
+    chapter_eighteen_inventory_drift = """**Дрейф инвентаря сам по себе полезно считать.**
+
+Отдельно полезно смотреть на дрейф в инвентаре платформы:
+
+* сколько сред исполнения не зарегистрировано;
+* сколько активных агентов живут вне утвержденных шаблонов;
+* сколько соединителей не имеют владельца;
+* сколько отклонений висят за пределами окна проверки.
+
+Если эти числа растут, антизоопарк-стратегия формально существует, но на практике уже проигрывает.
+"""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eighteen_inventory_drift,
+        "Стандартный путь считается работающим только пока наблюдаемое исполнение "
+        "ему соответствует. Глава 19 введет запись реестра и отчет расхождений, "
+        "которые измеряют этот дрейф без повторного определения платформенного "
+        "шаблона.",
+        "chapter 18 inventory drift overlap",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "platform_defaults:\n"
+        "  required:\n",
+        "platform_defaults:\n"
+        "  supported_runtimes:\n"
+        "    - workflow_runtime_v2\n"
+        "    - agent_runtime_v3\n"
+        "  required:\n",
+        "chapter 18 supported runtime identifiers",
+    )
+
+    text = text.replace(
+        "Глава 18 покажет, как закрепить эту ответственность в поддерживаемом "
+        "стандартном пути.",
+        "Глава 18 покажет, как владельцы получают поддерживаемый путь, общие "
+        "шлюзы и управляемую процедуру исключения.",
+        1,
+    )
+    text = text.replace(
+        "Глава 19 введет реестр, который отличает одобренных агентов от фактически "
+        "обнаруженных сущностей.",
+        "Глава 19 превратит наблюдаемые отклонения в сверяемую запись реестра и "
+        "отчет расхождений.",
+        1,
+    )
+
+    text = _move_chapter_twenty_three_scene_to_opening(text)
+
+    chapter_twenty_four_opening = """Устойчивый слой здесь — рабочий контур заверения. Находка должна получить владельца, серьезность, временное сдерживание, регрессионный сценарий, обновление обнаружения, проверку исправления и критерий закрытия. Без этого соревновательное тестирование остается демонстрацией, а не инженерным процессом."""
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_four_opening,
+        "Устойчивый слой здесь — рабочий контур заверения: находка должна "
+        "получить владельца, серьезность, временное сдерживание, регрессионный "
+        "сценарий и критерий закрытия. Без этого соревновательное тестирование "
+        "остается демонстрацией.",
+        "chapter 24 assurance opening",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "Глава проводит один сигнал риска через владельца, временную меру, "
+        "исправление и условие закрытия. Так план заверения становится рабочим "
+        "контуром, а не перечнем атак. Построение оценочных наборов, происхождение "
+        "артефактов и проектирование телеметрии остаются в соседних главах.\n\n"
+        "Продолжение сквозного сценария: повторный дубль заявки поддержки "
+        "становится находкой с владельцем и временным сдерживанием.",
+        "Повторный дубль заявки поддержки теперь проходит путь от сигнала до "
+        "находки, временного сдерживания, исправления и проверяемого закрытия.",
+        "chapter 24 duplicate framing",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        "Я бы определял контур заверения так:\n\n"
+        "это постоянный рабочий контур, который помогает не только выпускать "
+        "изменения, но и системно искать слабые места, замечать новые угрозы, "
+        "расследовать проблемы и закрывать их.",
+        "Контур заверения — это постоянный рабочий контур поиска слабых мест, "
+        "обнаружения новых угроз, расследования и проверяемого закрытия находок. "
+        "Он продолжается после выпуска и возвращает результаты в проектирование.",
+        "chapter 24 first-person definition",
+    )
+
+    text = text.replace(
+        "Для промышленной агентной системы я бы рекомендовал минимум такие стадии:",
+        "Для промышленной агентной системы необходимы как минимум такие стадии:",
+        1,
+    )
+    text = text.replace("ревью выпуска", "проверкой выпуска")
+
+    repeated_request = (
+        "\\> Я уже третий день жду активации доступа. Проверьте статус и создайте "
+        "срочную заявку, если заявка застряла."
+    )
+    if text.count(repeated_request) != 4:
+        raise ValueError("Expected four repeated support-ticket requests")
+    text = text.replace(
+        "Пользователь пишет:\n\n" + repeated_request,
+        "Вернемся к знакомому запросу из первых глав: пользователь просит "
+        "проверить статус доступа и создать срочную заявку, только если обращение "
+        "действительно застряло.",
+        1,
+    )
+    text = text.replace(
+        "Пользователь пишет:\n\n" + repeated_request,
+        "Расследование начинается с уже знакомого запроса о статусе доступа и "
+        "срочной заявке. На этот раз важен не текст запроса, а два одинаковых "
+        "внешних эффекта после одного пользовательского намерения.",
+        1,
+    )
+
+    snapshot_replacements = (
+        (
+            "**Срез практики, июль 2026 года.** Быстрее всего меняются сервисы "
+            "оценки, модели-судьи, тесты памяти, поведенческие проверки и "
+            "платформенные механизмы онлайн-оценок. Эти примеры уточняют практику, "
+            "но не определяют архитектуру главы.",
+            "> **Срез практики. Июль 2026 года.** Быстрее всего меняются сервисы "
+            "оценки, модели-судьи, тесты памяти, поведенческие проверки и "
+            "платформенные механизмы онлайн-оценок.\n>\n"
+            "> **Граница переносимости.** Конкретные сервисы уточняют практику, "
+            "но архитектуру определяет связь оценок с доказательствами и решением "
+            "о выпуске.",
+        ),
+        (
+            "**Срез практики, июль 2026 года.** Быстрее всего меняются техники "
+            "соревновательного тестирования, генераторы сценариев, "
+            "автоматизированные каркасы атак, платформенные рекомендации по "
+            "обнаружению и способы приоритизации поведенческих находок. Конкретные "
+            "продукты устаревают быстрее, чем сам контур заверения.",
+            "> **Срез практики. Июль 2026 года.** Быстрее всего меняются техники "
+            "соревновательного тестирования, генераторы сценариев, "
+            "автоматизированные каркасы атак и способы приоритизации находок.\n>\n"
+            "> **Граница переносимости.** Конкретные продукты устаревают быстрее, "
+            "чем жизненный цикл находки, сдерживания, исправления и закрытия.",
+        ),
+        (
+            "**Срез практики, июнь 2026 года.** Обновления Copilot в VS Code (см. "
+            "источник **S094**) показывают, как среда разработки превращается в "
+            "операторскую консоль для нескольких агентных задач. В ней появляются "
+            "параллельные сессии, несколько обсуждений внутри одной сессии, "
+            "проверка через встроенный браузер, видимость стоимости, выбор модели "
+            "и поставщика, синхронизация истории и обратная связь по изменениям.",
+            "> **Срез практики. Июнь 2026 года.** Обновления Copilot в VS Code "
+            "(см. источник **S094**) показывают среду разработки как операторскую "
+            "консоль для нескольких агентных задач: параллельные сессии, проверку "
+            "через браузер, видимость стоимости и синхронизацию истории.\n>\n"
+            "> **Граница переносимости.** Интерфейс продукта изменится; устойчивым "
+            "остается требование разделять состояние задач, стоимость, проверку и "
+            "операторскую ответственность.",
+        ),
+    )
+    for old, new in snapshot_replacements:
+        text = _replace_editorial_anchor(text, old, new, "dated practice callout")
+
+    source_additions = {
+        2: (
+            ("S020", "Anthropic, How we built our multi-agent research system"),
+            ("S021", "OpenAI, A Practical Guide to Building Agents"),
+        ),
+        3: (
+            ("S020", "Anthropic, How we built our multi-agent research system"),
+            ("S038", "Google Cloud, Vertex AI Agent Builder overview"),
+        ),
+        4: (
+            ("S021", "OpenAI, A Practical Guide to Building Agents"),
+            ("S038", "Google Cloud, Vertex AI Agent Builder overview"),
+            ("S071", "Google Cloud, How Google secures AI Agents"),
+        ),
+        5: (
+            ("S016", "Anthropic, Building Effective AI Agents"),
+            ("S058", "OpenAI, Using tools"),
+            ("S059", "OpenAI, Structured model outputs"),
+            ("S068", "LangGraph, Interrupts"),
+        ),
+        6: (("S047", "Cloudflare Agents SDK, Human in the Loop"),),
+        7: (
+            ("S037", "Google Cloud, More ways to build, scale, and govern AI agents"),
+            ("S038", "Google Cloud, Vertex AI Agent Builder overview"),
+        ),
+        8: (("S045", "Cloudflare Agents SDK, Store and sync state"),),
+        10: (("S021", "OpenAI, A Practical Guide to Building Agents"),),
+        11: (
+            ("S023", "OpenAI Agents SDK, Sandbox Agents"),
+            ("S024", "OpenAI Agents SDK, Sandbox Concepts"),
+            ("S051", "Cloudflare, Remote MCP servers"),
+            ("S073", "Google Cloud, Introducing Agent Sandbox"),
+        ),
+        12: (
+            ("S021", "OpenAI, A Practical Guide to Building Agents"),
+            ("S049", "Cloudflare Agents SDK, Workflows"),
+        ),
+        14: (("S020", "Anthropic, How we built our multi-agent research system"),),
+        15: (
+            ("S020", "Anthropic, How we built our multi-agent research system"),
+            ("S037", "Google Cloud, More ways to build, scale, and govern AI agents"),
+            ("S063", "Microsoft Foundry, Open Trust Stack for AI agents"),
+        ),
+        16: (("S091", "Anthropic, Responsible Scaling Policy 3.4"),),
+        19: (
+            ("S011", "NIST, SP 800-53 Rev. 5"),
+            ("S087", "Microsoft Learn, Complete production infrastructure inventory"),
+        ),
+        20: (
+            ("S010", "NIST, AI RMF: Generative AI Profile"),
+            ("S011", "NIST, SP 800-53 Rev. 5"),
+            ("S012", "NIST, SP 800-218A"),
+            ("S016", "Anthropic, Building Effective AI Agents"),
+            ("S021", "OpenAI, A Practical Guide to Building Agents"),
+            ("S074", "Google Research, Security Assurance in the Age of Generative AI"),
+            ("S075", "Google Research, Securing the AI Software Supply Chain"),
+        ),
+        21: (
+            ("S017", "Anthropic, Harness design for long-running application development"),
+            ("S075", "Google Research, Securing the AI Software Supply Chain"),
+        ),
+        22: (
+            ("S060", "Microsoft Learn, Observability for Generative AI systems"),
+            ("S087", "Microsoft Learn, Complete production infrastructure inventory"),
+        ),
+        23: (
+            ("S076", "Google Research, An Introduction to Google's Approach for Secure AI Agents"),
+            ("S085", "Microsoft Learn, Secure autonomous agentic AI systems"),
+            ("S086", "Microsoft Learn, Reduce autonomous agentic AI risk"),
+        ),
+        24: (("S080", "Anthropic, Redeploying Fable 5"),),
+        26: (
+            ("S016", "Anthropic, Building Effective AI Agents"),
+            ("S023", "OpenAI Agents SDK, Sandbox Agents"),
+            ("S024", "OpenAI Agents SDK, Sandbox Concepts"),
+            ("S033", "LangGraph, Persistence"),
+            ("S045", "Cloudflare Agents SDK, Store and sync state"),
+            ("S046", "Cloudflare Agents SDK, Schedule tasks"),
+            ("S048", "Cloudflare Agents SDK, WebSockets"),
+            ("S049", "Cloudflare Agents SDK, Workflows"),
+            ("S057", "OpenAI, Background mode"),
+        ),
+        27: (("S043", "AWS, Policy and Lambda interceptors in AgentCore Gateway"),),
+        28: (
+            ("S016", "Anthropic, Building Effective AI Agents"),
+            ("S040", "Google Cloud, 20 questions for the Agentic Enterprise"),
+            ("S109", "Civil Resolution Tribunal, Moffatt v. Air Canada"),
+        ),
+    }
+    text = _ensure_local_source_entries(text, source_additions)
+
+    citation_replacements = (
+        (
+            "Практическое руководство OpenAI хорошо фиксирует полезную мысль:",
+            "Практическое руководство OpenAI (см. источник **S021**) фиксирует "
+            "полезную мысль:",
+        ),
+        (
+            "Практическое руководство OpenAI полезно здесь тем, что рекомендует",
+            "Практическое руководство OpenAI (см. источник **S021**) полезно "
+            "здесь тем, что рекомендует",
+        ),
+        (
+            "Разбор Anthropic про многоагентную исследовательскую систему полезен",
+            "Разбор Anthropic про многоагентную исследовательскую систему (см. "
+            "источник **S020**) полезен",
+        ),
+        (
+            "Практическое руководство OpenAI хорошо попадает в реальность:",
+            "Практическое руководство OpenAI (см. источник **S021**) хорошо "
+            "попадает в реальность:",
+        ),
+        (
+            "Полезная мысль из Google очень проста:",
+            "Материалы Google (см. источники **S071**, **S038**) подчеркивают:",
+        ),
+        (
+            "Свежие материалы OpenAI по инструментам полезны тем, что",
+            "Материал OpenAI по инструментам (см. источник **S058**) полезен тем, "
+            "что",
+        ),
+        (
+            "Модель прерываний в LangGraph полезна именно этим:",
+            "Модель прерываний в LangGraph (см. источник **S068**) полезна именно "
+            "этим:",
+        ),
+        (
+            "Свежий материал OpenAI по структурированным ответам полезен и для "
+            "слоя политик.",
+            "Материал OpenAI по структурированным ответам (см. источник "
+            "**S059**) полезен и для слоя политик.",
+        ),
+        (
+            "Материал Cloudflare смещает акцент",
+            "Материал Cloudflare (см. источник **S051**) смещает акцент",
+        ),
+        (
+            "Еще одна полезная мысль из Google: для рискованных возможностей",
+            "Материал Google об Agent Sandbox (см. источник **S073**) показывает: "
+            "для рискованных возможностей",
+        ),
+        (
+            "Свежие документы OpenAI о песочницах для агентов добавляют",
+            "Документы OpenAI о песочницах для агентов (см. источники **S023**, "
+            "**S024**) добавляют",
+        ),
+        (
+            "Cloudflare Agents SDK полезно разделяет работу",
+            "Cloudflare Agents SDK (см. источник **S049**) разделяет работу",
+        ),
+        (
+            "Еще один практический совет из гайда OpenAI",
+            "Еще один практический совет из руководства OpenAI (см. источник "
+            "**S021**)",
+        ),
+        (
+            "Практический урок Anthropic про многоагентную исследовательскую "
+            "систему здесь очень прямой:",
+            "Практический урок Anthropic про многоагентную исследовательскую "
+            "систему (см. источник **S020**) здесь прямой:",
+        ),
+        (
+            "Свежие материалы Google хорошо подсвечивают еще один практический "
+            "слой:",
+            "Материалы Google (см. источник **S037**) подчеркивают еще один "
+            "практический слой:",
+        ),
+        (
+            "Microsoft прямо связывает это с состоянием безопасности:",
+            "Microsoft (см. источник **S087**) связывает это с состоянием "
+            "безопасности:",
+        ),
+        (
+            "Та же базовая дисциплина хорошо совпадает с NIST SP 800-53:",
+            "Та же дисциплина согласуется с NIST SP 800-53 (см. источник "
+            "**S011**):",
+        ),
+        (
+            "Google Research очень хорошо формулирует здесь главную мысль:",
+            "Google Research (см. источник **S074**) формулирует главную мысль:",
+        ),
+        (
+            "В материале Anthropic о повторном развертывании Fable 5",
+            "В материале Anthropic о повторном развертывании Fable 5 (см. "
+            "источник **S080**)",
+        ),
+        (
+            "Свежий материал OpenAI полезен тем, что рассматривает фоновое "
+            "исполнение",
+            "Материал OpenAI о фоновом режиме (см. источник **S057**) "
+            "рассматривает фоновое исполнение",
+        ),
+        (
+            "Механизм сохранения состояния LangGraph показывает тот же принцип",
+            "Механизм сохранения состояния LangGraph (см. источник **S033**) "
+            "показывает тот же принцип",
+        ),
+        (
+            "У Sandbox Agents в OpenAI Agents SDK есть полезное разделение",
+            "Sandbox Agents в OpenAI Agents SDK (см. источники **S023**, "
+            "**S024**) задают полезное разделение",
+        ),
+        (
+            "Подход, представленный в AWS AgentCore Gateway, разделяет",
+            "Подход AWS AgentCore Gateway (см. источник **S043**) разделяет",
+        ),
+        (
+            "Проверочный список Google Cloud «20 questions for the Agentic "
+            "Enterprise» полезно читать",
+            "Проверочный список Google Cloud «20 questions for the Agentic "
+            "Enterprise» (см. источник **S040**) полезно читать",
+        ),
+    )
+    for old, new in citation_replacements:
+        text = _replace_editorial_anchor(text, old, new, "named source attribution")
+    text = _replace_editorial_anchor(
+        text,
+        "Документы OpenAI о песочницах для агентов (см. источники **S023**, "
+        "**S024**) добавляют к этой картине полезную практическую форму: "
+        "песочницу стоит описывать не только словами «контейнер» или "
+        "«изолированная среда», а через явный манифест, возможности, разрешения, "
+        "записи рабочей области, снимок состояния и состояние сессии.",
+        "Документы OpenAI о песочницах (см. источники **S023**, **S024**) "
+        "предлагают явный контракт: манифест, возможности, разрешения, рабочую "
+        "область, снимок и состояние сессии.",
+        "chapter 11 source addition density",
+    )
+
+    glossary_terms = """### Контракт проверяющего
+
+Версионируемое описание того, какие входные доказательства использует проверяющий, какие аспекты процесса и результата оценивает, как объясняет вердикт и какие ошибки проверки блокируют выпуск.
+
+Читать дальше:
+
+* Глава 15\\. Офлайн- и онлайн-оценки и регрессионные шлюзы
+* Глава 16\\. Сквозная цепочка доказательств: от запроса к поэтапному выпуску
+
+### Манифест доказательств
+
+Машиночитаемая опись артефактов одного решения: идентификаторы, пути, контрольные суммы, происхождение, связи и наблюдаемые вердикты. Манифест доказывает целостность пакета, но сам по себе не заменяет доверенную аттестацию.
+
+Читать дальше:
+
+* Глава 16\\. Сквозная цепочка доказательств: от запроса к поэтапному выпуску
+* Итоговый проект
+
+### Общий шлюз ИИ
+
+Платформенная точка маршрутизации запросов к моделям и поставщикам, где единообразно применяются политика, защита чувствительных данных, ограничения частоты, кэширование, резервный маршрут, наблюдаемость и отнесение стоимости.
+
+Читать дальше:
+
+* Глава 13\\. Трассы, спаны и структурированные события
+* Глава 18\\. Поддерживаемые стандартные пути, общие шлюзы и борьба с агентным зоопарком
+
+### Контрольная волна
+
+Первая ограниченная волна промышленного трафика с жесткими блокерами, известным радиусом воздействия, владельцем отката и заранее определенными условиями расширения или остановки.
+
+Читать дальше:
+
+* Глава 16\\. Сквозная цепочка доказательств: от запроса к поэтапному выпуску
+* Глава 28\\. Проверочный список промышленного запуска
+
+### Сессия возможности
+
+Жизненный цикл подключения к возможности с состоянием: идентичность, срок действия, область полномочий, правила паузы, возобновления, повторной инициализации и отзыва. Сессия не должна расширять право на действие после потери контекста.
+
+Читать дальше:
+
+* Глава 5\\. Идентичность, сессия, слой политик и модель возможностей
+* Глава 11\\. Песочница выполнения и MCP как интеграционный контракт
+
+### Сверка внешнего эффекта
+
+Проверка фактического состояния во внешней системе после неоднозначного исхода записи. Сверка отвечает, произошел ли эффект, и предшествует любому повтору, компенсации или ручному решению.
+
+Читать дальше:
+
+* Глава 12\\. Идемпотентность, повторы, лимиты и границы отката
+* Глава 13\\. Трассы, спаны и структурированные события
+
+"""
+    text = _replace_editorial_anchor(
+        text,
+        "## Приложение 2\\. Проверочные списки",
+        glossary_terms + "## Приложение 2\\. Проверочные списки",
+        "glossary additions",
+    )
+
+    text = _split_bibliography_by_use(text)
+    text = re.sub(
+        r"(?m)^\* (\*\*S\d{3}\.\*\* .+)$",
+        r"\1",
+        text,
+    )
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
 def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = source.read_text(encoding="utf-8")
     text = replace_front_matter_and_introduction(text)
@@ -9773,6 +12333,10 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_submission_readiness_pass_2026_07_22(text)
     text = apply_online_gateway_discovery_pass_2026_07_22(text)
     text = apply_final_publisher_copyedit_2026_07_22(text)
+    text = apply_post_audit_consistency_pass_2026_07_23(text)
+    text = apply_world_class_technical_edit_2026_07_23(text)
+    text = apply_final_reader_copyedit_2026_07_23(text)
+    text = apply_technical_book_polish_2026_07_27(text)
     text = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
 
     output.parent.mkdir(parents=True, exist_ok=True)

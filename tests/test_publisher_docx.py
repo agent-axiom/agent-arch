@@ -18,14 +18,14 @@ RAW_EDITORIAL_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-google-doc-developmental-edit-2026-07-20.docx"
+        "agent-arch-ru-google-doc-final-reader-copyedit-2026-07-23.docx"
     )
 )
 EDITORIAL_TEMPLATE_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-developmental-edit-2026-07-20.docx"
+        "agent-arch-ru-template2000n-final-reader-copyedit-2026-07-23.docx"
     )
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
@@ -138,6 +138,71 @@ document.save(sys.argv[2])
         )
         if re.match(r"^(?:Рисунок 3|Таблица 4|Листинг 12)\.", value):
             assert paragraph.find(f"{{{WORD_NS}}}hyperlink") is None
+
+
+def test_editorial_renderer_formats_sources_as_breakable_hanging_paragraphs(
+    tmp_path: Path,
+) -> None:
+    runtime_python = Path(
+        os.environ.get(
+            "CODEX_DOCUMENT_PYTHON",
+            Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        )
+    )
+    if not runtime_python.is_file():
+        pytest.skip("bundled document runtime is unavailable")
+
+    output = tmp_path / "source-paragraph.docx"
+    script = r'''
+import sys
+from pathlib import Path
+from docx import Document
+from lxml import html
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import build_ru_editorial_docx
+
+document = Document()
+root = html.fragment_fromstring(
+    """
+    <h3>Источники главы</h3>
+    <p><strong>S001.</strong> OWASP, AI Agent Security Cheat Sheet.</p>
+    <p><strong>S002.</strong> NIST, AI RMF 1.0.</p>
+    """,
+    create_parent="div",
+)
+renderer = build_ru_editorial_docx.DocxRenderer(
+    document,
+    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+)
+renderer.render(root)
+document.save(sys.argv[2])
+'''
+    subprocess.run(
+        [str(runtime_python), "-c", script, str(ROOT), str(output)],
+        cwd=ROOT,
+        check=True,
+    )
+
+    with ZipFile(output) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    source_paragraphs = []
+    for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+        value = "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        )
+        if re.match(r"^S\d{3}\.", value):
+            source_paragraphs.append(paragraph)
+
+    assert len(source_paragraphs) == 2
+    for paragraph in source_paragraphs:
+        indent = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}ind")
+        assert indent is not None
+        assert int(indent.attrib[f"{{{WORD_NS}}}left"]) > 0
+        assert int(indent.attrib[f"{{{WORD_NS}}}hanging"]) > 0
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
 
 
 def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
@@ -298,7 +363,7 @@ def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
         assert core.findtext(f"{{{DC_NS}}}language") == "ru-RU"
         assert core.findtext(f"{{{DC_NS}}}subject")
         assert core.findtext(f"{{{CP_NS}}}keywords")
-        assert len(re.findall(r"^Таблица \d+\. .+$", document_text, re.MULTILINE)) == 9
+        assert len(re.findall(r"^Таблица \d+\. .+$", document_text, re.MULTILINE)) == 10
 
 
 def test_editorial_heading_styles_define_pdf_outline_levels() -> None:
@@ -360,7 +425,7 @@ def test_template2000n_table_captions_use_caption_style_and_stay_with_tables() -
         if re.fullmatch(r"Таблица \d+\. .+", value):
             captions.append(paragraph)
 
-    assert len(captions) == 9
+    assert len(captions) == 10
     for paragraph in captions:
         properties = paragraph.find(f"{{{WORD_NS}}}pPr")
         assert properties is not None
@@ -377,7 +442,7 @@ def test_editorial_table_columns_have_readable_minimum_width() -> None:
             document = ET.fromstring(archive.read("word/document.xml"))
 
         tables = document.findall(f".//{{{WORD_NS}}}tbl")
-        assert len(tables) == 9
+        assert len(tables) == 10
         for table_index, table in enumerate(tables, start=1):
             widths = [
                 int(column.attrib[f"{{{WORD_NS}}}w"])

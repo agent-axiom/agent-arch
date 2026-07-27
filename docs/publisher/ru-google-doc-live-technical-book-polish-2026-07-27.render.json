@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-live-technical-book-polish-2026-07-27-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0028637357547202026,
+      "page": 269
+    },
+    {
+      "density": 0.003393850658005189,
+      "page": 380
+    },
+    {
+      "density": 0.0038174786416164414,
+      "page": 323
+    },
+    {
+      "density": 0.007713191279106333,
+      "page": 215
+    },
+    {
+      "density": 0.008709329379316831,
+      "page": 386
+    },
+    {
+      "density": 0.010294280038376773,
+      "page": 158
+    },
+    {
+      "density": 0.010826712104327223,
+      "page": 336
+    },
+    {
+      "density": 0.012819989876151707,
+      "page": 405
+    },
+    {
+      "density": 0.012970183801774357,
+      "page": 358
+    },
+    {
+      "density": 0.013328047416796038,
+      "page": 411
+    }
+  ],
+  "pages": 489,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-live-technical-book-polish-2026-07-27-render"
+}

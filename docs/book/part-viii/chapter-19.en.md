@@ -179,6 +179,28 @@ For a production-grade agent system, I would recommend at least these stages:
 7. Incident response and corrective action
 8. Retirement or replacement
 
+A transition is recorded as an explicit decision; it does not follow automatically from the stage number. For the running support scenario, the record looks like this:
+
+**ADLC transition configuration.** Fragment type: YAML.
+
+```yaml
+transition_id: adlc-support-ticket-baseline-to-canary-001
+change_id: chg-support-ticket-idempotency-v2
+from_state: evaluation_baseline
+to_state: staged_rollout
+owner: runtime-release-owner
+required_evidence:
+  - artifact:eval-dataset.json
+  - eval:unknown_effect_reconciliation
+  - slo:slo-support-ticket-known-effect-v1
+  - plan:rollback-support-ticket-v2
+decision: hold
+blockers: [duplicate_ticket_eval_not_attested]
+decided_at: "2026-07-23T09:30:00Z"
+```
+
+The complete example is in `docs/companion/examples/adlc-transition-support-ticket.yaml`. The `hold` decision shows that having files is not permission to enter canary: required evidence must be verified and accepted by its owner.
+
 <div class="diagram-card">
 <p>ADLC should be treated as a continuous loop, not a path that ends at first launch</p>
 

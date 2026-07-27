@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-final-reader-copyedit-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0039017739804841976,
+      "page": 283
+    },
+    {
+      "density": 0.005703509768303107,
+      "page": 159
+    },
+    {
+      "density": 0.006488707560991678,
+      "page": 172
+    },
+    {
+      "density": 0.007170054681366898,
+      "page": 371
+    },
+    {
+      "density": 0.008501652092663159,
+      "page": 247
+    },
+    {
+      "density": 0.009221338758583521,
+      "page": 117
+    },
+    {
+      "density": 0.013643922271626746,
+      "page": 103
+    },
+    {
+      "density": 0.015271850600190082,
+      "page": 202
+    },
+    {
+      "density": 0.016753477329925104,
+      "page": 238
+    },
+    {
+      "density": 0.019934112302643428,
+      "page": 448
+    }
+  ],
+  "pages": 448,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-final-reader-copyedit-render"
+}

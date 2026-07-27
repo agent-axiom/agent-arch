@@ -287,12 +287,10 @@ rollout:
     - policy_prechecks
     - capability_owners
     - offline_eval_pass
+    - duplicate_ticket_eval_passed
     - slo_defined
     - rollback_plan
     - oncall_owner
-    - approval_queue_owner
-    - session_expiry_signals_visible
-    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -301,10 +299,6 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
-    - approval_backlog_unbounded
-    - paused_runs_without_expiry
-    - capability_session_reinit_unmodeled
-    - orchestration_pattern_change_unreviewed
 ```
 
 Такой checklist хорош тем, что делает готовность предметом инженерного разговора, а не уверенности в голосе автора релиза.
@@ -314,29 +308,23 @@ rollout:
 Ниже каркас, который показывает, как готовность можно оценивать как набор обязательных условий:
 
 ```python
-from dataclasses import dataclass
+from agent_runtime_ref.rollout import RolloutPolicy, assess_rollout
 
 
-@dataclass
-class RolloutReadiness:
-    trace_coverage: bool
-    offline_eval_pass: bool
-    slo_defined: bool
-    rollback_plan: bool
-    approval_path_defined: bool
-
-
-def ready_for_rollout(state: RolloutReadiness) -> bool:
-    return (
-        state.trace_coverage
-        and state.offline_eval_pass
-        and state.slo_defined
-        and state.rollback_plan
-        and state.approval_path_defined
-    )
+def ready_for_rollout(
+    config: dict[str, object],
+    observed_checks: dict[str, bool],
+) -> dict[str, object]:
+    policy = RolloutPolicy.from_dict(config)
+    assessment = assess_rollout(policy, observed_checks)
+    return {
+        "ready": assessment.ready,
+        "missing_required": list(assessment.missing_required),
+        "blocking_signals": list(assessment.blocking_signals),
+    }
 ```
 
-Очень простой пример, но он помогает удерживать одну важную мысль: готовность к промышленной среде должна быть формализуемой.
+`observed_checks` должны поступать из проверенного манифеста, а не из ручных галочек. Отсутствующий обязательный сигнал и активный `block_if` дают разные диагностические списки, но оба удерживают `ready=false`.
 
 ## 13. Что чаще всего ломается в процессе запуска
 
@@ -374,6 +362,8 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - владение, дежурство и ручной резервный путь описаны конкретно.
 
 Если большинство этих условий не выполняется, у команды уже может быть инерция запуска, но реальной готовности к поэтапному выпуску у нее пока нет.
+
+**Рубрика готовности 0–4.** Оценка 0 означает отсутствие воспроизводимых контрактов и доказательств; 1 — документированные контракты без исполняемых проверок; 2 — детерминированные проверки с пробелами в материальных доказательствах; 3 — готовность к контрольной волне с проверенным пакетом и владельцем отката; 4 — наблюдаемую промышленную эксплуатацию с отрепетированным реагированием и выводом из эксплуатации. Любой жесткий блокер принудительно возвращает решение `hold` независимо от суммы баллов. Машиночитаемая рубрика находится в `docs/companion/examples/readiness-rubric-support-ticket.yaml`.
 
 ### 14.1. Практикум: пройти цепочку trace → eval gate → rollout wave → containment
 

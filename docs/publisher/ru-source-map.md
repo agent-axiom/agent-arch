@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъёмной сборки на 2026-07-22. Репозиторий
+Status: актуальная карта полнообъёмной сборки на 2026-07-27. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -23,18 +23,45 @@ Status: актуальная карта полнообъёмной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - 10 нумерованных таблиц в канонической и локальных издательских производных;
-- около 92 372 слов по метрике издательской сборки;
-- 441 страница в Google-ориентированной производной, 318 страниц в производной
-  `Template2000n` и 457 страниц в текущем интерфейсе существующего Google Doc;
-  разница вызвана параметрами страницы и плотностью стилей, а не сокращением
-  содержания; пустых технических страниц нет.
+- около 93 242 слов по метрике издательской сборки;
+- 446 страниц в Google-ориентированной производной, 321 страница в производной
+  `Template2000n`, 489 страниц при локальном рендеринге свежего DOCX-экспорта
+  Google Doc и 457 страниц в нативном PDF Google Docs; разница вызвана
+  параметрами страницы и движком вёрстки, а не сокращением содержания; пустых
+  технических страниц нет.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW37hZDyH1m2B77saeTt6XX9rQOT4Czb5wl8gJtjzQuwkTwixCHIODn1GSgViWoemddyoe3zmPoeZSTnUstkc2fZ722bVd3KTjsMtEOE`.
+  `AIroW36zOf2ZNRM-XL1tdd9LEuHsKy-qYN8botKOL9dlIezh0tQp_2J2mIN70uICM8a0nxtHH5ARYrY2_3iLbsgS8CJUm0ayFLnmCVV1Tlc`.
+
+Контрольная точка редакционной полировки технической книги:
+
+- `docs/publisher/ru-technical-book-polish-2026-07-27.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-07-27.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-07-27.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-07-27.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-07-27.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-07-27.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-07-27.pdf`;
+- `docs/publisher/ru-index-terms-2026-07-27.md`;
+- `docs/publisher/ru-learning-outcome-map-2026-07-27.md`;
+- `docs/publisher/ru-human-review-packet-2026-07-27.md`.
+
+Контрольная точка финальной читательской редактуры:
+
+- `docs/publisher/ru-final-reader-copyedit-2026-07-23.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-final-reader-copyedit-2026-07-23.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-final-reader-copyedit-2026-07-23.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-final-reader-copyedit-2026-07-23.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-final-reader-copyedit-2026-07-23.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-final-reader-copyedit-2026-07-23.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-final-reader-copyedit-2026-07-23.pdf`;
+- `docs/publisher/ru-google-doc-live-final-reader-copyedit-2026-07-23.render.json`;
+- `docs/publisher/ru-google-doc-final-reader-copyedit-2026-07-23.render.json`;
+- `docs/publisher/ru-template2000n-final-reader-copyedit-2026-07-23.render.json`.
 
 Контрольная точка синхронизации управляемого поиска возможностей и общего
 шлюза ИИ:

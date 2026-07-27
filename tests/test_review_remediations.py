@@ -9,6 +9,7 @@ import pytest
 import yaml
 
 from agent_runtime_ref.approvals import ApprovalQueue
+from agent_runtime_ref.lifecycle import classify_change_surfaces
 from agent_runtime_ref.memory import MemoryRecord, MemoryStore
 from agent_runtime_ref.models import (
     RunContext,
@@ -96,6 +97,179 @@ def test_post_dispatch_timeout_blocks_on_reconciliation(runtime_from_config) -> 
     }
 
 
+def test_unknown_effect_is_not_dispatched_twice(runtime_from_config) -> None:
+    runtime_from_config.policy.capability_policies["create_ticket"] = CapabilityPolicy(
+        "allow"
+    )
+    common = {
+        "user_input": "Please create a ticket for this issue.",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "session_id": "session-reconcile-once",
+        "intent_id": "intent-ticket-once",
+    }
+
+    first = runtime_from_config.run(
+        RunRequest(
+            **common,
+            trace_id="trace-reconcile-once-001",
+            test_fault="post_dispatch_timeout",
+        )
+    )
+    second = runtime_from_config.run(
+        RunRequest(
+            **common,
+            trace_id="trace-reconcile-once-002",
+        )
+    )
+
+    tool_spans = [
+        event
+        for event in runtime_from_config.telemetry.events
+        if event.event_type == "span"
+        and event.payload.get("span_name") == "tool:create_ticket"
+    ]
+    idempotency_actions = [
+        event.payload["action"]
+        for event in runtime_from_config.telemetry.events
+        if event.event_type == "idempotency_decision"
+    ]
+    assert first.status == "blocked_on_reconciliation"
+    assert second.status == "blocked_on_reconciliation"
+    assert len(tool_spans) == 1
+    assert idempotency_actions == ["execute", "reconcile"]
+
+
+def test_eval_dataset_has_a_real_unknown_effect_reconciliation_scenario(
+    cli_json,
+    tmp_path: Path,
+) -> None:
+    output_path = tmp_path / "unknown-effect-eval.json"
+
+    exit_code, payload = cli_json(
+        [
+            "export-eval-dataset",
+            "--scenario",
+            "unknown_effect_reconciliation",
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    assert exit_code == 0
+    assert payload["duplicate_ticket_scenarios"] == [
+        "unknown_effect_reconciliation"
+    ]
+    exported = json.loads(output_path.read_text(encoding="utf-8"))
+    session = exported["sessions"][0]
+    run = session["runs"][0]
+    assert run["status"] == "blocked_on_reconciliation"
+    assert run["side_effect_status"] == "side_effect_unknown"
+    assert run["failure_reason"] == "post_dispatch_timeout"
+    assert session["eval"]["expected_outcomes"] == {
+        "latest_status": "blocked_on_reconciliation",
+        "reconciliation_runs": 1,
+        "duplicate_ticket_eval_passed": True,
+        "idempotency_key_required": True,
+        "max_ticket_side_effects": 1,
+    }
+
+
+def test_pre_dispatch_timeout_is_not_claimed_as_duplicate_side_effect_proof(
+    cli_json,
+    tmp_path: Path,
+) -> None:
+    output_path = tmp_path / "pre-dispatch-eval.json"
+
+    _, payload = cli_json(
+        [
+            "export-eval-dataset",
+            "--scenario",
+            "failed_run_timeout",
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    assert payload["duplicate_ticket_scenarios"] == []
+    session = json.loads(output_path.read_text(encoding="utf-8"))["sessions"][0]
+    assert "duplicate_ticket_eval_passed" not in session["eval"]["labels"]
+    assert "max_ticket_side_effects" not in session["eval"]["expected_outcomes"]
+
+
+@pytest.mark.parametrize(
+    "artifact_name",
+    [
+        "trace-demo.jsonl",
+        "trace-failed-tool-timeout.jsonl",
+        "trace-post-dispatch-timeout.jsonl",
+    ],
+)
+def test_companion_trace_artifacts_redact_raw_input(artifact_name: str) -> None:
+    path = Path("docs/companion/artifacts") / artifact_name
+    events = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines()]
+    run_start = next(event for event in events if event["event_type"] == "run_start")
+
+    assert "user_input" not in run_start["payload"]
+    assert run_start["payload"]["input_description"] == "[REDACTED]"
+    assert len(run_start["payload"]["input_sha256"]) == 64
+    assert all(
+        event["payload"].get("status") != "success"
+        for event in events
+        if event["event_type"] == "span"
+        and event["payload"].get("span_name", "").startswith("tool:")
+        and artifact_name != "trace-demo.jsonl"
+    )
+
+
+def test_export_events_supports_post_dispatch_reconciliation(
+    cli_json,
+    tmp_path: Path,
+) -> None:
+    output_path = tmp_path / "post-dispatch.jsonl"
+
+    _, payload = cli_json(
+        [
+            "export-events",
+            "--simulate-failure",
+            "post_dispatch_timeout",
+            "--output",
+            str(output_path),
+        ]
+    )
+
+    assert payload["status"] == "blocked_on_reconciliation"
+    assert payload["failure_reason"] == "post_dispatch_timeout"
+    events = [json.loads(line) for line in output_path.read_text().splitlines()]
+    assert "effect_reconciliation_required" in {
+        event["event_type"] for event in events
+    }
+
+
+@pytest.mark.parametrize(
+    ("surfaces", "risk_level", "review_required"),
+    [
+        (("documentation_only",), "low_risk", False),
+        (("prompt_bundle",), "medium_risk", False),
+        (("capability_contract",), "high_risk", False),
+        (("prompt_bundle", "new_surface"), "review_required", True),
+        ((), "review_required", True),
+    ],
+)
+def test_change_surface_classifier_fails_closed(
+    surfaces: tuple[str, ...],
+    risk_level: str,
+    review_required: bool,
+) -> None:
+    result = classify_change_surfaces(surfaces)
+
+    assert result.risk_level == risk_level
+    assert result.review_required is review_required
+    assert result.unknown_surfaces == (
+        ("new_surface",) if "new_surface" in surfaces else ()
+    )
+
+
 def test_intent_id_keeps_idempotency_key_stable_across_traces(
     runtime_from_config,
 ) -> None:
@@ -158,7 +332,29 @@ def test_retirement_is_unknown_until_every_step_has_evidence(
     assert result["missing_steps"] == required_steps
 
 
-def test_action_digest_binds_identity_delegation_versions_and_expiry() -> None:
+@pytest.mark.parametrize(
+    ("field", "changed_value"),
+    [
+        ("capability_name", "close_ticket"),
+        ("arguments", {"queue": "security"}),
+        ("tenant_id", "tenant-other"),
+        ("agent_id", "support-triage-v2"),
+        ("session_id", "session-002"),
+        ("idempotency_key", "intent-002"),
+        ("principal_id", "user-99"),
+        ("authorization_mode", "platform_owned"),
+        ("delegated_principal_id", "user-99"),
+        ("delegated_scope", "tickets:admin"),
+        ("policy_version", "policy-v4"),
+        ("capability_version", "create-ticket-v3"),
+        ("expires_at", "2026-07-18T10:05:00Z"),
+        ("nonce", "nonce-002"),
+    ],
+)
+def test_action_digest_binds_every_approved_field(
+    field: str,
+    changed_value: object,
+) -> None:
     common = {
         "capability_name": "create_ticket",
         "arguments": {"queue": "support"},
@@ -177,9 +373,35 @@ def test_action_digest_binds_identity_delegation_versions_and_expiry() -> None:
     }
 
     digest = compute_action_digest(**common)
-    changed = compute_action_digest(**{**common, "principal_id": "user-99"})
+    changed = compute_action_digest(**{**common, field: changed_value})
 
     assert digest != changed
+
+
+def test_approval_cli_rejects_a_stale_expected_action_digest(
+    cli_json,
+    tmp_path: Path,
+) -> None:
+    from agent_runtime_ref.__main__ import main
+
+    store_path = tmp_path / "approval-state.json"
+    _, created = cli_json(
+        ["inspect-approvals", "--approval-store", str(store_path)]
+    )
+    approval_id = created["approvals"][0]["approval_id"]
+
+    with pytest.raises(ValueError, match="Approval action digest does not match"):
+        main(
+            [
+                "resolve-approval",
+                "--approval-store",
+                str(store_path),
+                "--approval-id",
+                approval_id,
+                "--expected-action-digest",
+                "0" * 64,
+            ]
+        )
 
 
 def test_approval_rejects_self_approval_and_expired_decision() -> None:

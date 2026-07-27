@@ -1,0 +1,52 @@
+{
+  "documentId": "1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4",
+  "title": "Архитектура безопасных ИИ-агентов",
+  "revisionId": "AIroW36zOf2ZNRM-XL1tdd9LEuHsKy-qYN8botKOL9dlIezh0tQp_2J2mIN70uICM8a0nxtHH5ARYrY2_3iLbsgS8CJUm0ayFLnmCVV1Tlc",
+  "tabId": "t.0",
+  "changedNonemptyParagraphs": 157,
+  "alignedChangedParagraphs": 157,
+  "missingAlignment": [],
+  "textMismatches": [],
+  "listMismatches": [],
+  "headingMismatches": [],
+  "expectedChangedExternalLinks": 105,
+  "changedExternalLinkMismatches": [],
+  "allExternalLinkRuns": 112,
+  "inlineObjects": 56,
+  "tables": 10,
+  "keyCounts": {
+    "Цитируемые источники": {
+      "local": 1,
+      "google": 1
+    },
+    "Дополнительное чтение": {
+      "local": 1,
+      "google": 1
+    },
+    "Контракт проверяющего": {
+      "local": 1,
+      "google": 1
+    },
+    "Манифест доказательств": {
+      "local": 1,
+      "google": 1
+    },
+    "Общий шлюз ИИ": {
+      "local": 1,
+      "google": 1
+    },
+    "Контрольная волна": {
+      "local": 1,
+      "google": 1
+    },
+    "Сессия возможности": {
+      "local": 1,
+      "google": 1
+    },
+    "Сверка внешнего эффекта": {
+      "local": 1,
+      "google": 1
+    }
+  },
+  "passed": true
+}

@@ -253,25 +253,32 @@ flowchart LR
 
 ```yaml
 slo:
-  success:
-    successful_run_rate: ">= 97%"
-  latency:
-    run_p95_ms: "<= 12000"
-    tool_span_p95_ms: "<= 2500"
-  safety:
-    policy_violation_rate: "< 0.2%"
-    unknown_side_effect_rate: "< 0.05%"
-  cost:
-    avg_tokens_per_run: "<= 18000"
-    avg_cost_per_successful_run_usd: "<= 0.12"
-  escalation:
-    manual_intervention_rate: "< 8%"
-  verifier:
-    false_positive_rate_high_risk: "< 1%"
-    failure_attribution_agreement_rate: ">= 95%"
+  slo_id: slo-support-ticket-known-effect-v1
+  owner: support-operations
+  window: rolling_28d
+  sli:
+    name: known_external_effect_rate
+    numerator: runs_with_verified_expected_ticket_effect
+    denominator: eligible_ticket_write_runs
+    exclusions:
+      - synthetic_load_tests
+      - operator_cancelled_before_dispatch
+    data_source: telemetry.run_complete+ticketing.reconciliation
+  target: ">= 99.0%"
+  action_on_breach:
+    burn_rate_alert: 2h_and_24h
+    rollout_action: freeze_expansion
+    owner: support-operations
+  safety_invariants:
+    - name: confirmed_cross_tenant_write
+      allowed_count: 0
+      action: rollback_and_incident
+    - name: blind_retry_after_side_effect_unknown
+      allowed_count: 0
+      action: freeze_and_reconcile
 ```
 
-Главное здесь не точные проценты. Главное, что команда заранее договорилась, как выглядит нормальное состояние системы.
+Главное здесь не точный процент, а воспроизводимый расчет и действие. Полная карточка находится в `docs/companion/examples/slo-card-support-ticket.yaml`. Нарушение SLO расходует бюджет надежности, а нарушение `safety_invariants` является жестким блокером и не компенсируется хорошим средним показателем.
 
 Именно эта договоренность превращает метрики в рабочее ограничение. Без нее система может измеряться, но еще не управляется через явные бюджеты здоровья и риска.
 

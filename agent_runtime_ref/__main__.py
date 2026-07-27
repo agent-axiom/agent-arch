@@ -62,6 +62,12 @@ EVAL_DATASET_SCENARIOS: dict[str, tuple[str, tuple[str, ...], str, str | None]] 
         "trace-eval-failed-run",
         "tool_timeout",
     ),
+    "unknown_effect_reconciliation": (
+        "session-eval-unknown-effect",
+        ("Please create a ticket for this onboarding issue.",),
+        "trace-eval-unknown-effect",
+        "post_dispatch_timeout",
+    ),
 }
 EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
     "support_ticket": {
@@ -122,13 +128,24 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
             "failed_run",
             "tool_timeout",
             "failure_drill",
-            "duplicate_ticket_eval_passed",
         ],
         "expected_outcomes": {
             "latest_status": "failed",
             "failed_runs": 1,
             "required_output_substrings": ["tool_timeout"],
             "failed_run_traceable": True,
+        },
+    },
+    "unknown_effect_reconciliation": {
+        "scenario": "unknown_effect_reconciliation",
+        "labels": [
+            "unknown_effect",
+            "reconciliation_required",
+            "duplicate_ticket_eval_passed",
+        ],
+        "expected_outcomes": {
+            "latest_status": "blocked_on_reconciliation",
+            "reconciliation_runs": 1,
             "duplicate_ticket_eval_passed": True,
             "idempotency_key_required": True,
             "max_ticket_side_effects": 1,
@@ -1717,6 +1734,7 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         decision=args.decision,
         note=args.note,
         resolved_by=args.resolved_by,
+        expected_action_digest=args.expected_action_digest,
     )
     approvals = runtime.approvals.all()
     pending_approvals = [item for item in approvals if item.status == "pending"]
@@ -2238,7 +2256,11 @@ def build_parser() -> argparse.ArgumentParser:
     _add_authorization_arguments(export_events)
     export_events.add_argument(
         "--simulate-failure",
-        choices=["tool_timeout", "upstream_unavailable"],
+        choices=[
+            "tool_timeout",
+            "post_dispatch_timeout",
+            "upstream_unavailable",
+        ],
         default=None,
     )
     export_events.add_argument(
@@ -2431,6 +2453,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     resolve_approval.add_argument("--note", default="")
     resolve_approval.add_argument("--resolved-by", default=None)
+    resolve_approval.add_argument(
+        "--expected-action-digest",
+        default=None,
+        help="Digest of the exact action reviewed by the approver",
+    )
 
     inspect_session = subparsers.add_parser(
         "inspect-session",

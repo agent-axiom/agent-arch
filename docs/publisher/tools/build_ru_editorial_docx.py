@@ -581,7 +581,12 @@ class DocxRenderer:
                         )
                         set_keep_next(paragraph)
                         set_keep_lines(paragraph)
-                    if self.in_chapter_sources:
+                    if re.match(r"^S\d{3}\.", paragraph.text.strip()):
+                        paragraph.paragraph_format.left_indent = Inches(0.28)
+                        paragraph.paragraph_format.first_line_indent = Inches(-0.28)
+                        paragraph.paragraph_format.space_after = Pt(2)
+                        set_keep_lines(paragraph)
+                    elif self.in_chapter_sources:
                         set_keep_next(paragraph)
                 self.is_first_element = False
         elif tag in {"ul", "ol"}:

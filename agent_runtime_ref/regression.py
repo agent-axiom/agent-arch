@@ -65,6 +65,24 @@ class RegressionGateResult:
     min_samples: int
 
 
+def _wilson_interval(
+    observation: RateObservation,
+    *,
+    z_value: float,
+) -> tuple[float, float]:
+    rate = observation.rate
+    total = observation.total
+    z_squared = z_value**2
+    denominator = 1 + z_squared / total
+    center = (rate + z_squared / (2 * total)) / denominator
+    half_width = (
+        z_value
+        * sqrt(rate * (1 - rate) / total + z_squared / (4 * total**2))
+        / denominator
+    )
+    return max(0.0, center - half_width), min(1.0, center + half_width)
+
+
 def assess_regression_gate(
     *,
     baseline: RateObservation,
@@ -83,11 +101,16 @@ def assess_regression_gate(
 
     baseline_rate = baseline.rate
     current_rate = current.rate
-    variance = (
-        baseline_rate * (1 - baseline_rate) / baseline.total
-        + current_rate * (1 - current_rate) / current.total
+    baseline_lower, baseline_upper = _wilson_interval(
+        baseline,
+        z_value=z_value,
     )
-    upper_delta = current_rate - baseline_rate + z_value * sqrt(variance)
+    current_lower, current_upper = _wilson_interval(
+        current,
+        z_value=z_value,
+    )
+    lower_delta = current_lower - baseline_upper
+    upper_delta = current_upper - baseline_lower
 
     if baseline.total < minimum or current.total < minimum:
         return RegressionGateResult(
@@ -107,10 +130,19 @@ def assess_regression_gate(
             upper_rate_delta=upper_delta,
             min_samples=minimum,
         )
-    if upper_delta > max_increase:
+    if lower_delta > max_increase:
         return RegressionGateResult(
             decision="FAIL",
             reason="rate_regression",
+            baseline_rate=baseline_rate,
+            current_rate=current_rate,
+            upper_rate_delta=upper_delta,
+            min_samples=minimum,
+        )
+    if upper_delta > max_increase:
+        return RegressionGateResult(
+            decision="INCONCLUSIVE",
+            reason="insufficient_statistical_support",
             baseline_rate=baseline_rate,
             current_rate=current_rate,
             upper_rate_delta=upper_delta,

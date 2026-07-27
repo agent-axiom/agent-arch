@@ -1,0 +1,85 @@
+{
+  "docx": {
+    "explicit_run_fonts": {
+      "Arial": 2156,
+      "Arial Unicode MS": 11,
+      "Courier New": 1224,
+      "Roboto Mono": 1352
+    },
+    "inline_shapes": 56,
+    "paragraphs": 9243,
+    "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-07-27.docx",
+    "style_fonts": {
+      "Heading 1": "Arial",
+      "Heading 2": "Arial",
+      "Heading 3": "Arial",
+      "Heading 4": "Arial",
+      "Heading 5": "Calibri",
+      "Heading 6": "Calibri",
+      "Subtitle": "Calibri",
+      "Title": "Calibri"
+    },
+    "tables": 10,
+    "xml_font_references": {
+      "Arial": 8964,
+      "Arial Unicode MS": 44,
+      "Calibri": 16,
+      "Courier New": 8240,
+      "Roboto Mono": 8848
+    }
+  },
+  "pdf": {
+    "fonts": [
+      {
+        "base_font": "/AAAAAA+ArialMT",
+        "embedded": true,
+        "page_resource_uses": 455,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/CAAAAA+Arial-BoldMT",
+        "embedded": true,
+        "page_resource_uses": 300,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/DAAAAA+RobotoMono-Regular",
+        "embedded": true,
+        "page_resource_uses": 176,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/EAAAAA+CourierNew",
+        "embedded": true,
+        "page_resource_uses": 101,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/FAAAAA+Arial-ItalicMT",
+        "embedded": true,
+        "page_resource_uses": 77,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/BAAAAA+Calibri",
+        "embedded": true,
+        "page_resource_uses": 6,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/HAAAAA+Arial-BoldItalicMT",
+        "embedded": true,
+        "page_resource_uses": 3,
+        "subtype": "/Type0"
+      },
+      {
+        "base_font": "/GAAAAA+RobotoMono-Bold",
+        "embedded": true,
+        "page_resource_uses": 1,
+        "subtype": "/Type0"
+      }
+    ],
+    "pages": 457,
+    "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-07-27.pdf"
+  }
+}

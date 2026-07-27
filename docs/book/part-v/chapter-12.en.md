@@ -238,25 +238,32 @@ The point here is not “canonical” numbers, but explicit discipline:
 
 ```yaml
 slo:
-  success:
-    successful_run_rate: ">= 97%"
-  latency:
-    run_p95_ms: "<= 12000"
-    tool_span_p95_ms: "<= 2500"
-  safety:
-    policy_violation_rate: "< 0.2%"
-    unknown_side_effect_rate: "< 0.05%"
-  cost:
-    avg_tokens_per_run: "<= 18000"
-    avg_cost_per_successful_run_usd: "<= 0.12"
-  escalation:
-    manual_intervention_rate: "< 8%"
-  verifier:
-    false_positive_rate_high_risk: "< 1%"
-    failure_attribution_agreement_rate: ">= 95%"
+  slo_id: slo-support-ticket-known-effect-v1
+  owner: support-operations
+  window: rolling_28d
+  sli:
+    name: known_external_effect_rate
+    numerator: runs_with_verified_expected_ticket_effect
+    denominator: eligible_ticket_write_runs
+    exclusions:
+      - synthetic_load_tests
+      - operator_cancelled_before_dispatch
+    data_source: telemetry.run_complete+ticketing.reconciliation
+  target: ">= 99.0%"
+  action_on_breach:
+    burn_rate_alert: 2h_and_24h
+    rollout_action: freeze_expansion
+    owner: support-operations
+  safety_invariants:
+    - name: confirmed_cross_tenant_write
+      allowed_count: 0
+      action: rollback_and_incident
+    - name: blind_retry_after_side_effect_unknown
+      allowed_count: 0
+      action: freeze_and_reconcile
 ```
 
-The important part is not the exact threshold. The important part is that the team has agreed in advance on what normal system health looks like.
+The important part is not the exact percentage, but a reproducible calculation and response. The complete card is in `docs/companion/examples/slo-card-support-ticket.yaml`. An SLO breach consumes the reliability budget; a `safety_invariants` breach is a hard blocker that good averages cannot offset.
 
 That agreement is what turns metrics into an operating constraint. Without it, the system may still be measured, but it is not yet being governed through explicit health and risk budgets.
 
