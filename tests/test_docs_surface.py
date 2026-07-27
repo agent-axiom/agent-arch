@@ -19602,6 +19602,10 @@ def test_agent_builder_copilot_and_cloudflare_budget_cases_are_documented() -> N
             "retry/backoff",
             "fallback policy",
             "trace attribution",
+            "identity-bound spend limit",
+            "provider routing decision",
+            "fallback/degraded mode",
+            "run-level SLO impact",
         ),
     )
 
@@ -19675,6 +19679,42 @@ def test_governed_agent_execution_loop_is_documented() -> None:
             "running-codex-safely",
             "Security architecture of GitHub Agentic Workflows",
             "github.github.com/gh-aw/introduction/architecture",
+        ),
+    )
+
+
+def test_openai_hugging_face_eval_incident_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "OpenAI/Hugging Face evaluation incident",
+            "ExploitGym",
+            "package registry cache proxy",
+            "constrained network",
+            "lateral movement",
+            "forensic reconstruction",
+            "open-weight model",
+            "eval containment failure",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "OpenAI and Hugging Face partner to address security incident during model evaluation",
+            "hugging-face-model-evaluation-security-incident",
+            "Security incident disclosure — July 2026",
+            "security-incident-july-2026",
+            "ExploitGym: Can AI Agents Turn Security Vulnerabilities into Real Attacks?",
+            "2605.11086",
         ),
     )
 
@@ -19804,6 +19844,40 @@ def test_aws_agentcore_observability_debugging_is_documented() -> None:
         (
             "Debugging production agents with Amazon Bedrock AgentCore Observability",
             "aws.amazon.com/blogs/machine-learning/debugging-production-agents-with-amazon-bedrock-agentcore-observability",
+        ),
+    )
+
+
+def test_agentrx_trace_level_diagnosis_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/causal-debugging.md",
+            "docs/appendix/causal-debugging.en.md",
+            "docs/appendix/causal-debugging.zh.md",
+        ),
+        (
+            "AgentRx",
+            "trajectory normalization",
+            "constraint synthesis",
+            "critical failure step",
+            "failure taxonomy",
+            "auditable validation log",
+            "replay and minimize",
+            "regression eval",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Systematic debugging for AI agents: introducing the AgentRx framework",
+            "systematic-debugging-for-ai-agents-introducing-the-agentrx-framework",
+            "AgentRx: Diagnosing AI Agent Failures from Execution Trajectories",
+            "microsoft/AgentRx",
         ),
     )
 
@@ -21606,6 +21680,53 @@ def test_reference_package_lifecycle_runtime_control_fields_are_documented() -> 
         lifecycle_section = text.split("inspect-lifecycle", maxsplit=1)[1]
         for field in required_fields:
             assert f"`{field}`" in lifecycle_section, (path, field)
+
+
+def test_aws_agentcore_extended_mcp_support_is_integrated() -> None:
+    chapter_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_files,
+        (
+            "AgentCore Gateway extended MCP support",
+            "`outputSchema`",
+            "`listing_mode`",
+            "`tool_annotations`",
+            "`Mcp-Session-Id`",
+            "`retry_original_tool_call`",
+            "mid-stream failure",
+        ),
+    )
+    _assert_files_contain_all(
+        case_files,
+        (
+            "AWS AgentCore Gateway extended MCP support",
+            "dynamic listing",
+            "OAuth 2.0 on-behalf-of token exchange",
+            "not resumable",
+        ),
+    )
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Extending MCP support for Amazon Bedrock AgentCore Gateway",
+            "extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2",
+        ),
+    )
 
 
 def test_reference_package_export_events_identity_fields_are_documented() -> None:

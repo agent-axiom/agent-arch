@@ -88,6 +88,12 @@
 
 但因果调试还需要再往前走一步：把这些事件看成依赖网络，而不是简单的列表。
 
+### 5.1. AgentRx：作为独立回路的 trace-level diagnosis
+
+Microsoft AgentRx 在这里很有价值，因为它展示了如何把一条长智能体轨迹转成可检查的诊断，而不是人工通读 transcript。它的可迁移模式是：**trajectory normalization → constraint synthesis → step-by-step validation → critical failure step → failure taxonomy → auditable validation log**。也就是说，系统先把 actions、tool calls 和 environment feedback 规范化成可分析的形态，再从 tool schemas、domain rules 和 expected behavior 中合成可执行约束，最后定位第一个 unrecoverable step：从这一刻开始，run 已经不可能正确完成。
+
+对本书来说，重点不是具体 judge，而是这个回路的形状：**collect trace → normalize trajectory → synthesize constraints → validate each step → localize critical failure step → classify failure → replay and minimize → patch policy/tool/runtime → add regression eval**。这一层可以避免把 symptom span 误认为 root-cause span。它也要求 trace 保存足够结构，支持重复分析：normalized action、tool schema version、constraint id、expected state、observed state、violation evidence、judge/version、failure category，以及指向 regression eval 的链接。如果没有这些字段，团队又会退回自由文本，继续争论“模型到底在哪里失败了”。
+
 ## 6. 哪些地方最容易出现“假原因”
 
 常见陷阱包括：

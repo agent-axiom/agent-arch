@@ -458,6 +458,8 @@ Cloudflare Rules of Durable Objects добавляет нижележащий ru
 
 Полезный эксплуатационный урок из AWS направления stateful MCP состоит в том, что сложность не заканчивается на хранении дескриптора сессии.[^aws-stateful-mcp] Более трудный вопрос в том, как рантайм должен реагировать, когда возможность шлет progress, запрашивает дополнительный ввод или истекает до завершения работы.
 
+AgentCore Gateway extended MCP support уточняет это на уровне protocol contract.[^aws-agentcore-extended-mcp] Gateway может агрегировать `tools/list`, `prompts/list`, `resources/list` и resource templates, а также переносить `outputSchema` и annotations вроде read-only/destructive. Но dynamic listing меняет смысл disclosure: список capabilities может вычисляться live под identity вызывающего пользователя, а не быть статическим cache. Для трассы это значит, что нужно сохранять `listing_mode`, `listed_under_principal`, `output_schema_hash`, `tool_annotations`, `Mcp-Session-Id` и то, была ли authorization проверена заново перед invoke.
+
 Это почти всегда заставляет платформу явно определить поведение хотя бы для четырех случаев:
 
 - `progress_update`: возможность все еще работает, и рантайм должен показать liveness, не считая вызов зависшим;
@@ -466,6 +468,8 @@ Cloudflare Rules of Durable Objects добавляет нижележащий ru
 - `reinitialized_session`: рантайм осознанно поднял новую сессию возможности, но связал ее с тем же видимым пользователю запуском.
 
 Это не мелкие транспортные детали. Именно они формируют, как дальше ведут себя подтверждение, телеметрия и реакция оператора.
+
+Есть еще один неприятный edge case: при SSE-streaming HTTP status фиксируется первым событием, а mid-stream failure уже приходит как protocol error внутри stream. Elicitation требует включенных streaming и sessions, но если соединение рвется во время elicitation, конкретный tool call может не возобновляться; клиент должен retry-ить исходный `tools/call`. Поэтому runtime contract должен явно различать `resume_existing_session_if_valid`, `retry_original_tool_call` и `reinitialize_or_cancel`, иначе human input легко превращается в повтор side effect без свежей проверки.
 
 ### 6.3. Хороший MCP-контракт должен объяснять, что происходит после прерывания
 
@@ -730,6 +734,8 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) и [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-extended-mcp]: AWS, [Extending MCP support for Amazon Bedrock AgentCore Gateway](https://aws.amazon.com/blogs/machine-learning/extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2/)
 
 [^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) и AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 

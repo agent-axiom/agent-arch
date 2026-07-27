@@ -88,6 +88,12 @@ A good trace layer already provides:
 
 But causal debugging adds one more step: treating those events as a dependency network, not just as a list.
 
+### 5.1. AgentRx: trace-level diagnosis as a separate loop
+
+Microsoft AgentRx is useful here as a research example of turning a long agent trajectory into a checkable diagnosis rather than a manual transcript read. Its portable pattern is: **trajectory normalization → constraint synthesis → step-by-step validation → critical failure step → failure taxonomy → auditable validation log**. In other words, the system first normalizes actions, tool calls, and environment feedback into an analyzable form, then synthesizes executable constraints from tool schemas, domain rules, and expected behavior, and then localizes the first unrecoverable step after which the run could no longer finish correctly.
+
+For this book, the important point is not the specific judge, but the shape of the loop: **collect trace → normalize trajectory → synthesize constraints → validate each step → localize critical failure step → classify failure → replay and minimize → patch policy/tool/runtime → add regression eval**. This layer helps avoid confusing the symptom span with the root-cause span. It also requires the trace to preserve enough structure for repeat analysis: normalized action, tool schema version, constraint id, expected state, observed state, violation evidence, judge/version, failure category, and a link to the regression eval. Without those fields, the team falls back to free text and argument about where "the model failed."
+
 ## 6. Where false causes often appear
 
 Several traps are common:

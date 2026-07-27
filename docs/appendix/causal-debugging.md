@@ -88,6 +88,12 @@
 
 Но причинная отладка требует еще одного шага: рассматривать эти события не как список, а как сеть зависимостей.
 
+### 5.1. AgentRx: trace-level diagnosis как отдельный контур
+
+Microsoft AgentRx полезен здесь как исследовательский пример того, как превратить длинную агентную траекторию в проверяемый диагноз, а не в ручное чтение transcript. Его переносимый паттерн: **trajectory normalization → constraint synthesis → step-by-step validation → critical failure step → failure taxonomy → auditable validation log**. Иными словами, система сначала нормализует действия, вызовы инструментов и environment feedback в форму, пригодную для анализа, затем синтезирует проверяемые ограничения из схем инструментов, доменных правил и ожидаемого поведения, а потом локализует первый unrecoverable step, после которого run уже не мог закончиться правильно.
+
+Для архитектуры книги важен не конкретный judge, а shape контура: **collect trace → normalize trajectory → synthesize constraints → validate each step → localize critical failure step → classify failure → replay and minimize → patch policy/tool/runtime → add regression eval**. Такой слой помогает не путать symptom span с root cause span. Он также требует, чтобы trace сохранял достаточно структуры для повторного анализа: normalized action, tool schema version, constraint id, expected state, observed state, violation evidence, judge/version, failure category и ссылку на regression eval. Если этих полей нет, команда снова возвращается к свободному тексту и спору о том, "где модель ошиблась".
+
 ## 6. Где особенно часто появляется ложная причина
 
 Есть несколько типовых ловушек:

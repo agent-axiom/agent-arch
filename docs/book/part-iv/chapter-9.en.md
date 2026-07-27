@@ -457,6 +457,8 @@ That does not make stateless MCP obsolete. It simply means the platform should n
 
 A useful operational lesson from AWS's stateful MCP direction is that the hard part is not merely storing a session handle.[^aws-stateful-mcp] The harder part is deciding how the runtime should react when the capability emits progress, requests more input, or expires before the work is done.
 
+AgentCore Gateway extended MCP support sharpens that into a protocol contract.[^aws-agentcore-extended-mcp] A gateway may aggregate `tools/list`, `prompts/list`, `resources/list`, and resource templates, while carrying `outputSchema` and annotations such as read-only/destructive. But dynamic listing changes what disclosure means: the capability list may be computed live under the calling user's identity rather than served from a static cache. The trace therefore needs to preserve `listing_mode`, `listed_under_principal`, `output_schema_hash`, `tool_annotations`, `Mcp-Session-Id`, and whether authorization was checked again before invoke.
+
 That usually forces the platform to define explicit behavior for at least four cases:
 
 - `progress_update`: the capability is still working and the runtime should expose liveness without treating the call as stuck;
@@ -465,6 +467,8 @@ That usually forces the platform to define explicit behavior for at least four c
 - `reinitialized_session`: the runtime deliberately opened a fresh capability session and linked it to the same higher-level user run.
 
 Those are not small transport details. They shape how approval, telemetry, and operator response all behave.
+
+There is another sharp edge: with SSE streaming, the HTTP status is fixed by the first event, while a mid-stream failure arrives as a protocol error inside the stream. Elicitation requires streaming and sessions, but if the connection breaks during elicitation, the specific tool call may not resume; the client has to retry the original `tools/call`. The runtime contract should therefore distinguish `resume_existing_session_if_valid`, `retry_original_tool_call`, and `reinitialize_or_cancel`, or human input can quietly become a repeated side effect without a fresh check.
 
 ### 6.3. A Good MCP Contract Should Explain What Happens After Interruption
 
@@ -705,6 +709,8 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-extended-mcp]: AWS, [Extending MCP support for Amazon Bedrock AgentCore Gateway](https://aws.amazon.com/blogs/machine-learning/extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2/)
 
 [^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) and AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 
