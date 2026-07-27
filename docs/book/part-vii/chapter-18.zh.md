@@ -287,12 +287,10 @@ rollout:
     - policy_prechecks
     - capability_owners
     - offline_eval_pass
+    - duplicate_ticket_eval_passed
     - slo_defined
     - rollback_plan
     - oncall_owner
-    - approval_queue_owner
-    - session_expiry_signals_visible
-    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -301,10 +299,6 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
-    - approval_backlog_unbounded
-    - paused_runs_without_expiry
-    - capability_session_reinit_unmodeled
-    - orchestration_pattern_change_unreviewed
 ```
 
 这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。
@@ -314,29 +308,23 @@ rollout:
 下面这个骨架展示的是：如何把就绪性看成一组必须同时满足的条件。
 
 ```python
-from dataclasses import dataclass
+from agent_runtime_ref.rollout import RolloutPolicy, assess_rollout
 
 
-@dataclass
-class RolloutReadiness:
-    trace_coverage: bool
-    offline_eval_pass: bool
-    slo_defined: bool
-    rollback_plan: bool
-    approval_path_defined: bool
-
-
-def ready_for_rollout(state: RolloutReadiness) -> bool:
-    return (
-        state.trace_coverage
-        and state.offline_eval_pass
-        and state.slo_defined
-        and state.rollback_plan
-        and state.approval_path_defined
-    )
+def ready_for_rollout(
+    config: dict[str, object],
+    observed_checks: dict[str, bool],
+) -> dict[str, object]:
+    policy = RolloutPolicy.from_dict(config)
+    assessment = assess_rollout(policy, observed_checks)
+    return {
+        "ready": assessment.ready,
+        "missing_required": list(assessment.missing_required),
+        "blocking_signals": list(assessment.blocking_signals),
+    }
 ```
 
-这个例子很简单，但它强化了一件重要的事：生产就绪性应该是可形式化的。
+`observed_checks` 应来自经过验证的清单，而不是人工勾选。缺失必需信号和命中 `block_if` 会产生不同诊断，但两者都会让 `ready=false`。
 
 ## 13. 上线流程最常见的崩坏点
 
@@ -374,6 +362,8 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - 负责人归属、值班机制和人工回退路径都足够具体。
 
 如果这些条件大多不成立，那团队也许已经有上线动能，但还没有真正的 rollout 就绪性。
+
+**0–4 级就绪度量表。** 0 级表示没有可复现契约或证据；1 级表示只有文档化契约、没有可执行检查；2 级表示有确定性检查，但实质证据仍有缺口；3 级表示验证包和回滚负责人均已就绪，可以进入金丝雀；4 级表示生产运行可观测，响应和下线流程经过演练。任何硬阻断项都会无视总分并强制返回 `hold`。机器可读量表位于 `docs/companion/examples/readiness-rubric-support-ticket.yaml`。
 
 ## 15. 读完这一章后先做什么
 

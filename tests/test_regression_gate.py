@@ -54,6 +54,19 @@ def test_supported_non_regression_passes() -> None:
     assert result.reason == "within_regression_budget"
 
 
+def test_zero_observed_failures_does_not_collapse_uncertainty() -> None:
+    result = assess_regression_gate(
+        baseline=RateObservation(failures=0, total=100),
+        current=RateObservation(failures=0, total=100),
+        max_rate_increase=0.01,
+        min_samples=100,
+    )
+
+    assert result.decision == "INCONCLUSIVE"
+    assert result.reason == "insufficient_statistical_support"
+    assert result.upper_rate_delta > 0.01
+
+
 @pytest.mark.parametrize(
     ("failures", "total"),
     [(-1, 100), (101, 100), (0, 0), (True, 100)],

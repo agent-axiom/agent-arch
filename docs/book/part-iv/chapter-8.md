@@ -223,7 +223,7 @@ tools:
   create_support_ticket:
     description: "Create a support ticket in the internal helpdesk"
     kind: "write"
-    risk: "medium"
+    risk: "high"
     idempotent: true
     timeout_seconds: 15
     input_schema:
@@ -323,7 +323,10 @@ def execute_tool(spec: ToolSpec, args: dict) -> ToolResult:
         return ToolResult(status="validation_failure", payload={"reason": "unknown tool kind"})
 
     if spec.kind == "write" and "idempotency_key" not in args:
-        return ToolResult(status="validation_failure", payload={"reason": "missing idempotency key"})
+        return ToolResult(
+            status="validation_failure",
+            payload={"reason": "missing idempotency key"},
+        )
 
     # In production this call would go through policy checks, a gateway, and typed adapters.
     return ToolResult(status="success", payload={"tool": spec.name})

@@ -298,29 +298,26 @@ inventory:
 下面这个代码片段表达的是核心思路：
 
 ```python
-from dataclasses import dataclass
+from pathlib import Path
+
+from agent_runtime_ref.evidence import verify_evidence_manifest
 
 
-@dataclass
-class ArtifactRecord:
-    has_owner: bool
-    has_version: bool
-    has_provenance: bool
-    review_passed: bool
-    schema_linked: bool
-
-
-def artifact_ready(record: ArtifactRecord) -> bool:
-    return (
-        record.has_owner
-        and record.has_version
-        and record.has_provenance
-        and record.review_passed
-        and record.schema_linked
+def artifact_ready(
+    manifest_path: Path,
+    *,
+    required_artifact_ids: tuple[str, ...],
+) -> bool:
+    result = verify_evidence_manifest(
+        manifest_path,
+        required_artifact_ids=required_artifact_ids,
     )
+    required = set(required_artifact_ids)
+    observed = set(result.artifact_ids)
+    return result.verified and not result.diagnostics and required <= observed
 ```
 
-重点很简单：可信工件应该由明确属性定义，而不是靠直觉判断。如果平台无法显式检查工件是否就绪，最后就一定会退回到社会性信任、陈旧默认值和脆弱的发布身份上。
+`review_passed=true` 之类的布尔声明本身不是证据。可验证清单把标识符与文件、SHA-256 摘要、测量时间和诊断信息绑定起来。即使结构验证成功，也不能替代对底层信号的可信证明。
 
 ## 12. 工件纪律最容易坏在哪里
 

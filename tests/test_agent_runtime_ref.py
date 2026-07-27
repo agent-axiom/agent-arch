@@ -332,7 +332,6 @@ class TestRuntimeDocsParity:
         """Keep operator-facing runtime failures aligned with public docs."""
         runtime_errors = _runtime_error_messages(runtime_source_trees)
         stage_one_errors = {
-            "Approval action digest does not match: {approval_id}",
             "Session input_sha256 must be a SHA-256 hex digest",
             "Session task_success must be a boolean or None",
             "Tool action digest field must be a string: {field}",
@@ -643,6 +642,7 @@ class TestRuntimeDocsParity:
             "pending_approval_capability_names",
             "approval_status_counts",
             "failed_run_timeout",
+            "unknown_effect_reconciliation",
             "duplicate_ticket_eval_passed",
             "duplicate_ticket_guard",
             "max_ticket_side_effects",
@@ -3132,6 +3132,7 @@ class TestFailurePaths:
             "context_layers_built",
             "span",
             "tool_policy_decision",
+            "idempotency_decision",
             "span",
             "tool_execution",
             "run_failed",
@@ -3249,6 +3250,7 @@ class TestFailurePaths:
             "context_layers_built",
             "span",
             "tool_policy_decision",
+            "idempotency_decision",
             "span",
             "tool_execution",
             "run_failed",
@@ -3428,7 +3430,7 @@ class TestFailurePaths:
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
         assert payload["idempotency_keys"] == ["trace-eval-failed-run-001"]
-        assert payload["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
+        assert payload["duplicate_ticket_scenarios"] == []
         assert payload["latest_failure_reason"] == "tool_timeout"
         data = json.loads(output_path.read_text(encoding="utf-8"))
         session = data["sessions"][0]
@@ -3438,23 +3440,10 @@ class TestFailurePaths:
             "failed_run",
             "tool_timeout",
             "failure_drill",
-            "duplicate_ticket_eval_passed",
         ]
         assert session["eval"]["expected_outcomes"]["failed_run_traceable"] is True
-        assert session["eval"]["expected_outcomes"]["duplicate_ticket_eval_passed"] is True
-        assert session["eval"]["expected_outcomes"]["idempotency_key_required"] is True
-        assert session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
-        assert session["eval"]["grading_rules"] == [
-            {
-                "type": "duplicate_ticket_guard",
-                "expected": {
-                    "idempotency_key_required": True,
-                    "max_ticket_side_effects": 1,
-                    "on_unknown_side_effect": "stop_or_reconcile",
-                },
-                "blocking": True,
-            }
-        ]
+        assert "duplicate_ticket_eval_passed" not in session["eval"]["labels"]
+        assert "grading_rules" not in session["eval"]
 
     def test_cli_export_eval_dataset_rejects_blank_export_fields(self) -> None:
         from agent_runtime_ref.__main__ import main
@@ -5920,21 +5909,21 @@ class TestRuntimeControlPaths:
 
         duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
         duplicate_signal = duplicate_guard["eval_ref"].removeprefix("eval:")
-        failed_session = next(
+        reconciliation_session = next(
             session
             for session in eval_dataset["sessions"]
-            if session["eval"]["scenario"] == "failed_run_timeout"
+            if session["eval"]["scenario"] == "unknown_effect_reconciliation"
         )
-        expected_outcomes = failed_session["eval"]["expected_outcomes"]
+        expected_outcomes = reconciliation_session["eval"]["expected_outcomes"]
         duplicate_rule = next(
             rule
-            for rule in failed_session["eval"]["grading_rules"]
+            for rule in reconciliation_session["eval"]["grading_rules"]
             if rule["type"] == "duplicate_ticket_guard"
         )
 
         assert duplicate_signal in controls["require"]
         assert "idempotency_keys_present" in controls["require"]
-        assert duplicate_signal in failed_session["eval"]["labels"]
+        assert duplicate_signal in reconciliation_session["eval"]["labels"]
         assert expected_outcomes[duplicate_signal] is True
         assert expected_outcomes["idempotency_key_required"] is True
         assert duplicate_rule["blocking"] is True
@@ -6513,6 +6502,11 @@ class TestRuntimeControlPaths:
         ]
         failed_session = failed_sessions[0]
         failed_run = failed_session["runs"][0]
+        reconciliation_session = next(
+            session
+            for session in eval_dataset["sessions"]
+            if session["eval"]["scenario"] == "unknown_effect_reconciliation"
+        )
 
         assert "eval-dataset.json" in bundle["artifacts"]
         assert len(failed_sessions) == 1
@@ -6521,7 +6515,7 @@ class TestRuntimeControlPaths:
         assert failed_session["latest_trace_id"] == failed_run["trace_id"]
         assert failed_session["summary"]["latest_status"] == failed_run["status"]
         assert eval_dataset["duplicate_ticket_scenarios"] == [
-            failed_session["eval"]["scenario"]
+            reconciliation_session["eval"]["scenario"]
         ]
         assert failed_session["eval"]["expected_outcomes"]["failed_runs"] == len(
             failed_sessions
@@ -14284,14 +14278,15 @@ class TestCli:
         }
         assert payload["dataset_name"] == "agent-runtime-ref-eval-seed"
         assert payload["output_path"] == str(output_path)
-        assert payload["session_count"] == 4
+        assert payload["session_count"] == 5
         assert payload["session_ids"] == [
             "session-eval-support",
             "session-eval-memory",
             "session-eval-mixed",
             "session-eval-failed-run",
+            "session-eval-unknown-effect",
         ]
-        assert payload["run_count"] == 5
+        assert payload["run_count"] == 6
         assert payload["failed_runs"] == 1
         assert payload["traceable_failed_runs"] == 1
         assert payload["trace_ids"] == [
@@ -14300,25 +14295,30 @@ class TestCli:
             "trace-eval-mixed-001",
             "trace-eval-mixed-002",
             "trace-eval-failed-run-001",
+            "trace-eval-unknown-effect-001",
         ]
         assert payload["failed_trace_ids"] == ["trace-eval-failed-run-001"]
         assert payload["idempotency_keys"] == [
             "trace-eval-support-001",
             "trace-eval-mixed-001",
             "trace-eval-failed-run-001",
+            "trace-eval-unknown-effect-001",
         ]
         assert payload["approval_ids"] == ["apr-001", "apr-002"]
         assert payload["approval_capability_names"] == ["create_ticket"]
         assert payload["pending_approval_ids"] == ["apr-001", "apr-002"]
         assert payload["pending_approval_capability_names"] == ["create_ticket"]
         assert payload["approval_status_counts"] == {"pending": 2}
-        assert payload["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
+        assert payload["duplicate_ticket_scenarios"] == [
+            "unknown_effect_reconciliation"
+        ]
         assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["sessions"] == [
             "session-eval-support",
             "session-eval-memory",
             "session-eval-mixed",
             "session-eval-failed-run",
+            "session-eval-unknown-effect",
         ]
         exported = json.loads(output_path.read_text(encoding="utf-8"))
         assert set(exported) == {
@@ -14341,14 +14341,15 @@ class TestCli:
             "sessions",
         }
         assert exported["dataset_name"] == "agent-runtime-ref-eval-seed"
-        assert exported["session_count"] == 4
+        assert exported["session_count"] == 5
         assert exported["session_ids"] == [
             "session-eval-support",
             "session-eval-memory",
             "session-eval-mixed",
             "session-eval-failed-run",
+            "session-eval-unknown-effect",
         ]
-        assert exported["run_count"] == 5
+        assert exported["run_count"] == 6
         assert exported["failed_runs"] == 1
         assert exported["traceable_failed_runs"] == 1
         assert exported["trace_ids"] == [
@@ -14357,23 +14358,28 @@ class TestCli:
             "trace-eval-mixed-001",
             "trace-eval-mixed-002",
             "trace-eval-failed-run-001",
+            "trace-eval-unknown-effect-001",
         ]
         assert exported["failed_trace_ids"] == ["trace-eval-failed-run-001"]
         assert exported["idempotency_keys"] == [
             "trace-eval-support-001",
             "trace-eval-mixed-001",
             "trace-eval-failed-run-001",
+            "trace-eval-unknown-effect-001",
         ]
         assert exported["approval_ids"] == ["apr-001", "apr-002"]
         assert exported["approval_capability_names"] == ["create_ticket"]
         assert exported["approval_status_counts"] == {"pending": 2}
         assert exported["latest_failure_reason"] == "tool_timeout"
-        assert exported["duplicate_ticket_scenarios"] == ["failed_run_timeout"]
+        assert exported["duplicate_ticket_scenarios"] == [
+            "unknown_effect_reconciliation"
+        ]
         assert [session["session"]["session_id"] for session in exported["sessions"]] == [
             "session-eval-support",
             "session-eval-memory",
             "session-eval-mixed",
             "session-eval-failed-run",
+            "session-eval-unknown-effect",
         ]
         assert exported["sessions"][0]["idempotency_keys"] == [
             "trace-eval-support-001"
@@ -14421,8 +14427,16 @@ class TestCli:
         failed_session = exported["sessions"][3]
         assert failed_session["idempotency_keys"] == ["trace-eval-failed-run-001"]
         assert failed_session["summary"]["failed_trace_ids"] == ["trace-eval-failed-run-001"]
-        assert "duplicate_ticket_eval_passed" in failed_session["eval"]["labels"]
-        assert failed_session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
+        reconciliation_session = exported["sessions"][4]
+        assert reconciliation_session["runs"][0]["side_effect_status"] == (
+            "side_effect_unknown"
+        )
+        assert "duplicate_ticket_eval_passed" in reconciliation_session["eval"][
+            "labels"
+        ]
+        assert reconciliation_session["eval"]["expected_outcomes"][
+            "max_ticket_side_effects"
+        ] == 1
 
     def test_cli_export_eval_dataset_matches_checked_in_artifact(
         self,

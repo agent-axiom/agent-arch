@@ -1,0 +1,27 @@
+schema_version: 1
+context_manifest_id: ctx-support-ticket-2026-07-23
+trace_id: trace-support-ticket-001
+tenant_id: tenant-acme
+owner: support-agent-runtime
+assembled_at: 2026-07-23T09:00:00Z
+entries:
+  - source_id: agent-profile:support-triage-ref
+    layer: static
+    revision: 3
+    trust_state: trusted
+    included: true
+    reason: active_agent_contract
+  - source_id: memory:mem-001
+    layer: retrieved
+    revision: 1
+    trust_state: trusted
+    expires_at: 2026-08-23T00:00:00Z
+    included: true
+    reason: tenant_and_trust_filters_passed
+  - source_id: memory:mem-untrusted-017
+    layer: retrieved
+    revision: 2
+    trust_state: untrusted
+    expires_at: 2026-08-23T00:00:00Z
+    included: false
+    reason: trust_filter_failed

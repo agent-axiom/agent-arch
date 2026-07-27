@@ -73,6 +73,7 @@ Generated trace examples:
 
 - `docs/companion/artifacts/trace-demo.jsonl`
 - `docs/companion/artifacts/trace-failed-tool-timeout.jsonl`
+- `docs/companion/artifacts/trace-post-dispatch-timeout.jsonl`
 
 Verification commands:
 
@@ -82,11 +83,14 @@ uv run python -m agent_runtime_ref inspect-trace \
 
 uv run python -m agent_runtime_ref inspect-trace \
   --input docs/companion/artifacts/trace-failed-tool-timeout.jsonl
+
+uv run python -m agent_runtime_ref inspect-trace \
+  --input docs/companion/artifacts/trace-post-dispatch-timeout.jsonl
 ```
 
-The failed trace is intentionally part of the companion because the print book
-should explain why failed-run evidence matters without printing the whole JSONL
-surface.
+The two degraded traces distinguish a known pre-dispatch failure from an
+unknown post-dispatch effect. The latter requires reconciliation and must not be
+retried blindly.
 
 ## Redaction and schema versioning
 

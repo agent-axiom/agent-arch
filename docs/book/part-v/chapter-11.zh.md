@@ -229,32 +229,35 @@ side_effect: created
 下面这个骨架不是为了替代 tracing SDK，而是为了说明一个原则：span 不只是开始和结束，它还必须把步骤类型和结果记录成可分析的结构。
 
 ```python
-from dataclasses import dataclass
 from time import monotonic
 
-
-@dataclass
-class SpanResult:
-    name: str
-    status: str
-    duration_ms: int
+from agent_runtime_ref.models import ToolResult
 
 
 def traced_step(name: str, fn):
     started = monotonic()
+    status = "success"
     try:
-        fn()
-        status = "success"
+        result = fn()
+        if isinstance(result, ToolResult) and result.status != "success":
+            status = "failure"
+        return result
     except Exception:
         status = "failure"
         raise
     finally:
         duration_ms = int((monotonic() - started) * 1000)
-        emit_span(SpanResult(name=name, status=status, duration_ms=duration_ms))
+        emit_span(name=name, status=status, duration_ms=duration_ms)
 
 
-def emit_span(result: SpanResult) -> None:
-    print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
+def emit_span(*, name: str, status: str, duration_ms: int) -> None:
+    print(
+        {
+            "span_name": name,
+            "status": status,
+            "duration_ms": duration_ms,
+        }
+    )
 ```
 
 这个例子故意很简单。它的重点不是替代 tracing SDK，而是强调：每个重要步骤都应该留下结构化的痕迹。
@@ -274,7 +277,7 @@ Observability 不应该变成数据泄漏渠道。
 最实用的规则是：
 
 - 记录元数据和派生事实；
-- 在有帮助时记录标识符和哈希；
+- 非密钥哈希只用于非秘密完整性校验；敏感值关联应使用 keyed HMAC；
 - 没有充分理由时，不要把完整敏感载荷丢进通用遥测流水线。
 
 ## 13. 智能体可观测性最常见的崩坏点

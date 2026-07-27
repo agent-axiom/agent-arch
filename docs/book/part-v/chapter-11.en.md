@@ -229,32 +229,35 @@ They also often make the difference between:
 Below is a small skeleton that shows the core idea: a span should not only start and stop, but also record the type of step and the outcome in a form suitable for analysis.
 
 ```python
-from dataclasses import dataclass
 from time import monotonic
 
-
-@dataclass
-class SpanResult:
-    name: str
-    status: str
-    duration_ms: int
+from agent_runtime_ref.models import ToolResult
 
 
 def traced_step(name: str, fn):
     started = monotonic()
+    status = "success"
     try:
-        fn()
-        status = "success"
+        result = fn()
+        if isinstance(result, ToolResult) and result.status != "success":
+            status = "failure"
+        return result
     except Exception:
         status = "failure"
         raise
     finally:
         duration_ms = int((monotonic() - started) * 1000)
-        emit_span(SpanResult(name=name, status=status, duration_ms=duration_ms))
+        emit_span(name=name, status=status, duration_ms=duration_ms)
 
 
-def emit_span(result: SpanResult) -> None:
-    print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
+def emit_span(*, name: str, status: str, duration_ms: int) -> None:
+    print(
+        {
+            "span_name": name,
+            "status": status,
+            "duration_ms": duration_ms,
+        }
+    )
 ```
 
 This example is intentionally simple. Its point is not to replace a tracing SDK, but to show the principle: every important step should leave behind a structured trace.
@@ -274,7 +277,8 @@ So traces and events need careful treatment of:
 The practical rule is simple:
 
 - log metadata and derived facts;
-- log identifiers and hashes where useful;
+- use unkeyed hashes only as non-secret integrity checks; use keyed HMAC for
+  sensitive correlation;
 - do not dump full sensitive payloads into generic telemetry pipelines without a very good reason.
 
 ## 13. What Usually Breaks in Agent Observability

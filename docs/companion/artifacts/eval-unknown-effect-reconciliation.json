@@ -1,0 +1,124 @@
+{
+  "dataset_name": "agent-runtime-ref-eval-seed",
+  "session_count": 1,
+  "session_ids": [
+    "session-eval-unknown-effect"
+  ],
+  "run_count": 1,
+  "failed_runs": 0,
+  "traceable_failed_runs": 0,
+  "trace_ids": [
+    "trace-eval-unknown-effect-001"
+  ],
+  "failed_trace_ids": [],
+  "idempotency_keys": [
+    "trace-eval-unknown-effect-001"
+  ],
+  "approval_ids": [],
+  "approval_capability_names": [],
+  "pending_approval_ids": [],
+  "pending_approval_capability_names": [],
+  "approval_status_counts": {},
+  "latest_failure_reason": "",
+  "duplicate_ticket_scenarios": [
+    "unknown_effect_reconciliation"
+  ],
+  "sessions": [
+    {
+      "session": {
+        "session_id": "session-eval-unknown-effect",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "traces": [
+          "trace-eval-unknown-effect-001"
+        ]
+      },
+      "summary": {
+        "total_runs": 1,
+        "success_runs": 0,
+        "approval_wait_runs": 0,
+        "denied_runs": 0,
+        "failed_runs": 0,
+        "traceable_failed_runs": 0,
+        "trace_ids": [
+          "trace-eval-unknown-effect-001"
+        ],
+        "failed_trace_ids": [],
+        "idempotency_keys": [
+          "trace-eval-unknown-effect-001"
+        ],
+        "approval_ids": [],
+        "approval_capability_names": [],
+        "pending_approval_ids": [],
+        "pending_approval_capability_names": [],
+        "approval_status_counts": {},
+        "latest_trace_id": "trace-eval-unknown-effect-001",
+        "latest_status": "blocked_on_reconciliation"
+      },
+      "total_runs": 1,
+      "failed_runs": 0,
+      "traceable_failed_runs": 0,
+      "trace_ids": [
+        "trace-eval-unknown-effect-001"
+      ],
+      "failed_trace_ids": [],
+      "idempotency_keys": [
+        "trace-eval-unknown-effect-001"
+      ],
+      "approval_ids": [],
+      "approval_capability_names": [],
+      "pending_approval_ids": [],
+      "pending_approval_capability_names": [],
+      "approval_status_counts": {},
+      "latest_failure_reason": "",
+      "latest_trace_id": "trace-eval-unknown-effect-001",
+      "runs": [
+        {
+          "trace_id": "trace-eval-unknown-effect-001",
+          "status": "blocked_on_reconciliation",
+          "user_input": "[REDACTED]",
+          "input_sha256": "edaf461dd5cf4ef498bfddb0a480355e6e42f669768fe3d42f9da2e67d88b81a",
+          "output_text": "Runtime blocked the write path until the external effect is reconciled.",
+          "failure_reason": "post_dispatch_timeout",
+          "task_success": null,
+          "side_effect_status": "side_effect_unknown",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "",
+          "capability_session_status": "side_effect_unknown",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "trace-eval-unknown-effect-001",
+          "approval_id": "",
+          "capability_name": "create_ticket"
+        }
+      ],
+      "eval": {
+        "scenario": "unknown_effect_reconciliation",
+        "labels": [
+          "unknown_effect",
+          "reconciliation_required",
+          "duplicate_ticket_eval_passed"
+        ],
+        "expected_outcomes": {
+          "latest_status": "blocked_on_reconciliation",
+          "reconciliation_runs": 1,
+          "duplicate_ticket_eval_passed": true,
+          "idempotency_key_required": true,
+          "max_ticket_side_effects": 1
+        },
+        "grading_rules": [
+          {
+            "type": "duplicate_ticket_guard",
+            "expected": {
+              "idempotency_key_required": true,
+              "max_ticket_side_effects": 1,
+              "on_unknown_side_effect": "stop_or_reconcile"
+            },
+            "blocking": true
+          }
+        ]
+      }
+    }
+  ]
+}

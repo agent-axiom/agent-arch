@@ -7,6 +7,10 @@ from agent_runtime_ref.background import BackgroundWorker
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.execution import execute_tool, normalize_tool_capability_name
 from agent_runtime_ref.identity import AgentIdentity
+from agent_runtime_ref.idempotency import (
+    IdempotencyStore,
+    compute_idempotency_request_digest,
+)
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import (
     REDACTED_INPUT_DESCRIPTION,
@@ -81,6 +85,7 @@ class AgentRuntime:
         agent: AgentIdentity | None = None,
         approvals: ApprovalQueue | None = None,
         sessions: SessionStore | None = None,
+        idempotency: IdempotencyStore | None = None,
         sandbox_profile: dict[str, object] | None = None,
     ) -> None:
         if catalog is None:
@@ -113,6 +118,11 @@ class AgentRuntime:
         if not isinstance(sessions, SessionStore):
             raise TypeError("Runtime sessions must be SessionStore")
         self.sessions = sessions
+        if idempotency is None:
+            idempotency = IdempotencyStore()
+        if not isinstance(idempotency, IdempotencyStore):
+            raise TypeError("Runtime idempotency must be IdempotencyStore")
+        self.idempotency = idempotency
         if sandbox_profile is None:
             sandbox_profile = {}
         if not isinstance(sandbox_profile, dict):
@@ -712,19 +722,80 @@ class AgentRuntime:
             )
             return decision
 
-        tool_result = cast(
-            ToolResult,
-            self.telemetry.traced_call(
+        idempotency_key = tool_request.arguments.get("idempotency_key", "")
+        idempotency_action = "not_required"
+        request_digest = ""
+        reserved = None
+        if (
+            decision.action == "allow"
+            and capability.idempotency_key_required
+            and idempotency_key
+        ):
+            request_digest = compute_idempotency_request_digest(
+                capability_name=tool_request.capability_name,
+                arguments=tool_request.arguments,
+                tenant_id=request.tenant_id,
+                principal_id=request.principal_id,
+            )
+            reserved = self.idempotency.reserve(idempotency_key, request_digest)
+            idempotency_action = reserved.action
+            self.telemetry.emit(
+                "idempotency_decision",
                 request.trace_id,
-                f"tool:{tool_request.capability_name}",
-                lambda: execute_tool(
-                    capability,
-                    tool_request,
-                    decision,
-                    test_fault=request.test_fault,
+                session_id=request.session_id,
+                capability=tool_request.capability_name,
+                idempotency_key=idempotency_key,
+                action=idempotency_action,
+            )
+
+        if reserved is None or reserved.action == "execute":
+            tool_result = cast(
+                ToolResult,
+                self.telemetry.traced_call(
+                    request.trace_id,
+                    f"tool:{tool_request.capability_name}",
+                    lambda: execute_tool(
+                        capability,
+                        tool_request,
+                        decision,
+                        test_fault=request.test_fault,
+                    ),
                 ),
-            ),
-        )
+            )
+            if reserved is not None:
+                self.idempotency.complete(
+                    idempotency_key,
+                    request_digest,
+                    tool_result,
+                )
+        elif reserved.action == "replay" and reserved.result is not None:
+            tool_result = reserved.result
+            tool_result.payload["idempotency_resolution"] = "replayed"
+        elif reserved.action == "reconcile":
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="side_effect_unknown",
+                payload={
+                    "reason": "previous_effect_unknown",
+                    "effect_state": "side_effect_unknown",
+                    "reconciliation_required": "true",
+                },
+            )
+        elif reserved.action == "conflict":
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="validation_failure",
+                payload={"reason": "idempotency_key_payload_mismatch"},
+            )
+        else:
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="failed",
+                payload={
+                    "reason": "idempotency_request_in_progress",
+                    "effect_state": "not_executed",
+                },
+            )
         tool_result.payload["authorization_mode"] = tool_result.payload.get(
             "authorization_mode", request.authorization_mode
         )

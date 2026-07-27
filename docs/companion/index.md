@@ -17,13 +17,20 @@ Online companion хранит материалы, которые должны б
 - Example artifacts:
   `artifacts/trace-demo.jsonl`,
   `artifacts/trace-failed-tool-timeout.jsonl`,
+  `artifacts/trace-post-dispatch-timeout.jsonl`,
   `artifacts/session-failed-tool-timeout.json`,
-  `artifacts/eval-failed-run-timeout.json`
+  `artifacts/eval-failed-run-timeout.json`,
+  `artifacts/eval-unknown-effect-reconciliation.json`
 - Filled examples:
   `examples/capability-contract-support-ticket.md`,
   `examples/release-decision-record-support-ticket.md`,
   `examples/incident-record-support-ticket-timeout.md`,
-  `examples/production-readiness-support-ticket.md`
+  `examples/production-readiness-support-ticket.md`,
+  `examples/context-manifest-support-ticket.yaml`,
+  `examples/threat-map-negative-tests.yaml`,
+  `examples/slo-card-support-ticket.yaml`,
+  `examples/adlc-transition-support-ticket.yaml`,
+  `examples/readiness-rubric-support-ticket.yaml`
 - [Полный reference package walkthrough](../appendix/reference-package.md)
 - [Полный список источников](../appendix/sources.md)
 

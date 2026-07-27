@@ -22,9 +22,7 @@
   "pending_approval_capability_names": [],
   "approval_status_counts": {},
   "latest_failure_reason": "tool_timeout",
-  "duplicate_ticket_scenarios": [
-    "failed_run_timeout"
-  ],
+  "duplicate_ticket_scenarios": [],
   "sessions": [
     {
       "session": {
@@ -82,9 +80,12 @@
         {
           "trace_id": "trace-eval-failed-run-001",
           "status": "failed",
-          "user_input": "Please create a ticket for this onboarding issue. [simulate_failure=tool_timeout]",
+          "user_input": "[REDACTED]",
+          "input_sha256": "edaf461dd5cf4ef498bfddb0a480355e6e42f669768fe3d42f9da2e67d88b81a",
           "output_text": "Runtime halted before side effects completed: create_ticket returned failed (tool_timeout).",
           "failure_reason": "tool_timeout",
+          "task_success": false,
+          "side_effect_status": "not_executed",
           "request_agent_id": "support-triage-ref",
           "capability_session_id": "",
           "capability_session_status": "failed",
@@ -101,8 +102,7 @@
         "labels": [
           "failed_run",
           "tool_timeout",
-          "failure_drill",
-          "duplicate_ticket_eval_passed"
+          "failure_drill"
         ],
         "expected_outcomes": {
           "latest_status": "failed",
@@ -110,22 +110,8 @@
           "required_output_substrings": [
             "tool_timeout"
           ],
-          "failed_run_traceable": true,
-          "duplicate_ticket_eval_passed": true,
-          "idempotency_key_required": true,
-          "max_ticket_side_effects": 1
-        },
-        "grading_rules": [
-          {
-            "type": "duplicate_ticket_guard",
-            "expected": {
-              "idempotency_key_required": true,
-              "max_ticket_side_effects": 1,
-              "on_unknown_side_effect": "stop_or_reconcile"
-            },
-            "blocking": true
-          }
-        ]
+          "failed_run_traceable": true
+        }
       }
     }
   ]

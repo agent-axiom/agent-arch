@@ -35,17 +35,24 @@ Even in a small runtime.
 
 ```json
 {
+  "schema_version": "1.0",
   "event_type": "run_start",
   "trace_id": "trace-demo-001",
   "payload": {
-    "agent_id": "support-triage-ref",
+    "input_description": "[REDACTED]",
+    "input_sha256": "edaf461dd5cf4ef498bfddb0a480355e6e42f669768fe3d42f9da2e67d88b81a",
     "tenant_id": "tenant-acme",
     "principal_id": "user-42",
     "session_id": "session-demo-001",
-    "user_input": "Please create a ticket for this onboarding issue."
-  }
+    "agent_id": "support-triage-ref"
+  },
+  "redacted_fields": []
 }
 ```
+
+The unkeyed SHA-256 is only a deterministic replay checksum in this teaching
+package. It is not a safe correlation identifier for low-entropy sensitive
+input; production correlation should use keyed HMAC and managed key rotation.
 
 The minimum useful field set is:
 
@@ -276,7 +283,7 @@ You can inspect this directly:
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
+.venv/bin/python -m agent_runtime_ref export-events --simulate-failure post_dispatch_timeout --output artifacts/trace-post-dispatch.jsonl
 .venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

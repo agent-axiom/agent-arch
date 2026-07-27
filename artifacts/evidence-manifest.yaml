@@ -5,7 +5,7 @@ measured_at: 2026-07-16T00:00:00Z
 artifacts:
   - id: eval-dataset
     path: eval-dataset.json
-    sha256: dacdfe16a02d9fd8bfd23ab7cb9223adc31463503dad9a4f62d4aea444109ef9
+    sha256: 830861b6eeb8c346ea5b7d600d44c0e45072ea54f617468b16bd572a0c6247df
 signals:
   trace_coverage:
     value: true

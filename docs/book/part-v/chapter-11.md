@@ -229,32 +229,35 @@ side_effect: created
 Ниже каркас, который показывает самую идею: span должен не просто стартовать и завершаться, а фиксировать тип шага и исход в структуре, пригодной для анализа.
 
 ```python
-from dataclasses import dataclass
 from time import monotonic
 
-
-@dataclass
-class SpanResult:
-    name: str
-    status: str
-    duration_ms: int
+from agent_runtime_ref.models import ToolResult
 
 
 def traced_step(name: str, fn):
     started = monotonic()
+    status = "success"
     try:
-        fn()
-        status = "success"
+        result = fn()
+        if isinstance(result, ToolResult) and result.status != "success":
+            status = "failure"
+        return result
     except Exception:
         status = "failure"
         raise
     finally:
         duration_ms = int((monotonic() - started) * 1000)
-        emit_span(SpanResult(name=name, status=status, duration_ms=duration_ms))
+        emit_span(name=name, status=status, duration_ms=duration_ms)
 
 
-def emit_span(result: SpanResult) -> None:
-    print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
+def emit_span(*, name: str, status: str, duration_ms: int) -> None:
+    print(
+        {
+            "span_name": name,
+            "status": status,
+            "duration_ms": duration_ms,
+        }
+    )
 ```
 
 Этот пример нарочно простой. Его задача не заменить SDK трассировки, а показать принцип: каждый важный шаг должен оставлять после себя структурированный след.
@@ -281,7 +284,7 @@ def emit_span(result: SpanResult) -> None:
 Практическое правило простое:
 
 - логируй метаданные и производные факты;
-- логируй идентификаторы и хэши там, где это помогает;
+- используй неключевые хэши только как несекретные контрольные суммы, а keyed HMAC — для корреляции чувствительных значений;
 - полные чувствительные полезные нагрузки не клади в общие телеметрические пайплайны без особой причины.
 
 ## 13. Что чаще всего ломается в наблюдаемости агентной системы
