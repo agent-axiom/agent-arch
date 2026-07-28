@@ -163,6 +163,21 @@ The healthiest strategy usually looks like this:
 
 This is not dogma. It is a good defense against premature complexity.
 
+### 9.2. When Not to Spawn Subagents
+
+Anthropic's production write-up on its Research system is useful because it explains both sides of the trade-off: multi-agent research can win when the task is valuable, breadth-first, tool-heavy, and larger than one context window, but it can also spend roughly an order of magnitude more tokens than chat-style interaction.[^anthropic-multi-agent-research] That makes subagent fanout an economic and reliability decision, not a badge of sophistication.
+
+Before spawning subagents, run a short gate:
+
+- **independence:** branches can really proceed without shared mutable state;
+- **shared-context need:** the result does not depend on nuance that cannot be safely compressed into a transfer packet;
+- **write-risk:** the subagent does not get an independent high-risk write path without a policy or approval boundary;
+- **expected value:** quality or latency improves more than coordination overhead and cost increase;
+- **token/tool budget:** there is an explicit ceiling on fanout, tool calls, context handoff, and retries;
+- **merge risk:** someone owns synthesis and conflict detection.
+
+If two or three items are blurry, stay in single-agent or manager-led mode. Subagent spawn is not a thinking accelerator; it buys more context windows at the price of coordination, telemetry, and merge discipline.
+
 ## 10. Code Sketch: Manager Pattern
 
 ```python
@@ -232,3 +247,4 @@ If the answers are blurry, the pattern is not mature yet.
 - [Sources](../../appendix/sources.en.md)
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).

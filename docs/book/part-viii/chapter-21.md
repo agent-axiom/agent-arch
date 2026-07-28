@@ -193,6 +193,21 @@ flowchart LR
 
 </div>
 
+### 6.1. Сдерживание должно быть первым управляемым действием
+
+Когда сигнал уже правдоподобен, команда не должна ждать полного root-cause analysis, чтобы уменьшить blast radius. Практика containment подсказывает более быстрый первый ход: перевести run, capability, sandbox profile или rollout wave в более узкий режим, а уже потом разбираться глубже.[^anthropic-containment]
+
+Типовые быстрые действия:
+
+- закрыть внешний egress и оставить только brokered internal gateway;
+- перевести write capability в approval-only или deny-by-default;
+- отозвать delegated credentials и потребовать re-approval после resume;
+- остановить sandbox snapshot reuse и запускать fresh session;
+- сохранить session evidence, но запретить direct debug внутри окружения с пользовательскими данными.
+
+Так assurance loop не сводится к «найти баг». Он становится операционным контуром: signal → containment decision → owner → remediation → updated policy/eval/telemetry.
+
+
 ## 7. Исправление должно менять систему, а не только документацию
 
 Очень частая слабость: инцидент вроде бы разобрали, документ написали, а поведение системы почти не изменилось.
@@ -255,6 +270,10 @@ flowchart LR
 - кто меняет правила наблюдения и реагирования.
 
 Это прямо перекликается с организационной частью книги: дисциплина безопасности ломается там, где нет ясного владельца решения.
+
+Материал Anthropic про повторный запуск Fable 5 добавляет к этому практичный способ оценивать severity jailbreak-находок.[^anthropic-fable-5] Важен не сам продуктовый инцидент, а форма triage: finding оценивается по `capability_gain`, `breadth_of_capability_gain`, `ease_of_weaponization` и `discoverability`. Для агентной системы это полезно шире, чем cyber: та же рубрика помогает отделить низкорисковый обход safety margin от находки, которая открывает dangerous-tool path, масштабируется на несколько задач и легко воспроизводится одним prompt.
+
+Поэтому red-team finding должен иметь не только текст "jailbreak найден", но и severity record: какой control был обойден, какая новая capability стала доступна, насколько широк failure, насколько легко его превратить в вредный workflow, известна ли техника публично и какое response path запускается. Для низкой severity достаточно queue + monitoring; для высокой severity нужны hot mitigation, emergency disable, classifier/policy update и regression eval до следующего rollout.
 
 ## 10. Пример политики заверения
 
@@ -413,3 +432,4 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - [Источники](../../appendix/sources.md)
 
 [^google-assurance]: [Google Research, Security Assurance in the Age of Generative AI](https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/)
+[^anthropic-fable-5]: Anthropic, [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)

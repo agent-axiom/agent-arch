@@ -35,6 +35,10 @@
 - отправлять опасные операции на подтверждение человеком;
 - журналировать и решение, и факт исполнения.
 
+Кейс Microsoft “When prompts become shells” хорошо проверяет gateway, потому что превращает prompt injection в путь **prompt-to-tool-to-execution**.[^microsoft-prompts-shells] Модель не является security boundary: каждый аргумент, полученный от модели, остается attacker-controlled input, пока gateway его не провалидировал. Для execution-adjacent tools базовый минимум — deny-by-default, строгая type/path validation, запрет interpolation в shell/eval/template sinks, per-tool sandbox и audit event с redacted parameters, validation result, policy decision и sandbox profile.
+
+Следующий слой легко пропустить: gateway is a control-plane boundary не только для tools, но и для model/provider route, spend limits и capacity. Практическая **model/tool gateway boundary** должна фиксировать `provider_route_decision`, `cost_capacity_signal`, capacity/backpressure decision и нормальный outcome вроде `budget_exhausted`, если лимит сработал до или во время run.[^cloudflare-ai-gateway-spend-limits] Иначе команда получит два неполных контура: tool gateway предотвращает побочные эффекты, а model gateway, rate limits и cost telemetry живут отдельно как billing или reliability detail. Для safety это опасно: рост стоимости, перегрузка provider path или fallback на более слабую модель могут быть тем же сигналом деградации, что и policy denial.
+
 Ниже очень практичный шаблон политики для исполнения инструментов:
 
 ```yaml
@@ -112,9 +116,9 @@ sequenceDiagram
 
 </div>
 
-Разные продукты будут реализовывать это по-разному, но полезно иметь не один шаблон подтверждения, а несколько. Cloudflare Agents SDK прямо разделяет подтверждение долговечного рабочего процесса, подтверждение для чат-инструментов AI, клиентское подтверждение инструмента, запрос ввода MCP и легкие подтверждения через состояние или WebSocket.[^cloudflare-hitl] Это хорошая практическая подсказка: граница подтверждения должна соответствовать тому, где реально живет побочный эффект.
+Разные продукты будут реализовывать это по-разному, но полезно иметь не один шаблон подтверждения, а несколько. Cloudflare Agents SDK прямо разделяет **durable workflow approval**, подтверждение для чат-инструментов AI, клиентское подтверждение инструмента, **MCP elicitation**, **Code Mode approval** и легкие подтверждения через состояние или WebSocket.[^cloudflare-hitl] Это хорошая практическая подсказка: граница подтверждения должна соответствовать тому, где реально живет побочный эффект.
 
-Если подтверждение относится к долгому рабочему процессу, ему нужен тайм-аут, эскалация и долговечное возобновление. Если это браузерный или клиентский инструмент, рантайм должен понимать, что часть проверки и результата пришла с клиентской границы. Если это запрос ввода MCP, подтверждение похоже не на “да/нет”, а на запрос структурированного ввода с собственной схемой.
+Если подтверждение относится к долгому рабочему процессу, Cloudflare-модель делает gate явным через `waitForApproval()`, а agent-side методы `approveWorkflow()` и `rejectWorkflow()` продолжают или отклоняют ожидающий workflow. Такому gate нужны **timeout**, **escalation**, **audit trail** и долговечное возобновление. Если это браузерный или клиентский инструмент, рантайм должен понимать, что часть проверки и результата пришла с клиентской границы. Если это запрос ввода MCP, подтверждение похоже не на “да/нет”, а на запрос структурированного ввода с собственной схемой.
 
 Здесь полезно явно различать **быстрое чат-подтверждение** и **долговечное подтверждение рабочего процесса**. Быстрое подтверждение подходит для действия, которое можно безопасно решить в текущем цикле взаимодействия. Долговечное подтверждение должно жить в долговечном рабочем процессе: оно может ждать часы или дни, переживать перезапуск рантайма, иметь отдельный `approval_id`, срок действия, путь эскалации и доказательство в трассе, которое показывает, какой шаг был остановлен и какой шаг продолжился после решения.[^cloudflare-workflows]
 
@@ -183,6 +187,42 @@ sequenceDiagram
 
 Если на любой из этих вопросов нет ответа, у тебя, скорее всего, уже не след аудита, а просто наблюдаемость без достаточной подотчетности.[^google-ai-controls]
 
+### 5.2. Журнал аудита должен показывать границу сдерживания
+
+Если агент работает внутри sandbox, VM, brokered gateway или ограниченного egress profile, это должно быть видно в audit trail, а не оставаться устной договоренностью команды. Для расследования мало знать, что модель вызвала инструмент. Нужно знать, **какая граница исполнения действовала в момент вызова**.[^anthropic-containment]
+
+Минимальный набор связок:
+
+- `sandbox_profile_id` или имя execution profile;
+- `egress_policy` и итоговое egress decision;
+- `filesystem_scope` или workspace/snapshot id;
+- `credential_scope` и срок жизни delegated token;
+- `policy_decision_id`, из которого видно, почему действие попало именно в этот профиль;
+- `rollback_ref` или другой указатель на безопасную точку восстановления.
+
+Тогда audit trail отвечает не только на вопрос «кто разрешил действие?», но и на более важный вопрос: «почему даже разрешенное действие не могло выйти за заданный blast radius?»
+
+### 5.3. Blast radius budget должен быть частью разрешения
+
+Свежая практика containment у Anthropic полезна еще одним выводом: разрешение не должно отвечать только "можно ли это действие". Оно должно отвечать "какой максимальный ущерб это действие может причинить, если модель, пользователь или внешний контент поведут себя хуже ожиданий".[^anthropic-containment]
+
+Поэтому для высокорисковых возможностей полезно держать явный `blast_radius_budget` рядом с policy decision:
+
+- какие файлы, tenants, APIs и секреты физически недоступны для этого запуска;
+- какие операции доступны только на чтение, а какие могут писать;
+- какой egress считается не просто разрешенным доменом, а отдельным capability grant;
+- где проходит workspace boundary и можно ли удалять, перезаписывать или только читать;
+- какой emergency narrowing переводит capability, sandbox profile или rollout wave в более узкий режим.
+
+Тогда approval перестает быть единственной защитой. Пользователь или operator может ошибиться, но среда исполнения все равно не получает полномочия, которые не нужны для текущей задачи.
+
+### 5.4. Конфигурация и egress тоже являются capability
+
+Containment ломается, если рантайм загружает конфигурацию до того, как решил, чему можно доверять. Поэтому опасный класс стоит называть прямо: `pre_trust_config_loading`. Сюда попадают config files, workspace hooks, project metadata и startup scripts, которые агент успевает прочитать или выполнить раньше policy gate. Для файлового пути порядок должен быть скучным и проверяемым: сначала canonicalization, затем symlink resolution before path validation, затем проверка scope, и только потом чтение или исполнение.
+
+То же правило относится к сети. Одного allowlist домена недостаточно, если capability внутри этого домена шире задачи. `approved-domain exfiltration` возможна, когда агенту разрешили общаться с "правильным" сервисом, а он использует разрешенный канал для лишнего вывода данных, например через Files API, uploads, paste endpoints или search/indexing side effects. Более безопасная форма - `egress_capability_proxy`: прокси проверяет не только hostname, но и метод, endpoint, tenant, объем, MIME type, redaction и связь с текущим `policy_decision_id`.
+
+
 ## 6. Контур безопасности как набор привычек
 
 Очень хочется найти одну волшебную библиотеку, которая “сделает безопасность”. Но на практике периметр состоит из набора привычек:
@@ -242,8 +282,11 @@ sequenceDiagram
 - [Часть II. Контур безопасности](index.md)
 - [Источники](../../appendix/sources.md)
 
-[^cloudflare-hitl]: [Cloudflare Agents SDK, Human in the Loop](https://developers.cloudflare.com/agents/concepts/human-in-the-loop/)
-[^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
+[^cloudflare-hitl]: [Cloudflare Agents SDK, Human-in-the-loop patterns](https://developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop/)
+[^cloudflare-workflows]: [Cloudflare Agents SDK, Using Agents with Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
+[^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).

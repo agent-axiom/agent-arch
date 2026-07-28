@@ -100,6 +100,8 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 
 关于多智能体系统的因果追踪新工作又补充了一点：可靠性不应只被设计成编排模式，还必须是可诊断的系统。如果根因无法被定位，那么工作流虽然存在，但运行成熟度依然偏低。
 
+Symphony 这一类工作展示了另一条前沿压力：从集中式 orchestrator 转向 capability ledger、动态 coordinator selection 和 result voting。[^symphony-decentralized] 相关的 SYMPHONY planning 工作则用一组 heterogeneous LLM agents 增加 MCTS planning 中 rollout 分支的多样性。[^symphony-heterogeneous] 对本书来说，这不是可以直接照搬的默认 runtime，而是一个提醒：分布式协调越强，就越需要可证明的 capability records、quorum/retry semantics、投票来源证明、成本上限和冲突诊断。
+
 哪些内容已经可以较有把握地吸收到实践中：
 
 - 对过早拆成多智能体保持怀疑；
@@ -142,6 +144,20 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 
 真正重要的下一波设计变化，很可能就会出现在这三者的交叉点上。
 
+## 生产经验：data analytics agents
+
+GitHub 对 Qubot 的复盘是 internal analytics agent 的一个很实用的生产案例：价值不是来自“神奇 SQL prompts”，而是来自受治理的 interface、context layer、query engine 和 eval loop 组合。[^github-qubot] 这个 agent 可以通过 Slack、VS Code 和 Copilot CLI 使用；context 由 bronze/silver/gold 数据层共同贡献，通过 GitHub MCP Server 在运行时加载；context layer 的变更会经过 offline evals，使用 known prompts、ground-truth SQL、metadata、multiple trials，并报告 completion、accuracy 和 duration。
+
+本书的架构结论是：internal knowledge assistant 应该把 query review、source attribution、access boundaries 和 dataset ownership 当成 runtime contract 的一部分。如果 agent 回答 analytics question，trace 应该说明使用了哪个 context layer、应用了哪些 mandatory filters、选择了哪个 query engine、为什么允许或拒绝访问，以及哪个 eval case 防止这条路径回退。
+
+## 生产经验：multi-agent research
+
+Anthropic 对生产 Research 系统的复盘应该放在 research taxonomy 旁边，因为它说明了 multi-agent 什么时候在运营上成立，而不只是概念上成立。[^anthropic-multi-agent-research] 强信号是 breadth-first work：分支独立、corpus 很大、工具复杂，并且任务价值足以支付额外 token/tool budget。弱信号则是 coding-like 或 incident-like work：共享状态很密，coordination 与 merge risk 很快会吃掉收益。
+
+LangChain 较新的 multi-agent architecture 选择框架补上了更实用的 decision table：subagents、skills、handoffs 和 routers 对应不同约束；在团队真正遇到 context、parallelism 或 distributed ownership 限制之前，single agent with good tools 仍然应该是起点。[^langchain-multi-agent-architecture]
+
+本书的工程结论是：multi-agent frontier work 应该通过 delegation contract、effort budget、stop condition、source quality、tool efficiency、checkpoint/resume 和 traceability 来判断。否则团队只会比较漂亮的最终答案，却看不见过程已经变得更贵、更难复现或更难治理。
+
 ## 推荐阅读
 
 - EVOLVE-MEM，[A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
@@ -149,6 +165,11 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 - AgentTrace，[A Structured Logging Framework for Agent System Observability](https://openreview.net/forum?id=8IkLxhPY3G)
 - AgentTrace，[Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
+- Symphony，[A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019)
+- SYMPHONY，[Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623)
+- Anthropic，[How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
+- LangChain，[Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)
+- GitHub Blog，[How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/)
 
 ## 下一步做什么
 
@@ -158,3 +179,9 @@ Why Do Multiagent Systems Fail? 之所以特别有价值，是因为它给出的
 - [第 7 章：检索、压缩与后台更新](../book/part-iii/chapter-7.zh.md)
 - [第 13 章：离线评测、在线评测与回归门禁](../book/part-v/chapter-13.zh.md)
 - [实践篇：MCP 用于工具，A2A 用于智能体](../book/part-iv/practical-mcp-a2a.zh.md)
+
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^langchain-multi-agent-architecture]: LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^symphony-decentralized]: Ji Wang, Kashing Chen, Xinyuan Song, Ke Zhang, Lynn Ai, Eric Yang, Bill Shi, [Symphony: A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019).
+[^symphony-heterogeneous]: Wei Zhu, Zhiwen Tang, Kun Yue, [SYMPHONY: Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623).

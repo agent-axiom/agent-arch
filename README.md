@@ -30,6 +30,7 @@ This repository exists to document that full operating model.
 - a multilingual book on secure AI agent architecture
 - a GitHub Pages documentation site built with `MkDocs` and `Material for MkDocs`
 - a runnable reference runtime in `agent_runtime_ref/`
+- an installable agent skill in `skills/safe-agent-architecture/`
 - practical schemas, checklists, and operational artifacts
 - a modern Python-first tooling setup based on `uv`
 
@@ -57,6 +58,22 @@ uv run mkdocs serve
 ```
 
 The local site will be available at `http://127.0.0.1:8000/`.
+
+## Agent skill
+
+The repository includes `safe-agent-architecture`, an installable agent skill for designing, building, and reviewing safe agentic systems.
+
+From a local checkout:
+
+```bash
+npx skills add /path/to/agent-arch --skill safe-agent-architecture --agent codex
+```
+
+After the repository is public on GitHub, the same skill can be installed with:
+
+```bash
+npx skills add agent-axiom/agent-arch --skill safe-agent-architecture --agent codex
+```
 
 ## Checks
 

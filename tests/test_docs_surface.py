@@ -5830,6 +5830,52 @@ def test_chapter_24_misalignment_threads_three_canonical_cases() -> None:
         assert forbidden_chinese_marker not in chinese_text, forbidden_chinese_marker
 
 
+def test_chapter_24_ai_control_metrics_are_release_bearing() -> None:
+    expected_markers_by_file = {
+        "docs/book/part-viii/chapter-24.md": (
+            "AI Control Roadmap",
+            "runtime monitoring внутренних coding agents",
+            "release-bearing control metrics",
+            "потенциальной insider threat",
+            "какая доля трафика реально покрыта мониторингом",
+            "misalignment-relevant behavior",
+            "asynchronous review в synchronous block",
+            "monitored coverage, verifier recall, time-to-response",
+            "Securing the future of AI agents",
+            "How we monitor internal coding agents for misalignment",
+        ),
+        "docs/book/part-viii/chapter-24.en.md": (
+            "AI Control Roadmap",
+            "runtime monitoring for internal coding agents",
+            "release-bearing control metrics",
+            "potential insider threat",
+            "what fraction of traffic is actually monitored",
+            "misalignment-relevant behavior",
+            "asynchronous review to synchronous blocking",
+            "monitored coverage, verifier recall, time-to-response",
+            "Securing the future of AI agents",
+            "How we monitor internal coding agents for misalignment",
+        ),
+        "docs/book/part-viii/chapter-24.zh.md": (
+            "AI Control Roadmap",
+            "内部 coding agents 的 runtime monitoring",
+            "承载发布意义的控制指标",
+            "潜在内部人威胁",
+            "到底有多少 traffic 被监控",
+            "misalignment-relevant behavior",
+            "asynchronous review 升级为 synchronous blocking",
+            "monitored coverage",
+            "verifier recall",
+            "time-to-response",
+            "Securing the future of AI agents",
+            "How we monitor internal coding agents for misalignment",
+        ),
+    }
+
+    for path, expected_markers in expected_markers_by_file.items():
+        _assert_files_contain_all((path,), expected_markers)
+
+
 def test_chapter_24_chinese_risk_surface_labels_are_localized() -> None:
     text = _read("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (
@@ -17205,6 +17251,58 @@ def test_multilingual_google_integration_case_note_is_localized() -> None:
         assert marker not in chinese_text
 
 
+def test_google_agentic_enterprise_control_plane_checklist_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/google-integration-roadmap.md",
+            "docs/appendix/google-integration-roadmap.en.md",
+            "docs/appendix/google-integration-roadmap.zh.md",
+        ),
+        (
+            "20 questions for the Agentic Enterprise",
+            "control plane",
+            "agent registry",
+            "agent gateway",
+            "semantic policy gate",
+            "cost controls",
+            "budget telemetry",
+            "MCP",
+            "A2A",
+            "identity → registry → gateway → policy → sandbox → evals "
+            "→ cost controls → audit trail",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "agentic enterprise control plane",
+            "agent_identity_mode",
+            "agent_registry_record",
+            "agent_gateway_audit_event",
+            "semantic_policy_decision",
+            "capability_loading_mode",
+            "cost_control_signal",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "20 questions for the Agentic Enterprise",
+            "20-questions-for-the-agentic-enterprise",
+        ),
+    )
+
+
 def test_research_frontier_surfaces_three_canonical_frontier_cases() -> None:
     english_markers = (
         "Canonical frontier cases",
@@ -18849,6 +18947,1609 @@ def test_chapter_13_has_technical_sample_orientation_and_compact_exit() -> None:
 
     for path, expected_markers in expected_by_file.items():
         _assert_files_contain_all((path,), expected_markers)
+def test_internal_analytics_agent_case_is_documented() -> None:
+    common_markers = (
+        "How we built an internal data analytics agent",
+        "context layer",
+        "query engine",
+        "ground-truth SQL",
+        "query review",
+        "source attribution",
+        "access boundar",
+        "mandatory filters",
+    )
+    checked_files = (
+        "docs/appendix/research-frontier.md",
+        "docs/appendix/research-frontier.en.md",
+        "docs/appendix/research-frontier.zh.md",
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), common_markers)
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "GitHub Blog",
+            "How we built an internal data analytics agent",
+            "github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent",
+        ),
+    )
+
+
+def test_third_party_coding_agent_security_validation_is_documented() -> None:
+    checked_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    required_markers = (
+        "Security validation for third-party coding agents",
+        "CodeQL",
+        "GitHub Advisory Database",
+        "secret scanning",
+        "platform-owned gates",
+        "github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), required_markers)
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Security validation for third-party coding agents",
+            "github.blog/changelog/2026-06-09-security-validation-for-third-party-coding-agents",
+        ),
+    )
+
+
+def test_runtime_monitoring_enterprise_mcp_and_secret_scanning_cases_are_documented() -> None:
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "How we monitor internal coding agents for misalignment",
+            "runtime behavioral monitoring",
+            "safety case",
+            "chains of thought and actions",
+            "coverage, recall, and time-to-response",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "enterprise MCP",
+            "MCP server portals",
+            "Shadow MCP",
+            "AI Gateway",
+            "progressive tool disclosure",
+            "Code Mode",
+            "tool-list stuffing",
+            "search()",
+            "execute()",
+            "sandboxed isolate",
+            "permission scopes",
+            "policy choke point",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Secret scanning with GitHub MCP Server",
+            "before you commit",
+            "before you commit or open a pull request",
+            "push protection",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "How we monitor internal coding agents for misalignment",
+            "openai.com/index/how-we-monitor-internal-coding-agents-misalignment",
+            "Secret scanning with GitHub MCP Server is now generally available",
+            "github.blog/changelog/2026-05-05-secret-scanning-with-github-mcp-server-is-now-generally-available",
+            "Code Mode: give agents an entire API in 1,000 tokens",
+            "blog.cloudflare.com/code-mode-mcp",
+            "Connect your AI agents to MCP servers with Cloudflare Access",
+            "blog.cloudflare.com/zero-trust-mcp-server-portals",
+        ),
+    )
+
+
+def test_managed_remote_mcp_and_agentcore_interceptors_are_documented() -> None:
+    chapter_17_files = (
+        "docs/book/part-vii/chapter-17.md",
+        "docs/book/part-vii/chapter-17.en.md",
+        "docs/book/part-vii/chapter-17.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        ("docs/book/part-iv/chapter-9.md",),
+        (
+            "Gemini Enterprise Agent Platform remote MCP server",
+            "управляемая удаленная MCP-точка подключения",
+            "capability boundary",
+            "Agent Registry",
+            "IAM Deny policies",
+            "tenant/data boundary",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "Gemini Enterprise Agent Platform remote MCP server",
+            "managed remote MCP endpoint",
+            "capability boundary",
+            "Agent Registry",
+            "IAM Deny policies",
+        ),
+    )
+
+    _assert_files_contain_all(
+        chapter_17_files,
+        (
+            "AWS AgentCore Gateway",
+            "Policy and Lambda interceptors",
+            "Cedar",
+            "pre-call decision point",
+            "post-call response filter",
+            "denial reason",
+            "sanitized request/response",
+            "interceptor version",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "managed remote MCP endpoint → agent registry discovery",
+            "IAM-scoped toolsets",
+            "AWS Bedrock AgentCore Gateway Policy and Lambda interceptors",
+            "agent tool call → request interceptor → policy decision",
+            "sanitized_request",
+            "sanitized_response",
+            "interceptor_version",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Build agents even faster with Gemini Enterprise Agent Platform’s "
+            "fully-managed, remote MCP server",
+            "cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server",
+            "Secure AI agents with Policy and Lambda interceptors in Amazon "
+            "Bedrock AgentCore gateway",
+            "aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway",
+        ),
+    )
+
+
+def test_mcp_tool_surface_design_is_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_9_files,
+        (
+            "tool-surface contract",
+            "context bloat",
+            "tool confusion",
+            "tool_taxonomy",
+            "tool_visibility_mode",
+            "server_side_introspection",
+            "schema_constraints",
+            "agent_as_tool_policy",
+            "tool_evaluation",
+            "wrong-tool selection",
+            "schema confusion",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "AWS MCP tool design",
+            "context bloat",
+            "tool confusion",
+            "tool taxonomy → lazy disclosure → schema constraints",
+            "server-side introspection",
+            "tool evaluation",
+            "agent-as-tool",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "MCP tool design: practical approaches and tradeoffs",
+            "aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs",
+            "Design tools for AI agents",
+            "docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html",
+        ),
+    )
+
+
+def test_smartsheet_remote_mcp_facade_on_aws_is_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_9_files,
+        (
+            "Smartsheet remote MCP server on AWS",
+            "production remote MCP facade",
+            "one MCP layer serves internal and external agents",
+            "AI-optimized interface",
+            "token cost",
+            "schema-driven tool contracts",
+            "access tiers",
+            "OpenTelemetry",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Smartsheet remote MCP server on AWS",
+            "single production MCP facade",
+            "Smart Assist",
+            "external AI clients",
+            "Amazon ECS on AWS Fargate",
+            "Amazon Kinesis Data Streams",
+            "Amazon Managed Service for Apache Flink",
+            "Amazon Neptune",
+            "governed domain facade",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "How Smartsheet built a remote MCP server on AWS",
+            "aws.amazon.com/blogs/machine-learning/how-smartsheet-built-a-remote-mcp-server-on-aws",
+        ),
+    )
+
+
+def test_cloudflare_durable_object_rules_are_documented() -> None:
+    chapter_9_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_9_files,
+        (
+            "Rules of Durable Objects",
+            "Durable Agent Identity",
+            "atom of coordination",
+            "deterministic IDs",
+            "input and output gates",
+            "idempotent alarms",
+            "unexpected shutdowns",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Rules of Durable Objects",
+            "Durable Agent Identity",
+            "agent identity is the coordination atom",
+            "persistent state, not process memory",
+            "request → durable agent instance → persistent state → recovered fiber/job",
+            "in-memory timers, closures, or open fetches",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Rules of Durable Objects",
+            "developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects",
+        ),
+    )
+
+
+def test_cloudflare_agent_memory_bounded_service_is_documented() -> None:
+    chapter_5_files = (
+        "docs/book/part-iii/chapter-5.md",
+        "docs/book/part-iii/chapter-5.en.md",
+        "docs/book/part-iii/chapter-5.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_5_files,
+        (
+            "Cloudflare Agent Memory",
+            "bounded memory service",
+            "ingest",
+            "remember",
+            "recall",
+            "forget",
+            "supersession",
+            "export",
+            "filesystem/database interface",
+            "stale or conflicting memories",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "Cloudflare Agent Memory",
+            "database/filesystem interface",
+            "compaction ingest → classified memory",
+            "constrained recall/remember/forget/list API",
+            "supersession and export",
+            "stale or conflicting memories",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Agents that remember: introducing Agent Memory",
+            "blog.cloudflare.com/introducing-agent-memory",
+        ),
+    )
+
+
+def test_open_trust_stack_and_fable_jailbreak_severity_are_documented() -> None:
+    chapter_13_files = (
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+    )
+    chapter_21_files = (
+        "docs/book/part-viii/chapter-21.md",
+        "docs/book/part-viii/chapter-21.en.md",
+        "docs/book/part-viii/chapter-21.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    policy_files = (
+        "docs/appendix/policy-bundle-schema.md",
+        "docs/appendix/policy-bundle-schema.en.md",
+        "docs/appendix/policy-bundle-schema.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_13_files,
+        (
+            "Microsoft Foundry",
+            "Open Trust Stack",
+            "ASSERT",
+            "Agent Control Specification (ACS)",
+            "policy requirement",
+            "tool call",
+            "tool result",
+            "external action",
+        ),
+    )
+
+    _assert_files_contain_all(
+        policy_files,
+        (
+            "control_checkpoints",
+            "policy_requirement",
+            "predicate",
+            "control_version",
+            "eval_case_id",
+            "observed_signal",
+            "input",
+            "llm",
+            "state",
+            "tool_execution",
+            "output",
+            "runtime hook",
+            "audit event",
+            "regression case",
+        ),
+    )
+
+    _assert_files_contain_all(
+        chapter_21_files,
+        (
+            "Fable 5",
+            "capability_gain",
+            "breadth_of_capability_gain",
+            "ease_of_weaponization",
+            "discoverability",
+            "severity record",
+            "dangerous-tool path",
+            "regression eval",
+        ),
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "policy-driven eval → portable control checkpoint → production observability",
+            "policy requirement → generated eval scenario → failing trace",
+            "Cyber Jailbreak Severity",
+            "finding → severity record → response path",
+            "hot policy/classifier mitigation",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Build agents you can trust across any framework with open evals "
+            "and a control standard",
+            "devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents",
+            "Redeploying Fable 5",
+            "anthropic.com/news/redeploying-fable-5",
+        ),
+    )
+
+
+def test_tax_ai_practitioner_correction_eval_loop_is_documented() -> None:
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "OpenAI Tax AI",
+            "Crete",
+            "practitioner correction",
+            "production trace",
+            "tailored eval",
+            "scoped Codex task",
+            "engineering review",
+            "expert correction → production trace → reviewed finding → targeted eval",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Building self-improving tax agents with Codex",
+            "openai.com/index/building-self-improving-tax-agents-with-codex",
+        ),
+    )
+
+
+def test_google_continuous_agent_eval_loop_is_documented() -> None:
+    chapter_files = (
+        "docs/book/part-v/chapter-13.md",
+        "docs/book/part-v/chapter-13.en.md",
+        "docs/book/part-v/chapter-13.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_files,
+        (
+            "Online Monitors",
+            "Cloud Trace",
+            "Cloud Logging",
+            "Cloud Monitoring",
+            "evaluate your evals",
+            "trace_id",
+            "grader_version",
+            "failure_mode",
+            "review_required",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Evaluate your agents",
+            "Continuous evaluation with online monitors",
+            "Evaluate agent performance",
+        ),
+    )
+
+
+def test_project_think_runtime_primitive_failure_frame_is_documented() -> None:
+    chapter_markers = (
+        "Project Think",
+        "primitive -> failure mode -> runtime implication",
+        "durable execution with fibers",
+        "sub-agents",
+        "persistent sessions",
+        "sandboxed code execution",
+        "execution ladder",
+        "self-authored extensions",
+    )
+    checked_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), chapter_markers)
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Project Think: building the next generation of AI agents on Cloudflare",
+            "blog.cloudflare.com/project-think",
+            "Run Workflows",
+            "developers.cloudflare.com/agents/runtime/execution/run-workflows",
+            "Introducing Dynamic Workflows: durable execution that follows "
+            "the user, not the other way around",
+            "blog.cloudflare.com/dynamic-workflows",
+        ),
+    )
+
+
+def test_responses_api_computer_environment_runtime_contract_is_documented() -> None:
+    chapter_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_files,
+        (
+            "Responses API computer-environment",
+            "bounded tool-output cap",
+            "concurrent tool session",
+            "streamed observation",
+            "filesystem/artifact persistence",
+            "restricted network access",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "From model to agent: Equipping the Responses API with a computer environment",
+            "openai.com/index/equip-responses-api-computer-environment",
+        ),
+    )
+
+
+def test_cloudflare_agents_workflows_hitl_boundary_is_documented() -> None:
+    chapter_4_files = (
+        "docs/book/part-ii/chapter-4.md",
+        "docs/book/part-ii/chapter-4.en.md",
+        "docs/book/part-ii/chapter-4.zh.md",
+    )
+    chapter_16_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+    reference_files = (
+        "docs/appendix/reference-package.md",
+        "docs/appendix/reference-package.en.md",
+        "docs/appendix/reference-package.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_4_files,
+        (
+            "durable workflow approval",
+            "MCP elicitation",
+            "Code Mode approval",
+            "waitForApproval()",
+            "approveWorkflow()",
+            "rejectWorkflow()",
+            "timeout",
+            "escalation",
+            "audit trail",
+        ),
+    )
+
+    _assert_files_contain_all(
+        chapter_16_files,
+        (
+            "Agent shell + durable workflow spine",
+            "stateful interaction boundary",
+            "durable execution boundary",
+            "waitForApproval()",
+            "approveWorkflow()",
+            "rejectWorkflow()",
+            "months or longer",
+            "step.waitForEvent()",
+            "approval_id",
+            "resume_cursor",
+        ),
+    )
+
+    _assert_files_contain_all(
+        reference_files,
+        (
+            "Agent shell + durable workflow spine",
+            "workflow_instance_id",
+            "waiting_for",
+            "approval_id",
+            "approval_decision_ref",
+            "progress_event_id",
+        ),
+    )
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Human-in-the-loop patterns",
+            "developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop",
+            "Long-running agents",
+            "developers.cloudflare.com/agents/concepts/agentic-patterns/long-running-agents",
+            "Using Agents with Workflows",
+            "developers.cloudflare.com/agents/concepts/workflows",
+        ),
+    )
+
+
+def test_cloudflare_agents_case_study_surfaces_recoverable_execution_contract() -> None:
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    _assert_files_contain_all(
+        case_files,
+        (
+            "recoverable internal task",
+            "checkpointed work unit",
+            "stash snapshot",
+            "deploy/reconnect recovery",
+            "tool-call replay",
+            "bounded side-effect replay",
+        ),
+    )
+
+
+def test_cloudflare_flue_three_layer_agent_stack_is_documented() -> None:
+    chapter_markers = (
+        "Cloudflare/Flue",
+        "production agent stack",
+        "framework",
+        "harness",
+        "platform contract",
+        "developer experience",
+        "agentic loop",
+        "durable filesystem/workspace state",
+        "credential isolation",
+    )
+    checked_files = (
+        "docs/book/part-vii/chapter-16.md",
+        "docs/book/part-vii/chapter-16.en.md",
+        "docs/book/part-vii/chapter-16.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), chapter_markers)
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Bringing more agent harnesses and frameworks to Cloudflare, starting with Flue",
+            "blog.cloudflare.com/agents-platform-flue-sdk",
+        ),
+    )
+
+
+def test_microsoft_prompts_become_shells_tool_rce_case_is_documented() -> None:
+    case_study_markers = (
+        "Microsoft prompts become shells",
+        "prompt injection -> tool parameters -> host execution",
+        "AI models are not security boundaries",
+        "model-controlled parameters",
+        "tool exposure review",
+        "path validation",
+    )
+    checked_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), case_study_markers)
+
+    _assert_files_contain_all(
+        (
+            "docs/book/part-ii/chapter-4.md",
+            "docs/book/part-ii/chapter-4.en.md",
+            "docs/book/part-ii/chapter-4.zh.md",
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "prompt-to-tool-to-execution",
+            "attacker-controlled input",
+            "deny-by-default",
+            "per-tool sandbox",
+            "audit event",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "When prompts become shells: RCE vulnerabilities in AI agent frameworks",
+            "microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks",
+        ),
+    )
+
+
+def test_secure_mcp_tunnel_and_gateway_registry_cases_are_documented() -> None:
+    chapter_markers = (
+        "Secure MCP Tunnel",
+        "outbound-only",
+        "tunnel-client",
+        "private MCP server",
+        "long-poll",
+        "backpressure",
+        "narrow path",
+        "not a general-purpose network bridge",
+        "MCP Gateway and Registry",
+        "AI assets",
+        "fine-grained access control",
+        "audit log",
+    )
+    checked_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+
+    for path in checked_files:
+        _assert_files_contain_all((path,), chapter_markers)
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Secure MCP Tunnel",
+            "connect-private-mcp-servers-to-openai-products",
+            "Governing AI Assets at Scale with MCP Gateway and Registry",
+            "governing-ai-assets-at-scale-with-mcp-gateway-and-registry",
+        ),
+    )
+
+
+def test_github_copilot_browser_action_surface_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "Browser as an action surface",
+            "live browser",
+            "stale DOM",
+            "auth/session state",
+            "non-deterministic UI",
+            "evidence snapshot",
+            "screenshot",
+            "console errors",
+            "network domain controls",
+            "workspace trust",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Browser tools for GitHub Copilot in VS Code are generally available",
+            "github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available",
+        ),
+    )
+
+
+def test_agent_builder_copilot_and_cloudflare_budget_cases_are_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-13.md",
+            "docs/book/part-v/chapter-13.en.md",
+            "docs/book/part-v/chapter-13.zh.md",
+        ),
+        (
+            "Agent Builder",
+            "Evals platform",
+            "Agents SDK",
+            "export paths",
+        ),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-v/chapter-13.md",),
+        ("30 ноября 2026", "переносимые datasets"),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-v/chapter-13.en.md",),
+        ("30 November 2026", "portable datasets"),
+    )
+    _assert_files_contain_all(
+        ("docs/book/part-v/chapter-13.zh.md",),
+        ("2026 年 11 月 30 日", "portable datasets"),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/book/part-vii/chapter-16.md",
+            "docs/book/part-vii/chapter-16.en.md",
+            "docs/book/part-vii/chapter-16.zh.md",
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "AGENTS.md",
+            "Copilot code review",
+            "Copilot cloud agent",
+            "automations",
+            "repository events",
+            "BYOK",
+            "provider-neutral control plane",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/book/part-vii/chapter-16.md",
+            "docs/book/part-vii/chapter-16.en.md",
+            "docs/book/part-vii/chapter-16.zh.md",
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "workflow-constrained review",
+            "pull request evidence",
+            "diff-anchored review questions",
+            "narrow-before-read",
+            "tool_trace",
+            "review_cost",
+            "quality_gate",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Better tools made Copilot code review worse",
+            "github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "IDE agents",
+            "managed work queues",
+            "parallel sessions",
+            "usage_accounting",
+            "model_policy",
+            "human_feedback_refs",
+            "operator loop",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-12.md",
+            "docs/book/part-v/chapter-12.en.md",
+            "docs/book/part-v/chapter-12.zh.md",
+        ),
+        (
+            "Cloudflare AI Gateway",
+            "spend limits",
+            "budget-aware gateway",
+            "429",
+            "budget_exhausted",
+            "retry/backoff",
+            "fallback policy",
+            "trace attribution",
+            "identity-bound spend limit",
+            "provider routing decision",
+            "fallback/degraded mode",
+            "run-level SLO impact",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "introducing-agentkit",
+            "2026-06-02-schedule-and-automate-tasks-with-copilot-cloud-agent",
+            "2026-06-18-copilot-code-review-agents-md-support-and-ui-improvements",
+            "2026-06-23-github-copilot-app-support-for-byok",
+            "2026-07-08-github-copilot-in-visual-studio-code-june-2026-releases",
+            "openai.com/index/how-agents-are-transforming-work",
+            "2026-06-05-spend-limits",
+            "ai-gateway/features/spend-limits",
+        ),
+    )
+
+
+def test_governed_agent_execution_loop_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "governed agent execution loop",
+            "bounded workspace",
+            "policy-mediated tools/network",
+            "approval gates",
+            "staged output",
+            "automated validation",
+            "audit/monitoring",
+            "Agent Workflow Firewall",
+            "Safe Outputs",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "governed agent execution loop",
+            "execution_loop_id",
+            "bounded_workspace_ref",
+            "network_policy_decision",
+            "approval_decision_id",
+            "staged_output_ref",
+            "validation_gate_results",
+            "constraint_bypass_attempt",
+            "governed_execution_loop_step",
+            "Safe Outputs",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Running Codex safely at OpenAI",
+            "running-codex-safely",
+            "Security architecture of GitHub Agentic Workflows",
+            "github.github.com/gh-aw/introduction/architecture",
+        ),
+    )
+
+
+def test_openai_hugging_face_eval_incident_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "OpenAI/Hugging Face evaluation incident",
+            "ExploitGym",
+            "package registry cache proxy",
+            "constrained network",
+            "lateral movement",
+            "forensic reconstruction",
+            "open-weight model",
+            "eval containment failure",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "OpenAI and Hugging Face partner to address security incident during model evaluation",
+            "hugging-face-model-evaluation-security-incident",
+            "Security incident disclosure — July 2026",
+            "security-incident-july-2026",
+            "ExploitGym: Can AI Agents Turn Security Vulnerabilities into Real Attacks?",
+            "2605.11086",
+        ),
+    )
+
+
+def test_openai_deployment_simulation_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-13.md",
+            "docs/book/part-v/chapter-13.en.md",
+            "docs/book/part-v/chapter-13.zh.md",
+        ),
+        (
+            "Deployment simulation",
+            "deployment simulation",
+            "candidate_model",
+            "conversation_prefix",
+            "tool_environment_ref",
+            "failure modes",
+            "tool-use regression",
+            "post-release validation hook",
+            "deployment-like contexts",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Predicting model behavior before release by simulating deployment",
+            "openai.com/index/deployment-simulation",
+        ),
+    )
+
+
+def test_langchain_state_of_agent_engineering_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-13.md",
+            "docs/book/part-v/chapter-13.en.md",
+            "docs/book/part-v/chapter-13.zh.md",
+        ),
+        (
+            "State of Agent Engineering",
+            "57.3%",
+            "32%",
+            "89%",
+            "52.4%",
+            "quality blocker",
+            "observability baseline",
+            "eval adoption gap",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "State of Agent Engineering",
+            "langchain.com/state-of-agent-engineering",
+        ),
+    )
+
+
+def test_aws_toolsimulator_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-13.md",
+            "docs/book/part-v/chapter-13.en.md",
+            "docs/book/part-v/chapter-13.zh.md",
+        ),
+        (
+            "ToolSimulator",
+            "LLM-powered tool simulation",
+            "live API calls",
+            "static mocks",
+            "multi-turn workflows",
+            "tool simulator contract",
+            "simulated_tool_state",
+            "tool simulator fidelity",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "ToolSimulator: scalable tool testing for AI agents",
+            "aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents",
+        ),
+    )
+
+
+def test_aws_agentcore_observability_debugging_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-11.md",
+            "docs/book/part-v/chapter-11.en.md",
+            "docs/book/part-v/chapter-11.zh.md",
+        ),
+        (
+            "AgentCore Observability",
+            "silent failure",
+            "infinite loop",
+            "tool invocation failure",
+            "reasoning step",
+            "tool selection",
+            "workflow break",
+            "debugging workflow",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Debugging production agents with Amazon Bedrock AgentCore Observability",
+            "aws.amazon.com/blogs/machine-learning/debugging-production-agents-with-amazon-bedrock-agentcore-observability",
+        ),
+    )
+
+
+def test_agentrx_trace_level_diagnosis_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/causal-debugging.md",
+            "docs/appendix/causal-debugging.en.md",
+            "docs/appendix/causal-debugging.zh.md",
+        ),
+        (
+            "AgentRx",
+            "trajectory normalization",
+            "constraint synthesis",
+            "critical failure step",
+            "failure taxonomy",
+            "auditable validation log",
+            "replay and minimize",
+            "regression eval",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Systematic debugging for AI agents: introducing the AgentRx framework",
+            "systematic-debugging-for-ai-agents-introducing-the-agentrx-framework",
+            "AgentRx: Diagnosing AI Agent Failures from Execution Trajectories",
+            "microsoft/AgentRx",
+        ),
+    )
+
+
+def test_production_agent_runtime_contract_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-vii/chapter-16.md",
+            "docs/book/part-vii/chapter-16.en.md",
+            "docs/book/part-vii/chapter-16.zh.md",
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "isolated session",
+            "durable workspace",
+            "scoped credentials",
+            "egress/tool boundary",
+            "trace and cost ledger",
+            "PII redaction",
+            "platform security validation",
+            "human review artifact",
+            "CodeQL",
+            "dependency risk",
+            "secret scanning",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "workspace_id",
+            "workspace_persistence",
+            "credential_scope",
+            "egress_profile",
+            "cost_ledger_ref",
+            "security_validation_status",
+            "validation_gate_results",
+            "human_review_artifact_ref",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore",
+            "It’s safe to close your laptop now: Hosting coding agents on Amazon Bedrock AgentCore",
+            "Security validation for third-party coding agents",
+        ),
+    )
+
+
+def test_cloudflare_ai_traffic_controls_are_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "Cloudflare AI traffic controls",
+            "Search / Agent / Training",
+            "Content-Signal",
+            "use=reference",
+            "Verified",
+            "transitive trust",
+            "Forwarded",
+            "outbound identity",
+            "declared purpose",
+            "audit trail",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Your site, your rules: new AI traffic options for all customers",
+            "blog.cloudflare.com/content-independence-day-ai-options",
+        ),
+    )
+
+
+def test_cloudflare_monetization_gateway_for_agent_facing_resources_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "Monetization Gateway",
+            "x402",
+            "agent-facing resource",
+            "payment-gated resource",
+            "MCP tool call",
+            "payment proof",
+            "policy decision before the tool call",
+            "metering record",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Announcing the Monetization Gateway",
+            "blog.cloudflare.com/monetization-gateway",
+        ),
+    )
+
+
+def test_github_agentic_autofix_validation_loop_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "Agentic autofix for code scanning alerts",
+            "Assign to Copilot",
+            "re-running CodeQL",
+            "validation steps",
+            "single pull request",
+            "best-effort validation",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Agentic autofix for code scanning alerts in public preview",
+            "github.blog/changelog/2026-07-10-agentic-autofix-for-code-scanning-alerts-in-public-preview",
+        ),
+    )
+
+
+def test_github_copilot_agentic_harness_evals_are_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-v/chapter-13.md",
+            "docs/book/part-v/chapter-13.en.md",
+            "docs/book/part-v/chapter-13.zh.md",
+        ),
+        (
+            "GitHub Copilot agentic harness",
+            "same model",
+            "same benchmark task",
+            "model-vendor harness",
+            "token efficiency",
+            "run-to-run variance",
+            "cost profile",
+            "Auto model selection",
+            "harness-level release gate",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Evaluating performance and efficiency of the "
+            "GitHub Copilot agentic harness across models and tasks",
+            "github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks",
+        ),
+    )
+
+
+def test_google_adk_polymorphic_schema_registry_is_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        (
+            "metadata registry + runtime schema injection",
+            "Static Prompting",
+            "Attention Diffusion",
+            "schema_descriptor_id",
+            "validation_hook",
+            "schema source of truth",
+            "runtime validation boundary",
+            "schema_version",
+            "Polymorphic Validator",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/reference-package.md",
+            "docs/appendix/reference-package.en.md",
+            "docs/appendix/reference-package.zh.md",
+        ),
+        (
+            "polymorphic_schema_registry",
+            "schema_descriptor_id",
+            "validation_hook",
+            "validated_tool_call",
+            "validation_error_code",
+            "schema_version",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent "
+            "Systems with Google's ADK",
+            "cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk",
+        ),
+    )
+
+
+def test_cloudflare_agents_recovery_and_delegated_tools_are_documented() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-vii/chapter-16.md",
+            "docs/book/part-vii/chapter-16.en.md",
+            "docs/book/part-vii/chapter-16.zh.md",
+        ),
+        (
+            "detached sub-agent run",
+            "durable milestones",
+            "runTurn",
+            "deploy/eviction/reconnect",
+            "stream stall watchdog",
+            "interrupted tool-call repair",
+            "client-provided tools",
+            "clientTools",
+            "onClientToolCall",
+            "continuation_id",
+            "last_durable_checkpoint",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "continuation_id",
+            "last_durable_checkpoint",
+            "recovery_reason",
+            "client_tool_allowlist",
+            "deploy/eviction/connection churn",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Agents SDK adds background sub-agents and a unified turn entry point",
+            "Agents SDK improves browser automation, code execution, and recovery",
+            "developers.cloudflare.com/changelog/product-group/ai",
+        ),
+    )
 
 
 def test_agent_threat_model_matrix_covers_required_classes() -> None:
@@ -18913,6 +20614,39 @@ def test_chapter_3_defense_in_depth_map_covers_control_layers() -> None:
     )
 
     _assert_files_contain_all(checked_files, required_markers)
+
+
+def test_chapter_4_gateway_boundary_covers_model_cost_and_capacity_controls() -> None:
+    _assert_files_contain_all(
+        (
+            "docs/book/part-ii/chapter-4.md",
+            "docs/book/part-ii/chapter-4.en.md",
+            "docs/book/part-ii/chapter-4.zh.md",
+        ),
+        (
+            "gateway is a control-plane boundary",
+            "model/tool gateway boundary",
+            "provider_route_decision",
+            "cost_capacity_signal",
+            "capacity/backpressure decision",
+            "budget_exhausted",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "model_tool_gateway_boundary",
+            "provider_route_decision",
+            "cost_capacity_signal",
+            "capacity_backpressure_decision",
+            "budget_exhausted",
+        ),
+    )
 
 
 def test_chapter_3_unified_threat_evidence_trace_links_are_clickable() -> None:
@@ -19291,6 +21025,144 @@ def test_russian_practical_a2a_diagram_uses_localized_labels() -> None:
         assert marker in text, marker
     for marker in forbidden_markers:
         assert marker not in text, marker
+
+
+def test_microsoft_mcp_tool_description_poisoning_case_is_documented() -> None:
+    case_study_markers = (
+        "Microsoft reading to acting",
+        "metadata poisoning",
+        "supply-chain risk",
+        "tool metadata diff",
+        "re-attestation",
+        "least-agency disclosure",
+        "behavior-drift monitoring",
+        "quarantine path",
+        "read-only → write/action",
+    )
+    checked_case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+
+    for path in checked_case_files:
+        _assert_files_contain_all((path,), case_study_markers)
+
+    chapter_markers = {
+        "docs/book/part-iv/chapter-9.md": (
+            "tool descriptions as system prompts",
+            "silent re-trust",
+            "least agency",
+            "Allow all tool access",
+            "description diff",
+            "new endpoints",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "tool descriptions as system prompts",
+            "silent re-trust",
+            "least agency",
+            "Allow all tool access",
+            "description diff",
+            "new endpoints",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "tool descriptions as system prompts",
+            "silent re-trust",
+            "least agency",
+            "Allow all tool access",
+            "description diff",
+            "new endpoints",
+        ),
+    }
+
+    for path, required in chapter_markers.items():
+        _assert_files_contain_all((path,), required)
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Microsoft Security Blog",
+            "Securing AI agents: When AI tools move from reading to acting",
+            "securing-ai-agents-ai-tools-move-from-reading-acting",
+        ),
+    )
+
+
+def test_microsoft_networked_agent_red_team_case_is_documented() -> None:
+    chapter_markers = (
+        "networked-agent threat model",
+        "peer message is data, not authority",
+        "propagation",
+        "amplification",
+        "trust capture",
+        "invisibility",
+        "Sybil resistance",
+        "hop and rate limits",
+        "cross-agent tracing",
+        "provenance logs",
+        "quarantine",
+    )
+    _assert_files_contain_all(
+        (
+            "docs/book/part-iv/chapter-9.md",
+            "docs/book/part-iv/chapter-9.en.md",
+            "docs/book/part-iv/chapter-9.zh.md",
+        ),
+        chapter_markers,
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/trace-schema.md",
+            "docs/appendix/trace-schema.en.md",
+            "docs/appendix/trace-schema.zh.md",
+        ),
+        (
+            "networked_agent_message",
+            "source_agent_id",
+            "principal_id",
+            "message_provenance_chain",
+            "peer_originated_instruction",
+            "propagation_depth",
+            "fanout_anomaly_score",
+            "sybil_independence_check",
+            "quarantine_event",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/case-studies.md",
+            "docs/appendix/case-studies.en.md",
+            "docs/appendix/case-studies.zh.md",
+        ),
+        (
+            "Microsoft networked-agent red team",
+            "agent worms",
+            "propagation",
+            "amplification",
+            "trust capture",
+            "invisibility",
+            "peer message is data, not authority",
+        ),
+    )
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        (
+            "Microsoft Research",
+            "Red-teaming a network of agents",
+            "red-teaming-a-network-of-agents",
+        ),
+    )
 
 
 def test_practical_a2a_trust_delegation_contract_covers_required_controls() -> None:
@@ -20195,6 +22067,53 @@ def test_reference_package_lifecycle_runtime_control_fields_are_documented() -> 
             assert f"`{field}`" in lifecycle_section, (path, field)
 
 
+def test_aws_agentcore_extended_mcp_support_is_integrated() -> None:
+    chapter_files = (
+        "docs/book/part-iv/chapter-9.md",
+        "docs/book/part-iv/chapter-9.en.md",
+        "docs/book/part-iv/chapter-9.zh.md",
+    )
+    case_files = (
+        "docs/appendix/case-studies.md",
+        "docs/appendix/case-studies.en.md",
+        "docs/appendix/case-studies.zh.md",
+    )
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    _assert_files_contain_all(
+        chapter_files,
+        (
+            "AgentCore Gateway extended MCP support",
+            "`outputSchema`",
+            "`listing_mode`",
+            "`tool_annotations`",
+            "`Mcp-Session-Id`",
+            "`retry_original_tool_call`",
+            "mid-stream failure",
+        ),
+    )
+    _assert_files_contain_all(
+        case_files,
+        (
+            "AWS AgentCore Gateway extended MCP support",
+            "dynamic listing",
+            "OAuth 2.0 on-behalf-of token exchange",
+            "not resumable",
+        ),
+    )
+    _assert_files_contain_all(
+        source_files,
+        (
+            "Extending MCP support for Amazon Bedrock AgentCore Gateway",
+            "extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2",
+        ),
+    )
+
+
 def test_reference_package_export_events_identity_fields_are_documented() -> None:
     required_fields = (
         "session_id",
@@ -20240,6 +22159,396 @@ def test_reference_package_eval_artifact_fields_are_documented() -> None:
         eval_section = text.split("export-eval-dataset", maxsplit=1)[1]
         for field in required_fields:
             assert f"`{field}`" in eval_section, (path, field)
+
+
+def test_recent_sandbox_loop_and_autonomy_sources_are_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-v/chapter-12.md": (
+            "Sandbox is part of the agent contract",
+            "isolated filesystem",
+            "limited network access",
+            "resource limits",
+            "controlled reusability",
+            "kernel-level isolation",
+        ),
+        "docs/book/part-iv/chapter-9.md": (
+            "loop engineering",
+            "agent loop",
+            "verification loop",
+            "event-driven loop",
+            "hill-climbing loop",
+        ),
+        "docs/book/part-vii/chapter-16.md": (
+            "Autonomy ladder",
+            "who sets the goal",
+            "who approves the plan",
+            "who accepts the result",
+            "who chooses the next problem",
+        ),
+        "docs/appendix/sources.md": (
+            "How to Choose the Right Sandbox for AI Agents",
+            "The Art of Loop Engineering",
+            "When AI builds itself",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_anthropic_containment_lessons_are_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-ii/chapter-3.md": (
+            "contain capability before supervising behavior",
+            "детерминированная среда обязана сдерживать capability",
+        ),
+        "docs/book/part-ii/chapter-3.en.md": (
+            "contain capability before supervising behavior",
+            "deterministic environment must contain capability",
+        ),
+        "docs/book/part-ii/chapter-3.zh.md": (
+            "contain capability before supervising behavior",
+            "确定性环境必须先遏制 capability",
+        ),
+        "docs/book/part-ii/chapter-4.md": (
+            "pre_trust_config_loading",
+            "symlink resolution before path validation",
+            "approved-domain exfiltration",
+            "egress_capability_proxy",
+            "Files API",
+        ),
+        "docs/book/part-ii/chapter-4.en.md": (
+            "pre_trust_config_loading",
+            "symlink resolution before path validation",
+            "approved-domain exfiltration",
+            "egress_capability_proxy",
+            "Files API",
+        ),
+        "docs/book/part-ii/chapter-4.zh.md": (
+            "pre_trust_config_loading",
+            "symlink resolution before path validation",
+            "approved-domain exfiltration",
+            "egress_capability_proxy",
+            "Files API",
+        ),
+        "docs/book/part-iii/chapter-5.md": (
+            "startup_persistent_state_scan",
+            "persistent memory poisoning",
+        ),
+        "docs/book/part-iii/chapter-5.en.md": (
+            "startup_persistent_state_scan",
+            "persistent memory poisoning",
+        ),
+        "docs/book/part-iii/chapter-5.zh.md": (
+            "startup_persistent_state_scan",
+            "persistent memory poisoning",
+        ),
+        "docs/book/part-iv/chapter-9.md": (
+            "tool output is an attack surface",
+            "remote tool может измениться после approval",
+            "fake data first",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "tool output is an attack surface",
+            "remote tool can change after approval",
+            "fake data first",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "tool output is an attack surface",
+            "remote tool 可能在 approval 之后改变",
+            "fake data first",
+        ),
+        "docs/appendix/sources.md": (
+            "How we contain Claude across products",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_anthropic_managed_agents_contract_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-vii/chapter-16.md": (
+            "session не является context window",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "tool-call error",
+            "tokens are never reachable from the sandbox",
+        ),
+        "docs/appendix/reference-package.md": (
+            "Brain / Hands / Session",
+            "`wake(sessionId)`",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "failed sandbox/tool",
+            "proxy/vault",
+        ),
+        "docs/book/part-vii/chapter-16.en.md": (
+            "The session is not the context window",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "managed tool error",
+            "tokens are never reachable from the sandbox",
+        ),
+        "docs/appendix/reference-package.en.md": (
+            "Brain / Hands / Session",
+            "`wake(sessionId)`",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "sandbox or tool fails",
+            "proxy/vault",
+        ),
+        "docs/book/part-vii/chapter-16.zh.md": (
+            "session 不是 context window",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "tool 返回了受控错误",
+            "raw credentials",
+        ),
+        "docs/appendix/reference-package.zh.md": (
+            "Brain / Hands / Session",
+            "`wake(sessionId)`",
+            "`getEvents()`",
+            "`emitEvent(id, event)`",
+            "`execute(name, input)`",
+            "`provision({resources})`",
+            "sandbox 或 tool",
+            "proxy/vault",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_cloudflare_enterprise_mcp_contract_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/appendix/case-studies.md": (
+            "Cloudflare enterprise MCP",
+            "policy choke point",
+            "approved MCP portal",
+            "progressive tool disclosure",
+            "identity-bound authorization",
+            "Shadow MCP detection",
+        ),
+        "docs/appendix/case-studies.en.md": (
+            "Cloudflare enterprise MCP",
+            "policy choke point",
+            "approved MCP portal",
+            "progressive tool disclosure",
+            "identity-bound authorization",
+            "Shadow MCP detection",
+        ),
+        "docs/appendix/case-studies.zh.md": (
+            "Cloudflare enterprise MCP",
+            "policy choke point",
+            "approved MCP portal",
+            "progressive tool disclosure",
+            "identity-bound authorization",
+            "Shadow MCP detection",
+        ),
+        "docs/appendix/sources.md": (
+            "Scaling MCP adoption: reference architecture for safer enterprise MCP",
+        ),
+        "docs/appendix/sources.en.md": (
+            "Scaling MCP adoption: reference architecture for safer enterprise MCP",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "Scaling MCP adoption: reference architecture for safer enterprise MCP",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_commercial_control_plane_convergence_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-vi/chapter-15.md": (
+            "Commercial control-plane convergence",
+            "shared AI gateway",
+            "model/provider routing",
+            "cache policy",
+            "cost attribution",
+        ),
+        "docs/book/part-vi/chapter-15.en.md": (
+            "Commercial control-plane convergence",
+            "shared AI gateway",
+            "model/provider routing",
+            "cache policy",
+            "cost attribution",
+        ),
+        "docs/book/part-vi/chapter-15.zh.md": (
+            "Commercial control-plane convergence",
+            "shared AI gateway",
+            "model/provider routing",
+            "cache policy",
+            "cost attribution",
+        ),
+        "docs/appendix/trace-schema.md": (
+            "gateway-ready runtime",
+            "`gateway_id`",
+            "`fallback_reason`",
+            "`dlp_result`",
+            "`cost_attribution_ref`",
+        ),
+        "docs/appendix/trace-schema.en.md": (
+            "gateway-ready runtime",
+            "`gateway_id`",
+            "`fallback_reason`",
+            "`dlp_result`",
+            "`cost_attribution_ref`",
+        ),
+        "docs/appendix/trace-schema.zh.md": (
+            "gateway-ready runtime",
+            "`gateway_id`",
+            "`fallback_reason`",
+            "`dlp_result`",
+            "`cost_attribution_ref`",
+        ),
+        "docs/appendix/sources.md": (
+            "AI Gateway: Coding Agents",
+            "Monitoring & Observability in Microsoft Foundry, Part 2",
+        ),
+        "docs/appendix/sources.en.md": (
+            "AI Gateway: Coding Agents",
+            "Monitoring & Observability in Microsoft Foundry, Part 2",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "AI Gateway: Coding Agents",
+            "Monitoring & Observability in Microsoft Foundry, Part 2",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_agent_finder_capability_discovery_is_integrated() -> None:
+    required_markers_by_file = {
+        "docs/book/part-iv/chapter-9.md": (
+            "GitHub Agent Finder",
+            "discovery возможностей",
+            "`capability_search_query`",
+            "`registry_scope`",
+            "human/platform approval",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "GitHub's Agent Finder",
+            "capability discovery",
+            "`capability_search_query`",
+            "`registry_scope`",
+            "human or platform approval",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "GitHub Agent Finder",
+            "capability discovery",
+            "`capability_search_query`",
+            "`registry_scope`",
+            "human/platform approval state",
+        ),
+        "docs/appendix/sources.md": (
+            "Agent finder for GitHub Copilot now available",
+        ),
+        "docs/appendix/sources.en.md": (
+            "Agent finder for GitHub Copilot now available",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "Agent finder for GitHub Copilot now available",
+        ),
+    }
+
+    for path, markers in required_markers_by_file.items():
+        _assert_files_contain_all((path,), markers)
+
+
+def test_compaction_continuity_contract_is_localized_and_cross_linked() -> None:
+    localized_contracts = {
+        "en": {
+            "schema": "docs/appendix/continuity-envelope-schema.en.md",
+            "invariant": (
+                "A compacted summary is a derived, untrusted view. "
+                "It carries no authority."
+            ),
+        },
+        "ru": {
+            "schema": "docs/appendix/continuity-envelope-schema.md",
+            "invariant": (
+                "Сжатая сводка — производное недоверенное представление. "
+                "Она не переносит полномочия."
+            ),
+        },
+        "zh": {
+            "schema": "docs/appendix/continuity-envelope-schema.zh.md",
+            "invariant": "压缩摘要是派生的、不受信任的视图，不能携带任何权限。",
+        },
+    }
+
+    for locale, contract in localized_contracts.items():
+        schema = contract["schema"]
+        assert (ROOT / schema).is_file(), schema
+        schema_text = _read(schema)
+        assert contract["invariant"] in schema_text, schema
+        for field in (
+            "policy_version",
+            "approval_id",
+            "action_digest",
+            "idempotency_key",
+            "side_effect_status",
+            "checkpoint_ref",
+            "summary_sha256",
+        ):
+            assert f"`{field}`" in schema_text, (schema, field)
+
+        suffix = ".md" if locale == "ru" else f".{locale}.md"
+        for chapter in (
+            f"docs/book/part-iii/chapter-7{suffix}",
+            f"docs/book/part-vii/chapter-16{suffix}",
+            f"docs/book/part-vii/chapter-17{suffix}",
+        ):
+            assert "continuity-envelope-schema" in _read(chapter), chapter
+
+        trace_schema = _read(f"docs/appendix/trace-schema{suffix}")
+        for event_type in (
+            "context_compaction",
+            "context_rehydration",
+            "continuity_validation_failed",
+        ):
+            assert f"`{event_type}`" in trace_schema, (locale, event_type)
+
+        eval_schema = _read(f"docs/appendix/eval-schema{suffix}")
+        for eval_marker in (
+            "summary_sha256",
+            "side_effect_unknown",
+            "continuity_validation_failed",
+        ):
+            assert f"`{eval_marker}`" in eval_schema, (locale, eval_marker)
+
+        reference_package = _read(f"docs/appendix/reference-package{suffix}")
+        assert "continuity.py" in reference_package, locale
+        assert "inspect-continuity" in reference_package, locale
+        lifecycle_schema = _read(f"docs/appendix/lifecycle-artifact-schema{suffix}")
+        assert "continuity-envelope-schema" in lifecycle_schema, locale
+
+    mkdocs = _read("mkdocs.yml")
+    assert "appendix/continuity-envelope-schema.md" in mkdocs
+    for title in (
+        "Схема непрерывности контекста",
+        "Context Continuity Envelope Schema",
+        "上下文连续性信封 Schema",
+    ):
+        assert title in mkdocs
 
 
 def test_markdown_rendering_regression_patterns_are_absent() -> None:

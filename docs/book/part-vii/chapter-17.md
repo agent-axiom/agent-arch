@@ -122,7 +122,7 @@ flowchart LR
 
 Таксономия схем рабочих процессов у Anthropic добавляет сюда еще одно недостающее измерение управления.[^anthropic] Слой политик должен решать не только то, разрешена ли возможность сама по себе. Он еще должен решать, в каких схемах оркестрации ее вообще допустимо вызывать.
 
-Их более поздняя работа про проектирование рабочей обвязки добавляет сюда тесно связанный урок: как только система начинает работать через роли планировщика, генератора и оценщика на длинном горизонте, политика должна управлять уже не только вызовом инструмента, но и **ролевым контрактом** вокруг этого вызова.[^anthropic-harness] Если генератор предлагает спринт, оценщик оценивает результат, а планировщик перестраивает область работы, платформе нужны явные правила о том, кто имеет право определять готовность, кто оценивает качество, кто вправе инициировать сброс и какой артефакт передачи считается авторитетным после сброса контекста.
+Их более поздняя работа про проектирование рабочей обвязки добавляет сюда тесно связанный урок: как только система начинает работать через роли планировщика, генератора и оценщика на длинном горизонте, политика должна управлять уже не только вызовом инструмента, но и **ролевым контрактом** вокруг этого вызова.[^anthropic-harness] Если генератор предлагает спринт, оценщик оценивает результат, а планировщик перестраивает область работы, платформе нужны явные правила о том, кто имеет право определять готовность, кто оценивает результат, кто вправе инициировать сброс и какой артефакт передачи среда исполнения принимает как вход для восстановления преемственности. Такой артефакт остается производным недоверенным представлением и не переносит полномочия. [Схема непрерывности контекста](../../appendix/continuity-envelope-schema.md) связывает его с долговечным управляющим состоянием и требует нового решения политики до продолжения исполнения.
 
 Например, контракт политики может требовать явного ответа на то, что возможность:
 
@@ -147,6 +147,39 @@ flowchart LR
 - значения timeout и retry по умолчанию.
 
 С таким контрактом рантайм уже может вести себя предсказуемо, а не подстраиваться под каждую возможность на ходу.
+
+### 5.1. Политика выбирает не только инструмент, но и руки
+
+После разделения brain / hands / session слой политик получает еще одну обязанность: он должен решать не только, разрешена ли capability, но и **какими hands** ее можно исполнить.[^anthropic-managed-agents]
+
+Один и тот же logical action может иметь разные профили:
+
+- read-only через brokered internal gateway;
+- запись через high-risk tool с approval и idempotency key;
+- shell-like operation только в ephemeral sandbox без внешнего egress;
+- delegated subagent execution без наследования секретов по умолчанию.
+
+Поэтому capability catalog полезно расширять полями `execution_profile`, `sandbox_profile_id`, `egress_profile`, `credential_scope`, `debug_surface` и `rollback_boundary`. Тогда policy decision становится не просто `allow`, а маршрутом: какой harness может продолжить работу, какие hands доступны, какая session evidence должна быть записана и где проходит blast-radius boundary.
+
+### 5.2. Аналитический агент это governed query engine, а не свободный SQL-автопилот
+
+Отдельно стоит выделить класс возможностей, который часто выглядит безобидно, потому что “только читает данные”: аналитический агент, который отвечает на бизнес-вопросы, строит SQL, выбирает метрики или работает поверх semantic layer. На практике это не просто `query_database`. Это управляемый query engine с контрактом на смысл метрик, область данных, допустимые агрегации, стоимость запроса и видимость результата.
+
+Современные аналитические платформы уже двигаются в эту сторону. Snowflake Cortex Analyst опирается на semantic views, verified query suggestions, роли доступа и выполнение сгенерированного SQL внутри governance boundary Snowflake.[^snowflake-cortex-analyst] Databricks Genie Spaces строят разговорный аналитический опыт вокруг trusted assets и инструкций пространства, а Power BI Copilot работает поверх semantic model и существующих разрешений рабочей области.[^databricks-genie][^power-bi-copilot]
+
+Для книги важен не vendor-specific продукт, а архитектурный вывод: аналитический агент должен попадать в capability catalog как `analytics_query`, `metric_explain` или `semantic_model_lookup`, а не как универсальная SQL-рука. Его контракт должен фиксировать:
+
+- `semantic_model_id` или набор разрешенных semantic views;
+- `dataset_scope` и tenant boundary;
+- разрешенные метрики, dimensions и grain;
+- можно ли генерировать raw SQL или только parameterized query plan;
+- максимальную стоимость, лимит строк и timeout;
+- правила маскирования, suppressed columns и small-cell suppression;
+- требуется ли human review для новых метрик, cross-domain joins или export наружу;
+- какие query plan, generated SQL, source tables и policy decision попадут в trace.
+
+Иначе система легко получит “read-only” агент, который фактически может раскрывать чувствительные срезы, соединять домены без владельца, выдавать неутвержденные KPI или запускать дорогие запросы. Зрелый слой политик должен уметь сказать не только “можно читать warehouse”, а “можно ответить на этот аналитический вопрос через этот semantic model, с этой ролью, этими лимитами и этой доказательной записью”.
+
 
 ## 6. Подтверждение должно выглядеть как прерываемый путь выполнения в среде исполнения, а не как разговор в стороне
 
@@ -199,6 +232,22 @@ flowchart LR
 - при необходимости требования к подтверждению или продолжению.
 
 Это резко повышает объяснимость и делает телеметрию намного полезнее.
+
+### 7.1. Политика должна управлять не только разрешением, но и реакцией контроля
+
+DeepMind AI Control Roadmap полезно формулирует еще одну обязанность слоя политик: control system должна не только сказать, можно ли действие, но и выбрать режим реакции.[^deepmind-ai-control] В их модели контроль строится поверх threat model, мониторинга agent actions/plans, supervisor-систем, prevention/response gates и метрик coverage, recall и time-to-response.
+
+Для эталонного runtime это означает, что policy decision должен уметь возвращать не только `allow` или `deny`, но и control response:
+
+- `allow_with_monitoring` для низкорисковых и обратимых действий;
+- `pause_for_supervisor` для действий, где нужен human или classifier-mediated review;
+- `block_synchronously` для высокорисковых действий до внешнего мира;
+- `quarantine_session` для поведения, которое похоже на misinterpretation, overeagerness или попытку обойти границы;
+- `escalate_incident` для событий, где контроль уже обнаружил возможный ущерб.
+
+Это важная граница: не всякая опасность выглядит как adversarial misuse. Иногда агент просто слишком рьяно оптимизирует локальную цель, неправильно понял задачу или продолжает путь, который продуктово выглядит полезным, но системно разрушителен. Поэтому слой политик должен связывать решение с реакцией, ответственным владельцем, доказательствами, expected response time и audit trail.
+
+AWS AgentCore Gateway показывает практический вариант такого слоя вокруг MCP tools: policy и Lambda interceptors стоят вне model loop, поэтому control path не зависит от того, как агент объясняет свой следующий вызов.[^aws-agentcore-policy-interceptors] Policy на Cedar дает deterministic allow/deny decision по principal, action, resource и context, а request/response interceptors закрывают динамическую часть: проверку bearer token, act-on-behalf token exchange, context injection, tool authorization, payload transformation и response filtering. Для эталонного runtime это полезная подсказка: tool call должен проходить через pre-call decision point, downstream call и post-call response filter, а trace должен хранить policy decision, denial reason, sanitized request/response, interceptor version и audit event.
 
 ## 8. Пример контракта политики
 
@@ -550,6 +599,8 @@ capability_release_contract:
 [^openai-tools]: [OpenAI, Using tools](https://developers.openai.com/api/docs/guides/tools)
 [^langgraph-interrupts]: [LangGraph, Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
+[^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
 
 ## 17. Полезные справочные страницы
 
@@ -564,4 +615,8 @@ capability_release_contract:
 - [Часть VII. Эталонная реализация](index.md)
 - [Источники](../../appendix/sources.md)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
+[^anthropic-managed-agents]: Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents).
+[^snowflake-cortex-analyst]: Snowflake Documentation, [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst).
+[^databricks-genie]: Databricks Documentation, [Genie Spaces](https://docs.databricks.com/aws/en/genie/).
+[^power-bi-copilot]: Microsoft Learn, [Copilot for Power BI overview](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction).

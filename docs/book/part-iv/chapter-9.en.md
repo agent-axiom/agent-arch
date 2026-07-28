@@ -100,6 +100,8 @@ That becomes especially valuable once you have not one runtime and one integrati
 
 Once MCP carries access to data, write tools, or execution environments, it becomes a security boundary. Useful tool results can cross that boundary, but so can malicious instructions, poisoned tool descriptions, over-scoped OAuth grants, confused-deputy paths, and supply-chain risk from the server itself.
 
+Microsoft's MCP tool poisoning case sharpens this boundary: **tool descriptions as system prompts**.[^microsoft-tools-acting] If a previously approved server silently changes a tool description while keeping the same tool name, the runtime may trust it again without a fresh human review. That is silent re-trust, not a harmless metadata update. Review should therefore inspect the description diff, owner/provenance, imperative language inside documentation fields, new endpoints, expanded parameters, and unusual query patterns. The control is not only least privilege, but **least agency**: disable `Allow all tool access`, require approval for high-impact actions, and alert on agent-behavior drift after tool metadata changes.
+
 The practical contract for that boundary should answer at least five questions:
 
 - who owns the MCP server and its lifecycle;
@@ -162,7 +164,50 @@ mcp_server:
 
 The important fields are not bureaucracy. `schema_hash` and `tool_definition_hash` catch tool schema injection and post-approval rug pulls. `token_scope`, `token_ttl`, and `user_delegation_required` limit confused-deputy paths. `return_value_filtering` treats tool results as untrusted content, including prompt injection via tool return values. `server_isolation_profile` and `replay_protection` make sandbox escapes, replay, and tampering visible enough to contain.
 
-### 4.4. It Helps Not to Confuse the MCP Host, Client, and Server
+The short rule is: **tool output is an attack surface**. A remote tool can change after approval: the server owner changes schema, result, redirect, resource body, or hidden instruction, while the host still treats the integration as already approved. Onboarding remote tools should therefore begin with fake data first: connect a synthetic tenant, synthetic secrets, and safe fixtures, record real traces, and only after validation grant live credentials or production data.
+
+Another useful pattern from Google ADK is **metadata registry + runtime schema injection**.[^google-adk-static-prompts] The anti-pattern is explicit: **Static Prompting**, where all JSON schemas, Pydantic classes, and tool definitions are preloaded into the system prompt. In high-cardinality domains this creates context bloat and **Attention Diffusion**: the model starts mixing fields from dormant schemas into the active payload.
+
+In a portable runtime contract, structural rules should live in a registry entry, not in the prompt. That entry should carry `schema_descriptor_id`, `schema_version`, field metadata, mapping rules, and a `validation_hook`. The agent first performs lightweight discovery; then the runtime loads the right descriptor, calls the **Polymorphic Validator** at the boundary before the tool/API call, and records the chosen schema source of truth, runtime validation boundary, validation result, and failure mode in the trace. One reasoning agent can then handle multiple domain forms without carrying every structural rule at once.
+
+### 4.4. Localhost Is Not a Trust Boundary for Browser Agents
+
+AutoJack, described by Microsoft Defender Security Research, is a compact maturity test for this chapter: untrusted web content opened by a browsing agent could cross the loopback boundary, reach a local MCP WebSocket, and turn connection parameters into process execution on the host.[^microsoft-autojack] The concrete issue was fixed before the affected MCP surface shipped in a PyPI release, but the pattern matters more than the bug.
+
+The architectural conclusion is simple: `localhost`, `127.0.0.1`, and origin allowlists are not sufficient controls when the same machine runs an agent with a browser tool, Playwright-backed surfer, code execution tool, or any mechanism that can open a WebSocket/HTTP request from a local process. For that system, external HTML/JavaScript is no longer merely “somewhere on the internet”; it can become a confused deputy that uses the agent's local network position.
+
+The minimum hardening for local MCP/debug/control channels:
+
+- do not treat loopback as an authentication boundary;
+- require authn/authz on MCP/control-plane endpoints, including WebSocket paths;
+- check purpose binding and policy decision before launching any subprocess-backed MCP server;
+- keep launch parameters server-side or in a signed nonce-bound artifact instead of accepting command/args from a query string;
+- allowlist executable MCP servers and argument profiles;
+- run browser tools with a separate process/network identity that cannot reach privileged local services;
+- write a trace event for crossing attempts: external page, local channel, policy result, executable decision, and containment action.
+
+If local MCP is needed only for a prototype, the capability registry should say so explicitly: low privileges, a separate OS user/container, short-lived credentials, and no colocating it with an agent that renders untrusted web content.
+
+### 4.5. Prompt-to-tool-to-execution Needs Its Own Hardening
+
+Microsoft's “When prompts become shells” case adds the adjacent failure mode: a prompt injection does not need to reach `localhost` when the agent framework already exposes a tool that can interpret model-controlled parameters as paths, code, templates, or commands.[^microsoft-prompts-shells] The exploit shape is **prompt-to-tool-to-execution**: untrusted content steers the model, the model emits attacker-controlled input, the framework parses it as tool arguments, and a weak adapter turns it into host execution.
+
+The execution-layer rule is the same one this chapter uses for MCP: model output is not authority. Execution-adjacent tools should be deny-by-default, registered through a capability contract, protected by typed validation, canonical path checks, operation allowlists, and a per-tool sandbox. They also need an audit event before the side effect, not only after it, so an investigator can see the prompt source, redacted arguments, validation result, selected sandbox profile, and policy decision.
+
+### 4.6. Networked-Agent Threat Model
+
+Microsoft Research makes a separate point about what changes when one agent becomes a network of agents: the vulnerability may sit not in one tool wrapper, but in how agents trust each other's messages.[^microsoft-networked-agents] The practical rule is: **peer message is data, not authority**. A message from another agent should not escalate permissions, change the goal, trigger a write, or become a system instruction unless the runtime, policy layer, or human approval explicitly promotes it.
+
+This **networked-agent threat model** belongs next to MCP and A2A. It adds four failure modes:
+
+- **propagation** — a malicious instruction, poisoned summary, or false task moves onward as ordinary context;
+- **amplification** — one weak signal turns into broad fan-out, repeated tool calls, or cascading notifications;
+- **trust capture** — agents start endorsing one another even though they all depend on the same untrusted source;
+- **invisibility** — the operator can see local traces but not the cross-agent path by which risk crossed boundaries.
+
+The minimum controls look like network security applied to agent semantics: Sybil resistance for independent votes, hop and rate limits for task propagation, capability scoping on every graph edge, cross-agent tracing for the message path, provenance logs for the original author, and quarantine for peer-originated instructions that try to become authority. In evals, this should appear as a scenario where a neighboring agent asks for excess privilege, repackages a prompt injection, or triggers too-wide fan-out, while the system proves the instruction remained data.
+
+### 4.7. It Helps Not to Confuse the MCP Host, Client, and Server
 
 MCP often creates unnecessary confusion because the words sound familiar while the roles are actually quite specific.
 
@@ -243,6 +288,10 @@ That usually means:
 
 That same model also clarifies when **local MCP** is still appropriate: prototyping, isolated experiments, or narrow team-local workflows. But the default for shared business capabilities should usually be: **remote, governed, discoverable, and auditable**.
 
+Google Cloud's Gemini Enterprise Agent Platform remote MCP server shows the same boundary in a more managed form.[^google-gemini-enterprise-mcp] An external agent or IDE client does not receive an arbitrary bundle of cloud secrets; it connects to a standardized remote MCP endpoint inside Google Cloud, sees toolsets such as generation, prediction, notebooks, endpoints, models, tuning, evaluation, and prompts, and discovers assets through Agent Registry. The architectural lesson is that a managed remote MCP endpoint can be a **capability boundary** if discovery, IAM Deny policies, tenant/data boundaries, observability, and lifecycle ownership live on the platform side rather than in the client's local config.
+
+The AWS MCP Gateway and Registry frame makes that control-plane shape more concrete.[^aws-mcp-gateway-registry] It treats MCP servers, AI agents, skills, workflows, and other AI assets as cataloged entities rather than scattered endpoints. The useful lesson for this chapter is not the specific implementation stack, but the split of responsibilities: the registry governs discovery, ownership, security scanning, fine-grained access control, and federation; the gateway routes MCP tool calls and records an audit log. That is a cleaner platform contract than letting every agent or desktop client maintain its own private list of servers.
+
 ### 5.2. Shadow MCP Is the New Shadow API Problem
 
 Once MCP becomes easy to attach, teams can accidentally create a new variant of shadow IT: unregistered MCP servers that expose real business actions without clear ownership or review.[^cloudflare-mcp]
@@ -274,7 +323,102 @@ A good follow-up question is also: **can the platform explain the authorization 
 
 If that chain is missing, auditability is weaker than the protocol surface suggests.
 
-### 5.3. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
+### 5.3. MCP as a Governed Access Path to Cloud APIs
+
+A recent AWS Security Blog recommendation is useful because it frames MCP not just as an integration convenience, but as a **governed access path to cloud resources**.[^aws-secure-mcp-access] The important detail is that AI coding assistants and agents can often reach cloud APIs directly through shell, SDK, or arbitrary code execution. If that path remains open, an MCP server with good IAM policies is only one route, not the real control boundary.
+
+So production agents should distinguish:
+
+- `mcp_brokered_action`: the action flows through a registered MCP/tool gateway, receives scoped credentials, writes an audit event, and carries a policy decision;
+- `direct_cloud_api_action`: the agent calls an SDK, CLI, or HTTP API directly from a shell/code environment;
+- `human_initiated_action`: a human runs the action, while the agent only prepares the plan, diff, or evidence packet;
+- `delegated_agent_action`: a human or policy layer delegates a bounded action scope to the agent with TTL, scope, and trace correlation.
+
+The architectural conclusion is strict: direct cloud API access should be treated as a bypass path unless it flows through the same catalog, identity, policy, and audit layer. For the runtime, that adds several required fields to the trace/control record: `actor_type`, `delegation_source`, `credential_scope`, `credential_ttl`, `access_path`, `mcp_server_id`, `policy_decision_id`, and `called_via_gateway`. Then the organization can distinguish human-initiated action from AI-driven action and apply least privilege, organizational role governance, and separate approval rules to the agent path, not only to human IAM.
+
+If the team cannot fully prohibit shell/SDK access, the minimum fallback is explicit bypass control: a restricted shell profile, denylist/allowlist rules for cloud CLIs, network egress through a proxy, detection for direct cloud API calls, and a release gate that blocks the agent capability until critical writes flow through the brokered gateway.
+
+### 5.4. Cloudflare AI Traffic Controls Show That Web Access Is Also a Policy Surface
+
+Cloudflare AI traffic controls add a neighboring but important boundary to this chapter: not only how an agent calls MCP or a cloud API, but how an external site decides which AI traffic is allowed to use its content at all.[^cloudflare-ai-traffic-controls] The Search / Agent / Training split is useful precisely as a governance signal. A search crawler, an interactive Agent, and a Training crawler carry different purposes, different expectations from the resource owner, and different audit requirements.
+
+The runtime lesson is practical: outbound identity cannot be reduced to a user-agent string or an IP allowlist. A web-capable agent should declare a declared purpose, preserve an audit trail, and distinguish at least:
+
+- search/indexing, where the site owner expects discoverability;
+- interactive agent access, where the agent acts on behalf of a user;
+- training or dataset collection, where content use changes the economics of consent.
+
+Cloudflare also shows an important detail for future access contracts: Content-Signal can carry finer-grained terms such as `use=reference`, while Verified and Forwarded statuses separate verified identity from transitive trust passed through a downstream service. For agent architecture, that means transitive trust has to be modeled explicitly: if a browser or retrieval agent receives access through an intermediary, the trace should show the original identity, forwarded identity, declared purpose, and policy decision, not only the final HTTP request.
+
+A minimal policy matrix for a web-capable agent should therefore carry at least four decisions: allow, block, monetize, or audit-only. Each decision should be bound to the access purpose: Search / Agent / Training. Otherwise web access policy collapses into a fragile list of strings rather than a contract among the resource owner, the user, and the agent platform.
+
+Cloudflare Monetization Gateway makes the monetize branch concrete, especially for an **agent-facing resource**: a web page, dataset, API, or MCP tool can become a **payment-gated resource** with an x402-style payment flow.[^cloudflare-monetization-gateway] For agent architecture, this is not only a billing feature. Before making an MCP tool call or retrieval request to a paid resource, the runtime needs a policy decision before the tool call: whether spend is allowed, who the payer is, which spending cap applies, where the payment proof is stored, and which metering record enters the audit trail. Otherwise agent web/tool access quietly becomes unreviewed spend without business context.
+
+### 5.5. Browser as an action surface
+
+GitHub Copilot browser tools in VS Code show the next step: a live browser is becoming a normal action environment for agents, not only an external way to check work manually.[^github-copilot-browser-tools] If an agent can open pages, click/type/hover/drag, read page content, collect console errors, take a screenshot, and run scripted flows, the browser has to be treated as its own execution surface.
+
+The practical contract for that surface should account for stale DOM refs, auth/session state, non-deterministic UI, and evidence snapshot. The agent should not merely say "the page works"; it should leave verifiable evidence such as a screenshot, DOM assertion, console errors, network trace, or another artifact bound to the run/trace id. Otherwise browser automation becomes just another opaque tool call.
+
+The control layer should also be explicit. User-owned tabs need share/revoke semantics, agent-owned tabs need an isolated session without normal browser cookies/storage, sensitive permission prompts need human approval, and enterprise environments need network domain controls and workspace trust. Then a browser tool is a governed capability rather than direct agent-process access to all web state.
+
+### 5.6. Secure MCP Tunnel Makes Private Reachability Explicit
+
+OpenAI's Secure MCP Tunnel adds a useful deployment pattern for private MCP servers: the private side initiates an outbound-only connection instead of accepting inbound traffic from the public internet.[^openai-secure-mcp-tunnel] A `tunnel-client` runs inside the network that can already reach the private MCP server, long-polls an OpenAI-hosted endpoint for queued MCP work, forwards JSON-RPC requests locally, and returns responses through the same path. The design also creates a natural backpressure point, because the client asks only for work it is ready to process.
+
+The architectural lesson is narrower than "tunnels make private systems safe." A tunnel should be a governed reachability mechanism, not a general-purpose network bridge. The private MCP server still needs owner records, schema hashes, scoped authorization, output filtering, request correlation, and audit events. The tunnel record should say which product surface may call it, which private MCP server it reaches, which identity authenticated the tunnel-client, and which policy decides whether a request is allowed. In other words, Secure MCP Tunnel is useful when it keeps a narrow path: product endpoint -> tunnel service -> authenticated tunnel-client -> private MCP server -> filtered response.
+
+### 5.7. Code Mode Turns the MCP Portal into Progressive Disclosure
+
+Cloudflare also shows a useful pattern for a large MCP estate: do not give the model every tool schema upfront; put the broad API surface behind a portal with two narrow operations for search and execution.[^cloudflare-code-mode] In that pattern, Code Mode lets the model first write code to search for the endpoint definitions it needs, then write code to call the selected operations. That code runs inside a sandbox on the MCP server portal side, not inside the main agent session.
+
+Architecturally, this matters for more than token cost. It changes tool visibility:
+
+- the model receives a search mechanism rather than the whole capability catalog upfront;
+- the portal becomes a point for audit, DLP, and identity enforcement;
+- the agent context is not bloated by thousands of schema tokens;
+- discovery becomes a governed action rather than an implicit load of the whole world;
+- the portal-side sandbox constrains what generated code can do.
+
+The pattern still has to remain governed. A `search/execute` portal should not become a bypass around capability governance. It needs the same fields as any other MCP endpoint: owner, allowed upstream servers, scope policy, sandbox profile, output filtering, trace correlation, and review rules for risky writes. Otherwise the team only replaces "too many tools in the prompt" with "too broad a programmable portal."
+
+GitHub's Agent Finder points in the same direction from the client side: capability discovery becomes a runtime operation instead of a prompt assembly habit.[^github-agent-finder] An agent should be able to search an approved registry of MCP servers, skills, canvases, agents, and tools, receive ranked task-specific matches, and load only the resource it actually needs. The safety detail is that discovery is scoped by managed settings and does not silently install or connect new resources. In a production architecture, that means the trace should preserve `capability_search_query`, `registry_scope`, ranked candidates, selected resource, policy decision, and human or platform approval state.
+
+### 5.8. Tool Surface Design Is Part of the Safety Contract
+
+AWS's practical guidance on MCP tool design adds another layer to the Cloudflare Code Mode pattern: the problem is not only where the gateway sits, but which **tool surface** the agent sees at all.[^aws-mcp-tool-design] If a prompt receives dozens of similar tools, broad schemas, and ambiguous names upfront, the platform gets two failures at once: context bloat and tool confusion. The model may choose the wrong operation, mix fields from neighboring schemas, or use a generic tool as a path around a riskier action.
+
+A good tool-surface contract should therefore record:
+
+- `tool_taxonomy`: read, write, execution, orchestration, introspection;
+- `tool_visibility_mode`: eager, lazy, search_then_execute, or server_side_introspection;
+- `max_active_tools`: a practical limit on simultaneously visible tools for one step;
+- `schema_constraints`: required fields, enums instead of free text, short descriptions, and no hidden policy inside descriptions;
+- `argument_budget`: how many parameters the model actually has to hold in active context;
+- `agent_as_tool_policy`: when a complex sub-agent is published as one tool instead of exposing every internal operation;
+- `tool_evaluation`: tests for wrong-tool selection, schema confusion, unsafe defaults, and noisy catalogs.
+
+The useful heuristic is simple: if a tool cannot be explained as one operation with a narrow schema and a clear risk tier, it may be a workflow, sub-agent, or portal search path rather than a tool. Conversely, if five tools differ only by one non-obvious parameter, the difference probably belongs in an enum, taxonomy, or server-side discovery flow rather than in long descriptions the model has to compare.
+
+For the runtime, this becomes reviewable trace data: which tools were visible, why those tools were disclosed, which taxonomy node or search result activated them, which schema version validated the arguments, and which evaluation pack proves the model does not confuse similar tools. Without that trail, "we have an MCP gateway" still leaves a blind spot: the gateway governs the call, but it does not explain why the model saw that tool surface in the first place.
+
+### 5.9. Smartsheet remote MCP server on AWS: production remote MCP facade
+
+Smartsheet remote MCP server on AWS is a useful production remote MCP facade case: one MCP layer serves internal and external agents instead of exposing separate surfaces for the in-product Smart Assist experience and external AI clients.[^aws-smartsheet-remote-mcp] The architectural lesson is that the MCP server becomes an AI-optimized interface over domain services and an intelligence layer, not a thin proxy to existing APIs.
+
+Four properties matter for that surface. First, capability parity: internal Smart Assist and external clients receive one governed contract. Second, schema-driven tool contracts: strict JSON schemas, column-name validation, and structured errors keep the model away from hallucinated parameters. Third, token cost becomes a production control: progressive disclosure, response budgets, and compact serialization reduce cost and context pressure. Fourth, access tiers, OpenTelemetry, audit events, per-user rate limits, and production canaries turn remote MCP into a governed platform boundary.
+
+The portable contract is: **single MCP facade → API gateway and OAuth validation → domain services and intelligence layer → schema-driven tools → token-budgeted responses → access tiers → OpenTelemetry and audit → canary workflow tests**. This belongs next to the Cloudflare portal and AWS tool design patterns: the gateway says who may call a tool, the tool-surface contract says what the model can see, and the production facade says how one MCP layer survives real agent bursts, governance, and cost constraints.
+
+### 5.10. Rules of Durable Objects: Durable Agent Identity
+
+Cloudflare Rules of Durable Objects adds a lower-level runtime pattern that is useful beyond Cloudflare: **Durable Agent Identity**. If an agent has a stable name, that name should be the **atom of coordination**, not only a label in logs.[^cloudflare-durable-object-rules] Requests, timers, wakeups, and recovery paths should converge on one durable instance through deterministic IDs; otherwise the platform can create two "same" agents that independently mutate one state boundary.
+
+Five rules matter for agent architecture. First, deterministic IDs should derive from a stable entity such as tenant/workspace/case/thread, not from a random run. Second, durable state is the source of truth for progress, leases, cursors, and idempotency; process memory is only a cache. Third, input and output gates should protect operation order: new work should not observe half-written state, and an external side effect should not leave before durable commit/evidence. Fourth, idempotent alarms are required for delayed actions because an alarm may fire again after a failure. Fifth, unexpected shutdowns are part of the model; recoverable work should continue from a durable checkpoint, not from in-memory timers, closures, or open fetches.
+
+The portable contract is: **request → deterministic agent instance → durable state gate → idempotent alarm/fiber/workflow → recovered execution → audited output gate**. This does not replace the MCP gateway: MCP governs the capability boundary, while Durable Agent Identity governs which named agent instance owns state and how it survives restart.
+
+### 5.11. Ephemeral Sandboxes Are Usually Better Than Permanent Environments
 
 Another useful Google idea is that risky capabilities are often better served by short-lived execution environments.[^google-sandbox]
 
@@ -322,6 +466,8 @@ That does not make stateless MCP obsolete. It simply means the platform should n
 
 A useful operational lesson from AWS's stateful MCP direction is that the hard part is not merely storing a session handle.[^aws-stateful-mcp] The harder part is deciding how the runtime should react when the capability emits progress, requests more input, or expires before the work is done.
 
+AgentCore Gateway extended MCP support sharpens that into a protocol contract.[^aws-agentcore-extended-mcp] A gateway may aggregate `tools/list`, `prompts/list`, `resources/list`, and resource templates, while carrying `outputSchema` and annotations such as read-only/destructive. But dynamic listing changes what disclosure means: the capability list may be computed live under the calling user's identity rather than served from a static cache. The trace therefore needs to preserve `listing_mode`, `listed_under_principal`, `output_schema_hash`, `tool_annotations`, `Mcp-Session-Id`, and whether authorization was checked again before invoke.
+
 That usually forces the platform to define explicit behavior for at least four cases:
 
 - `progress_update`: the capability is still working and the runtime should expose liveness without treating the call as stuck;
@@ -330,6 +476,8 @@ That usually forces the platform to define explicit behavior for at least four c
 - `reinitialized_session`: the runtime deliberately opened a fresh capability session and linked it to the same higher-level user run.
 
 Those are not small transport details. They shape how approval, telemetry, and operator response all behave.
+
+There is another sharp edge: with SSE streaming, the HTTP status is fixed by the first event, while a mid-stream failure arrives as a protocol error inside the stream. Elicitation requires streaming and sessions, but if the connection breaks during elicitation, the specific tool call may not resume; the client has to retry the original `tools/call`. The runtime contract should therefore distinguish `resume_existing_session_if_valid`, `retry_original_tool_call`, and `reinitialize_or_cancel`, or human input can quietly become a repeated side effect without a fresh check.
 
 ### 6.3. A Good MCP Contract Should Explain What Happens After Interruption
 
@@ -462,6 +610,25 @@ That maps cleanly onto the execution contracts in this chapter. A platform needs
 
 Such a manifest does not replace the policy layer. It makes the execution boundary reviewable: reviewers can see what enters the workspace, what rights the agent receives, and whether the work can be safely resumed or snapshotted.
 
+### 9.3. Brain / hands / session as an isolation contract
+
+Anthropic's Managed Agents architecture states a useful runtime shape for this chapter: `session`, `harness`, and `sandbox/tools` should be treated as separate interfaces, not as one container with magical internal logic.[^anthropic-managed-agents]
+
+- `session` is the append-only log of events, decisions, tool calls, approvals, and results;
+- `harness` is the replaceable control loop that calls the model and routes capability requests;
+- `hands` are the sandboxes, tools, and adapters that actually read files, touch networks, and create side effects.
+
+That split is useful for scaling, but it is also a security boundary. If the harness hangs, the session should remain readable. If the sandbox dies, the session should not disappear with it. If an operator needs to debug, they should inspect events, profiles, and snapshots, not open a shell inside an environment that also contains user data.
+
+In this chapter's terms, a capability request should pass through a short chain:
+
+```text
+capability request → policy → contained execution → telemetry → incident/eval feedback
+```
+
+The chain makes containment reviewable: policy chooses the execution profile, hands execute inside the restricted environment, telemetry records the boundary, and assurance/eval loops use the result for the next decision.
+
+
 ## 10. A Simple Capability Dispatch Example
 
 This small skeleton shows the core idea: transport and execution profile are chosen from the capability contract, not invented by the model on the fly.
@@ -530,9 +697,35 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 - [Part IV. Tools and Execution](index.en.md)
 - [Sources](../../appendix/sources.en.md)
 
-[^cloudflare-mcp]: [Cloudflare, Build and deploy Remote Model Context Protocol (MCP) servers to Cloudflare](https://blog.cloudflare.com/remote-model-context-protocol-servers-mcp/)
+[^cloudflare-mcp]: Cloudflare, [Scaling MCP adoption: Our reference architecture for simpler, safer and cheaper enterprise deployments of MCP](https://blog.cloudflare.com/enterprise-mcp/)
+
+[^cloudflare-code-mode]: Cloudflare, [Code Mode: give agents an entire API in 1,000 tokens](https://blog.cloudflare.com/code-mode-mcp/)
+
+[^cloudflare-ai-traffic-controls]: Cloudflare Blog, [Your site, your rules: new AI traffic options for all customers](https://blog.cloudflare.com/content-independence-day-ai-options/)
+
+[^cloudflare-monetization-gateway]: Cloudflare Blog, [Announcing the Monetization Gateway](https://blog.cloudflare.com/monetization-gateway/)
+
+[^github-copilot-browser-tools]: GitHub Changelog, [Browser tools for GitHub Copilot in VS Code are generally available](https://github.blog/changelog/2026-07-01-browser-tools-for-github-copilot-in-vs-code-are-generally-available/)
+
+[^github-agent-finder]: GitHub Changelog, [Agent finder for GitHub Copilot now available](https://github.blog/changelog/2026-06-17-agent-finder-for-github-copilot-now-available/)
+
+[^aws-secure-mcp-access]: AWS Security Blog, [Secure AI agent access patterns to AWS resources using Model Context Protocol](https://aws.amazon.com/blogs/security/secure-ai-agent-access-patterns-to-aws-resources-using-model-context-protocol/)
+
+[^aws-mcp-gateway-registry]: AWS Open Source Blog, [Governing AI Assets at Scale with MCP Gateway and Registry](https://aws.amazon.com/blogs/opensource/governing-ai-assets-at-scale-with-mcp-gateway-and-registry/)
+
+[^google-gemini-enterprise-mcp]: Google Cloud, [Build agents even faster with Gemini Enterprise Agent Platform’s fully-managed, remote MCP server](https://cloud.google.com/blog/products/ai-machine-learning/gemini-enterprise-agent-platform-remote-mcp-server)
+
+[^openai-secure-mcp-tunnel]: OpenAI, [Secure MCP Tunnel](https://developers.openai.com/api/docs/guides/secure-mcp-tunnels) and [Making private MCP servers reachable without making them public](https://developers.openai.com/blog/connect-private-mcp-servers-to-openai-products)
 
 [^aws-stateful-mcp]: [AWS, Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
+
+[^aws-agentcore-extended-mcp]: AWS, [Extending MCP support for Amazon Bedrock AgentCore Gateway](https://aws.amazon.com/blogs/machine-learning/extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2/)
+
+[^aws-mcp-tool-design]: AWS Machine Learning Blog, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/) and AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
+
+[^aws-smartsheet-remote-mcp]: AWS Machine Learning Blog, [How Smartsheet built a remote MCP server on AWS](https://aws.amazon.com/blogs/machine-learning/how-smartsheet-built-a-remote-mcp-server-on-aws/)
+
+[^cloudflare-durable-object-rules]: Cloudflare, [Rules of Durable Objects](https://developers.cloudflare.com/durable-objects/best-practices/rules-of-durable-objects/)
 
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
@@ -541,3 +734,8 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^mcp-security]: [Model Context Protocol, Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
 
 [^mcp-authorization]: [Model Context Protocol, Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
+[^microsoft-autojack]: Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
+[^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
+[^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
+[^microsoft-networked-agents]: Microsoft Research, [Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)
+[^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)

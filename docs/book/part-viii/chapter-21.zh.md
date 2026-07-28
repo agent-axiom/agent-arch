@@ -194,6 +194,21 @@ flowchart LR
 
 </div>
 
+### 6.1. 遏制应该是第一个受治理动作
+
+一旦信号可信，团队不应该等完整 root-cause analysis 之后才缩小 blast radius。containment 实践提示更快的第一步：先把 run、capability、sandbox profile 或 rollout wave 收窄到更安全模式，再深入调查。[^anthropic-containment]
+
+常见的快速动作包括：
+
+- 关闭外部 egress，只保留 brokered internal gateway；
+- 把 write capability 切到 approval-only 或 deny-by-default；
+- 撤销 delegated credentials，并要求 resume 后重新审批；
+- 停止复用 sandbox snapshot，改用 fresh session；
+- 保留 session evidence，但禁止直接进入含用户数据的环境 debug。
+
+这样，assurance loop 就不只是“找 bug”。它变成操作闭环：signal → containment decision → owner → remediation → updated policy/eval/telemetry。
+
+
 ## 7. 修复应该改变系统，而不只是增加文档
 
 很常见的一种弱点是：事故被复盘了，文档也写了，但系统本身几乎没变。
@@ -256,6 +271,10 @@ flowchart LR
 - 谁更新监控和响应规则。
 
 这一点和本书的组织模型部分完全一致：安全纪律最容易坏在负责人不清楚的地方。
+
+Anthropic 关于 Fable 5 重新上线的说明给 jailbreak finding severity 补了一个实用评分方式。[^anthropic-fable-5] 对本书有用的不是产品事件本身，而是 triage 形状：finding 会按 `capability_gain`、`breadth_of_capability_gain`、`ease_of_weaponization` 和 `discoverability` 评分。对 agent system 来说，这个 rubric 不只适用于 cyber：同一框架可以区分低风险的 safety-margin bypass，和真正打开 dangerous-tool path、能跨多类任务泛化、且可以用一个 prompt 轻易复现的 finding。
+
+因此 red-team finding 不应该只有“发现 jailbreak”这句话，还需要 severity record：绕过了哪个 control，新增了什么 capability，failure 覆盖面有多宽，是否容易变成 harmful workflow，技术是否公开可发现，以及会启动哪条 response path。低 severity 可以进入 queue + monitoring；高 severity 则需要 hot mitigation、emergency disable、classifier/policy update，并在下一次 rollout 前加入 regression eval。
 
 ## 10. 一个保障策略示例
 
@@ -403,3 +422,4 @@ def emergency_action(signal: AssuranceSignal) -> str:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^google-assurance]: [Google Research, Security Assurance in the Age of Generative AI](https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/)
+[^anthropic-fable-5]: Anthropic, [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)

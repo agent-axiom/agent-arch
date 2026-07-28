@@ -240,8 +240,26 @@ Microsoft отдельно подчеркивает полный произво�
 Так телеметрия перестает быть только доказательством постфактум. Она становится рабочим входом для управленческого контура: наблюдение → решение политики → сдерживание или действие раскатки → новое доказательство результата.
 
 Именно такая рамка отделяет эту главу и от главы про заверение, и от главы про реестр. Заверение отвечает за сдерживание и реагирование. Реестр отвечает за подотчетность всего парка агентов. Наблюдаемость — это общий слой, который делает обе функции пригодными для аудита.
+Azure agentic cloud operations показывает тот же сдвиг на инфраструктурном контуре: observability signals не должны застревать в dashboard, если агент уже помогает расследовать, оптимизировать и готовить действия.[^azure-agentic-cloud-ops] Полезный для книги паттерн выглядит так: telemetry и topology дают контекст, MCP resource server открывает стандартизированный доступ к cost/usage/resource data, агент формирует recommendation или guided action, а policy, approval и audit layer решают, можно ли это действие выполнить. Это не отменяет человека в контуре; наоборот, делает human approval проверяемой частью closed-loop operation, а не ручным шагом вне системы.
+
+Именно такая рамка отделяет эту главу и от assurance chapter, и от registry chapter. Assurance отвечает за containment и response. Registry отвечает за accountability всего estate. Observability — это общий слой, который делает обе функции audit-friendly.
 
 И ее же важно удерживать отдельно от главы про происхождение артефактов. Наблюдаемость спрашивает, выдала ли система достаточно доказательств, покрытия и корреляции для расследования и обнаружения. Происхождение спрашивает, какой утвержденный набор артефактов, версия контракта или управляемый пакет потом обосновывали решение.
+
+#### 7.1.1. Telemetry для brain / hands / session split
+
+Если runtime разделяет session, harness и hands, telemetry должна показывать именно эту связку, а не только общий `tool_called` event.[^anthropic-managed-agents] Минимальный набор событий:
+
+- `session_event_appended`: какое событие попало в append-only log;
+- `harness_decision`: какой control loop выбрал следующий шаг;
+- `contained_execution_started`: какой sandbox/tool profile стал hands для действия;
+- `egress_decision`: куда hands могли и не могли подключиться;
+- `credential_scope_bound`: какие credentials были выданы и когда истекают;
+- `debug_surface_used`: через какой безопасный канал оператор разбирал проблему;
+- `containment_feedback`: какое следующее policy или assurance decision изменилось из-за evidence.
+
+Так наблюдаемость фиксирует не только факт выполнения, но и доказательство, что выполнение прошло через ограниченные hands, привязанные к конкретной session и управляемые конкретным harness.
+
 
 ### 7.2. Наложение контура на NIST AI RMF
 
@@ -444,5 +462,6 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 
 [^ms-observability]: Microsoft Learn, [Observability for Generative AI and agentic AI systems](https://learn.microsoft.com/en-us/security/zero-trust/sfi/observability-ai-systems)
 [^ms-inventory]: Microsoft Learn, [Complete production infrastructure inventory](https://learn.microsoft.com/en-us/security/zero-trust/sfi/complete-production-infrastructure-inventory)
+[^azure-agentic-cloud-ops]: Microsoft Azure Blog, [From insight to action: The next phase of agentic cloud operations](https://azure.microsoft.com/en-us/blog/from-insight-to-action-the-next-phase-of-agentic-cloud-operations/)
 
 [^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)

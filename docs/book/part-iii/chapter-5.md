@@ -130,6 +130,8 @@ flowchart TD
 
 Поэтому даже для очень умных агентов полезно придерживаться скучного принципа: запись в долговременную память по умолчанию должна быть либо явно разрешена политикой, либо вынесена в фоновый конвейер.
 
+У долговременного состояния есть еще один отдельный риск: **persistent memory poisoning**. Если вредная запись уже попала в профиль, summary store, retrieval index или workspace state, она будет атаковать не один запрос, а каждый следующий запуск, который доверяет этому состоянию. Поэтому mature runtime полезно начинать не только с загрузки памяти, но и с `startup_persistent_state_scan`: проверить provenance, tenant scope, freshness, write policy version, quarantine flag и признаки instruction-like текста до того, как запись попадет в prompt или policy context.
+
 Ниже простой пример такой логики:
 
 ```python
@@ -246,6 +248,20 @@ memory:
 - `quarantine and rollback`: можно ли отключить запись, переиграть affected traces и объяснить, какие ответы она изменила.
 
 Практическое правило простое: память, которая может пережить запуск, должна проходить не только data-quality review, но и threat-model review. Иначе система получает долговременный канал атаки, который выглядит как обычная персонализация.
+
+### 8.4. Управляемая память должна быть ограниченным сервисом, а не сырой базой
+
+Cloudflare Agent Memory хорошо формулирует следующий практический шаг: производственная память агента не должна выглядеть как "модель получила доступ к базе или файловой системе и сама придумала стратегию поиска".[^cloudflare-agent-memory] Более безопасная форма — **bounded memory service** с маленьким API: `ingest`, `remember`, `recall`, `list`, `forget`.
+
+Это меняет архитектурную ответственность:
+
+- `ingest` вызывается на границе compaction и извлекает факты, события, инструкции и задачи из истории;
+- `remember` сохраняет явно важную запись, но все равно проходит правила записи;
+- `recall` возвращает синтезированный ответ через retrieval pipeline, а не отдает модели весь storage;
+- `forget` и supersession chains позволяют пометить запись как больше не актуальную, а не тайно спорить с ней в prompt;
+- `list` и exportability делают память проверяемым активом, а не невидимым побочным эффектом.
+
+Переносимый контракт: **compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**. Важный анти-паттерн здесь — давать агенту сырой filesystem/database interface как "память": модель начинает тратить контекст на storage strategy, смешивает поиск с долговременной записью и получает слишком широкую поверхность для отравления памяти.
 
 ## 9. Практические правила для проектирования памяти
 
@@ -498,3 +514,4 @@ deletion:
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^cloudflare-agent-memory]: Cloudflare Blog, [Agents that remember: introducing Agent Memory](https://blog.cloudflare.com/introducing-agent-memory/)

@@ -11794,13 +11794,55 @@ registry:
     )
     text = _replace_editorial_anchor(
         text,
-        "platform_defaults:\n"
-        "  required:\n",
+        "`platform_defaults`:\n"
+        "\n"
+        "required:\n"
+        "\n"
+        "\\- `shared_tool_gateway`\n"
+        "\n"
+        "\\- `standard_trace_schema`\n"
+        "\n"
+        "\\- `policy_hooks`\n"
+        "\n"
+        "\\- `eval_gatein_ci`\n"
+        "\n"
+        "`supported_templates`:\n"
+        "\n"
+        "\\- `qa_agent`\n"
+        "\n"
+        "\\- `workflow_agent`\n"
+        "\n"
+        "\\- `approval_agent`\n"
+        "\n"
+        "`deviations_require_review`:\n"
+        "\n"
+        "\\- `custom_runtime`\n"
+        "\n"
+        "\\- `direct_tool_access`\n"
+        "\n"
+        "\\- `custom_telemetry_schema`\n"
+        "\n"
+        "\\- `bypassofpolicy_layer`",
+        "```yaml\n"
         "platform_defaults:\n"
         "  supported_runtimes:\n"
         "    - workflow_runtime_v2\n"
         "    - agent_runtime_v3\n"
-        "  required:\n",
+        "  required:\n"
+        "    - shared_tool_gateway\n"
+        "    - standard_trace_schema\n"
+        "    - policy_hooks\n"
+        "    - eval_gate_in_ci\n"
+        "  supported_templates:\n"
+        "    - qa_agent\n"
+        "    - workflow_agent\n"
+        "    - approval_agent\n"
+        "  deviations_require_review:\n"
+        "    - custom_runtime\n"
+        "    - direct_tool_access\n"
+        "    - custom_telemetry_schema\n"
+        "    - bypass_of_policy_layer\n"
+        "```",
         "chapter 18 supported runtime identifiers",
     )
 

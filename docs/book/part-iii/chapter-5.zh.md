@@ -130,6 +130,8 @@ flowchart TD
 
 所以即使是很强的智能体，也最好遵循一个很朴素的原则：默认情况下，写入长期记忆要么被策略明确允许，要么被移到后台流水线。
 
+长期状态还有一个单独风险：**persistent memory poisoning**。如果恶意记录已经进入 profile、summary store、retrieval index 或 workspace state，它攻击的就不只是一个 prompt，而是每个后来信任这份状态的运行。因此 mature runtime 不应该只从加载记忆开始，还应该先做 `startup_persistent_state_scan`：在记录进入 prompt 或 policy context 前检查 provenance、tenant scope、freshness、write policy version、quarantine flag，以及类似指令的文本迹象。
+
 下面是一个简单例子：
 
 ```python
@@ -247,6 +249,20 @@ Google 最近材料里一个很实用的提醒是：记忆应该被当成可治�
 
 实用规则很简单：任何能活过当前运行的记忆，不只需要 data-quality review，也需要 threat-model review。否则系统就会得到一条长期攻击通道，而它表面上看起来只是普通个性化。
 
+### 8.4. 托管记忆应该是有边界的服务，而不是原始数据库
+
+Cloudflare Agent Memory 很好地描述了下一步实践：生产级 agent memory 不应该是“让模型访问数据库或文件系统，然后自己设计检索策略”。[^cloudflare-agent-memory] 更安全的形态是一个 **bounded memory service**，只暴露很小的 API：`ingest`、`remember`、`recall`、`list` 和 `forget`。
+
+这会改变架构责任：
+
+- `ingest` 在 compaction 边界运行，从历史中提取 facts、events、instructions 和 tasks；
+- `remember` 保存明确重要的记录，但仍然要通过写入规则；
+- `recall` 通过 retrieval pipeline 返回合成答案，而不是把整个 storage layer 交给模型；
+- `forget` 和 supersession chains 让系统标记记录已经不再当前有效，而不是在 prompt 里悄悄和旧记录争论；
+- `list` 和 exportability 让记忆成为可检查资产，而不是不可见副作用。
+
+可移植契约是：**compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**。这里的重要反模式是把原始 filesystem/database interface 当作“记忆”交给 agent：模型会把上下文花在 storage strategy 上，把检索和持久写入混在一起，并获得更宽的 memory poisoning 攻击面。
+
 ## 9. 记忆设计的实用规则
 
 如果要把最早期的设计决策压缩成一组规则，通常就是这样：
@@ -311,3 +327,4 @@ Google 最近材料里一个很实用的提醒是：记忆应该被当成可治�
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^cloudflare-agent-memory]: Cloudflare Blog, [Agents that remember: introducing Agent Memory](https://blog.cloudflare.com/introducing-agent-memory/)

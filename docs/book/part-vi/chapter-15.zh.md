@@ -63,6 +63,12 @@
 
 所以共享网关不是官僚主义。它是把最贵、最敏感的问题集中起来，一次性认真解决的方式。
 
+### 3.1. Commercial control-plane convergence
+
+2026 年的商业平台正在收敛到同一个模式：**shared AI gateway** 不再只是模型代理，而是运行中的 control-plane surface。AWS AgentCore AgentOps 让 traces、latency、token and cost accounting、PII redaction 和 governance signals 可见；Cloudflare AI Gateway for coding agents 提供 client routing、caching、limits 和 provider mediation 的统一路径；Microsoft Foundry observability 则把 agent traces、quality signals 和 operational views 连在一起。[^aws-agentops][^cloudflare-ai-gateway-coding-agents][^microsoft-foundry-observability-operations]
+
+对反动物园策略来说，结论很直接：model/provider routing、cache policy、rate limits、DLP/redaction、retry/fallback policy 和 cost attribution 应该属于同一个共享平台表面，而不是每个 agent 的本地封装。否则组织会得到一个新的动物园：有的团队把 gateway 当 billing proxy，有的当 observability hook，有的当 policy point，但没有任何一个回路能看见完整的 risk/cost path。
+
 <div class="diagram-card">
 <p>黄金路径应该减少关键层的本地实现数量</p>
 
@@ -270,3 +276,7 @@ platform_defaults:
 - [第 16 章：基础运行时蓝图](../part-vii/chapter-16.zh.md)
 - [第六部分：组织模型](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+[^cloudflare-ai-gateway-coding-agents]: Cloudflare Docs, [AI Gateway: Coding Agents](https://developers.cloudflare.com/ai-gateway/integrations/coding-agents/)
+[^microsoft-foundry-observability-operations]: Microsoft Azure AI Foundry Blog, [Monitoring & Observability in Microsoft Foundry, Part 2: Configuration and Operations](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-configuration-and-operatio/4532674)

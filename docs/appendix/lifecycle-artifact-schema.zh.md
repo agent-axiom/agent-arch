@@ -140,6 +140,7 @@ provenance:
 - 已暂停或进行中动作的撤销行为；
 - 当发布或保障依赖验证器判断时，验证器契约版本、打分准则与证据链接期望；
 - 当发布身份（release identity）包含由沙箱（sandbox）支撑的执行时，沙箱配置文件复核证据（sandbox profile review evidence），包括 `sandbox_profile_reviewed` 追踪事件（trace event）、`workspace_manifest_ref` 以及指向评测/发布证据（eval/rollout evidence）的链接。
+- 连续性契约版本与证据：[上下文连续性信封](continuity-envelope-schema.zh.md)、`context_compaction`/`context_rehydration` 事件契约、完整历史与压缩历史的对照评测结果，以及每次恢复后的能力调用都必须重新授权这一规则。
 
 ## 5. 退役计划
 

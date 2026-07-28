@@ -6,6 +6,8 @@ Its job is not to become a production framework. It exists as a minimal code anc
 
 This package is intentionally an implementation anchor, not a parallel product. Its value is that it lets the reader inspect runnable structure behind the book's argument without turning the project into a framework manual.
 
+Managed Agents add a short **Brain / Hands / Session** map to this page. Brain is the model/harness control loop; Session is the durable append-only log exposed through `wake(sessionId)`, `getEvents()`, and `emitEvent(id, event)`; Hands are the sandbox/tool layer that executes `execute(name, input)` and issues resources through `provision({resources})`. If a sandbox or tool fails on the hands side, the reference package should show it as a managed failed run or tool-call failure, not as a lost process. Secrets stay behind the proxy/vault boundary: the executor receives a brokered capability and scoped resource, not a raw token.
+
 What this page does **not** promise:
 
 - it does not replace the book's explanation of why the layers exist;
@@ -67,6 +69,8 @@ Recent contract updates make that surface more useful for review: delegated auth
   Continuous controls and inventory drift checks for the approved registry.
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
   Approval gates, pause/resume semantics, simple human review queues for high-risk actions, and the control surface where approval state has to stay aligned with capability session state.
+- [continuity.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/continuity.py)
+  A fail-closed `ContinuityEnvelope` validator that binds a derived summary to durable state, detects identity, policy, capability, and approval drift, blocks unknown side effects, and always requires reauthorization.
 
 That same runtime-control surface is also the natural place to keep delegated authorization assumptions explicit: which principal delegated access, whether that authorization may survive pause/resume, and what the runtime does if delegated access is revoked before the action completes.
 
@@ -91,6 +95,17 @@ Explicit runtime execution via subcommand:
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+Exercise context compaction and reset safety:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-continuity
+.venv/bin/python -m agent_runtime_ref inspect-continuity --tamper-summary
+.venv/bin/python -m agent_runtime_ref inspect-continuity --current-policy-version policy-v5
+.venv/bin/python -m agent_runtime_ref inspect-continuity --side-effect-status side_effect_unknown
+```
+
+The valid path emits `context_compaction` and `context_rehydration` but returns `authorized: false` with `reauthorization_required`. Tampering or policy drift emits `continuity_validation_failed`. An unknown effect emits the same stop event with status `blocked_on_reconciliation`; no rehydration event is emitted until reconciliation succeeds. This is a deterministic teaching implementation, not a durable production executor: production systems must keep their event log, checkpoint, policy, approval, and side-effect state in governed stores outside model context. The complete field and eval contract is in the [Context Continuity Envelope Schema](continuity-envelope-schema.en.md).
 
 The second form is a deliberately small failure-rich scenario. It lets the package demonstrate how an otherwise allowed capability can still end as a governed failed run with explicit telemetry instead of disappearing behind a generic success path. `simulate-run` returns `agent_id`, `request_agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `event_types`, `session_id`, `tenant_id`, `principal_id`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, `pending_approval_capability_names`, and optional `failure_reason`. Common identity and trace overrides include `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id`, and `--session-id`, so examples can be made deterministic without editing configs. More specialized selectors include `--limit` for memory inspection, `--approval-id` for approval closure, `--replay-trace-id` for trace replay, `--trace-prefix` for session commands, and `--session-prefix` for eval dataset exports.
 
@@ -290,6 +305,32 @@ sandbox_profile:
 
 This example does not turn the reference runtime into a full sandbox orchestrator. It fixes the contract surface that Chapters 9 and 16 require from a real sandbox-backed runtime: manifest, permissions, workspace materialization, session state, and snapshot/resume policy should be visible to review.
 
+### Polymorphic Schema Registry Pattern
+
+For high-cardinality tool/API domains, the reference package should keep an example `polymorphic_schema_registry` instead of spreading structural rules through prompt text. A minimal record could look like this:
+
+```yaml
+polymorphic_schema_registry:
+  schema_descriptor_id: travel_expense.v3
+  schema_version: "3.2"
+  source_of_truth: registry://schemas/travel_expense.v3
+  fields:
+    amount:
+      type: float
+      description: Total transaction amount in local currency
+      validation_hook: check_positive_bounds
+  validated_tool_call:
+    capability_name: submit_expense
+    validation_boundary: before_tool_execution
+    validation_error_code: invalid_amount_bounds
+    trace_fields:
+      - schema_descriptor_id
+      - schema_version
+      - validation_hook
+```
+
+This example shows the contract surface from Chapter 9: the agent can reason over intent, but the runtime loads the descriptor, calls the validator, and records schema evidence before the side effect.
+
 ### Durable Agent Actor Pattern
 
 A future reference-runtime example should also model the durable-agent-actor boundary from Chapter 16. The runtime does not need a vendor-specific Durable Object implementation, but it should have a visible contract for stable agent identity, instance-local state, resumable sessions, scheduled wake-ups, and handoff to governed stores.
@@ -305,7 +346,22 @@ A minimal config surface would include:
 - `connection_scope` for WebSocket/streaming fan-out and approval UI visibility;
 - `export_ref`, `delete_ref`, and `audit_refs` so hidden durable memory is not possible.
 
-### Agent Shell + Durable Workflow Spine Pattern
+### Recoverable Internal Fiber Pattern
+
+Between a simple background task and a full durable workflow, it is useful to reserve one more contract surface: a recoverable internal fiber. This is work that remains part of the agent's own loop, but has durable acceptance, checkpoint/stash, recovery hook, inspection, and cancellation.
+
+A minimal contract surface for that example would include:
+
+- `fiber_id`, `fiber_name`, `fiber_status`, and `owner_agent_instance_id`;
+- `fiber_idempotency_key` for deduplicating repeated webhook/request deliveries;
+- `fiber_checkpoint_ref` or `stash_snapshot` for the last safe intermediate state;
+- `recovery_handler` and `recovery_reason`, so resume is an explicit procedure rather than an implicit retry;
+- `cancellation_status`, `last_safe_step`, and `evidence_refs`;
+- a policy rule that forbids using the checkpoint as profile memory, tenant knowledge, or system of record.
+
+This pattern fits agent work that is too important for a simple in-memory loop, but does not yet need a full workflow spine with external events and HITL gates.
+
+### Agent shell + durable workflow spine pattern
 
 A future reference-runtime extension should keep one pattern separate: the agent does not need to own all long-running work. It can be the interaction shell — `agent_instance_id`, session state, user-facing stream, connection-scoped authorization, and approval UI. Beside it, the durable workflow spine should own steps, retries, waiting for external events, durable approval records, idempotency keys, and evidence refs.
 

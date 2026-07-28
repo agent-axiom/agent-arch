@@ -112,6 +112,12 @@ golden_path:
 
 Поэтому общий шлюз — это не бюрократия. Это способ централизованно решить самые дорогие и чувствительные задачи один раз и хорошо.
 
+### 3.1. Commercial control-plane convergence
+
+Коммерческие платформы в 2026 году сходятся к одному и тому же паттерну: **shared AI gateway** перестает быть только proxy к моделям и становится рабочей поверхностью control plane. AWS AgentCore AgentOps делает видимыми traces, latency, token and cost accounting, PII redaction и governance signals; Cloudflare AI Gateway for coding agents добавляет единый путь для client routing, caching, limits и provider mediation; Microsoft Foundry observability связывает agent traces, quality signals и operational views.[^aws-agentops][^cloudflare-ai-gateway-coding-agents][^microsoft-foundry-observability-operations]
+
+Для антизоопарк-стратегии вывод прямой: model/provider routing, cache policy, rate limits, DLP/redaction, retry/fallback policy и cost attribution должны жить в общей платформенной поверхности, а не в локальной обвязке каждого агента. Иначе организация получает новый зоопарк: одни команды используют gateway как billing proxy, другие как observability hook, третьи как policy point, и ни один контур не видит полный risk/cost path.
+
 <div class="diagram-card">
 <p>Golden path должен снижать число локальных реализаций критичных слоев</p>
 
@@ -162,6 +168,7 @@ flowchart LR
 Это лучше, чем либо один гигантский шаблон для всего мира, либо полный хаос.
 
 ## 6. Антизоопарк-подход начинается с ограничения свободы в правильных местах
+Полезно также явно разделять уровни сложности в реестре: `direct_model_call`, `single_agent_with_tools`, `multiagent_orchestration`. Такой реестр не дает команде начинать с многоагентной схемы просто потому, что это выглядит современнее. Для каждого утвержденного шаблона среды исполнения стоит хранить не только пример кода, но и причину допуска: профиль задержки, лимит стоимости, границу безопасности, требования к трассировке, покрытие оценками и владельца. Если команда хочет `sequential`, `concurrent`, `group_chat`, `handoff` или `magentic` orchestration, это уже не просто “вариант реализации”, а проверяемый выбор контроля среды исполнения.
 
 Термин “зоопарк платформ” обычно означает одно и то же:
 
@@ -208,12 +215,19 @@ platform_defaults:
     - policy_hooks
     - eval_gate_in_ci
   supported_templates:
-    - qa_agent
+    - direct_model_call
+    - single_agent_with_tools
     - workflow_agent
     - approval_agent
+  approved_orchestration_patterns:
+    - sequential
+    - concurrent
+    - controlled_handoff
   deviations_require_review:
     - custom_runtime
     - direct_tool_access
+    - group_chat_orchestration
+    - magentic_orchestration
     - custom_telemetry_schema
     - bypass_of_policy_layer
 ```
@@ -330,3 +344,7 @@ platform_defaults:
 - [Глава 16. Базовая схема среды исполнения](../part-vii/chapter-16.md)
 - [Часть VI. Организационная модель](index.md)
 - [Источники](../../appendix/sources.md)
+
+[^aws-agentops]: AWS, [AgentOps: Operationalize agentic AI at scale with Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/agentops-operationalize-agentic-ai-at-scale-with-amazon-bedrock-agentcore/)
+[^cloudflare-ai-gateway-coding-agents]: Cloudflare Docs, [AI Gateway: Coding Agents](https://developers.cloudflare.com/ai-gateway/integrations/coding-agents/)
+[^microsoft-foundry-observability-operations]: Microsoft Azure AI Foundry Blog, [Monitoring & Observability in Microsoft Foundry, Part 2: Configuration and Operations](https://techcommunity.microsoft.com/blog/azure-ai-foundry-blog/monitoring--observability-in-microsoft-foundry-part-2-configuration-and-operatio/4532674)

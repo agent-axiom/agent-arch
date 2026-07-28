@@ -29,6 +29,21 @@
 
 所以最好把评测数据集当成一种契约。
 
+## 把评测完整性作为一等控制
+
+OpenAI 对 SWE-Bench Pro 的审计说明了为什么只有这个契约还不够：即使是很真实的 benchmark，如果任务本身坏了，也会产生噪声信号。[OpenAI 发现](https://openai.com/index/separating-signal-from-noise-coding-evaluations/)，自动管线把 731 个 public split 任务中的 200 个标为损坏，而每个任务由五位资深工程师参与的人类标注活动识别出 249 个损坏任务。用本书的语言说，eval artifact 本身也需要质量保证，因为它会影响部署安全、研究优先级和 safety case 的论证。
+
+最小缺陷分类可以直接进入 schema：
+
+- `overly_strict_tests`：隐藏测试要求 prompt 没有要求的特定实现；
+- `underspecified_prompt`：prompt 漏掉了 oracle 后续强制检查的要求；
+- `low_coverage_tests`：测试覆盖不足，让不完整解法也能通过；
+- `misleading_prompt`：prompt 指向的行为与测试或 gold patch 冲突。
+
+因此，`verifier_outputs` 旁边还应该有独立的 `eval_audit_record`。它描述的不是智能体在某个场景里的表现，而是这个测量工件本身是否可靠：`source_task_id`、`oracle_type`、`defect_labels`、`agent_audit_refs`、`human_reviewer_count`、`human_agreement`、`reviewer_confidence` 和 `decision_impact`。
+
+这里的实用模式不是“让 agent 给 eval 打分”。更可靠的形态是 **agent-assisted eval audit + independent human adjudication**：agent 帮助规模化检查 prompt、tests、traces 和 patches，但最终标签、置信度和对发布决策的影响仍然是一个独立的人类审查工件。
+
 ## 最小评测工件结构
 
 对智能体系统来说，一个数据集条目至少最好包含：
@@ -110,10 +125,19 @@
 - `failure_attribution_valid`
 - `failed_run_traceable`
 - `sandbox_profile_review`
+- `stop_condition_verified`
+- `delegation_budget_respected`
+- `single_vs_multi_agent_regression`
 
 `failed_run_traceable` 会在发布评审开始要求失败运行演练时变得重要。它检查的不是一次退化路径有没有失败，而是这次失败是否仍然保留了可检查的状态、具体失败原因，例如 `failure_reason` 字段、追踪链接与受治理的发布身份。
 
 `sandbox_profile_review` 对由沙箱（sandbox）支撑的路径很重要：它检查工作区物化（workspace materialization）、shell/文件系统权限（shell/filesystem permissions）、网络/密钥姿态（network/secrets posture）与快照/恢复策略（snapshot/resume policy）是否被显式表示成可评审证据，而不是停留为隐含的运行时设置（runtime settings）。
+
+`stop_condition_verified` 用于那些不能只靠自由文本“完成”来接受结果的 agent-run paths。它检查场景是否带有明确 stop condition、verification mechanism、verification result、verifier actor，以及测试输出、trace、screenshot、diff 或其他 artifact 等 evidence link。
+
+`delegation_budget_respected` 用于 manager/subagent paths。它检查 fanout 是否通过明确 gate，`subagent_count` 是否未超限，`context_handoff_size` 和 `token_budget` 是否仍在场景边界内，以及 `delegation_reason` 是否解释了为什么 single-agent path 不够。
+
+`single_vs_multi_agent_regression` 用于比较模式。它检查 multi-agent 是否真的在 read-heavy breadth-first 工作中胜出，并且在 write-heavy shared-state 工作中因冲突动作、approvals、上下文丢失或 `merge_conflict_risk` 增长而失败或被拦截。
 
 也就是说，分级契约最好不要只盯着最终输出文本，也要检查系统行为。
 
@@ -148,6 +172,9 @@
 
 !!! example "重复工单线索的评测门禁（eval gate）"
     对于贯穿的支持分诊（support-triage）案例，应该有一个专门评测（eval）复现 `create_ticket` 之后的超时，要求保留 `trace_id` 与 `idempotency_key`，期望恰好一个工单副作用或一次 `side_effect_unknown` 停止；如果新的提示词/模型/适配器（prompt/model/adapter）版本盲目重试并创建第二个工单，就阻断发布（rollout）。
+
+!!! example "上下文压缩连续性矩阵"
+    每个长程场景都运行两次：一次使用完整历史，一次通过[上下文连续性信封](continuity-envelope-schema.zh.md)。用 `summary_sha256` 绑定压缩视图，并要求压缩后的安全判断相同或更严格。阻断变体必须覆盖用户否定约束、被修改的摘要、过期或撤销的审批、策略与能力版本变化、租户或主体漂移、未完成义务以及 `side_effect_unknown`。如果压缩路径直接授权、重试结果未知的写入，或无法把 `context_compaction` 关联到 `context_rehydration` 或 `continuity_validation_failed`，评测即失败。
 
 !!! note "规范评测案例（Canonical eval cases）"
     评测数据集（eval dataset）不应该只覆盖重复工单回归（duplicate-ticket regression）。**支持分流（Support triage）** 检查审批门禁（approval gates）、幂等证据（idempotency evidence）、重试行为（retry behavior）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 检查检索新鲜度（retrieval freshness）、来源归因（source attribution）、记忆来源（memory provenance）、访问控制（access control）和有依据回答质量（grounded answer quality）。**事件协调（Incident coordination）** 检查升级时序（escalation timing）、通知副作用（notification side effects）、响应归属（response ownership）、交接质量（handoff quality）和事件后学习回归（post-incident learning regressions）。
@@ -187,6 +214,14 @@
 - `verification_result`
 - `verifier_actor`
 - `evidence_refs`
+- `eval_audit_record`
+- `oracle_type`
+- `defect_labels`
+- `agent_audit_refs`
+- `human_reviewer_count`
+- `human_agreement`
+- `reviewer_confidence`
+- `decision_impact`
 
 这样评测工件才会真正变成发布纪律的一部分，而不是临时 JSON。
 
@@ -284,6 +319,7 @@ verifier_outputs:
 - 不显式声明期望结果；
 - 只评最终答案，不看策略或工具行为；
 - 不给数据集做版本管理；
+- 不审计任务、oracle 和 hidden tests 本身的质量；
 - 不把数据集条目和追踪证据或事故历史关联起来；
 - 把验证器输出压成一个薄弱的单一判断，没有过程/结果拆分和失败归因；
 - 在发布（rollout）中要求 `sandbox_profile_review`，却没有打分规则（grading rule）去检查工作区（workspace）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）。
@@ -299,6 +335,7 @@ verifier_outputs:
 - 标签和期望结果是否分开？
 - 有没有分级规则，而不只是人工描述？
 - 能不能评估行为，而不只是文本？
+- 是否有 `eval_audit_record`，记录 defect labels、oracle type、reviewer confidence 和 decision impact？
 - 验证器能不能单独输出 `process_score`、`outcome_score` 和 `failure_attribution`？
 - 能不能看出是哪一个验证器身份与契约版本产出了这份打分输出？
 - 是否有专门面向由沙箱（sandbox）支撑的路径的规则，用来检查沙箱配置文件契约（sandbox profile contract）、工作区条目（workspace entries）、权限（permissions）与快照/恢复证据（snapshot/resume evidence）？

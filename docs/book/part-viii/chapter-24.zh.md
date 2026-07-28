@@ -3,7 +3,7 @@
 !!! info "时效说明"
     最近一次编辑审查：**2026 年 5 月 17 日**。上一次审查：**2026 年 5 月 14 日**。下一次计划审查：**2026 年 6 月 17 日**。
 
-    自上次审查以来的变化：MCP/A2A 安全面、验证器契约、治理感知遥测以及印刷准备问题，现在都有具体契约覆盖和文档表面检查。
+    自上次审查以来的变化：MCP/A2A 安全面、验证器契约、治理感知遥测以及印刷准备问题，现在都有具体契约覆盖和文档表面检查。也把 AI Control Roadmap、内部 coding agents 的 runtime monitoring，以及承载发布意义的控制指标（release-bearing control metrics）接入内部人风险模型。
 
     变化最快的部分：
 
@@ -107,6 +107,8 @@
 
 Google Research 把这压缩成三个很实用的原则：人类控制者（human controllers）、有限权力（limited powers）和可观察动作（observable actions）。[^google-secure-agents]
 
+Google DeepMind 和 OpenAI 给这个框架补上了运营层：能访问工作系统的内部 agent 应该被当作潜在内部人威胁（insider threat）处理，对其轨迹的 monitoring 也应该是 runtime control 的一部分，而不是普通可观测性仪表盘。[^deepmind-ai-control][^openai-agent-monitoring] 因此，控制必须有可度量阈值：到底有多少 traffic 被监控，验证器能抓住多少 misalignment-relevant behavior，响应需要多长时间，以及哪些动作必须从 asynchronous review 升级为 synchronous blocking。如果这些数字未知，“我们有 monitoring”就不应该算作安全证据。
+
 ## 5. 过渡阶段尤其危险
 
 很多最有代表性的失效模式并不发生在稳定期，而是发生在过渡期：
@@ -165,6 +167,7 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 追踪编号（`trace_id`）、审批编号（`approval_id`）、工具主体（`tool_principal`）、契约版本（`contract_version`）与工件包（`artifact_bundle`）之间有不可断开的链接；
 - 能力族有紧急停用路径；
 - 行为评测会专门测试破坏、隐瞒、规避监督以及编排模式滥用（orchestration-pattern misuse）。
+- 承载发布意义的控制指标（release-bearing control metrics）：被监控覆盖率（monitored coverage）、验证器召回率（verifier recall）、响应时间（time-to-response），以及动作风险何时要求 synchronous blocking 而不是 delayed review。
 
 <div class="diagram-card">
 <p>失配风险最适合被看成自主性与控制面之间的张力</p>
@@ -287,4 +290,6 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 [^anthropic-misalignment]: Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 [^google-secure-agents]: Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
+[^openai-agent-monitoring]: OpenAI, [How we monitor internal coding agents for misalignment](https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)

@@ -102,6 +102,8 @@
 
 Практический пост Anthropic о многоагентной исследовательской системе важен как промышленный контрапункт к этому исследовательскому блоку. Он показывает, что многоагентный подход может давать сильный выигрыш на открытых исследовательских задачах, особенно для запросов с независимыми ветками, но этот выигрыш связан с экономикой: больше токенов, больше вызовов инструментов, больше параллельных контекстов и больше требований к координации. Поэтому его стоит читать не как универсальный аргумент за многоагентность, а как критерий отбора задач: высокая ценность результата, независимые направления исследования, явные бюджеты и оценочные шлюзы.
 
+Отдельная линия вроде Symphony показывает другую сторону frontier: попытку уйти от централизованного orchestrator к capability ledger, динамическому выбору координатора и голосованию результатов.[^symphony-decentralized] Родственная работа SYMPHONY для heterogeneous planning идет через пул разных LLM-агентов, чтобы увеличить разнообразие rollout-веток в MCTS-планировании.[^symphony-heterogeneous] Для книги это полезно не как готовый шаблон runtime, а как warning label: чем больше распределенности, тем важнее доказуемые capability records, quorum/retry semantics, provenance для голосов, cost ceiling и диагностика конфликтов.
+
 Что уже можно уверенно брать в практику:
 
 - скепсис к преждевременному разбиению на много агентов;
@@ -146,6 +148,20 @@
 
 Именно на стыке этих трех тем, скорее всего, и появятся следующие по-настоящему сильные сдвиги проектирования.
 
+## Практические уроки: агенты анализа данных
+
+Разбор GitHub [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/) про Qubot полезен как практический кейс внутреннего аналитического агента, где ценность создают не “магические SQL-запросы”, а управляемая связка интерфейса, слоя контекста (`context layer`), движка запросов (`query engine`) и контура оценки.[^github-qubot] Агент доступен через Slack, VS Code и Copilot CLI; контекст собирается федеративно по слоям данных (bronze/silver/gold), загружается через GitHub MCP Server, а изменения слоя контекста проходят офлайн-оценки с известными запросами, эталонным SQL (`ground-truth SQL`), метаданными, несколькими прогонами и отчетами по завершению, точности и длительности.
+
+Архитектурный вывод для этой книги: внутренний ассистент знаний должен считать проверку запросов (`query review`), атрибуцию источников (`source attribution`), границы доступа (`access boundaries`) и владение набором данных частью контракта среды исполнения. Если агент отвечает на аналитический вопрос, трасса должна показывать, какой слой контекста был использован, какие обязательные фильтры (`mandatory filters`) применены, какой движок запросов выбран, почему доступ разрешен или отказан и какой оценочный сценарий защищает этот путь от регрессии.
+
+## Практические уроки: многоагентное исследование
+
+Разбор Anthropic про промышленную исследовательскую систему полезно держать рядом с таксономией исследований: он показывает, когда многоагентная схема оправдана практически, а не только концептуально.[^anthropic-multi-agent-research] Сильный сигнал — задачи широкого поиска с независимыми ветками, большим корпусом, сложными инструментами и ценностью, которая окупает дополнительный бюджет токенов и вызовов инструментов. Слабый сигнал — работа, похожая на программирование или координацию инцидента, с плотным общим состоянием, где координация и риск слияния быстро съедают выигрыш.
+
+Свежая рамка LangChain по выбору многоагентной архитектуры дополняет этот вывод более прикладной таблицей решений: подагенты, навыки, передачи управления и маршрутизаторы решают разные задачи, а одиночный агент с хорошими инструментами остается стартовой точкой, пока команда не уперлась в контекст, параллельность или распределенное владение возможностями.[^langchain-multi-agent-architecture]
+
+Инженерный вывод для этой книги: многоагентный фронтир надо оценивать через контракт делегирования, бюджет усилий, условие остановки, качество источников, эффективность инструментов, контрольные точки, возобновление и трассируемость. Иначе команда будет сравнивать только красивый финальный ответ и не увидит, что процесс стал дороже, менее воспроизводимым или хуже управляемым.
+
 ## Рекомендуемые исследовательские материалы
 
 - EVOLVE-MEM, [A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
@@ -153,7 +169,11 @@
 - AgentTrace, [A Structured Logging Framework for Agent System Observability](https://openreview.net/forum?id=8IkLxhPY3G)
 - AgentTrace, [Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
+- Symphony, [A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019)
+- SYMPHONY, [Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623)
 - Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
+- LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)
+- GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/)
 
 ## Что делать дальше
 
@@ -163,3 +183,9 @@
 - [Глава 7. Извлечение контекста, уплотнение и фоновые обновления](../book/part-iii/chapter-7.md)
 - [Глава 13. Офлайн-оценки, онлайн-оценки и регрессионные шлюзы](../book/part-v/chapter-13.md)
 - [Практика. MCP для инструментов, A2A для агентов](../book/part-iv/practical-mcp-a2a.md)
+
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^langchain-multi-agent-architecture]: LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^symphony-decentralized]: Ji Wang, Kashing Chen, Xinyuan Song, Ke Zhang, Lynn Ai, Eric Yang, Bill Shi, [Symphony: A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019).
+[^symphony-heterogeneous]: Wei Zhu, Zhiwen Tang, Kun Yue, [SYMPHONY: Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623).
