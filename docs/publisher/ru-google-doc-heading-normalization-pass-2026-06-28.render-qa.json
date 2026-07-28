@@ -1,0 +1,159 @@
+{
+  "date": "2026-06-28",
+  "google_doc": {
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab_id": "t.0",
+    "baseline_revision_id": "ALtnJHycqUJOlgHPJs2U9ylHl3Hb3yhnF1EbR9nU-226k7V7gsDB2qhrsoJHyuIcNkupHbgkOOZCTNgLuY7C4PZCthT9URSRwaB0eDeXCSo",
+    "final_revision_id": "ALtnJHzNhgv8hnqRh5oLPZThYvoczugICZiF6hYYJONYVWXqOJNwaqd3-DNNZS0b0vTU3eViqETu4lXKcvyq2eSe4cYMqn8xVAQKc_5Hla4"
+  },
+  "operation": {
+    "type": "style_only_batch_update",
+    "requests_grouped": 556,
+    "batches": [
+      {
+        "request_count": 200,
+        "first_range": "10888-11271",
+        "last_range": "191577-192008"
+      },
+      {
+        "request_count": 200,
+        "first_range": "192442-192827",
+        "last_range": "491857-492300"
+      },
+      {
+        "request_count": 156,
+        "first_range": "492302-492727",
+        "last_range": "724538-724796"
+      }
+    ],
+    "paragraphs_changed": 629,
+    "text_changed": false
+  },
+  "style_inventory": {
+    "baseline": {
+      "docx": "docs/publisher/artifacts/agent-arch-ru-heading-normalization-baseline-2026-06-28.docx",
+      "paragraphs": 8040,
+      "nonempty_headings": {
+        "Heading 1": 26,
+        "Heading 2": 1393,
+        "Heading 3": 578,
+        "Heading 4": 51
+      },
+      "empty_headings": {
+        "Heading 1": 1,
+        "Heading 2": 994,
+        "Heading 3": 124
+      },
+      "long_heading_2_over_140": 629
+    },
+    "final": {
+      "docx": "docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx",
+      "paragraphs": 8040,
+      "nonempty_headings": {
+        "Heading 1": 26,
+        "Heading 2": 764,
+        "Heading 3": 578,
+        "Heading 4": 51
+      },
+      "empty_headings": {
+        "Heading 1": 1,
+        "Heading 2": 994,
+        "Heading 3": 124
+      },
+      "long_heading_2_over_140": 0,
+      "long_heading_3_over_220": 65
+    }
+  },
+  "raw": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-heading-normalized-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_ru_heading_normalized_2026_06_28_render",
+    "pdf": "/private/tmp/agent_arch_ru_heading_normalized_2026_06_28_render/agent-arch-ru-heading-normalized-2026-06-28.pdf",
+    "png_pages": 504,
+    "pdf_pages": 504,
+    "blank_like_pages": [],
+    "lowest_nonwhite_pages": [
+      99,
+      41,
+      62,
+      164,
+      470
+    ],
+    "visual_spot_pages": [
+      1,
+      99,
+      504
+    ]
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-heading-normalized-2026-06-28.docx",
+    "source_mapping_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch23-launch-checklist-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_template2000n_heading_normalized_2026_06_28_render",
+    "pdf": "/private/tmp/agent_arch_template2000n_heading_normalized_2026_06_28_render/agent-arch-ru-template2000n-heading-normalized-2026-06-28.pdf",
+    "png_pages": 315,
+    "pdf_pages": 315,
+    "blank_like_pages": [],
+    "style_metrics": {
+      "paragraphs": 8040,
+      "BodyText": 5787,
+      "Heading1": 117,
+      "Heading2": 994,
+      "Heading3": 280,
+      "None": 862,
+      "paragraph_numPr_remaining": 0
+    },
+    "marker_pages": {
+      "Глава 23. Чеклист промышленного запуска": [
+        17,
+        265
+      ],
+      "Trace как первое доказательство": [
+        266
+      ],
+      "Eval gate как условие перехода": [
+        266
+      ],
+      "Практический walkthrough: агент поддержки": [
+        269
+      ],
+      "Readiness checklist для промышленного запуска": [
+        270
+      ],
+      "Глоссарий": [
+        273,
+        274,
+        280
+      ],
+      "Практические кейсы": [
+        280
+      ],
+      "Приложение 4. Источники и online companion": [
+        311
+      ],
+      "Что остается в companion": [
+        251,
+        315
+      ]
+    },
+    "visual_spot_pages": [
+      265,
+      274,
+      315
+    ]
+  },
+  "visual_qa": {
+    "checked": [
+      "raw page 1: title/front matter readable",
+      "raw page 99: low-density page contains text and is not blank",
+      "raw page 504: final page readable",
+      "template2000n page 265: chapter 23 start readable",
+      "template2000n page 274: glossary transition readable",
+      "template2000n page 315: final companion block readable"
+    ],
+    "notes": [
+      "Google Doc remains the source of truth.",
+      "Template2000n derivative is a publisher proof artifact only.",
+      "This pass did not change manuscript text."
+    ]
+  }
+}

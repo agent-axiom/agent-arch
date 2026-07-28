@@ -298,29 +298,26 @@ This inventory matters not because it “looks organized,” but because it give
 Here is a small sketch:
 
 ```python
-from dataclasses import dataclass
+from pathlib import Path
+
+from agent_runtime_ref.evidence import verify_evidence_manifest
 
 
-@dataclass
-class ArtifactRecord:
-    has_owner: bool
-    has_version: bool
-    has_provenance: bool
-    review_passed: bool
-    schema_linked: bool
-
-
-def artifact_ready(record: ArtifactRecord) -> bool:
-    return (
-        record.has_owner
-        and record.has_version
-        and record.has_provenance
-        and record.review_passed
-        and record.schema_linked
+def artifact_ready(
+    manifest_path: Path,
+    *,
+    required_artifact_ids: tuple[str, ...],
+) -> bool:
+    result = verify_evidence_manifest(
+        manifest_path,
+        required_artifact_ids=required_artifact_ids,
     )
+    required = set(required_artifact_ids)
+    observed = set(result.artifact_ids)
+    return result.verified and not result.diagnostics and required <= observed
 ```
 
-The point is simple: trusted artifacts should be defined by explicit properties, not intuition. If the platform cannot test artifact readiness explicitly, it will eventually fall back to social trust, stale defaults, and weak release identity.
+Boolean claims such as `review_passed=true` are not evidence by themselves. A verifiable manifest binds an identifier to a file, SHA-256 digest, measurement time, and diagnostics. Even successful structural verification does not replace trusted attestation of the underlying signal.
 
 ## 12. What usually breaks in artifact discipline
 

@@ -229,6 +229,14 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 这样，遥测（telemetry）就不只是仪表板信号（dashboard signal）。它会成为可审查治理队列（governance queue）的输入，团队可以看到谁做了决定、依据哪些证据，以及为什么控制闭环可以重新被视为受治理。
 
+治理感知遥测（governance-aware telemetry）的最低验收条件是：
+
+- 每个信号都有 `source_signal`、决策负责人和动作状态；
+- 遏制、策略变更、发布门禁或注册表更新可以关联到具体的 `evidence_refs`；
+- 被豁免的动作需要负责人、原因、复查期限和审计轨迹；
+- 动作状态变化会产生新的追踪，而不只是更新仪表板；
+- 已关闭动作能说明哪个控制发生了变化，以及哪条新证据确认了结果。
+
 这样，遥测（telemetry）就不再只是事后的证据（evidence）。它会变成治理闭环（governance loop）的运行输入：观察（observe）→ 策略决策（policy decision）→ 遏制（containment）或发布动作（rollout action）→ 关于结果的新证据（evidence）。
 
 Azure agentic cloud operations 在基础设施控制闭环中展示了同一变化：当 agent 已经参与调查、优化和准备动作时，observability signals 不应该停在 dashboard。[^azure-agentic-cloud-ops] 对本书有用的模式是：telemetry 和 topology 提供上下文，MCP resource server 通过标准接口开放 cost、usage 和 resource data，agent 生成 recommendation 或 guided action，policy、approval 和 audit layer 再决定这个动作能否继续。这不是把人从闭环中移除；相反，它让 human approval 成为可审查的 closed-loop operation 的一部分，而不是系统外的手工步骤。

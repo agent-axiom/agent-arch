@@ -1,0 +1,678 @@
+{
+  "source_docx": "/private/tmp/agent_arch_full_publisher_pass/current_manuscript.docx",
+  "template_docx": "/private/tmp/template2000n_inspect/Template2000n.docx",
+  "output_docx": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/artifacts/agent-arch-ru-template2000n-full-2026-06-23.docx",
+  "text_paragraphs": 7801,
+  "source_style_counts": {
+    "Normal/implicit": 5089,
+    "Heading1": 250,
+    "Heading2": 1272,
+    "Heading3": 1120,
+    "Heading4": 70
+  },
+  "target_style_counts": {
+    "Style13": 1,
+    "Style14": 1,
+    "Style15": 3,
+    "Heading1": 66,
+    "BodyText": 3091,
+    "Heading2": 295,
+    "Style18": 2574,
+    "Style16": 1010,
+    "Heading3": 692,
+    "Heading4": 68
+  },
+  "reason_counts": {
+    "front_title": 1,
+    "front_subtitle": 1,
+    "front_note": 3,
+    "true_heading": 1121,
+    "body": 1919,
+    "list_preserved": 2574,
+    "code_like": 1010,
+    "pseudo_heading_demoted": 1172
+  },
+  "source_numbered_or_bulleted_paragraphs": 2817,
+  "target_numbered_or_bulleted_paragraphs": 2817,
+  "pseudo_heading_demotions_by_source_style": {
+    "Heading2": 861,
+    "Heading3": 151,
+    "Heading1": 158,
+    "Heading4": 2
+  },
+  "pseudo_heading_samples": [
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Online companion нужен не для того, чтобы заменить книгу, а чтобы разгрузить печатный текст от исполняемых и часто меняющихся материалов. В книге остаются решения, критерии, риски и минимальные формы контрактов. В compan"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Критерий переноса простой: если фрагмент помогает понять архитектурное решение, он остается в книге; если он нужен, чтобы повторить команду, проверить точное имя поля, скачать набор данных или посмотреть полную схему, он"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "При первом чтении книгу полезно читать как последовательность архитектурных решений: capability, policy, tools, runtime, observability, rollout, organization. Длинные примеры, детальные конфиги и фрагменты эталонного пак"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Второе чтение нужно для команды, которая уже выбирает конкретную capability. Тогда технические блоки становятся рабочими чеклистами: какие поля нужны в контракте, какие события должны попасть в trace, какие проверки блок"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Для команды, которая хочет быстро применить книгу, удобен двухнедельный маршрут. В первый день команда выбирает один сценарий и заполняет короткую карту агента: цель, пользователь, данные, инструменты, side effects, влад"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "На второй неделе команда переходит к эксплуатационной части. Сначала обсуждаются verifier, observability и trace: какие события должны быть видны, что проверяется автоматически, где нужен человек и какие доказательства с"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Главная ошибка такого маршрута — пытаться исправить всё сразу. Лучше выбрать одну capability и довести её до прозрачного, проверяемого состояния, чем написать общий стандарт, который не меняет ни один реальный запуск."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Командное чтение сработало, если после него участники могут без долгих споров ответить на несколько вопросов. Какое действие агенту разрешено выполнить самостоятельно? Какое действие требует подтверждения? Какая политика"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Если ответы на эти вопросы существуют только в головах отдельных людей, архитектура ещё не стала рабочей. Если они записаны в коротких артефактах, используются в review и обновляются после инцидентов, команда уже вышла з"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Эта глава нужна, чтобы поставить главный инженерный фильтр всей книги: производственный агент начинается не с выбора модели, не с длинной подсказки и не с модной многоагентной диаграммы. Он начинается с вопроса о форме и"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Если после главы у читателя останется одно практическое правило, пусть оно будет таким: сначала выбирай самый простой управляемый путь, который решает задачу. Агентность добавляй только там, где она покупает реальную гиб"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Обычная история начинается убедительно."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Команда делает агента для внутренней поддержки. Агент читает письмо клиента, находит нужную статью в базе знаний, проверяет статус заявки, предлагает ответ, а при необходимости создает новый тикет. На демонстрации все вы"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Через несколько недель появляются другие вопросы."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "В одном сценарии агент подтягивает в ответ лишний внутренний комментарий. В другом дважды создает одну и ту же заявку после повтора запроса. В третьем оператор не понимает, почему обращение было передано на следующий уро"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "На демонстрации обычно виден только ответ. В эксплуатации становятся видны право на действие, побочные эффекты, повторы, подтверждения, владение и способность расследовать сбой."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Это и есть первый тезис книги: чаще всего ломается не «ум» модели. Ломается инженерная конструкция вокруг нее."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Когда команда мыслит агента как «LLM плюс несколько инструментов», она почти всегда недостраивает самые дорогие слои."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Ей не хватает явных границ доверия: какие данные можно показывать модели, где начинается пользовательский ввод, где заканчивается доверенный контекст, какие источники можно смешивать в одном запросе."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Ей не хватает права на действие: кто именно выполняет операцию, от имени какого пользователя или сервиса, в каком tenant-контексте, с какими ограничениями и каким сроком действия."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Ей не хватает инструментального шлюза: модель не должна напрямую дергать опасные операции записи, менять внешние системы или рассылать уведомления без контракта, политики и аудиторского следа."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Ей не хватает наблюдаемости: после запуска нужно видеть не только итоговый ответ, но и план, выбранный контекст, вызванные инструменты, подтверждения, ошибки, повторы и стоимость каждого шага."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Ей не хватает жизненного цикла: агентная функция меняется, получает новые возможности, новые политики, новые источники данных и новые риски. Эти изменения нужно выпускать, откатывать, расследовать и в какой-то момент выв"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Именно поэтому безопасную агентную систему удобнее мыслить не как одного умного помощника, а как платформу управляемого выполнения."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Фраза «агенту нужна платформа, а не магия» звучит намеренно сухо. В этом ее польза."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "Магия хорошо работает на демо: модель делает неочевидный шаг, красиво формулирует ответ, вызывает инструмент и создает ощущение автономности. Но промышленная система должна отвечать на менее эффектные вопросы. Что агенту"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "На эти вопросы нельзя надежно ответить одной большой системной подсказкой. Их нужно разнести по слоям:"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "- среда исполнения держит состояние запуска и границы сессии;"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "- слой политик принимает решения о праве на действие;"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "BodyText",
+      "text": "- каталог возможностей описывает, какие операции вообще доступны;"
+    }
+  ],
+  "code_like_samples": [
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "В книге сознательно смешиваются русские роли и английские инженерные имена. Английский термин остается там, где он обозначает контракт, артефакт или распространенное имя практики: capability, policy gateway, tool gateway"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "[Имя автора / публичное имя] — [текущая роль, специализация или независимое позиционирование]. Работает с архитектурой агентных систем, инженерными практиками безопасной автоматизации и внедрением ИИ-инструментов в реаль"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "[Имя автора] занимается [основная область: архитектура ИИ-агентов, платформенная инженерия, безопасность, продуктовая разработка, developer tooling — выбрать и уточнить]. В фокусе работы — практический переход от демонст"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "Часть IV: runtime, sandbox, MCP и безопасное исполнение."
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Style16",
+      "text": "Практически платформа появляется там, где нужны общие контуры: идентичность, политики, каталог capability, подтверждения, sandbox или изоляция инструментов, память с происхождением, трассы, метрики, оценки, rollout, inci"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "какая сессия и какой trace_id;"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "tool_name: str"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "actor_id: str"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "risk_class: str"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "payload: dict"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "return gateway.call(request.tool_name, request.payload)"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Style16",
+      "text": "Начнем с входа. Пользователь пишет: «Проверьте статус активации и создайте срочный тикет, если заявка застряла». В плохой архитектуре это сразу превращается в текст для модели. В хорошей архитектуре сначала появляется но"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Style16",
+      "text": "Если решение политики не записано, расследование после сбоя будет опираться на догадки. Команда будет читать промпт, код адаптера и поведение модели, пытаясь понять, почему действие вообще было разрешено. Это плохой знак"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "ingresscontrol: contentpolicyandtenant_scope"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "contextboundary: trusteduntrustedcontentlabels"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "retrievalmemorygate: sourceprovenancettlandwrite_review"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "modelgatewaypolicy: instructionhierarchyandsafetypolicy"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "toolgatewayapproval: risktierargumentsandhuman_gate"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "mcpa2aboundary: servercontractanddelegationcontract"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "egressfilter: redactiondlpandoutput_validation"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "traceevidence: agentthreatevidenceandgovernanceaction"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "SYSTEM_RULES = \"\"\""
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "user_principal: права текущего пользователя;"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "agentruntimeprincipal: права на оркестрацию и чтение метаданных;"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "tool_principal: учетные данные конкретного инструмента с ограниченной областью;"
+    },
+    {
+      "source_style": "Normal/implicit",
+      "target_style": "Style16",
+      "text": "approval_actor: человек или группа, которые подтверждают чувствительные операции."
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Style16",
+      "text": "Хороший результат ревью - не большой документ. Хороший результат - список архитектурных обязательств, которые можно реализовать и проверить. Если после 45 минут команда говорит только \"надо быть осторожнее\", ревью не сра"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Style16",
+      "text": "Важно, чтобы эти доказательства были связаны. Бесполезно иметь лог модели отдельно, лог инструмента отдельно и запись подтверждения отдельно, если между ними нет trace_id или другой устойчивой связи. Инцидент расследуетс"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Style16",
+      "text": "Хорошая сессия хранит не всю память мира, а управленческий минимум: `session_id`, `tenant_id`, инициатора, активные ограничения, связанные подтверждения, идемпотентные ключи, состояние длительных возможностей и ссылки на"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Style16",
+      "text": "Полезно представить не отдельные компоненты, а короткий путь одного решения. Пользователь просит создать срочный тикет. Среда исполнения начинает запуск и создает `session_id`. Затем она строит контекст только в пределах"
+    }
+  ],
+  "true_heading_samples": [
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Аннотация"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Что получит читатель"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Ключевые слова"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Терминологическое соглашение"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Об авторе"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Короткая версия"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Расширенная версия"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Факты для заполнения перед публикацией"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Предисловие к русской версии"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Почему эта версия нужна сейчас"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как устроена русская редакция"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Что считать хорошим результатом чтения"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как читать примеры и шаблоны"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как читать листинги и YAML"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как устроен online companion"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Границы ответственности"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Как читать эту книгу"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Первое чтение и углубление"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Для кого эта книга"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как устроена логика книги"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "Маршрут по частям"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Три маршрута чтения"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как применять книгу в команде"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как читать примеры и шаблоны"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Что считать результатом чтения"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как использовать книгу в команде"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Формат командной работы"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Роли участников"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Рабочие артефакты"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Практический маршрут на две недели"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Признаки зрелого результата"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Введение. Зачем эта книга нужна"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Карта книги"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Карта архитектурных решений"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Первое решение: нужен ли агент"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Второе решение: где проходит право на действие"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Третье решение: что считать допустимым контекстом"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Четвёртое решение: что считать доказательством"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Пятое решение: как выпускать и менять систему"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Шестое решение: кто владеет системой"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Седьмое решение: как система заканчивает жизнь"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как пользоваться этой картой"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Сквозные сценарии книги"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Сценарий 1: триаж обращений поддержки"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Сценарий 2: внутренний агент знаний"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Сценарий 3: координация инцидентов"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как сценарии проходят через части книги"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Как использовать сценарии при чтении"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "Чем она не является"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "Что она пытается сделать"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "В сравнении с документацией фреймворков"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "В сравнении с документацией поставщиков"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "В сравнении с подходом “проверочный список безопасности”"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "Какой результат задуман"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Часть I. От demo-агента к платформе"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Глава 1. Почему агенту нужна платформа, а не магия"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "1. Начнем не с магии, а с типичного провала"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "2. Чего обычно не хватает demo-агенту"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "3. Главный принцип: платформа, а не магия"
+    },
+    {
+      "source_style": "Heading3",
+      "target_style": "Heading3",
+      "text": "4. По умолчанию выбирай рабочий процесс"
+    }
+  ],
+  "appendix_headings": [
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Приложение 1. Шаблон capability contract"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Приложение 2. Шаблон production readiness и rollout review"
+    },
+    {
+      "source_style": "Heading2",
+      "target_style": "Heading2",
+      "text": "Приложение 3. Шаблон incident/postmortem"
+    },
+    {
+      "source_style": "Heading1",
+      "target_style": "Heading1",
+      "text": "Приложение 4. Источники и online companion"
+    }
+  ],
+  "heading_style_numPr_removed": [
+    "Heading1",
+    "Heading2",
+    "Heading3",
+    "Heading4",
+    "Heading5"
+  ]
+}

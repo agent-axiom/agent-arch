@@ -80,7 +80,7 @@ flowchart LR
 !!! example "贯穿案例：把 `create_support_ticket` 当作能力"
     在支持分诊系统里，`create_support_ticket` 不应该只是提示里的一个工具名。在目录里，它应该是一项写能力，带有负责人、审批要求、幂等要求、超时/重试默认值，以及经由网关 broker 的传输方式。这样策略层就能明确说明：这次运行可以启动，状态读取允许，创建工单需要幂等键和审批，而出现 `side_effect_unknown` 后，在对账完成前禁止继续。
 
-**Policy case-spine note：**capability catalog 应该编码三个 canonical cases，而不只是工单写入。Support triage 需要 write capabilities、approval requirements 和 idempotency rules。Internal knowledge assistant 需要 read capabilities、corpus scope、memory-write permissions 和 source-trust constraints。Incident coordination 需要 escalation capabilities、notification permissions、responder-role checks，以及带明确 expiry 的 emergency-only policy overrides。
+**策略案例主线说明（Policy case-spine note）：**能力目录（capability catalog）应该编码三个规范案例（canonical cases），而不只是工单写入。支持分诊（Support triage）需要写入能力（write capabilities）、审批要求（approval requirements）和幂等规则（idempotency rules）。内部知识助手（Internal knowledge assistant）需要读取能力（read capabilities）、语料范围（corpus scope）、记忆写入权限（memory-write permissions）和来源信任约束（source-trust constraints）。事故协调（Incident coordination）需要升级能力（escalation capabilities）、通知权限（notification permissions）、响应者角色检查（responder-role checks），以及带明确过期时间（expiry）的仅应急策略例外（emergency-only policy overrides）。
 
 ## 4. 工具表面不等于受治理能力表面
 

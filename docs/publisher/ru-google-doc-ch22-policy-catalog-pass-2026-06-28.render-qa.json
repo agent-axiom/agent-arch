@@ -1,0 +1,64 @@
+{
+  "pass": "ch22-policy-catalog-pass-2026-06-28",
+  "google_doc": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+  "google_doc_revision_before": "ALtnJHwk5Xsz1wvzI5wRTcO_Wdz50tLo1tyFX55wR1ZXoDzGPRwM31UrJVOjyp_bhInPIl5lhIFcfg37wyBD-xq4GrDEd7jwhouspBP67CQ",
+  "google_doc_revision_after": "ALtnJHxbhew6DMK3zFfl00XJ9BS5DT3lLV5F5bWb4L1M2vzdlc5A2FRTxY50xKXVuI2TQvs4KkT4T4a-ziBhAby7dlKH7Mp-7dI9NzD8Qg4",
+  "range": {
+    "old_chapter_22": {
+      "startIndex": 606950,
+      "endIndex": 644178
+    },
+    "new_chapter_22_start": {
+      "startIndex": 606950,
+      "endIndex": 606995,
+      "text": "Глава 22. Слой политик и каталог возможностей"
+    },
+    "next_structural_block_start": {
+      "startIndex": 648821,
+      "endIndex": 648893,
+      "text": "Практикум: пройти цепочку trace -> eval gate -> rollout wave -> containment"
+    }
+  },
+  "raw": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-ch22-policy-catalog-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_ch22_policy_catalog_pass_2026_06_28_render_final",
+    "pdf": "/private/tmp/agent_arch_ch22_policy_catalog_pass_2026_06_28_render_final/agent-arch-ru-ch22-policy-catalog-pass-2026-06-28.pdf",
+    "pdf_pages": 579,
+    "png_pages": 579,
+    "blank_like_pages": [],
+    "marker_pages": {
+      "Глава 22. Слой политик и каталог возможностей": [29, 484],
+      "Policy decision как объект исполнения": [485],
+      "Walkthrough: read capability": [491],
+      "Readiness checklist для policy/catalog layer": [493],
+      "Практикум: пройти цепочку trace": [499]
+    }
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch22-policy-catalog-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_template2000n_ch22_policy_catalog_pass_2026_06_28_render_final",
+    "pdf": "/private/tmp/agent_arch_template2000n_ch22_policy_catalog_pass_2026_06_28_render_final/agent-arch-ru-template2000n-ch22-policy-catalog-pass-2026-06-28.pdf",
+    "pdf_pages": 311,
+    "png_pages": 311,
+    "blank_like_pages": [],
+    "style_metrics": {
+      "Heading1": 88,
+      "Heading3": 141,
+      "BodyText": 5760,
+      "removed_numPr": 2148
+    },
+    "marker_pages": {
+      "Глава 22. Слой политик и каталог возможностей": [19, 254],
+      "Policy decision как объект исполнения": [255],
+      "Walkthrough: read capability": [259],
+      "Readiness checklist для policy/catalog layer": [262],
+      "Практикум: пройти цепочку trace": [266]
+    }
+  },
+  "visual_spot_check": {
+    "raw_contact_sheet": "/private/tmp/agent_arch_ch22_raw_pages_484_499.png",
+    "template2000n_contact_sheet": "/private/tmp/agent_arch_ch22_template_pages_254_266.png",
+    "result": "Chapter 22 start, decision object, capability catalog, walkthroughs, readiness checklist, testing/dashboard sections, final summary and transition to the next practical block are readable. No blank-like pages were detected."
+  }
+}
+

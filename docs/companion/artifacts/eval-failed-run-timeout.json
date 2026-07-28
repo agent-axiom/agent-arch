@@ -1,0 +1,118 @@
+{
+  "dataset_name": "agent-runtime-ref-eval-seed",
+  "session_count": 1,
+  "session_ids": [
+    "session-eval-failed-run"
+  ],
+  "run_count": 1,
+  "failed_runs": 1,
+  "traceable_failed_runs": 1,
+  "trace_ids": [
+    "trace-eval-failed-run-001"
+  ],
+  "failed_trace_ids": [
+    "trace-eval-failed-run-001"
+  ],
+  "idempotency_keys": [
+    "trace-eval-failed-run-001"
+  ],
+  "approval_ids": [],
+  "approval_capability_names": [],
+  "pending_approval_ids": [],
+  "pending_approval_capability_names": [],
+  "approval_status_counts": {},
+  "latest_failure_reason": "tool_timeout",
+  "duplicate_ticket_scenarios": [],
+  "sessions": [
+    {
+      "session": {
+        "session_id": "session-eval-failed-run",
+        "tenant_id": "tenant-acme",
+        "principal_id": "user-42",
+        "traces": [
+          "trace-eval-failed-run-001"
+        ]
+      },
+      "summary": {
+        "total_runs": 1,
+        "success_runs": 0,
+        "approval_wait_runs": 0,
+        "denied_runs": 0,
+        "failed_runs": 1,
+        "traceable_failed_runs": 1,
+        "trace_ids": [
+          "trace-eval-failed-run-001"
+        ],
+        "failed_trace_ids": [
+          "trace-eval-failed-run-001"
+        ],
+        "idempotency_keys": [
+          "trace-eval-failed-run-001"
+        ],
+        "approval_ids": [],
+        "approval_capability_names": [],
+        "pending_approval_ids": [],
+        "pending_approval_capability_names": [],
+        "approval_status_counts": {},
+        "latest_trace_id": "trace-eval-failed-run-001",
+        "latest_status": "failed"
+      },
+      "total_runs": 1,
+      "failed_runs": 1,
+      "traceable_failed_runs": 1,
+      "trace_ids": [
+        "trace-eval-failed-run-001"
+      ],
+      "failed_trace_ids": [
+        "trace-eval-failed-run-001"
+      ],
+      "idempotency_keys": [
+        "trace-eval-failed-run-001"
+      ],
+      "approval_ids": [],
+      "approval_capability_names": [],
+      "pending_approval_ids": [],
+      "pending_approval_capability_names": [],
+      "approval_status_counts": {},
+      "latest_failure_reason": "tool_timeout",
+      "latest_trace_id": "trace-eval-failed-run-001",
+      "runs": [
+        {
+          "trace_id": "trace-eval-failed-run-001",
+          "status": "failed",
+          "user_input": "[REDACTED]",
+          "input_sha256": "edaf461dd5cf4ef498bfddb0a480355e6e42f669768fe3d42f9da2e67d88b81a",
+          "output_text": "Runtime halted before side effects completed: create_ticket returned failed (tool_timeout).",
+          "failure_reason": "tool_timeout",
+          "task_success": false,
+          "side_effect_status": "not_executed",
+          "request_agent_id": "support-triage-ref",
+          "capability_session_id": "",
+          "capability_session_status": "failed",
+          "authorization_mode": "platform_owned",
+          "delegated_principal_id": "",
+          "delegated_scope": "",
+          "idempotency_key": "trace-eval-failed-run-001",
+          "approval_id": "",
+          "capability_name": "create_ticket"
+        }
+      ],
+      "eval": {
+        "scenario": "failed_run_timeout",
+        "labels": [
+          "failed_run",
+          "tool_timeout",
+          "failure_drill"
+        ],
+        "expected_outcomes": {
+          "latest_status": "failed",
+          "failed_runs": 1,
+          "required_output_substrings": [
+            "tool_timeout"
+          ],
+          "failed_run_traceable": true
+        }
+      }
+    }
+  ]
+}

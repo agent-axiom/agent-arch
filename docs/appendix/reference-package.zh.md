@@ -305,7 +305,7 @@ sandbox_profile:
 
 这个例子不会把参考运行时变成完整的沙箱编排器。它只是固定第 9 章和第 16 章要求真实由沙箱（sandbox）支撑的运行时（runtime）暴露出来的契约表面：清单（manifest）、权限（permissions）、工作区物化（workspace materialization）、会话状态（session state），以及快照/恢复策略（snapshot/resume policy）都应该可以被复核（review）。
 
-### Polymorphic schema registry pattern
+### 多态模式注册表（Polymorphic schema registry）模式
 
 对于高基数 tool/API domain，reference package 应该保留一个 `polymorphic_schema_registry` 示例，而不是把 structural rules 分散进 prompt text。最小记录可以是：
 
@@ -331,11 +331,11 @@ polymorphic_schema_registry:
 
 这个例子展示了 Chapter 9 的 contract surface：agent 可以围绕 intent 推理，但 runtime 负责加载 descriptor、调用 validator，并在 side effect 前记录 schema evidence。
 
-### Durable agent actor 模式
+### 持久化智能体 actor 模式（Durable agent actor）
 
-未来的 reference-runtime 示例还应该建模 Chapter 16 中的 durable-agent-actor 边界。Runtime 不需要 vendor-specific 的 Durable Object 实现，但应该有一个可见契约，用来表达 stable agent identity、instance-local state、resumable sessions、scheduled wake-ups，以及到 governed stores 的 handoff。
+未来的参考运行时示例还应该建模第 16 章里的持久化智能体 actor 边界。运行时不需要采用某个供应商专属的 Durable Object 实现，但应该有一份可见契约，用来表达稳定智能体身份（stable agent identity）、实例本地状态（instance-local state）、可恢复会话（resumable sessions）、计划唤醒（scheduled wake-ups），以及到受治理存储（governed stores）的移交。
 
-允许放在本地的状态应该很窄：workflow cursor、per-instance queue position、connection/session preferences、last processed event、schedule metadata，以及可重建的 cached views。Profile memory、tenant knowledge、secrets、policy、audit logs 和 cross-instance facts 应该继续留在 governed stores 中，并带有 provenance、retention、export 和 access-control rules。
+允许放在本地的状态应该很窄：工作流游标（workflow cursor）、单实例队列位置（per-instance queue position）、连接/会话偏好、最后处理事件、计划元数据，以及可重建的缓存视图。画像记忆（profile memory）、租户知识（tenant knowledge）、密钥、策略、审计日志和跨实例事实应该继续留在受治理存储中，并带有来源、保留、导出和访问控制规则。
 
 一个最小 config surface 包括：
 
@@ -344,9 +344,9 @@ polymorphic_schema_registry:
 - `resume_policy`、`hibernation_policy` 和 `state_migration_policy`；
 - `schedule_records`，包含 owner instance、idempotency key、overlap policy、next fire time 和 trace linkage；
 - `connection_scope`，用于 WebSocket/streaming fan-out 和 approval UI visibility；
-- `export_ref`、`delete_ref` 和 `audit_refs`，避免 hidden durable memory。
+- `export_ref`、`delete_ref` 和 `audit_refs`，避免隐藏的持久记忆（hidden durable memory）。
 
-### Recoverable internal fiber pattern
+### 可恢复内部纤程（Recoverable internal fiber）模式
 
 在简单 background task 和完整 durable workflow 之间，还值得预留一层 contract surface：recoverable internal fiber。这类工作仍然属于 agent 自己的循环，但具备 durable acceptance、checkpoint/stash、recovery hook、inspection 和 cancellation。
 
@@ -361,9 +361,9 @@ polymorphic_schema_registry:
 
 这个模式适合那些比 simple in-memory loop 更重要、但还不需要带 external events 和 HITL gates 的完整 workflow spine 的 agent work。
 
-### Agent shell + durable workflow spine 模式
+### 智能体外壳 + 持久工作流主线模式（Agent shell + durable workflow spine）
 
-未来扩展 reference runtime 时，应该把一个模式单独保留下来：agent 不必拥有所有长时间工作。它可以只是 interaction shell——`agent_instance_id`、session state、user-facing stream、connection-scoped authorization 和 approval UI。与它并列的 durable workflow spine 应该拥有 steps、retries、等待外部事件、durable approval records、idempotency keys 和 evidence refs。
+未来扩展参考运行时时，应该把一个模式单独保留下来：智能体不必拥有所有长时间工作。它可以只是交互外壳（interaction shell），负责 `agent_instance_id`、会话状态、面向用户的流式输出、连接作用域授权和审批界面。与它并列的持久工作流主线应该拥有步骤、重试、等待外部事件、持久审批记录、幂等键和证据引用。
 
 这个示例的最小契约表面包括：
 

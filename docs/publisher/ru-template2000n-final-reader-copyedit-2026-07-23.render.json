@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-template2000n-final-reader-copyedit-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.002701919295706132,
+      "page": 58
+    },
+    {
+      "density": 0.002719258763214807,
+      "page": 94
+    },
+    {
+      "density": 0.00292940642383587,
+      "page": 247
+    },
+    {
+      "density": 0.002978950653767187,
+      "page": 161
+    },
+    {
+      "density": 0.002983165863883762,
+      "page": 148
+    },
+    {
+      "density": 0.0055751414890545655,
+      "page": 2
+    },
+    {
+      "density": 0.006931837697266041,
+      "page": 126
+    },
+    {
+      "density": 0.008310811588502756,
+      "page": 174
+    },
+    {
+      "density": 0.010359488541168454,
+      "page": 223
+    },
+    {
+      "density": 0.015765427773488914,
+      "page": 42
+    }
+  ],
+  "pages": 324,
+  "render_dir": "/private/tmp/agent-arch-ru-template2000n-final-reader-copyedit-render"
+}

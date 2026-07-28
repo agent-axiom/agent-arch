@@ -1,0 +1,112 @@
+{
+  "date": "2026-07-03",
+  "status": "completed",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "modified_time_from_connector": "2026-07-02T22:46:03.373Z",
+    "operation": "fresh Google Doc DOCX export plus Template2000n.dot publisher-style derivative"
+  },
+  "template_source": {
+    "path": "/Users/if/Downloads/Telegram Desktop/Template2000n.dot",
+    "file_kind": "Composite Document File V2 / Microsoft Word 9.0 template",
+    "bytes": 107008,
+    "converted_docx": "/tmp/Template2000n.docx",
+    "converted_style_count": 85,
+    "macros_executed": false,
+    "style_application_notes": [
+      "Copied styles.xml, theme1.xml and fontTable.xml from the converted Template2000n.dot DOCX.",
+      "Preserved raw Google Docs numbering.xml to avoid remapping existing list paragraphs to legacy template numbering.",
+      "Removed numPr from Heading1-Heading5 style definitions in the converted template.",
+      "Applied BodyText paragraph style to 4953 Google Docs no-style body paragraphs."
+    ]
+  },
+  "raw_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-publisher-style-raw-2026-07-03.docx",
+    "bytes": 687813,
+    "sha256": "b47d5bddd773891c02649659cb1c5df0ca92f25eaeab3d76329eafec8ce54e7c",
+    "style_metrics": {
+      "paragraphs": 8179,
+      "non_empty_paragraphs": 6105,
+      "approx_words": 99587,
+      "Heading1": 26,
+      "Heading2": 567,
+      "Heading3": 508,
+      "Heading4": 51,
+      "Normal": 4953,
+      "BodyText": 0,
+      "missing_style_refs": 0
+    },
+    "render_dir": "/tmp/agent-arch-ru-publisher-style-raw-render-2026-07-03",
+    "pdf": "/tmp/agent-arch-ru-publisher-style-raw-render-2026-07-03/agent-arch-ru-publisher-style-raw-2026-07-03.pdf",
+    "pdf_pages": 489,
+    "png_pages": 489,
+    "blank_like_pages": 0,
+    "lowest_density_pages": [
+      62,
+      125,
+      296,
+      302,
+      41,
+      326,
+      297,
+      327,
+      300,
+      325
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-publisher-style-raw-contact-2026-07-03.png"
+  },
+  "template2000n_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx",
+    "bytes": 693413,
+    "sha256": "a3dfea607a7c6be19d8cc215033fe421e77a4ebf774fc624b178f97b006b216b",
+    "style_metrics": {
+      "paragraphs": 8179,
+      "non_empty_paragraphs": 6105,
+      "approx_words": 99587,
+      "Heading1": 26,
+      "Heading2": 567,
+      "Heading3": 508,
+      "Heading4": 51,
+      "Normal": 0,
+      "BodyText": 4953,
+      "missing_style_refs": 0
+    },
+    "render_dir": "/tmp/agent-arch-ru-template2000n-official-style-render-2026-07-03",
+    "pdf": "/tmp/agent-arch-ru-template2000n-official-style-render-2026-07-03/agent-arch-ru-template2000n-official-style-pass-2026-07-03.pdf",
+    "pdf_pages": 357,
+    "png_pages": 357,
+    "blank_like_pages": 0,
+    "lowest_density_pages": [
+      238,
+      240,
+      219,
+      215,
+      208,
+      41,
+      230,
+      239,
+      241,
+      31
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-template2000n-official-style-contact-2026-07-03.png"
+  },
+  "integrity": {
+    "raw_paragraph_text_equals_template2000n": true,
+    "raw_paragraph_count_equals_template2000n": true,
+    "raw_zip_integrity": "passed",
+    "template2000n_zip_integrity": "passed",
+    "render_qa": "passed for automated blank-like checks and targeted contact-sheet visual review"
+  },
+  "remaining_author_owned_fields": [
+    "public author name/byline",
+    "short and long author bio",
+    "role/public positioning",
+    "verified experience claims",
+    "public project links",
+    "companion URL and versioning/changelog/errata route",
+    "acknowledgements",
+    "legal/compliance disclaimer wording if publisher requires it",
+    "AI-use disclosure wording if publisher requires it",
+    "final title/subtitle/cover-copy/imprint metadata"
+  ]
+}

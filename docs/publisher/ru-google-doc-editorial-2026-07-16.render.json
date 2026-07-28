@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/tmp/ru-editorial-2026-07-17-final-raw-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0020751559175073374,
+      "page": 188
+    },
+    {
+      "density": 0.0035763873628431217,
+      "page": 343
+    },
+    {
+      "density": 0.006331987593632523,
+      "page": 135
+    },
+    {
+      "density": 0.006985549021367874,
+      "page": 403
+    },
+    {
+      "density": 0.007426834290973612,
+      "page": 382
+    },
+    {
+      "density": 0.007660615744573309,
+      "page": 281
+    },
+    {
+      "density": 0.007956280635850202,
+      "page": 244
+    },
+    {
+      "density": 0.008494547393364839,
+      "page": 181
+    },
+    {
+      "density": 0.011043161687672887,
+      "page": 252
+    },
+    {
+      "density": 0.01164033249283639,
+      "page": 218
+    }
+  ],
+  "pages": 445,
+  "render_dir": "/tmp/ru-editorial-2026-07-17-final-raw-render"
+}

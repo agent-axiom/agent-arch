@@ -102,7 +102,7 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 !!! example "贯穿案例：重复工单的 SLO"
     在支持分诊案例里，成功 SLO 应该把重复工单算作结果失败，而不是“创建成功”。更好的目标应该贴近任务：卡住的请求只产生一张上下文正确的工单，而 `side_effect_unknown` 不会以盲目重复结束。这样，SLO 保护的是用户和操作员，而不只是一个绿色 HTTP 状态。
 
-**SLO case-spine note：**health budgets 应该覆盖三个 canonical cases。Support triage 跟踪 duplicate-ticket rate、approval latency、escalation load，以及 `side_effect_unknown` 的占比。Internal knowledge assistant 跟踪 retrieval freshness、source-grounding success、access-control denials 和 memory-write quality。Incident coordination 跟踪 escalation timing、notification delivery、responder handoff latency，以及需要 manual reconciliation 的 incident-state changes 占比。
+**SLO 案例主线说明（SLO case-spine note）：**健康预算（health budgets）应该覆盖三个规范案例（canonical cases）。支持分诊（Support triage）跟踪重复工单率（duplicate-ticket rate）、审批延迟（approval latency）、升级负载（escalation load），以及 `side_effect_unknown` 的占比。内部知识助手（Internal knowledge assistant）跟踪检索新鲜度（retrieval freshness）、来源锚定成功率（source-grounding success）、访问控制拒绝（access-control denials）和记忆写入质量（memory-write quality）。事故协调（Incident coordination）跟踪升级时机（escalation timing）、通知送达（notification delivery）、响应者交接延迟（responder handoff latency），以及需要人工对账（manual reconciliation）的事故状态变更（incident-state changes）占比。
 
 ## 5. 延迟 SLO 应该按阶段拆开看
 
@@ -242,25 +242,32 @@ Cloudflare AI Gateway spend limits 说明，这类 budget gate 不只应该存�
 
 ```yaml
 slo:
-  success:
-    successful_run_rate: ">= 97%"
-  latency:
-    run_p95_ms: "<= 12000"
-    tool_span_p95_ms: "<= 2500"
-  safety:
-    policy_violation_rate: "< 0.2%"
-    unknown_side_effect_rate: "< 0.05%"
-  cost:
-    avg_tokens_per_run: "<= 18000"
-    avg_cost_per_successful_run_usd: "<= 0.12"
-  escalation:
-    manual_intervention_rate: "< 8%"
-  verifier:
-    false_positive_rate_high_risk: "< 1%"
-    failure_attribution_agreement_rate: ">= 95%"
+  slo_id: slo-support-ticket-known-effect-v1
+  owner: support-operations
+  window: rolling_28d
+  sli:
+    name: known_external_effect_rate
+    numerator: runs_with_verified_expected_ticket_effect
+    denominator: eligible_ticket_write_runs
+    exclusions:
+      - synthetic_load_tests
+      - operator_cancelled_before_dispatch
+    data_source: telemetry.run_complete+ticketing.reconciliation
+  target: ">= 99.0%"
+  action_on_breach:
+    burn_rate_alert: 2h_and_24h
+    rollout_action: freeze_expansion
+    owner: support-operations
+  safety_invariants:
+    - name: confirmed_cross_tenant_write
+      allowed_count: 0
+      action: rollback_and_incident
+    - name: blind_retry_after_side_effect_unknown
+      allowed_count: 0
+      action: freeze_and_reconcile
 ```
 
-重点不在具体阈值，而在于团队提前说清楚：什么才算系统的正常状态。
+重点不在具体百分比，而在于可复现的计算方式和响应动作。完整卡片位于 `docs/companion/examples/slo-card-support-ticket.yaml`。SLO 违约会消耗可靠性预算；`safety_invariants` 违约是硬阻断项，不能被良好平均值抵消。
 
 正是这种约定，才把指标变成运营约束。没有这一步，系统也许仍然在被测量，但还没有通过明确的健康预算与风险预算被治理。
 

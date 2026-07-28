@@ -1,0 +1,27 @@
+{
+  "approximate_words": 99587,
+  "bodytext_mapped": 4953,
+  "non_empty_paragraphs": 6105,
+  "output_bytes": 695009,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-quality-sync-2026-07-04.docx",
+  "output_sha256": "b4f7e8b2ec2d43e27530122e56a4740d28a81a995ed81e4b7748cf9d305c2e9e",
+  "output_style_counts": {
+    "<none>": 1096,
+    "Body Text": 4953,
+    "Heading 1": 27,
+    "Heading 2": 1422,
+    "Heading 3": 630,
+    "Heading 4": 51
+  },
+  "paragraphs": 8179,
+  "raw_docx": "docs/publisher/artifacts/agent-arch-ru-final-preauthor-raw-2026-07-03.docx",
+  "raw_style_counts": {
+    "Heading 1": 27,
+    "Heading 2": 1422,
+    "Heading 3": 630,
+    "Heading 4": 51,
+    "normal": 6049
+  },
+  "template_docx": "/tmp/template2000n_quality_sync_2026_07_04/Template2000n.docx",
+  "text_equality": true
+}

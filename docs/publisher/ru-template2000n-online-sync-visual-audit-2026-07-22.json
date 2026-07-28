@@ -1,0 +1,874 @@
+{
+  "assets": [
+    {
+      "content_fill_height": 0.9078,
+      "content_fill_width": 0.9606,
+      "height_px": 694,
+      "index": 1,
+      "path": "docs/publisher/visuals/ru-figure-01-book-map.png",
+      "sha256": "1591dc50302265b4b2bb15b82ed45ba028cdf6263aa958ddc6a7b83c963c4c85",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8935,
+      "content_fill_width": 0.9606,
+      "height_px": 601,
+      "index": 2,
+      "path": "docs/publisher/visuals/ru-inline-diagram-01.png",
+      "sha256": "872b6bae4ef9b0ebdacee5e108d987f4e21571ebbf4a285e5afdfbd09b7e50d9",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9195,
+      "content_fill_width": 0.9606,
+      "height_px": 795,
+      "index": 3,
+      "path": "docs/publisher/visuals/ru-figure-13-autonomy-ladder.png",
+      "sha256": "0fc43336452b14b256682b6dbf8d787c99a01cb347c23af253608956113846d6",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9635,
+      "content_fill_width": 0.97,
+      "height_px": 1040,
+      "index": 4,
+      "path": "docs/publisher/visuals/ru-editorial-diagram-01-execution-form-decision.png",
+      "sha256": "7d6b6209d7d76ec13ccb91f424fc12c18d034c68712479245ca8f1f6b91b6b6e",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 5,
+      "path": "docs/publisher/visuals/ru-figure-03-reference-architecture.png",
+      "sha256": "0e57f89cf06d688d61d2ba6df2b6efca1c99bd2ca62c9cb1f1beabef77914af1",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9266,
+      "height_px": 1144,
+      "index": 6,
+      "path": "docs/publisher/visuals/ru-inline-diagram-02.png",
+      "sha256": "8e153af8292d1e9db87fb426347df2fa3fdfc855511882608abc218ffac48c88",
+      "width_px": 872
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 7,
+      "path": "docs/publisher/visuals/ru-figure-02-trust-boundaries.png",
+      "sha256": "c06aaf137fbb8f58f407aeeea5c1e3e068eeb8ab41addac79ff079e96be51486",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 8,
+      "path": "docs/publisher/visuals/ru-figure-19-localhost-control-plane.png",
+      "sha256": "69e9fc8f112533e2e1c152e6d79cb91a1f6e6f94fe1e771fd708a01424ea8ccf",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.922,
+      "height_px": 1144,
+      "index": 9,
+      "path": "docs/publisher/visuals/ru-inline-diagram-03.png",
+      "sha256": "e296ef4cffe3fe8501e72d492021c81999623698ebe519f47dd4944f337492fc",
+      "width_px": 820
+    },
+    {
+      "content_fill_height": 0.8388,
+      "content_fill_width": 0.9606,
+      "height_px": 397,
+      "index": 10,
+      "path": "docs/publisher/visuals/ru-figure-04-capability-contract-path.png",
+      "sha256": "cb8499a223a7f906457c08e541d2b691a9916a86f76ddd2188f26a8add81898d",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8359,
+      "content_fill_width": 0.9606,
+      "height_px": 390,
+      "index": 11,
+      "path": "docs/publisher/visuals/ru-figure-16-capability-endpoint-contract.png",
+      "sha256": "2e2768ee92fc112bdfb7e07d457d83f3833be6f69c422a0ee51e8104069670a0",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8632,
+      "content_fill_width": 0.9606,
+      "height_px": 468,
+      "index": 12,
+      "path": "docs/publisher/visuals/ru-figure-06-approval-gateway.png",
+      "sha256": "869b684e79cc61be0e26338a12b99ccc4d24bfce3e8db34edc5d823c5f44eaf6",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9455,
+      "height_px": 1144,
+      "index": 13,
+      "path": "docs/publisher/visuals/ru-inline-diagram-04.png",
+      "sha256": "10698686d8282aae52ba961392093f16b0e2d4ccdf63c2a618a58108d45a65c2",
+      "width_px": 1174
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 14,
+      "path": "docs/publisher/visuals/ru-figure-25-memory-write-lifecycle.png",
+      "sha256": "19756808b3174075a9f939b5e2ff29996c598aa21b6df83f9b2fd5aad5d8065c",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.8986,
+      "content_fill_width": 0.9606,
+      "height_px": 631,
+      "index": 15,
+      "path": "docs/publisher/visuals/ru-inline-diagram-05.png",
+      "sha256": "e64cdc41568cd20537dd73ad2b909e820eb00d4e6871d07ebacd27cb6940c241",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8921,
+      "content_fill_width": 0.9606,
+      "height_px": 593,
+      "index": 16,
+      "path": "docs/publisher/visuals/ru-figure-05-memory-retrieval.png",
+      "sha256": "84d84cae626f8e347ae7c6f6a265f3662980212dfbc7422fffa76c153622364d",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8501,
+      "content_fill_width": 0.9606,
+      "height_px": 427,
+      "index": 17,
+      "path": "docs/publisher/visuals/ru-inline-diagram-06.png",
+      "sha256": "13f1b2e04c1fcc4490a07c186100982823b9db1f62fe42f544c57e20a5afa9c2",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9017,
+      "content_fill_width": 0.9606,
+      "height_px": 651,
+      "index": 18,
+      "path": "docs/publisher/visuals/ru-inline-diagram-07.png",
+      "sha256": "db31faddaa0ddb4763518496d0fd52c4c533fe1ea804099c915e5cb39b2e7e22",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8956,
+      "content_fill_width": 0.9606,
+      "height_px": 613,
+      "index": 19,
+      "path": "docs/publisher/visuals/ru-inline-diagram-08.png",
+      "sha256": "7610e5fdb13a497f74999ca547951ceb8ddd74f054772344af55e87e9756f48c",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8237,
+      "content_fill_width": 0.9606,
+      "height_px": 363,
+      "index": 20,
+      "path": "docs/publisher/visuals/ru-figure-07-sandbox-mcp.png",
+      "sha256": "4b3b420c8e95fd7cb0c18ac986c524d3dc7d1cf5cffcf0c9991ff88c94caec12",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8821,
+      "content_fill_width": 0.9606,
+      "height_px": 543,
+      "index": 21,
+      "path": "docs/publisher/visuals/ru-figure-21-mcp-gateway.png",
+      "sha256": "7375de27c56c2de32ba1e589d6f2feff963c76ac36e3198bbf6e1640d02583ec",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9304,
+      "height_px": 1144,
+      "index": 22,
+      "path": "docs/publisher/visuals/ru-inline-diagram-09.png",
+      "sha256": "eac7fcba7d5707d2bb9008e4da013f06a84cb1ff4e1a2c90cc45e99a153fdc2b",
+      "width_px": 920
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9294,
+      "height_px": 1144,
+      "index": 23,
+      "path": "docs/publisher/visuals/ru-figure-08-idempotency-recovery.png",
+      "sha256": "18fdec40bf11b0a9e9916cb4a89144d7c8401089cf7e63a0fb6f812cc6898c94",
+      "width_px": 907
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9344,
+      "height_px": 1144,
+      "index": 24,
+      "path": "docs/publisher/visuals/ru-inline-diagram-10.png",
+      "sha256": "438ab74e2cb808c264795ad72cc1c2a26851e006fd40be1a56df75239cc4ca17",
+      "width_px": 976
+    },
+    {
+      "content_fill_height": 0.8976,
+      "content_fill_width": 0.9606,
+      "height_px": 625,
+      "index": 25,
+      "path": "docs/publisher/visuals/ru-inline-diagram-11.png",
+      "sha256": "39bc08b5402a815af226a7d9ced67808c7d29c81cd3055bbbe21d7c4db63fb62",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9366,
+      "content_fill_width": 0.9606,
+      "height_px": 1009,
+      "index": 26,
+      "path": "docs/publisher/visuals/ru-inline-diagram-12.png",
+      "sha256": "42a0d48bc073c9e0fca548d27e96ee2fb6d577d1c661014a338a8d0af111a9e2",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.894,
+      "content_fill_width": 0.9606,
+      "height_px": 604,
+      "index": 27,
+      "path": "docs/publisher/visuals/ru-inline-diagram-13.png",
+      "sha256": "cbec81d000ebbf8d547aa7c049c07684f8ca32c264839cc326a84e400b033911",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8618,
+      "content_fill_width": 0.9606,
+      "height_px": 463,
+      "index": 28,
+      "path": "docs/publisher/visuals/ru-figure-20-eval-integrity.png",
+      "sha256": "16db46dbc6d3789289e97874cbf718afeaca9837c3a0f5165aecab1700ea88ec",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8845,
+      "content_fill_width": 0.9606,
+      "height_px": 554,
+      "index": 29,
+      "path": "docs/publisher/visuals/ru-inline-diagram-14.png",
+      "sha256": "2a4aba0002e8d8a5d3ca57024990e03fb894835cf91ac80d50c877bbc2e914de",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 30,
+      "path": "docs/publisher/visuals/ru-figure-15-eval-audit-record-flow.png",
+      "sha256": "d4293c6e74cc07706da1ead8a1005fb14ce06d6018746d78b7103e6c3fb8e08e",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 31,
+      "path": "docs/publisher/visuals/ru-figure-09-evidence-chain.png",
+      "sha256": "010154c132e30735261ef894b82260ecc356c8bafd649349ba65607d6ffc9345",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9555,
+      "height_px": 1144,
+      "index": 32,
+      "path": "docs/publisher/visuals/ru-inline-diagram-15.png",
+      "sha256": "dd1bbbf72f9b280bced2709c5de1b1efd3e9166d474bcfebdb3adfc20a5065bb",
+      "width_px": 1437
+    },
+    {
+      "content_fill_height": 0.9168,
+      "content_fill_width": 0.9606,
+      "height_px": 769,
+      "index": 33,
+      "path": "docs/publisher/visuals/ru-inline-diagram-16.png",
+      "sha256": "8018af5d3343f7e5bd9255b7ab59de3f73584c7fbba08e8f5e796ceecbdd51f6",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.912,
+      "content_fill_width": 0.945,
+      "height_px": 1000,
+      "index": 34,
+      "path": "docs/publisher/visuals/ru-editorial-diagram-02-registry-reconciliation.png",
+      "sha256": "e4985003a87f83b28d6e7fb01d23cd21d964d2a608c03db69c3a774c74c98b3f",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9226,
+      "content_fill_width": 0.9606,
+      "height_px": 827,
+      "index": 35,
+      "path": "docs/publisher/visuals/ru-inline-diagram-17.png",
+      "sha256": "ebfd18df268925b8d2a3c898e319f03647b34b1012b3ed3c0e720fbce9726ad1",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8568,
+      "content_fill_width": 0.9606,
+      "height_px": 447,
+      "index": 36,
+      "path": "docs/publisher/visuals/ru-figure-10-adlc-lifecycle.png",
+      "sha256": "bfc4e5da4593fadf457d61784c8ad62e9d9ba31091fd5557fa5f0e74d00a5608",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9142,
+      "content_fill_width": 0.9606,
+      "height_px": 746,
+      "index": 37,
+      "path": "docs/publisher/visuals/ru-inline-diagram-18.png",
+      "sha256": "a555f697a3f41015af568c46112d92a0ee6166a868df18e9c4b8cfdc6f829b75",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9544,
+      "height_px": 1144,
+      "index": 38,
+      "path": "docs/publisher/visuals/ru-inline-diagram-19.png",
+      "sha256": "0116277f3a5d338a5012469fec8200188c1854f5f0625d1324f4859522524c5f",
+      "width_px": 1402
+    },
+    {
+      "content_fill_height": 0.9373,
+      "content_fill_width": 0.9606,
+      "height_px": 1020,
+      "index": 39,
+      "path": "docs/publisher/visuals/ru-inline-diagram-20.png",
+      "sha256": "308a9294f57bfacbb627a7cb4e2b61e1fd59bd6f555685bda3db8595b3ad1db0",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9233,
+      "content_fill_width": 0.9606,
+      "height_px": 834,
+      "index": 40,
+      "path": "docs/publisher/visuals/ru-inline-diagram-21.png",
+      "sha256": "83a1a8453e1904919e1fee73b795fa418a4f37905918ffb8a4405f8256ac8268",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 41,
+      "path": "docs/publisher/visuals/ru-figure-11-assurance-incident-registry.png",
+      "sha256": "6158e51c248c7eaf2460f2dcf85827b8dc4a9403f1647a35137c9ad0c1ecb22a",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9118,
+      "content_fill_width": 0.9606,
+      "height_px": 726,
+      "index": 42,
+      "path": "docs/publisher/visuals/ru-inline-diagram-22.png",
+      "sha256": "12d1476efb99aac49b08a6afc171b9732986e254bbf4822f301b33fbc9872afe",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 43,
+      "path": "docs/publisher/visuals/ru-figure-23-incident-response-state.png",
+      "sha256": "9a7634f900a5f8b8873ea7a8780470f344f0b9dbb1eb36ac84fe91c85fbd811f",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9177,
+      "content_fill_width": 0.9606,
+      "height_px": 778,
+      "index": 44,
+      "path": "docs/publisher/visuals/ru-inline-diagram-23.png",
+      "sha256": "dbb5f2bbe953dc8fa2075766c74f99f9e009b1c68ad33f957d9c02db3a8fdaa7",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9337,
+      "content_fill_width": 0.9606,
+      "height_px": 966,
+      "index": 45,
+      "path": "docs/publisher/visuals/ru-inline-diagram-24.png",
+      "sha256": "735f241009413233e9a8df8f38126adf5299a29e0e5424eab90320aaea9256ae",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9423,
+      "content_fill_width": 0.9606,
+      "height_px": 1109,
+      "index": 46,
+      "path": "docs/publisher/visuals/ru-inline-diagram-25.png",
+      "sha256": "d8d997d6abcf286c40a9553dcbbf4a51de628a44cd9c27ab4b86012129547fe0",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 47,
+      "path": "docs/publisher/visuals/ru-figure-18-runtime-stack.png",
+      "sha256": "505a3ddd38d6f711116ef9f809217d4c6a86446f24e2132fca8309aed2fbc635",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.8107,
+      "content_fill_width": 0.9606,
+      "height_px": 338,
+      "index": 48,
+      "path": "docs/publisher/visuals/ru-figure-22-durable-workflow-fiber.png",
+      "sha256": "9459fdd18635d4a6cf3f7884b00818a7492b6496c31c8c3b8c0d2a010d85728c",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.8307,
+      "content_fill_width": 0.9606,
+      "height_px": 378,
+      "index": 49,
+      "path": "docs/publisher/visuals/ru-figure-14-brain-hands-session.png",
+      "sha256": "9a76c26d7f15dc6d52f07d9fd99ddadadb767488eb785125e449de1025ee4d87",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9062,
+      "content_fill_width": 0.9606,
+      "height_px": 682,
+      "index": 50,
+      "path": "docs/publisher/visuals/ru-inline-diagram-26.png",
+      "sha256": "cb4e8eaccfabb75e8aabea5daca9090c1f8e37865985085900051586f25b5a9b",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9473,
+      "height_px": 1144,
+      "index": 51,
+      "path": "docs/publisher/visuals/ru-inline-diagram-27.png",
+      "sha256": "6a5010491c3d41711d4a39833688dc08d47abe8326d129d679e1af9900fd7350",
+      "width_px": 1215
+    },
+    {
+      "content_fill_height": 1.0,
+      "content_fill_width": 1.0,
+      "height_px": 900,
+      "index": 52,
+      "path": "docs/publisher/visuals/ru-figure-17-rollout-simulation-fidelity.png",
+      "sha256": "ca8ac47b3a188ef92fb92d678a8c0d3c0314f5eca6a0f781d07b433a5ae2da2a",
+      "width_px": 1600
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9446,
+      "height_px": 1144,
+      "index": 53,
+      "path": "docs/publisher/visuals/ru-figure-12-launch-readiness.png",
+      "sha256": "b3d0d502f8a457ac700ffc102453a66dab5d6b923b35f1ca5b8047d0f5ba6f64",
+      "width_px": 1156
+    },
+    {
+      "content_fill_height": 0.9348,
+      "content_fill_width": 0.9606,
+      "height_px": 981,
+      "index": 54,
+      "path": "docs/publisher/visuals/ru-inline-diagram-28.png",
+      "sha256": "1c7ed35b4bd79801e0f29a6e100176d3ba9cdc12ee652c754646c8e58909b223",
+      "width_px": 1624
+    },
+    {
+      "content_fill_height": 0.9441,
+      "content_fill_width": 0.9508,
+      "height_px": 1144,
+      "index": 55,
+      "path": "docs/publisher/visuals/ru-inline-diagram-29.png",
+      "sha256": "f12c7649d9061b08a5bd6140a470fe64c19392a365c64c2ee1ac00bb3c604bec",
+      "width_px": 1301
+    },
+    {
+      "content_fill_height": 0.8525,
+      "content_fill_width": 0.9606,
+      "height_px": 434,
+      "index": 56,
+      "path": "docs/publisher/visuals/ru-figure-24-capstone-evidence-package.png",
+      "sha256": "c0a919b1c070b22f336dce73fd95b8d887ef4b51146356458fa7f65c9676cdc1",
+      "width_px": 1624
+    }
+  ],
+  "docx": {
+    "alpha_images": 0,
+    "max_aspect_error": 2e-06,
+    "max_height_inches": 4.225,
+    "numbered_figure_caption_pairs": 25,
+    "raw_images": 56,
+    "raw_media_matches_source": true,
+    "template_images": 56,
+    "template_media_order_matches_raw": true
+  },
+  "manuscript_visuals": 56,
+  "pdf": {
+    "contact_sheets": [
+      ".tmp/visual-contact-template2000n-online-sync-20260722/visual-placement-contact-01.png",
+      ".tmp/visual-contact-template2000n-online-sync-20260722/visual-placement-contact-02.png",
+      ".tmp/visual-contact-template2000n-online-sync-20260722/visual-placement-contact-03.png",
+      ".tmp/visual-contact-template2000n-online-sync-20260722/visual-placement-contact-04.png",
+      ".tmp/visual-contact-template2000n-online-sync-20260722/visual-placement-contact-05.png"
+    ],
+    "first_image_page": 6,
+    "images": 56,
+    "last_image_page": 286,
+    "max_height_inches": 4.225,
+    "max_width_inches": 6.5,
+    "min_width_inches": 2.733,
+    "pages_with_images": 52,
+    "placements": [
+      {
+        "height_inches": 2.3131944444444446,
+        "page": 6,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.0034722222222223,
+        "page": 11,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.650000000000001,
+        "page": 14,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 4.224999999999999,
+        "page": 21,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.656249999999999,
+        "page": 27,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444437,
+        "page": 35,
+        "width_inches": 2.906944444444444,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.656249999999999,
+        "page": 38,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.65625,
+        "page": 38,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444437,
+        "page": 44,
+        "width_inches": 2.733333333333333,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.3229166666666659,
+        "page": 47,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.3000000000000003,
+        "page": 47,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.5597222222222225,
+        "page": 60,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444454,
+        "page": 69,
+        "width_inches": 3.9131944444444446,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.656250000000001,
+        "page": 71,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.103472222222222,
+        "page": 77,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.9770833333333337,
+        "page": 79,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.4229166666666673,
+        "page": 88,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.170138888888889,
+        "page": 95,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.043055555555556,
+        "page": 105,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.2097222222222226,
+        "page": 105,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.8097222222222216,
+        "page": 106,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444454,
+        "page": 113,
+        "width_inches": 3.0666666666666664,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444437,
+        "page": 117,
+        "width_inches": 3.022916666666667,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444446,
+        "page": 118,
+        "width_inches": 3.253472222222222,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.0833333333333335,
+        "page": 126,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.363194444444444,
+        "page": 140,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.0131944444444443,
+        "page": 148,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.5430555555555558,
+        "page": 149,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.8465277777777769,
+        "page": 154,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.65625,
+        "page": 159,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.656249999999999,
+        "page": 160,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444437,
+        "page": 172,
+        "width_inches": 4.790277777777778,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.5631944444444454,
+        "page": 178,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 4.062499999999999,
+        "page": 186,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.7569444444444438,
+        "page": 191,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.4902777777777771,
+        "page": 193,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.4868055555555566,
+        "page": 195,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444446,
+        "page": 202,
+        "width_inches": 4.672916666666667,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.400000000000001,
+        "page": 214,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.779861111111111,
+        "page": 220,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.656249999999999,
+        "page": 227,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.420138888888888,
+        "page": 231,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.65625,
+        "page": 235,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.5930555555555554,
+        "page": 237,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.2201388888888878,
+        "page": 244,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.6965277777777774,
+        "page": 252,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.65625,
+        "page": 256,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.127083333333333,
+        "page": 257,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.2597222222222229,
+        "page": 258,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 2.2729166666666663,
+        "page": 258,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444446,
+        "page": 266,
+        "width_inches": 4.050000000000001,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.656250000000001,
+        "page": 272,
+        "width_inches": 6.499999999999999,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444437,
+        "page": 273,
+        "width_inches": 3.853472222222222,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.270138888888889,
+        "page": 274,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      },
+      {
+        "height_inches": 3.8131944444444454,
+        "page": 278,
+        "width_inches": 4.336805555555555,
+        "within_page": true
+      },
+      {
+        "height_inches": 1.4465277777777774,
+        "page": 286,
+        "width_inches": 5.413194444444445,
+        "within_page": true
+      }
+    ]
+  },
+  "unique_visual_paths": 56
+}

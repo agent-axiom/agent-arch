@@ -2,6 +2,7 @@
 
 {% block extrahead %}
   {{ super() }}
+  <script src="{{ 'javascripts/canonical-redirects.js' | url }}"></script>
   <meta name="google-site-verification" content="RBNGmQi1EDhswKAfS_CtGf8o7FRuCmeI_mbYgB_xrwE" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="{{ page.title | default(config.site_name, true) | e }}" />

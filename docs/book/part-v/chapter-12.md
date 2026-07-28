@@ -284,25 +284,32 @@ LangChain хорошо формулирует практичный sandbox check
 
 ```yaml
 slo:
-  success:
-    successful_run_rate: ">= 97%"
-  latency:
-    run_p95_ms: "<= 12000"
-    tool_span_p95_ms: "<= 2500"
-  safety:
-    policy_violation_rate: "< 0.2%"
-    unknown_side_effect_rate: "< 0.05%"
-  cost:
-    avg_tokens_per_run: "<= 18000"
-    avg_cost_per_successful_run_usd: "<= 0.12"
-  escalation:
-    manual_intervention_rate: "< 8%"
-  verifier:
-    false_positive_rate_high_risk: "< 1%"
-    failure_attribution_agreement_rate: ">= 95%"
+  slo_id: slo-support-ticket-known-effect-v1
+  owner: support-operations
+  window: rolling_28d
+  sli:
+    name: known_external_effect_rate
+    numerator: runs_with_verified_expected_ticket_effect
+    denominator: eligible_ticket_write_runs
+    exclusions:
+      - synthetic_load_tests
+      - operator_cancelled_before_dispatch
+    data_source: telemetry.run_complete+ticketing.reconciliation
+  target: ">= 99.0%"
+  action_on_breach:
+    burn_rate_alert: 2h_and_24h
+    rollout_action: freeze_expansion
+    owner: support-operations
+  safety_invariants:
+    - name: confirmed_cross_tenant_write
+      allowed_count: 0
+      action: rollback_and_incident
+    - name: blind_retry_after_side_effect_unknown
+      allowed_count: 0
+      action: freeze_and_reconcile
 ```
 
-Главное здесь не точные проценты. Главное, что команда заранее договорилась, как выглядит нормальное состояние системы.
+Главное здесь не точный процент, а воспроизводимый расчет и действие. Полная карточка находится в `docs/companion/examples/slo-card-support-ticket.yaml`. Нарушение SLO расходует бюджет надежности, а нарушение `safety_invariants` является жестким блокером и не компенсируется хорошим средним показателем.
 
 Именно эта договоренность превращает метрики в рабочее ограничение. Без нее система может измеряться, но еще не управляется через явные бюджеты здоровья и риска.
 
@@ -369,6 +376,75 @@ def classify_run_health(run: RunHealth) -> str:
 - люди защищены от тихого переноса нагрузки на них.
 
 Если большинство этих условий не выполняется, у команды уже могут быть метрики, но реальной дисциплины SLO для агентных систем пока нет.
+
+### 13.1. Практикум: собрать SLO-карту для одного агентного пути
+
+После главы про трассы удобно сделать очень практический переход: взять один реальный путь запуска и превратить его в SLO-карту. Не в общий dashboard, а именно в карту обещаний, нарушений и действий.
+
+Для агента поддержки начни с одной истории:
+
+```yaml
+user_story:
+  name: support_ticket_creation
+  user_expectation: "получить корректный тикет или понятную безопасную остановку"
+  risky_side_effect: create_ticket
+  required_controls:
+    - policy_precheck
+    - tool_policy_decision
+    - approval_requested_for_high_risk_write
+    - idempotency_key
+    - verification_result_for_unknown_side_effect
+```
+
+Дальше не пытайся сразу придумать десять метрик. Сначала выпиши, что для этого пути считается неприемлемым исходом:
+
+- создан дубль тикета;
+- пользователь получил формальный успех при `side_effect_unknown`;
+- подтверждение зависло без владельца;
+- система ушла в ручную сверку чаще, чем команда может обслужить;
+- новый релиз ухудшил стоимость или задержку без явной пользы.
+
+После этого SLO-карта может выглядеть так:
+
+```yaml
+slo_map:
+  path: support_ticket_creation
+  success:
+    objective: "тикет создан ровно один раз или запуск безопасно остановлен"
+    indicator: task_success_without_duplicate_ticket_rate
+    target: ">= 99.5%"
+    burn_action: "block rollout expansion"
+  safety:
+    objective: "неизвестный побочный эффект не маскируется под успех"
+    indicator: unknown_side_effect_masked_as_success_rate
+    target: "0"
+    burn_action: "freeze write capability and require reconciliation"
+  latency:
+    objective: "пользователь видит решение или статус ожидания до потери доверия"
+    indicator: end_to_end_p95_ms
+    target: "<= 12000"
+    burn_action: "route complex cases to slower path explicitly"
+  approval:
+    objective: "человеческая проверка не становится невидимой очередью"
+    indicator: approval_wait_p95_minutes
+    target: "<= 30"
+    burn_action: "page owner or degrade to no-write mode"
+  cost:
+    objective: "стоимость растет только вместе с качеством"
+    indicator: cost_per_successful_run_delta_pct
+    target: "<= 8"
+    burn_action: "hold model/prompt rollout"
+```
+
+Хорошая карта SLO сразу отвечает на три вопроса:
+
+1. **Что считаем здоровьем?** Не “сервис жив”, а “путь дает безопасный и полезный исход”.
+2. **Какой бюджет можно тратить?** Сколько задержки, стоимости, ручной нагрузки или неопределенности допустимо.
+3. **Что происходит при сжигании бюджета?** Кто останавливает расширение релиза, переводит возможность в no-write mode или требует сверку.
+
+Самая частая ошибка — оставить `burn_action` пустым. Тогда SLO становится декоративной метрикой. В агентной системе SLO должен быть связан с действием: остановить rollout, сузить аудиторию, включить обязательное подтверждение, заморозить пишущую capability, открыть инцидент или добавить eval-регрессию.
+
+Практический критерий готовности простой: если по одной трассе инцидента ты не можешь сказать, какой SLO был нарушен и какое действие должно последовать, карта здоровья еще не собрана.
 
 ## 14. Что делать сразу после этой главы
 

@@ -1,0 +1,174 @@
+{
+  "schema": "agent-arch-render-qa/v1",
+  "date": "2026-06-24",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "tab_id": "t.0",
+    "revision_before_edits": "ALtnJHylPUTZQrNWZLCLS78JrNC-O65sp56zrtR8Ky1rcSMRIkPPsGwAJJYHQvUK-nvVhCHFsC4DVX3_0W8l4iUd86fAHmzOWZoHj0SFkkw",
+    "revision_after_fence_replacement": "ALtnJHwip8jdXWSSD62b3GY7JZUVNVFCkDexs5ZQRyug7lEoaUIceKNDRePUX3Iu_hQUoLwwRcU7NkSatgukOIzm0ZOMkBrBvNt5BeIunO4",
+    "revision_after_tail_cleanup": "ALtnJHx8rYGtnrjMg9ktpn0uzJr-ax5Hul3f6SKJI7VX5aIxsDe7J746gD13SmpLfPI1SnBbVGcg6gKOlK_2PGIDqSbk0l8EC62o0F6TztY"
+  },
+  "google_doc_edits": {
+    "replace_all_text": [
+      {
+        "contains_text": "```mermaid",
+        "replacement": "Схема (Mermaid):",
+        "occurrences_changed": 0
+      },
+      {
+        "contains_text": "```yaml",
+        "replacement": "Листинг (YAML):",
+        "occurrences_changed": 27
+      },
+      {
+        "contains_text": "```python",
+        "replacement": "Листинг (Python):",
+        "occurrences_changed": 1
+      },
+      {
+        "contains_text": "```bash",
+        "replacement": "Листинг (CLI):",
+        "occurrences_changed": 0
+      },
+      {
+        "contains_text": "```json",
+        "replacement": "Листинг (JSON):",
+        "occurrences_changed": 0
+      },
+      {
+        "contains_text": "```text",
+        "replacement": "Листинг (текст):",
+        "occurrences_changed": 0
+      },
+      {
+        "contains_text": "```",
+        "replacement": "",
+        "occurrences_changed": 28
+      }
+    ],
+    "tail_cleanup": {
+      "final_semantic_paragraph_prefix": "Практическое правило: если материал помогает понять архитектурное решение",
+      "paragraph_range": [763893, 764150],
+      "deleted_range": [764150, 764156]
+    }
+  },
+  "raw_google_docs_export": {
+    "docx_path": "docs/publisher/artifacts/agent-arch-ru-codeblock-pass-2026-06-24.docx",
+    "docx_size_bytes": 749310,
+    "render_dir": "/private/tmp/agent_arch_codeblock_pass_2026_06_24_render",
+    "pdf_name": "agent-arch-codeblock-pass-2026-06-24.pdf",
+    "pdf_size_bytes": 4284587,
+    "rendered_pages": 655,
+    "page_image_size": [1547, 2002],
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "low_ink_pages_sample": [
+      [121, 0.004369257116509864, 13532],
+      [372, 0.004753165386649549, 14721],
+      [14, 0.014840363256652849, 45962],
+      [530, 0.01556749649833037, 48214],
+      [596, 0.017791193938575967, 55101],
+      [305, 0.018639085542770092, 57727],
+      [532, 0.018712057173595635, 57953],
+      [229, 0.01873465900615222, 58023],
+      [531, 0.019518942595865674, 60452],
+      [281, 0.01956091742775647, 60582]
+    ],
+    "high_ink_pages_sample": [
+      [423, 0.12084683254689718, 374274],
+      [479, 0.10238242688145727, 317088],
+      [102, 0.09671776187613292, 299544],
+      [96, 0.0962976906739027, 298243],
+      [100, 0.09531257365775789, 295192],
+      [459, 0.09520279332819734, 294852],
+      [499, 0.0947782017594558, 293537],
+      [556, 0.0942996886759007, 292055],
+      [72, 0.09365069319820452, 290045],
+      [129, 0.09232235121052186, 285931]
+    ],
+    "visual_spot_check": [
+      "page 1: clean first page, no service lines",
+      "page 121: intentional short tail page",
+      "page 372: intentional short tail page",
+      "page 655: final page contains content, not blank"
+    ]
+  },
+  "template2000n_derivative": {
+    "docx_path": "docs/publisher/artifacts/agent-arch-ru-template2000n-codeblock-pass-2026-06-24.docx",
+    "docx_size_bytes": 760560,
+    "render_dir": "/private/tmp/agent_arch_template2000n_codeblock_pass_2026_06_24_render",
+    "pdf_name": "agent-arch-ru-template2000n-codeblock-pass-2026-06-24.pdf",
+    "pdf_size_bytes": 5697700,
+    "rendered_pages": 409,
+    "page_image_size": [1547, 2002],
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "low_ink_pages_sample": [
+      [394, 0.004158091423766924, 12878],
+      [193, 0.007561927406788428, 23420],
+      [341, 0.00794938739347272, 24620],
+      [190, 0.011376470975695281, 35234],
+      [326, 0.018376904285113724, 56915],
+      [327, 0.019511193396131988, 60428],
+      [239, 0.02064741980708367, 63947],
+      [36, 0.020897331498495042, 64721],
+      [392, 0.020951898779953078, 64890],
+      [43, 0.021322245950558816, 66037]
+    ],
+    "high_ink_pages_sample": [
+      [155, 0.09992011866607858, 309462],
+      [11, 0.09682657355572676, 299881],
+      [255, 0.09180444636165386, 284327],
+      [244, 0.08668803723748779, 268481],
+      [274, 0.08666995577144251, 268425],
+      [16, 0.0861720696885532, 266883],
+      [245, 0.08587469414877301, 265962],
+      [1, 0.08585758133269446, 265909],
+      [100, 0.08499419132903296, 263235],
+      [102, 0.084462725380631, 261589]
+    ],
+    "style_metrics": {
+      "paragraphs": 7782,
+      "preserved_lists": 2815,
+      "code_like": 664,
+      "labels": 26,
+      "demoted_headings": 755,
+      "style_counts": {
+        "Style18": 2815,
+        "BodyText": 2794,
+        "Heading3": 810,
+        "Style16": 664,
+        "Heading2": 539,
+        "Heading1": 90,
+        "Heading4": 68,
+        "Style13": 1,
+        "Style14": 1
+      }
+    },
+    "visual_spot_check": [
+      "page 326: isolated Markdown fence marker removed; remaining content is dense YAML-like listing material",
+      "page 394: low-ink tail page contains rollout text, not blank",
+      "page 409: final page contains final reference package content, not blank"
+    ],
+    "known_issues": [
+      "Large YAML and code excerpts remain too dense for final print and need companion extraction or compression.",
+      "Generic labels such as 'Листинг (YAML):' need replacement with semantic captions.",
+      "Template2000n title treatment still requires publisher/template-owner confirmation."
+    ]
+  },
+  "connector_readback": {
+    "absent_text": [
+      "```yaml",
+      "```python",
+      "```bash",
+      "```"
+    ],
+    "verified_text": [
+      "Листинг (YAML):",
+      "Листинг (Python):",
+      "Практическое правило: если материал помогает понять архитектурное решение"
+    ]
+  }
+}

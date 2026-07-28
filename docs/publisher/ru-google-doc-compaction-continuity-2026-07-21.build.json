@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.docx",
+  "bookmarks": 107,
+  "code_lines": 1671,
+  "headings": 622,
+  "images": 56,
+  "internal_hyperlinks": 175,
+  "list_items": 3432,
+  "lists": 743,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8988456,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-compaction-continuity-2026-07-21.docx",
+  "output_sha256": "9b3cfcdaa8b3aaac156db88afdf06933718093ff07832d68d94670532b4c2307",
+  "page_breaks": 30,
+  "paragraphs": 8187,
+  "tables": 9
+}

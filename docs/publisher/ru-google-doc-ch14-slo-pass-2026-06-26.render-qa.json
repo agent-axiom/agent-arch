@@ -1,0 +1,68 @@
+{
+  "date": "2026-06-26",
+  "google_doc": {
+    "id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "chapter": "Глава 14. SLO для агентных систем",
+    "revision_after_edit": "ALtnJHwy04sYLnrGqMbGQcmQIBs2QBDBFG9EYNkcaZ6EnbBoIq_m9cABGoXR_-nYcYGwjpow6GWzXgn8eMoI1u4Mm4z8W3gbQVdWGCodpvE",
+    "body_range_replaced": {
+      "start": 411668,
+      "end_before_edit": 431934,
+      "chapter_15_start_after_edit": 428401
+    }
+  },
+  "artifacts": {
+    "raw_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-ch14-slo-pass-2026-06-26.docx",
+      "size_bytes": 711864,
+      "sha256": "c363433f83b1e69ebaf862dbbe1491df2dbb5f0780885860f872ea780ae09ef7",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_ch14_slo_pass_2026_06_26_render/agent-arch-ru-ch14-slo-pass-2026-06-26.pdf",
+      "rendered_pdf_size_bytes": 3890949,
+      "page_count": 621,
+      "blankish_pages": 0,
+      "marker_pages": {
+        "Глава 14. SLO для агентных систем": [28, 322],
+        "Глава 13 закончилась на trace": [323],
+        "SLO, SLI и error budget": [325],
+        "Failure modes, которые должны попасть в SLO": [328],
+        "Product metrics и safety metrics не должны конкурировать": [330],
+        "Alerting: у каждого сигнала должен быть owner и action": [335],
+        "SLO readiness checklist перед эксплуатацией": [340],
+        "Companion route для главы 14": [342],
+        "Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы": [28, 343, 363]
+      }
+    },
+    "template2000n_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch14-slo-pass-2026-06-26.docx",
+      "size_bytes": 718680,
+      "sha256": "cb6bfa9fca1dff92be2fb1d2bae339aeec8051675767fefe020ffbec928ec11d",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_template2000n_ch14_slo_pass_2026_06_26_render_v2/agent-arch-ru-template2000n-ch14-slo-pass-2026-06-26.pdf",
+      "rendered_pdf_size_bytes": 5473509,
+      "page_count": 308,
+      "blankish_pages": 0,
+      "marker_pages": {
+        "Глава 14. SLO для агентных систем": [17, 176],
+        "Глава 13 закончилась на trace": [176],
+        "SLO, SLI и error budget": [177],
+        "Failure modes, которые должны попасть в SLO": [178],
+        "Product metrics и safety metrics не должны конкурировать": [179],
+        "Alerting: у каждого сигнала должен быть owner и action": [181],
+        "SLO readiness checklist перед эксплуатацией": [183],
+        "Companion route для главы 14": [184],
+        "Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы": [17]
+      },
+      "visual_spot_check_pages": [176, 183, 184, 185],
+      "visual_spot_check_result": "passed"
+    }
+  },
+  "qa_result": "passed",
+  "notes": [
+    "Raw Google Docs export keeps the full manuscript shape and renders to 621 pages.",
+    "Template2000n derivative compresses the same manuscript to 308 pages.",
+    "The SLO readiness checklist was re-normalized after an intermediate render showed numbered checklist items styled as large headings.",
+    "Google Docs table-of-contents pages also contain chapter-title markers, so body marker positions are the later page hits."
+  ]
+}

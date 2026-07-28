@@ -1,0 +1,11 @@
+{
+  "input_docx": "/private/tmp/agent-arch-ru-google-doc-editorial-2026-07-15.sanitized.docx",
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "max_numbered_figure_height_inches": 3.813,
+  "media_targets_unique": 54,
+  "numbered_figures_reordered": 25,
+  "output_bytes": 8649945,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-15.docx",
+  "output_sha256": "9647af149c93341e4e00b5d760dcc6dab1295d41d3c3135dc98067e03d48bcd4",
+  "visuals_synchronized": 54
+}

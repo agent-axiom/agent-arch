@@ -28,7 +28,7 @@
 .md-typeset h1,
 .md-typeset h2,
 .md-typeset h3 {
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
 }
 
 .md-typeset h1 {
@@ -167,6 +167,36 @@
 
 .md-typeset .mermaid {
   overflow-x: auto;
+}
+
+.md-typeset pre,
+.md-typeset code {
+  overflow-wrap: anywhere;
+}
+
+@media print {
+  .md-typeset .diagram-card,
+  .md-typeset .plot-card,
+  .md-typeset table:not([class]),
+  .md-typeset pre {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .md-typeset .diagram-card,
+  .md-typeset .plot-card {
+    border: 1px solid #cbd5e1;
+    box-shadow: none;
+  }
+
+  .md-typeset pre {
+    white-space: pre-wrap;
+  }
+
+  .md-typeset table:not([class]) {
+    display: table;
+    width: 100%;
+  }
 }
 
 .md-header__option .md-select > button {

@@ -1,0 +1,81 @@
+{
+  "date": "2026-06-27",
+  "google_doc": {
+    "id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "chapter": "Глава 16. Сквозная цепочка доказательств: от запроса к поэтапному выпуску",
+    "revision_after_edit": "ALtnJHwPBkw08Z5wdMXfcli1CM9XJNM2cPmohRMbxMps8OEDUzyzP400KZlZNaQNTN4izCQgjgNvqnBVZcxTNRNbALMYSE_kcq-lAxLU3h4",
+    "body_range_replaced": {
+      "start": 449330,
+      "end_before_edit": 475995,
+      "part_6_start_after_edit": 466800,
+      "chapter_17_start_after_edit": 466851
+    }
+  },
+  "artifacts": {
+    "raw_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-ch16-evidence-chain-pass-2026-06-27.docx",
+      "size_bytes": 674378,
+      "sha256": "cdd96c2733604f51d98fa80ef8425b3ffcf63eef6dfce9d0078d7cc1d39db498",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_ch16_evidence_chain_pass_2026_06_27_render/agent-arch-ru-ch16-evidence-chain-pass-2026-06-27.pdf",
+      "rendered_pdf_size_bytes": 3508769,
+      "page_count": 607,
+      "blankish_pages": 0,
+      "marker_pages": {
+        "Глава 16. Сквозная цепочка доказательств": [28, 368],
+        "Глава 15 закончилась не на красивом отчете": [368],
+        "Рабочее соглашение главы": [344, 369],
+        "Минимальный набор идентификаторов": [371],
+        "Связь с override record": [374],
+        "Companion route для главы 16": [375],
+        "Readiness checklist для evidence chain": [375],
+        "Часть VI. Организационная модель": [28, 378],
+        "Глава 17. Платформенная команда": [29, 378]
+      }
+    },
+    "template2000n_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch16-evidence-chain-pass-2026-06-27.docx",
+      "size_bytes": 676020,
+      "sha256": "6fd0c9c73f87504f0173ad1a37a7ec69595d8c6bba09caf0b64364e1ccd0f035",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_template2000n_ch16_evidence_chain_pass_2026_06_27_render_v2/agent-arch-ru-template2000n-ch16-evidence-chain-pass-2026-06-27.pdf",
+      "rendered_pdf_size_bytes": 3802862,
+      "page_count": 280,
+      "blankish_pages": 0,
+      "marker_pages": {
+        "Глава 16. Сквозная цепочка доказательств": [18, 185],
+        "Глава 15 закончилась не на красивом отчете": [185],
+        "Рабочее соглашение главы": [175, 185],
+        "Минимальный набор идентификаторов": [186],
+        "Связь с override record": [188],
+        "Companion route для главы 16": [189],
+        "Readiness checklist для evidence chain": [189],
+        "Часть VI. Организационная модель": [19, 191],
+        "Глава 17. Платформенная команда": [19, 191]
+      },
+      "visual_spot_check_pages": [185, 189, 190, 191],
+      "visual_spot_check_result": "passed",
+      "style_mapping_notes": {
+        "marker_lists_normalized": 2119,
+        "numbered_details_normalized": 96,
+        "numPr_removed_from_body": 2150,
+        "dense_left_aligned": 611,
+        "style_counts": {
+          "BodyText": 8026,
+          "Heading1": 78,
+          "Heading3": 207
+        }
+      }
+    }
+  },
+  "qa_result": "passed",
+  "notes": [
+    "Raw Google Docs export keeps the full manuscript shape and renders to 607 pages.",
+    "Template2000n derivative renders to 280 pages after stricter style mapping.",
+    "A first Template2000n render exposed inherited Heading1 on body paragraphs beginning with 'Глава'; the final derivative restricts Heading1 to actual chapter/part/front-matter headings.",
+    "Body paragraph numbering properties were removed in the Template2000n derivative to prevent oversized list markers in proof pages.",
+    "Google Docs table-of-contents pages also contain chapter-title markers, so body marker positions are the later page hits."
+  ]
+}

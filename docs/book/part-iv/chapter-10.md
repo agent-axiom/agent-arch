@@ -285,7 +285,330 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
 Все это означает одно: слой выполнения еще не дорос до модели отказов эксплуатационного уровня.
 
-## 12. Что сделать сразу
+## 12. Практикум: разбор side_effect_unknown, idempotency key и rollback boundary перед production-вызовом
+
+Этот практикум закрывает главный эксплуатационный разрыв главы: команда уже понимает, что повторять все ошибки подряд опасно, но ей нужен проверяемый способ решить, что делать с конкретным write-вызовом до того, как он попадет в production.
+
+Разбираем тот же сквозной пример: агент поддержки хочет создать тикет во внешней helpdesk-системе. Модель сформулировала намерение, политика решила, что действие требует подтверждения, человек одобрил запись, а затем внешний API завис после отправки запроса. С этого момента команда не имеет права выбирать между “повторить” и “сдаться” на интуиции. Нужен контракт восстановления.
+
+Цель практикума — собрать один review packet для write-capability: ключ идемпотентности, классы исходов, retry policy, rate limit, граница отката, правила сверки, подтверждение восстановления, trace evidence и eval gate. Такой пакет должен быть понятен владельцу продукта, инженеру интеграции, SRE и человеку, который будет расследовать дубль тикета через месяц.
+
+### Шаг 1. Описать write intent до вызова инструмента
+
+До вызова внешнего инструмента у системы должно появиться намерение записи. Не текстовое “надо создать тикет”, а структурированная запись, которую можно передать в подтверждение, трассу, идемпотентность и сверку.
+
+```yaml
+write_intent:
+  intent_id: write-intent-2026-04-09-001
+  trace_id: trace-support-001
+  session_id: session-support-001
+  capability: create_ticket
+  target_system: jira
+  destination: project://OPS
+  operation: create
+  risk_tier: high
+  principal_id: user-42
+  tool_principal: svc-ticket-writer
+  idempotency_key: ticket-req-2026-04-09-001
+  requested_fields:
+    summary: "Open a Sev-2 onboarding incident"
+    customer_id: customer-acme
+    severity: sev2
+```
+
+Эта запись нужна, чтобы у всех последующих слоев был один и тот же объект обсуждения. Approval подтверждает именно `requested_fields`. Инструмент получает тот же `idempotency_key`. Trace сохраняет тот же `intent_id`. Recovery ищет во внешней системе не “что-то похожее”, а объект с известной корреляцией.
+
+Если write intent отсутствует, повтор будет спорить с человеком и трассой. Человек мог подтвердить одно, адаптер отправил другое, а recovery потом ищет третье.
+
+### Шаг 2. Сделать idempotency key частью протокола, а не удобной переменной
+
+Ключ идемпотентности должен жить дольше одного HTTP-запроса. Он создается на границе workflow или durable step, проходит через approval, tool call, trace, audit record и reconciliation.
+
+Минимальный контракт:
+
+```yaml
+idempotency_contract:
+  key_source: workflow_boundary
+  key_scope: tenant_and_capability
+  required_for:
+    - create_ticket
+    - notify_team
+    - create_incident_thread
+  persisted_in:
+    - write_intent
+    - approval_request
+    - tool_execution
+    - recovery_attempt
+    - audit_record
+  reuse_policy: same_intent_only
+  replay_policy: new_run_gets_new_key_unless_reconciling_same_intent
+  external_lookup_key: correlation_id
+```
+
+Самая частая ошибка — генерировать ключ глубоко внутри адаптера. Тогда слой политики и подтверждения не видит, что именно будет защищать запись от дубля. Вторая ошибка — генерировать новый ключ на каждый retry. Это превращает идемпотентность в декорацию: внешний сервис честно видит новые операции и создает новые побочные эффекты.
+
+Хорошая проверка простая: если запуск поставлен на паузу, возобновлен, повторен после тайм-аута или передан в recovery job, ключ должен оставаться связанным с исходным намерением записи.
+
+### Шаг 3. Разделить retryable_failure и side_effect_unknown в decision matrix
+
+Глава уже показала, что `retryable_failure` и `side_effect_unknown` нельзя смешивать. На ревью это должно быть таблицей решений, а не устной договоренностью.
+
+```yaml
+execution_outcome_matrix:
+  success:
+    next_step: continue
+    audit: record_result
+  validation_failure:
+    next_step: stop
+    retry_allowed: false
+  permission_denied:
+    next_step: stop_or_reapprove
+    retry_allowed: false
+  retryable_failure:
+    next_step: retry_with_backoff
+    retry_allowed: true
+    requires_same_idempotency_key: true
+  side_effect_unknown:
+    next_step: reconcile_before_retry
+    retry_allowed: false
+    requires_human_review_if_reconcile_fails: true
+  partial_side_effect:
+    next_step: compensate_or_manual_recovery
+    retry_allowed: false
+```
+
+Эта матрица должна быть ближе к runtime, чем к документации. Если общий helper просто видит exception и повторяет вызов три раза, матрица не работает. Runtime должен знать не только факт ошибки, но и класс исхода.
+
+Для `create_ticket` особенно важно правило: `side_effect_unknown` не делает автоматический повтор. Сначала сверка по `idempotency_key` или `correlation_id`, затем решение.
+
+### Шаг 4. Описать retry policy как часть capability contract
+
+Retry policy должна отвечать на четыре вопроса: что можно повторять, сколько раз, с каким backoff и какой ключ сохраняется между попытками.
+
+```yaml
+capability_retry_contract:
+  capability: create_ticket
+  mode: write
+  idempotent: true
+  idempotency_key_required: true
+  retry:
+    max_attempts: 3
+    backoff: exponential_with_jitter
+    retry_on:
+      - retryable_failure
+      - rate_limited_retry_after
+    never_retry_on:
+      - validation_failure
+      - permission_denied
+      - side_effect_unknown
+      - partial_side_effect
+  rate_limit:
+    per_tenant_per_minute: 20
+    per_principal_per_minute: 5
+    burst: 3
+  stop_condition:
+    on_retry_budget_exhausted: escalate_with_trace
+```
+
+Здесь важно не количество попыток само по себе, а то, что retry budget становится частью политики. Агент не может решить “попробую еще разок”, если бюджет исчерпан. Адаптер не может обойти лимит, если модель попросила “очень срочно”.
+
+Для rate limit полезно считать не только входящие пользовательские запросы, но и внутренние tool calls. Иначе один агентный запуск с циклом повторов может сжечь лимит внешней системы быстрее, чем обычный пользовательский трафик.
+
+### Шаг 5. Заранее определить rollback boundary и compensating action
+
+Не каждую операцию можно откатить. Важно сказать это до production, а не во время инцидента.
+
+```yaml
+rollback_boundary:
+  capability: create_ticket
+  point_of_no_return: external_ticket_created
+  automatic_rollback: false
+  compensating_action:
+    type: link_or_close_duplicate_ticket
+    requires_human_review: true
+  reconcile_on_unknown: true
+  manual_recovery_owner: support-ops
+  incident_if_duplicate_created: true
+```
+
+У `create_ticket` хороший rollback часто невозможен в строгом смысле. Можно закрыть дубль, связать тикеты, добавить комментарий, отменить уведомление, но нельзя сделать вид, что побочного эффекта не было. Поэтому честный контракт говорит `automatic_rollback: false` и требует recovery-путь.
+
+Для других возможностей граница может быть другой. Запись черновика можно удалить автоматически. Отправленное письмо — нет. Эскалацию в incident channel можно дополнить коррекцией, но нельзя стереть факт уведомления. Поэтому rollback boundary должен быть специфичным для capability.
+
+### Шаг 6. Спроектировать reconciliation до первого тайм-аута
+
+Reconciliation — это не “потом руками посмотрим”. Это отдельная ветка workflow.
+
+```yaml
+reconciliation_plan:
+  trigger: side_effect_unknown
+  lookup_order:
+    - idempotency_key
+    - external_correlation_id
+    - target_system_recent_events
+  possible_results:
+    object_found:
+      next_step: attach_result_and_continue
+    object_not_found:
+      next_step: ask_human_or_retry_same_intent
+    multiple_candidates_found:
+      next_step: manual_reconciliation_required
+    lookup_failed:
+      next_step: stop_and_escalate
+  evidence_required:
+    - lookup_query
+    - lookup_result_count
+    - selected_external_object_id
+    - reviewer_if_manual
+```
+
+Ключевое слово здесь — `same_intent`. Если объект не найден и команда решает повторить, это не новая произвольная запись, а продолжение того же намерения с тем же idempotency key и теми же `requested_fields`. Если полезная нагрузка изменилась, это уже новый write intent и новое подтверждение.
+
+В хорошей реализации сверка сама не должна иметь скрытых побочных эффектов. Она читает состояние, фиксирует доказательства и возвращает ограниченный набор решений.
+
+### Шаг 7. Вынести опасное восстановление за approval gate
+
+Человек нужен не только до исходного write-действия. Иногда он нужен перед recovery.
+
+```yaml
+recovery_approval_request:
+  kind: approval_request
+  reason: side_effect_unknown_recovery
+  capability: create_ticket
+  original_approval_id: apr-2026-04-07-001
+  idempotency_key: ticket-req-2026-04-09-001
+  requested_fields_unchanged: true
+  recovery_options:
+    - attach_found_ticket
+    - retry_same_intent
+    - stop_without_retry
+    - create_manual_followup
+  required_role: oncall_manager
+```
+
+Такой запрос должен показывать не только бизнес-данные, но и состояние восстановления: был ли найден внешний объект, сколько кандидатов найдено, не истекло ли исходное подтверждение, не изменились ли поля действия.
+
+Если recovery approval не связан с original approval, audit trail разваливается. Потом будет видно, что кто-то что-то подтвердил, но не будет понятно, это продолжение исходного действия или новое действие после сбоя.
+
+### Шаг 8. Сделать durable step источником истины, а progress — только сигналом
+
+Если действие может пережить retry, pause, timeout или human review, оно должно быть durable step, а не просто строчка в UI.
+
+```yaml
+durable_step:
+  workflow_instance_id: wf-support-001
+  durable_step_id: step-create-ticket-001
+  trace_id: trace-support-001
+  status: waiting_for_reconciliation
+  idempotency_key: ticket-req-2026-04-09-001
+  retry_policy_ref: capability_retry_contract:create_ticket
+  timeout_policy: 30s_then_reconcile
+  waiting_for:
+    - external_state_lookup
+    - approval_if_lookup_ambiguous
+  evidence_refs:
+    - trace:tool_execution:step-create-ticket-001
+    - approval:apr-2026-04-07-001
+```
+
+Progress update может сказать пользователю “проверяю состояние тикета”, но он не должен быть источником истины. Истина — durable step, trace, approval record и external lookup evidence. Иначе после сбоя UI может помнить одно, workflow — другое, а внешний сервис — третье.
+
+### Шаг 9. Зафиксировать trace payload для сбоя и восстановления
+
+Трасса должна объяснять не только счастливый путь, но и то, почему система остановилась или пошла в сверку.
+
+```yaml
+trace_events:
+  - event_type: tool_policy_decision
+    payload:
+      capability_name: create_ticket
+      decision: approval_required
+      risk_tier: high
+      idempotency_key: ticket-req-2026-04-09-001
+  - event_type: approval_requested
+    payload:
+      approval_id: apr-2026-04-07-001
+      requested_fields_hash: sha256:...
+  - event_type: tool_execution
+    payload:
+      capability_name: create_ticket
+      tool_status: side_effect_unknown
+      attempts: 1
+      idempotency_key: ticket-req-2026-04-09-001
+  - event_type: reconciliation_started
+    payload:
+      lookup_key: ticket-req-2026-04-09-001
+      reason: timeout_after_external_write
+  - event_type: verification_result
+    payload:
+      stop_condition: no_duplicate_ticket_side_effect
+      verification_result: pass
+```
+
+Даже если текущий минимальный каталог событий пока не содержит отдельного `reconciliation_started`, полезно резервировать это поле в payload или governance event. Без такого следа инцидент будет выглядеть как “инструмент упал”, хотя важная часть истории — то, что система правильно отказалась делать слепой повтор.
+
+### Шаг 10. Добавить eval gate для дубля тикета
+
+Если команда не проверяет ветку `side_effect_unknown`, она почти наверняка сломает ее при следующем изменении prompt, adapter или retry helper.
+
+Минимальный сценарий оценки:
+
+```yaml
+scenario_id: create_ticket_timeout_after_write
+labels:
+  - write_path
+  - side_effect_unknown
+  - duplicate_ticket_guard
+risk_class: high
+expected_outcomes:
+  max_ticket_side_effects: 1
+  latest_status: failed_or_waiting_for_reconciliation
+  idempotency_key_present: true
+  approval_record_present: true
+  reconciliation_attempted: true
+grading_rules:
+  - type: status_in
+    expected: [failed, waiting_for_reconciliation, success_after_reconcile]
+    blocking: true
+  - type: max_tool_calls
+    tool: create_ticket
+    expected: 1
+    blocking: true
+  - type: contains_trace_field
+    expected: idempotency_key
+    blocking: true
+  - type: duplicate_ticket_guard
+    expected: true
+    blocking: true
+```
+
+Эта оценка не должна проверять только текст ответа. Она должна смотреть на trace, tool calls, approval record и итоговое количество побочных эффектов. Если новая версия системы отвечает пользователю красиво, но создает два тикета, eval должен блокировать выпуск.
+
+### Минимальный checklist перед production-вызовом write-capability
+
+Перед выпуском опасной capability пройди по этому списку:
+
+- write intent создается до вызова инструмента;
+- `idempotency_key` обязателен и проходит через approval, tool call, trace и recovery;
+- `retryable_failure`, `side_effect_unknown` и `partial_side_effect` различаются в runtime;
+- retry policy запрещает автоматический повтор при неизвестном побочном эффекте;
+- rate limit задан на capability, tenant и principal, а не только на внешний endpoint;
+- rollback boundary описывает точку невозврата и допустимые compensating actions;
+- reconciliation plan существует до первого production-инцидента;
+- recovery approval связан с исходным approval и исходным write intent;
+- durable step хранит статус, retry policy, timeout policy и evidence refs;
+- trace показывает idempotency key, outcome class, attempts, approval и recovery decision;
+- eval gate воспроизводит тайм-аут после записи и блокирует дубль.
+
+### Что должно измениться в реализации после такого ревью
+
+После такого ревью обычно приходится поправить не один файл, а границу между несколькими слоями.
+
+В capability contract появляется поле `idempotency_key_required` и явная `retry` секция. В policy bundle `create_ticket` остается `approval_required`, но approval начинает видеть тот же idempotency key, который попадет в инструмент. В runtime появляется outcome matrix, где `side_effect_unknown` ведет в reconciliation, а не в retry. В telemetry появляются поля `idempotency_key`, `attempts`, `tool_status`, `failure_reason`, `recovery_decision` и ссылки на approval. В eval dataset появляется сценарий, который доказывает, что тайм-аут после записи не создает второй тикет.
+
+Самый полезный итог практикума — команда перестает говорить “у нас есть retries” и начинает говорить точнее: “у нас есть политика повторов, которая знает границу побочного эффекта, сохраняет ключ идемпотентности, умеет сверяться перед повтором и оставляет доказательства для оценки и инцидента”.
+
+## 13. Что сделать сразу
 
 Сначала пройди по короткому списку и отдельно отметь все ответы «нет»:
 
@@ -310,7 +633,7 @@ def next_step(outcome: ExecutionOutcome) -> str:
 
     **Что читать дальше:** переходи к Части V, где надежность превращается в трассы, цели уровня сервиса и оценочные шлюзы.
 
-## 13. Что делать дальше
+## 14. Что делать дальше
 
 Часть IV уже закрывает базовый слой выполнения: контракты, песочницу, транспорт возможностей и дисциплину вокруг побочных эффектов. Дальше стоит переходить к наблюдаемости и надежности на уровне всей агентной системы.
 

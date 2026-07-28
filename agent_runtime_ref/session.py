@@ -7,13 +7,18 @@ from os import PathLike
 from pathlib import Path
 from typing import TypedDict, cast
 
+from agent_runtime_ref.models import REDACTED_INPUT_DESCRIPTION, compute_input_sha256
+
 
 class RunPayload(TypedDict):
     trace_id: str
     status: str
     user_input: str
+    input_sha256: str
     output_text: str
     failure_reason: str
+    task_success: bool | None
+    side_effect_status: str
     request_agent_id: str
     capability_session_id: str
     capability_session_status: str
@@ -88,6 +93,9 @@ class RunRecord:
     user_input: str
     output_text: str
     failure_reason: str = ""
+    input_sha256: str = ""
+    task_success: bool | None = None
+    side_effect_status: str = "not_executed"
     request_agent_id: str = ""
     capability_session_id: str = ""
     capability_session_status: str = ""
@@ -111,11 +119,21 @@ class RunRecord:
         self.trace_id = _read_required_string(self.trace_id, field="trace_id")
         self.session_id = _read_required_string(self.session_id, field="session_id")
         self.status = _read_required_string(self.status, field="status")
-        self.user_input = _read_required_string(self.user_input, field="user_input")
+        raw_user_input = _read_required_string(self.user_input, field="user_input")
+        self.input_sha256 = _read_input_sha256(
+            self.input_sha256,
+            raw_user_input=raw_user_input,
+        )
+        self.user_input = REDACTED_INPUT_DESCRIPTION
         self.output_text = _read_required_string(self.output_text, field="output_text")
         self.failure_reason = _read_optional_string(
             self.failure_reason,
             field="failure_reason",
+        )
+        self.task_success = _read_task_success(self.task_success)
+        self.side_effect_status = _read_required_string(
+            self.side_effect_status,
+            field="side_effect_status",
         )
         self.request_agent_id = _read_optional_string(
             self.request_agent_id,
@@ -187,8 +205,19 @@ class RunRecord:
             field="resumable_stream_id",
         )
         status = self.status
-        if status not in {"success", "denied", "failed", "approval_required"}:
+        if status not in {
+            "success",
+            "denied",
+            "failed",
+            "approval_required",
+            "waiting_for_approval",
+            "blocked_on_reconciliation",
+        }:
             raise ValueError(f"Session status is not supported: {status}")
+        if self.task_success is None and status == "success":
+            self.task_success = True
+        elif self.task_success is None and status in {"denied", "failed"}:
+            self.task_success = False
         if self.status == "failed":
             self.failure_reason = _read_required_string(
                 self.failure_reason,
@@ -230,6 +259,21 @@ def _read_required_string(value: object, *, field: str) -> str:
     if not normalized:
         raise ValueError(f"Session field is required: {field}")
     return normalized
+
+
+def _read_task_success(value: object) -> bool | None:
+    if value is None or isinstance(value, bool):
+        return value
+    raise TypeError("Session task_success must be a boolean or None")
+
+
+def _read_input_sha256(value: object, *, raw_user_input: str) -> str:
+    digest = _read_optional_string(value, field="input_sha256").lower()
+    if not digest:
+        return compute_input_sha256(raw_user_input)
+    if len(digest) != 64 or any(character not in "0123456789abcdef" for character in digest):
+        raise ValueError("Session input_sha256 must be a SHA-256 hex digest")
+    return digest
 
 
 def _read_string_entries(value: object, *, field: str) -> list[str]:
@@ -339,6 +383,9 @@ class SessionStore:
         user_input: str,
         output_text: str,
         failure_reason: str = "",
+        input_sha256: str = "",
+        task_success: bool | None = None,
+        side_effect_status: str = "not_executed",
         request_agent_id: str = "",
         capability_session_id: str = "",
         capability_session_status: str = "",
@@ -374,6 +421,12 @@ class SessionStore:
         user_input = _read_required_string(user_input, field="user_input")
         output_text = _read_required_string(output_text, field="output_text")
         failure_reason = _read_optional_string(failure_reason, field="failure_reason")
+        input_sha256 = _read_optional_string(input_sha256, field="input_sha256")
+        task_success = _read_task_success(task_success)
+        side_effect_status = _read_required_string(
+            side_effect_status,
+            field="side_effect_status",
+        )
         request_agent_id = _read_optional_string(
             request_agent_id,
             field="request_agent_id",
@@ -425,7 +478,14 @@ class SessionStore:
             resumable_stream_id,
             field="resumable_stream_id",
         )
-        if status not in {"success", "denied", "failed", "approval_required"}:
+        if status not in {
+            "success",
+            "denied",
+            "failed",
+            "approval_required",
+            "waiting_for_approval",
+            "blocked_on_reconciliation",
+        }:
             raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
             failure_reason = _read_required_string(failure_reason, field="failure_reason")
@@ -457,6 +517,9 @@ class SessionStore:
             user_input=user_input,
             output_text=output_text,
             failure_reason=failure_reason,
+            input_sha256=input_sha256,
+            task_success=task_success,
+            side_effect_status=side_effect_status,
             request_agent_id=request_agent_id,
             capability_session_id=capability_session_id,
             capability_session_status=capability_session_status,
@@ -678,8 +741,11 @@ class SessionStore:
                     "trace_id": run.trace_id,
                     "status": run.status,
                     "user_input": run.user_input,
+                    "input_sha256": run.input_sha256,
                     "output_text": run.output_text,
                     "failure_reason": run.failure_reason,
+                    "task_success": run.task_success,
+                    "side_effect_status": run.side_effect_status,
                     "request_agent_id": run.request_agent_id,
                     "capability_session_id": run.capability_session_id,
                     "capability_session_status": run.capability_session_status,
@@ -788,7 +854,9 @@ def summarize_session(
         total_runs=len(normalized_runs),
         success_runs=sum(1 for run in normalized_runs if run.status == "success"),
         approval_wait_runs=sum(
-            1 for run in normalized_runs if "waiting for human approval" in run.output_text.lower()
+            1
+            for run in normalized_runs
+            if run.status in {"waiting_for_approval", "approval_required"}
         ),
         denied_runs=sum(1 for run in normalized_runs if run.status == "denied"),
         failed_runs=sum(1 for run in normalized_runs if run.status == "failed"),

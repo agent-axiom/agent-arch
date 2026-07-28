@@ -66,7 +66,7 @@
 !!! example "贯穿案例：工单结果未知"
     在支持分诊案例里，最危险的时刻并不是推理错误，而是调用 `create_support_ticket` 后发生超时。如果 helpdesk 可能已经创建了工单，在没有幂等键的情况下重复调用，就会把一个客户请求变成两个事故。正确分支应该先用 correlation ID 查找工单，然后要么把找到的结果绑定回 trace，要么停止运行并请操作员确认状态。
 
-**Reliability case-spine note：**retries、rate limits 和 rollback boundaries 应该用三个 canonical cases 来测试。Support triage 需要 idempotency keys、duplicate-ticket detection，以及 retry 之前的 reconciliation。Internal knowledge assistant 需要 retrieval fan-out 的 rate limits、freshness backoff，并禁止重复 stale memory writes。Incident coordination 需要 escalation de-duplication、notification throttling、incident-state changes 的 clear rollback boundary，以及 `side_effect_unknown` 时的 human confirmation。
+**可靠性案例主线说明（Reliability case-spine note）：**重试（retries）、速率限制（rate limits）和回滚边界（rollback boundaries）应该用三个规范案例（canonical cases）来测试。支持分诊（Support triage）需要幂等键（idempotency keys）、重复工单检测（duplicate-ticket detection），以及重试（retry）之前的对账（reconciliation）。内部知识助手（Internal knowledge assistant）需要检索扇出（retrieval fan-out）的速率限制、新鲜度退避（freshness backoff），并禁止重复写入陈旧记忆（stale memory writes）。事故协调（Incident coordination）需要升级去重（escalation de-duplication）、通知节流（notification throttling）、事故状态变更（incident-state changes）的清晰回滚边界（clear rollback boundary），以及 `side_effect_unknown` 时的人工确认（human confirmation）。
 
 ### 4.1. 恢复分支也应该被显式设计
 

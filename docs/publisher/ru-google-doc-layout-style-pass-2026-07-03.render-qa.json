@@ -1,0 +1,103 @@
+{
+  "date": "2026-07-03",
+  "status": "working-proof-render-qa-complete",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab_id": "t.0",
+    "revision_id": "ALtnJHwIVs8gJyJyrGPDctcgdF7ErhiFjFyvH-7E7UDpz7uFhzRhtfVmGsJgSN1xJRlyDTnkL9l8xz6mXFF5DhkyL_Tlw4vPeghlejfY9yc"
+  },
+  "raw_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx",
+    "bytes": 688755,
+    "sha256": "c5d19d5de61d74f5a25f50f759c7e2b68153455ee3056a4e450d4a8cc3200040",
+    "paragraphs": 8179,
+    "non_empty_paragraphs": 6105,
+    "approx_words": 99924,
+    "style_counts": {
+      "Heading1": 26,
+      "Heading2": 762,
+      "Heading3": 513,
+      "Heading4": 51,
+      "Normal": 4753
+    },
+    "render": {
+      "dir": "/tmp/agent-arch-ru-layout-style-raw-render-2026-07-03-clean",
+      "pdf": "/tmp/agent-arch-ru-layout-style-raw-render-2026-07-03-clean/agent-arch-ru-layout-style-pass-2026-07-02.pdf",
+      "pdf_pages": 507,
+      "png_pages": 507,
+      "blank_like_pages": [],
+      "lowest_density_pages": [
+        {"page": 62, "nonwhite_ratio": 0.007205141335716643},
+        {"page": 161, "nonwhite_ratio": 0.007213859185417039},
+        {"page": 472, "nonwhite_ratio": 0.0075990589888456726},
+        {"page": 125, "nonwhite_ratio": 0.008278082615509894},
+        {"page": 302, "nonwhite_ratio": 0.010680011649630266}
+      ],
+      "highest_density_pages": [
+        {"page": 419, "nonwhite_ratio": 0.1045864284390464},
+        {"page": 416, "nonwhite_ratio": 0.10554765208934569},
+        {"page": 426, "nonwhite_ratio": 0.106199553516942},
+        {"page": 379, "nonwhite_ratio": 0.10678074349696845},
+        {"page": 417, "nonwhite_ratio": 0.10684532016141583}
+      ],
+      "median_nonwhite_ratio": 0.05407617592491542
+    }
+  },
+  "template2000n_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx",
+    "source_raw_docx": "docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx",
+    "style_base_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx",
+    "bytes": 691476,
+    "sha256": "7aa67b19c47eb762ed9706aa4e888167ddb78362c9a20d8b60503e1eafc68ff5",
+    "paragraphs": 8179,
+    "non_empty_paragraphs": 6105,
+    "approx_words": 99924,
+    "style_counts": {
+      "BodyText": 4753,
+      "Heading1": 26,
+      "Heading2": 762,
+      "Heading3": 513,
+      "Heading4": 51
+    },
+    "render": {
+      "dir": "/tmp/agent-arch-ru-layout-style-template2000n-render-2026-07-03-clean",
+      "pdf": "/tmp/agent-arch-ru-layout-style-template2000n-render-2026-07-03-clean/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.pdf",
+      "pdf_pages": 371,
+      "png_pages": 371,
+      "blank_like_pages": [],
+      "lowest_density_pages": [
+        {"page": 343, "nonwhite_ratio": 0.004608190774965177},
+        {"page": 238, "nonwhite_ratio": 0.006787653200064319},
+        {"page": 240, "nonwhite_ratio": 0.008312308247667006},
+        {"page": 349, "nonwhite_ratio": 0.009247378348865097},
+        {"page": 218, "nonwhite_ratio": 0.014330853374163005}
+      ],
+      "highest_density_pages": [
+        {"page": 281, "nonwhite_ratio": 0.1062282901326211},
+        {"page": 286, "nonwhite_ratio": 0.10625315214843334},
+        {"page": 278, "nonwhite_ratio": 0.10690699087596309},
+        {"page": 287, "nonwhite_ratio": 0.10690763664260755},
+        {"page": 277, "nonwhite_ratio": 0.10976257097782631}
+      ],
+      "median_nonwhite_ratio": 0.05734988992907545
+    }
+  },
+  "integrity": {
+    "raw_non_empty_text_equals_previous_practice_polish_proof": true,
+    "raw_paragraph_text_equals_template2000n": true,
+    "raw_paragraph_count_equals_template2000n": true,
+    "practice_headings_count": 14,
+    "blank_like_threshold": 0.002,
+    "notes": [
+      "The previous raw render directory contained stale PNGs; clean render directories were used for final counts.",
+      "The Template2000n derivative uses the checked derivative route and does not execute the legacy Template2000n.dot VBA macros.",
+      "This is render QA plus targeted visual review, not a full human proofread of every page."
+    ]
+  },
+  "targeted_visual_checks": {
+    "raw_pages": [1, 62, 286, 310, 334, 335, 349, 368, 412, 428, 431, 507],
+    "template2000n_pages": [1, 202, 221, 242, 243, 252, 267, 298, 310, 312, 343, 371],
+    "raw_contact_sheet": "/tmp/agent-arch-ru-layout-style-raw-contact-2026-07-03.png",
+    "template2000n_contact_sheet": "/tmp/agent-arch-ru-layout-style-template-contact-2026-07-03.png"
+  }
+}

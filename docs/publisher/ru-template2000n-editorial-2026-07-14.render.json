@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-template2000n-editorial-2026-07-14-render-final3/lowest-density-contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.001258297766852169,
+      "page": 343
+    },
+    {
+      "density": 0.0031164845947621806,
+      "page": 88
+    },
+    {
+      "density": 0.003738752383504402,
+      "page": 379
+    },
+    {
+      "density": 0.00803211048068795,
+      "page": 348
+    },
+    {
+      "density": 0.01049732231969833,
+      "page": 164
+    },
+    {
+      "density": 0.011883072037820212,
+      "page": 4
+    },
+    {
+      "density": 0.012340727536805969,
+      "page": 24
+    },
+    {
+      "density": 0.014146600245696748,
+      "page": 122
+    },
+    {
+      "density": 0.014736837165710675,
+      "page": 237
+    },
+    {
+      "density": 0.01776066767896833,
+      "page": 173
+    }
+  ],
+  "pages": 379,
+  "render_dir": "/private/tmp/agent-arch-ru-template2000n-editorial-2026-07-14-render-final3"
+}

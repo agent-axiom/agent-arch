@@ -35,6 +35,19 @@ Managed Agents добавляют к этой странице короткую 
 - глава 22 и схема жизненного цикла для связи управляемых артефактов, идентичности выпуска, цепочки проверочного контракта и происхождения делегированного разрешения;
 - главы 23-27 для прерывания, истечения срока, повторной инициализации, вывода из эксплуатации, наблюдаемости, владения реестром, обязательств по доказательствам проверки и управления жизненным циклом делегированного разрешения вокруг сессий возможностей.
 
+## Практический маршрут по главам
+
+Используй `agent_runtime_ref` как лабораторию безопасного агента, а не как фреймворк для копирования. Маршрут по книге строится так:
+
+- **Идентичность, политики и возможности**: главы 5, 6 и 22; файлы `configs/agent.yaml`, `configs/capabilities.yaml`, `configs/policy.yaml`, `configs/approvals.yaml`; команды `inspect-agent`, `simulate-run`, `inspect-approvals`, `resolve-approval`.
+- **Память и фоновые обновления**: главы 7-9; файлы `memory.py`, `background.py`, `configs/memory.yaml`; команды `inspect-memory` и `simulate-run --user-input "What language preference do you remember?"`.
+- **Исполнение, инструменты и трассы**: главы 10-13 и 21; файлы `runtime.py`, `execution.py`, `telemetry.py`, `catalog.py`; команды `dump-events`, `export-events`, `inspect-trace`, `replay-run`.
+- **Оценки и деградировавшие пути**: главы 15-16; команды `export-session`, `export-eval-dataset`, сценарии `failed_run_timeout`, companion artifacts и тесты `tests/test_agent_runtime_ref.py`.
+- **Поэтапный выпуск и жизненный цикл**: главы 19, 20 и 23; файлы `rollout.py`, `lifecycle.py`, `controls.py`, `configs/change.yaml`, `configs/rollout.yaml`, `configs/runtime-controls.yaml`; команды `check-change`, `check-rollout`, `check-controls`, `check-retirement`.
+
+!!! tip "Как выполнять упражнения"
+    Для каждого слоя сначала запусти команду без изменений, затем запусти вариант с отказом или недостающим сигналом, после этого открой соответствующий файл конфигурации. Так читатель видит не только happy path, но и то, где именно система останавливает небезопасное действие.
+
 !!! example "Опора выполнения для триажа обращений поддержки"
     Встроенный `support-triage-ref` показывает тот же сквозной случай в исполняемой форме: идентичность агента, одобренные возможности `search_docs`/`create_ticket`, ожидание подтверждения, идентификаторы трассы и сессии, проверки жизненного цикла и экспорт оценки. Поэтому цепочку с дублем тикета из книги можно проверять не только как текстовое описание, но и как исполняемую поверхность контракта.
 
@@ -42,6 +55,23 @@ Managed Agents добавляют к этой странице короткую 
     Эталонный пакет исполняет **Триаж обращений поддержки** как исполняемую базовую линию для записывающих возможностей, подтверждений и восстановления после дубля тикета. **Внутренний ассистент знаний** и **Координация инцидентов** остаются контрольными линзами покрытия для той же архитектуры: первый проверяет поиск, память, свежесть и происхождение знаний, второй — трассы, эскалацию, побочные эффекты уведомлений, владение ответом и обучение после инцидента. Если добавлять их как исполняемые конфигурации, они должны повторять те же контракты политик, телеметрии, жизненного цикла и реестра, а не становиться отдельными демонстрациями.
 
 Недавние обновления контрактов делают эту поверхность полезнее для проверки: контекст делегированного разрешения сохраняется через командные демонстрации, сессии, экспорты оценок и повторные прогоны; обезличивание экспорта трасс теперь покрывает сводки команд вместе с артефактами JSONL; инспекция жизненного цикла показывает предположения управления средой выполнения; а защита документации фиксирует стабильные ошибки валидации, задающие эти границы.
+
+## Companion examples and artifacts
+
+Печатная книга оставляет здесь только форму контракта и смысл проверок. Полные
+заполненные примеры живут в online companion:
+
+- [capability-contract-support-ticket.md](../companion/examples/capability-contract-support-ticket.md)
+- [release-decision-record-support-ticket.md](../companion/examples/release-decision-record-support-ticket.md)
+- [incident-record-support-ticket-timeout.md](../companion/examples/incident-record-support-ticket-timeout.md)
+- [production-readiness-support-ticket.md](../companion/examples/production-readiness-support-ticket.md)
+
+Артефакты для проверки той же цепочки:
+
+- [trace-demo.jsonl](../companion/artifacts/trace-demo.jsonl)
+- [trace-failed-tool-timeout.jsonl](../companion/artifacts/trace-failed-tool-timeout.jsonl)
+- [session-failed-tool-timeout.json](../companion/artifacts/session-failed-tool-timeout.json)
+- [eval-failed-run-timeout.json](../companion/artifacts/eval-failed-run-timeout.json)
 
 ## Что внутри
 
@@ -115,7 +145,7 @@ Managed Agents добавляют к этой странице короткую 
 .venv/bin/python -m agent_runtime_ref inspect-agent
 ```
 
-`inspect-agent` возвращает `agent_id`, `display_name`, `owner_team`, `runtime_principal`, `approved_capabilities`, `catalog_capability_names`, `write_capabilities`, `write_capability_egress`, `approval_required_capabilities`, `approval_required_capability_bindings`, `idempotency_required_capabilities`, `idempotency_required_capability_bindings` и `catalog_capabilities`, чтобы проверка инвентаря могла сопоставить настроенную идентичность с каталогом возможностей. Во встроенном `agent.yaml` эта идентичность имеет `agent_id` `support-triage-ref`, `display_name` `Support triage reference agent`, `owner_team` `agent_platform`, `runtime_principal` `svc-support-triage-ref` и утверждена только для `search_docs` и `create_ticket`; каталог возможностей затем помечает `search_docs` как принадлежащую `knowledge_platform` и связывает ее с `svc-knowledge-reader`, а `create_ticket` как принадлежащую `support_platform` и связывает с `svc-ticket-writer`. Каждая запись `catalog_capabilities` также несёт `name`, `owner`, `mode`, `transport`, `risk_tier`, `network_access`, `tool_principal`, `approval_required`, `idempotency_key_required` и `allowed_egress`, чтобы проверяющие видели идентичность возможности, позицию по повторной записи и позицию по исходящему обмену в одном ответе. Для сквозной цепочки с дублем тикета это означает, что `create_ticket` виден как принадлежащий поддержке, высокорисковый, посреднический, привязанный к `svc-ticket-writer` и требующий `idempotency_key` до безопасного повтора или сверки; `approval_required_capability_bindings` и `idempotency_required_capability_bindings` напрямую повторяют владельца и привязку инструментального субъекта этой записывающей возможности, а `write_capability_egress` повторяет ее посредническую цель исходящего обмена `tickets.internal`, чтобы операторам не приходилось сначала сканировать весь список каталога. Загрузчики идентичности и каталога валидируют эту форму через ошибки вроде `'agent' must be a mapping`, `agent.id must be a string`, `agent.id is required`, `agent.display_name is required`, `agent.owner_team is required`, `agent.runtime_principal is required`, `'approved_capabilities' must be a list`, `Agent inventory config must be a mapping`, `Agent identity config must be a mapping`, `approved_capabilities entries must be strings`, `approved_capabilities entries must not be empty`, `approved_capabilities entries must be unique`, `approved_capabilities lookup must be a string`, `'capabilities' must be a mapping`, `Capability spec for {name!r} must be a mapping`, `Capability names must be strings`, `Capability name must not be empty`, `Capability names must be unique`, `Capability catalog entries must be CapabilitySpec`, `capabilities.{capability_name}.{key} must be a string`, `capabilities.{capability_name}.{key} is required`, `{label}.{key} must be a string`, `{label} must be a string` и `capabilities.{capability_name}.timeout_seconds must be positive`, `'{label}.{key}' must be an integer` и `'{label}.{key}' must be a boolean`, `{label}.approval must be a string`, `{label}.approval must not be empty`, `{label}.approval is not supported: {approval}`, `'allowed_egress' must be a list`, `allowed_egress entries must be strings`, `allowed_egress entries must not be empty` и `allowed_egress entries must be unique`.
+`inspect-agent` возвращает `agent_id`, `display_name`, `owner_team`, `runtime_principal`, `approved_capabilities`, `catalog_capability_names`, `write_capabilities`, `write_capability_egress`, `approval_required_capabilities`, `approval_required_capability_bindings`, `idempotency_required_capabilities`, `idempotency_required_capability_bindings` и `catalog_capabilities`, чтобы проверка инвентаря могла сопоставить настроенную идентичность агента с каталогом возможностей. Во встроенном `agent.yaml` агент задан как `agent_id` `support-triage-ref`: у него показываемое имя `Support triage reference agent`, поле `owner_team` `agent_platform` задает команду-владельца, поле `runtime_principal` `svc-support-triage-ref` задает субъект среды исполнения, а сама запись одобрена только для `search_docs` и `create_ticket`. Дальше каталог возможностей поясняет, что `search_docs` принадлежит `knowledge_platform` и использует `svc-knowledge-reader`, а `create_ticket` принадлежит `support_platform` и использует `svc-ticket-writer`. Каждая запись `catalog_capabilities` несет `name`, `owner`, `mode`, `transport`, `risk_tier`, `network_access`, `tool_principal`, `approval_required`, `idempotency_key_required` и `allowed_egress`, чтобы проверяющие видели идентичность возможности, позицию по повторной записи и позицию по исходящему обмену в одном ответе. Для сквозной цепочки с дублем тикета это означает, что `create_ticket` виден как высокорисковая посредническая возможность поддержки, привязанная к `svc-ticket-writer` и требующая `idempotency_key` до безопасного повтора или сверки. Поля `approval_required_capability_bindings` и `idempotency_required_capability_bindings` напрямую повторяют владельца и привязку инструментального субъекта этой записывающей возможности, а `write_capability_egress` повторяет ее посредническую цель исходящего обмена `tickets.internal`, чтобы проверяющим не приходилось сначала просматривать полный список каталога. Загрузчики идентичности и каталога валидируют эту форму через ошибки вроде `'agent' must be a mapping`, `agent.id must be a string`, `agent.id is required`, `agent.display_name is required`, `agent.owner_team is required`, `agent.runtime_principal is required`, `'approved_capabilities' must be a list`, `Agent inventory config must be a mapping`, `Agent identity config must be a mapping`, `approved_capabilities entries must be strings`, `approved_capabilities entries must not be empty`, `approved_capabilities entries must be unique`, `approved_capabilities lookup must be a string`, `'capabilities' must be a mapping`, `Capability spec for {name!r} must be a mapping`, `Capability names must be strings`, `Capability name must not be empty`, `Capability names must be unique`, `Capability catalog entries must be CapabilitySpec`, `capabilities.{capability_name}.{key} must be a string`, `capabilities.{capability_name}.{key} is required`, `{label}.{key} must be a string`, `{label} must be a string` и `capabilities.{capability_name}.timeout_seconds must be positive`, `'{label}.{key}' must be an integer` и `'{label}.{key}' must be a boolean`, `{label}.approval must be a string`, `{label}.approval must not be empty`, `{label}.approval is not supported: {approval}`, `'allowed_egress' must be a list`, `allowed_egress entries must be strings`, `allowed_egress entries must not be empty` и `allowed_egress entries must be unique`.
 
 Просмотр артефактов жизненного цикла из части VIII, включая связь управления средой выполнения и идентичность выпуска:
 
@@ -312,7 +342,6 @@ sandbox_profile:
 
 Такой пример не делает эталонную среду выполнения полноценным оркестратором песочниц. Он фиксирует поверхность контракта, которую главы 9 и 16 требуют от настоящей среды выполнения с песочницей: манифест, права, материализация рабочей области, состояние сессии и политика снимка/возобновления должны быть видимыми для проверки.
 
-### Паттерн долговечного агентного исполнителя
 ### Паттерн polymorphic schema registry
 
 Для high-cardinality tool/API domains reference package стоит держать пример `polymorphic_schema_registry`, а не размазывать structural rules по prompt text. Минимальная запись может выглядеть так:
@@ -354,7 +383,6 @@ polymorphic_schema_registry:
 - `connection_scope` для WebSocket/потокового распространения и видимости интерфейса подтверждения;
 - `export_ref`, `delete_ref` и `audit_refs`, чтобы скрытая долговечная память была невозможна.
 
-### Паттерн агентной оболочки и долговечного стержня процесса
 ### Паттерн recoverable internal fiber
 
 Между простым background task и полноценным durable workflow полезно оставить еще одну contract surface: recoverable internal fiber. Это работа, которая остается частью собственного цикла агента, но имеет durable acceptance, checkpoint/stash, recovery hook, inspection и cancellation.

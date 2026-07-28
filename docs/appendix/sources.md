@@ -1,6 +1,6 @@
 # Источники
 
-Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней редакционной проверки источников: **24 июля 2026 года**.
+Ниже собраны основные первоисточники, на которые опирается текущая версия книги. Дата последней редакционной проверки источников: **24 июля 2026 года**. Полная автоматизированная проверка доступности URL выполнена **29 июня 2026 года**, ручная проверка проблемных адресов — **30 июня 2026 года**. Microsoft Research, Anthropic Claude Code Security и MLCommons подтверждены чтением заголовка и содержимого страницы, кейс Air Canada переведен на официальный первоисточник CRT, а записи OpenReview отнесены к исследовательским материалам и не используются как основные доказательства в финальном редакторском пакете.
 
 !!! info "Как читать этот список"
     Полезно разделять источники не только по теме, но и по силе опоры:
@@ -20,7 +20,11 @@
 ### Безопасность агентных систем
 
 - OWASP, [AI Agent Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/AI_Agent_Security_Cheat_Sheet.html)
+- OWASP GenAI Security Project, [OWASP Top 10 for Agentic Applications for 2026](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)
 - OWASP, [MCP Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/MCP_Security_Cheat_Sheet.html)
+- OWASP, [MCP Tool Poisoning](https://owasp.org/www-community/attacks/MCP_Tool_Poisoning)
+- OWASP, [MCP Top 10](https://owasp.org/www-project-mcp-top-10/)
+- OWASP, [Agentic Skills Top 10](https://owasp.org/www-project-agentic-skills-top-10/)
 - OWASP, [LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
 - OWASP, [RAG Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/RAG_Security_Cheat_Sheet.html)
 
@@ -37,6 +41,7 @@
 
 - Дмитрий Викулин, [«Архитектура надежных AI-агентов»](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+- Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
 - Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents)
 - Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude)
 - Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents)
@@ -49,14 +54,18 @@
 - Databricks Documentation, [Genie Spaces](https://docs.databricks.com/aws/en/genie/)
 - Microsoft Learn, [Copilot for Power BI overview](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction)
 - OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
-- OpenAI, [Agents SDK](https://developers.openai.com/api/docs/guides/agents-sdk)
+- OpenAI, [Agents SDK](https://openai.github.io/openai-agents-python/)
 - OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) и [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
+- OpenAI, [Safety in building agents](https://platform.openai.com/docs/guides/agent-builder-safety)
 - OpenAI, [Running Codex safely at OpenAI](https://openai.com/index/running-codex-safely/)
 - OpenAI, [How agents are transforming work](https://openai.com/index/how-agents-are-transforming-work/)
 - OpenAI, [Codex-maxxing for long-running work](https://openai.com/index/codex-maxxing-long-running-work/)
 - OpenAI, [Building self-improving tax agents with Codex](https://openai.com/index/building-self-improving-tax-agents-with-codex/)
 - OpenAI, [From model to agent: Equipping the Responses API with a computer environment](https://openai.com/index/equip-responses-api-computer-environment/)
+- Model Context Protocol, [Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
+- Model Context Protocol, [Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
+- Agent2Agent Protocol, [A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
 - LangGraph, [Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
@@ -168,7 +177,7 @@
 - Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 - LangChain Deep Agents, [Human-in-the-loop](https://docs.langchain.com/oss/javascript/deepagents/human-in-the-loop)
 - LangGraph, [Interrupts](https://docs.langchain.com/oss/python/langgraph/interrupts)
-- OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB)
+- OpenReview, [The Illusion of Consensus in Human-Centered Interactive AI](https://openreview.net/forum?id=eJtBEBmYGB) *(demoted research lead; не primary evidence для финального редакторского пакета)*
 - Microsoft Learn, [Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 
 ## Управление, безопасность и операционная гарантия
@@ -203,6 +212,7 @@
 
 ## Инциденты и кейсы
 
+- Civil Resolution Tribunal, [Moffatt v. Air Canada](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)
 - American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
 - Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 - Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
@@ -212,7 +222,9 @@
 - Hugging Face, [Security incident disclosure — July 2026](https://huggingface.co/blog/security-incident-july-2026)
 - arXiv, [ExploitGym: Can AI Agents Turn Security Vulnerabilities into Real Attacks?](https://arxiv.org/abs/2605.11086)
 
-## Исследовательский фронтир: память, наблюдаемость и надежность многоагентных систем
+## Исследовательские leads: память, наблюдаемость и надежность многоагентных систем
+
+_Редакционный статус 2026-06-30: OpenReview-ссылки ниже демотированы в непервичные research leads. Не использовать их как primary evidence в финальном publisher packet без отдельной ручной сверки метаданных через браузер или иной подтвержденный доступ._
 
 - OpenReview, [EVOLVE-MEM: A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
 - OpenReview, [MemGen: Weaving Generative Latent Memory for Self-Evolving Agents](https://openreview.net/forum?id=vI56m4Iu4e)
@@ -251,8 +263,8 @@
 1. Нормативный каркас риска и контроля: NIST, OWASP, CISA.
 2. Архитектурные паттерны и дисциплина среды исполнения: Anthropic, OpenAI, LangGraph, Google Cloud, Microsoft.
 3. Наблюдаемость, оценки и слой проверяющих: OpenAI, Microsoft, arXiv, GitHub.
-4. HCI, HITL и кейсы: Microsoft Research, OpenReview, ABA.
-5. Исследовательский фронтир: память, согласованность поведения, наблюдаемость и режимы отказа многоагентных систем.
+4. HCI, HITL и кейсы: Microsoft Research, LangGraph/LangChain HITL, официальный CRT source по Air Canada.
+5. Исследовательские leads: память, согласованность поведения, наблюдаемость и режимы отказа многоагентных систем; OpenReview использовать только как непервичный lead до отдельной сверки.
 
 Для чтения самой книги полезно держать еще одну развилку:
 

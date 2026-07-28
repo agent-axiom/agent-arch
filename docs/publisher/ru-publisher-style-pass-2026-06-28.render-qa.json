@@ -1,0 +1,36 @@
+{
+  "status": "completed",
+  "date": "2026-06-28",
+  "google_doc": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+  "raw_google_docs_export": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-editorial-ready-2026-06-28.docx",
+    "pdf_pages": 499,
+    "png_pages": 499,
+    "blank_like_pages_lt_0_003": 0,
+    "visual_spot_checks": [1, 62, 499],
+    "paragraphs": 8040,
+    "nonempty_paragraphs": 6028,
+    "rough_words": 97703,
+    "characters": 741212,
+    "long_h2_gt_220": 0,
+    "long_h3_gt_220": 0
+  },
+  "template2000n_derivative": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-ready-2026-06-28.docx",
+    "pdf_pages": 315,
+    "png_pages": 315,
+    "blank_like_pages_lt_0_003": 0,
+    "visual_spot_checks": [1, 301, 315],
+    "paragraphs": 8040,
+    "nonempty_paragraphs": 6028,
+    "rough_words": 97703,
+    "characters": 741212,
+    "long_h2_gt_220": 0,
+    "long_h3_gt_220": 0
+  },
+  "text_integrity": {
+    "same_paragraph_count": true,
+    "same_text_sequence": true
+  },
+  "result": "Template2000n proof candidate is renderable and text-equivalent to the current raw Google Docs export."
+}

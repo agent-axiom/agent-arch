@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "temporary contact sheet inspected during the build",
+  "lowest_density_pages": [
+    {
+      "density": 0.0042678236373814155,
+      "page": 235
+    },
+    {
+      "density": 0.005689057257557961,
+      "page": 157
+    },
+    {
+      "density": 0.008509909042248675,
+      "page": 244
+    },
+    {
+      "density": 0.0094000730374737,
+      "page": 199
+    },
+    {
+      "density": 0.013884641284922663,
+      "page": 336
+    },
+    {
+      "density": 0.014882148157177626,
+      "page": 347
+    },
+    {
+      "density": 0.01562330213229487,
+      "page": 103
+    },
+    {
+      "density": 0.018202102851709298,
+      "page": 375
+    },
+    {
+      "density": 0.019920397991807552,
+      "page": 441
+    },
+    {
+      "density": 0.020765634355504693,
+      "page": 220
+    }
+  ],
+  "pages": 441,
+  "render_dir": "temporary render directory used during the build"
+}

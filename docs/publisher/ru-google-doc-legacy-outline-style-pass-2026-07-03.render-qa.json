@@ -1,0 +1,112 @@
+{
+  "date": "2026-07-03",
+  "status": "completed",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab": "t.0",
+    "final_checked_revision": "ALtnJHwG2y0y6xdziVEBWf1jHm7r6i_bkXLaj0f_p_1raU2fzYu7XbniNYm86oBYvk_aFiwhUgAkAa8LnjW7E-hl6iMi5fJR-77zzvllovI",
+    "operation": "style-only updateParagraphStyle cleanup in existing Google Doc",
+    "batch_update_ranges": 17
+  },
+  "style_metrics": {
+    "previous_layout_style_proof": {
+      "docx": "docs/publisher/artifacts/agent-arch-ru-layout-style-pass-2026-07-02.docx",
+      "non_empty_paragraphs": 6105,
+      "approx_words": 99587,
+      "heading_paragraphs": 1352,
+      "Heading1": 26,
+      "Heading2": 762,
+      "Heading3": 513,
+      "Heading4": 51
+    },
+    "raw": {
+      "paragraphs": 8179,
+      "non_empty_paragraphs": 6105,
+      "approx_words": 99587,
+      "Heading1": 26,
+      "Heading2": 567,
+      "Heading3": 508,
+      "Heading4": 51,
+      "Normal": 4953,
+      "BodyText": 0
+    },
+    "template2000n": {
+      "paragraphs": 8179,
+      "non_empty_paragraphs": 6105,
+      "approx_words": 99587,
+      "Heading1": 26,
+      "Heading2": 567,
+      "Heading3": 508,
+      "Heading4": 51,
+      "Normal": 0,
+      "BodyText": 4953
+    },
+    "heading_paragraphs_after": 1152,
+    "heading_paragraphs_removed_from_outline": 200
+  },
+  "raw_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-legacy-outline-style-pass-2026-07-03.docx",
+    "bytes": 687813,
+    "sha256": "2a293f065a4b28bc8f3ac7c42d39744122e1591ce20fae9c5efe2a95e5146302",
+    "render_dir": "/tmp/agent-arch-ru-legacy-outline-raw-render-2026-07-03",
+    "pdf": "/tmp/agent-arch-ru-legacy-outline-raw-render-2026-07-03/agent-arch-ru-legacy-outline-style-pass-2026-07-03.pdf",
+    "pdf_pages": 489,
+    "png_pages": 489,
+    "blank_like_pages": 0,
+    "lowest_density_pages": [
+      62,
+      125,
+      296,
+      302,
+      41,
+      326,
+      297,
+      327
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-legacy-outline-raw-contact-2026-07-03.png"
+  },
+  "template2000n_docx": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-legacy-outline-style-pass-2026-07-03.docx",
+    "bytes": 690067,
+    "sha256": "3cfa021aebc3d2c237c8147096d65c2fcb272b8181a0fa8d4c95653ae7be199d",
+    "style_base_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-layout-style-pass-2026-07-02.docx",
+    "render_dir": "/tmp/agent-arch-ru-legacy-outline-template2000n-render-2026-07-03",
+    "pdf": "/tmp/agent-arch-ru-legacy-outline-template2000n-render-2026-07-03/agent-arch-ru-template2000n-legacy-outline-style-pass-2026-07-03.pdf",
+    "pdf_pages": 351,
+    "png_pages": 351,
+    "blank_like_pages": 0,
+    "lowest_density_pages": [
+      232,
+      234,
+      213,
+      209,
+      41,
+      224,
+      233,
+      235
+    ],
+    "contact_sheet": "/tmp/agent-arch-ru-legacy-outline-template-contact-2026-07-03.png"
+  },
+  "integrity": {
+    "raw_paragraph_text_equals_template2000n": true,
+    "raw_paragraph_count_equals_template2000n": true,
+    "zip_integrity_template2000n": "passed",
+    "notes": [
+      "Template2000n derivative is a proof artifact; Google Doc remains source of truth.",
+      "Legacy Template2000n.dot VBA macros were not executed.",
+      "Spot sheets were visually checked for title, low-density and final pages."
+    ]
+  },
+  "remaining_author_owned_fields": [
+    "public author name/byline",
+    "short and long author bio",
+    "role/public positioning",
+    "verified experience claims",
+    "public project links",
+    "companion URL and versioning/changelog/errata route",
+    "acknowledgements",
+    "legal/compliance disclaimer wording if publisher requires it",
+    "AI-use disclosure wording if publisher requires it",
+    "final title/subtitle/cover-copy/imprint metadata"
+  ]
+}

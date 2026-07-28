@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+<defs>
+<marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+<path d="M 0 0 L 12 6 L 0 12 z" fill="#64748b" />
+</marker>
+<filter id="softShadow" x="-20%" y="-20%" width="140%" height="140%">
+<feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#94a3b8" flood-opacity="0.16"/>
+</filter>
+</defs>
+<rect width="1600" height="900" fill="#f5f7fb"/>
+<text x="70" y="90.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="44" font-weight="800" fill="#1f2937" text-anchor="start" dominant-baseline="middle">Поток записи оценки и аудита</text>
+<text x="72" y="126.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="25" font-weight="600" fill="#475569" text-anchor="start" dominant-baseline="middle">eval_audit_record связывает запуск, трассу, оценку и решение о выпуске</text>
+<text x="70" y="863.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="18" font-weight="600" fill="#64748b" text-anchor="start" dominant-baseline="middle">Agent Axiom / Архитектура безопасных ИИ-агентов</text>
+<rect x="82" y="304" width="207" height="118" rx="20" fill="#dbeafe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="185.5" y="363.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Запуск агента</text>
+<line x1="289" y1="363.0" x2="330" y2="363.0" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="330" y="304" width="207" height="118" rx="20" fill="#e0f2fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="433.5" y="363.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Спаны трассы</text>
+<line x1="537" y1="363.0" x2="578" y2="363.0" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="578" y="304" width="207" height="118" rx="20" fill="#dcfce7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="681.5" y="363.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Набор оценки</text>
+<line x1="785" y1="363.0" x2="826" y2="363.0" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="826" y="304" width="207" height="118" rx="20" fill="#ede9fe" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="929.5" y="351.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Вердикт</text>
+<text x="929.5" y="374.8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">проверяющего</text>
+<line x1="1033" y1="363.0" x2="1074" y2="363.0" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="1074" y="304" width="207" height="118" rx="20" fill="#fef3c7" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1177.5" y="351.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Запись оценки и</text>
+<text x="1177.5" y="374.8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">аудита</text>
+<line x1="1281" y1="363.0" x2="1322" y2="363.0" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="1322" y="304" width="207" height="118" rx="20" fill="#fce7f3" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1425.5" y="351.2" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Решение о</text>
+<text x="1425.5" y="374.8" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="21" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">выпуске</text>
+<rect x="545" y="552" width="510" height="148" rx="20" fill="#ffffff" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="800" y="590.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">run_id • trace_id • case_id</text>
+<text x="800" y="626.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">policy_version • verdict</text>
+<text x="800" y="662.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="22" font-weight="700" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">rollback_ready • owner</text>
+<line x1="840" y1="422" x2="800" y2="552" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="820.0" y="469.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">поля записи</text>
+<rect x="1160" y="552" width="282" height="118" rx="20" fill="#fee2e2" stroke="#1e293b" stroke-width="2" filter="url(#softShadow)"/>
+<text x="1301.0" y="597.6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">Инцидент или</text>
+<text x="1301.0" y="624.4" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="760" fill="#1f2937" text-anchor="middle" dominant-baseline="middle">регрессия</text>
+<line x1="1268" y1="422" x2="1300" y2="552" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="1284.0" y="469.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">если провал</text>
+<path d="M1160,611 Q1110,680 1055,626" fill="none" stroke="#64748b" stroke-width="4" marker-end="url(#arrow)"/>
+<text x="1107.5" y="600.5" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="17" font-weight="650" fill="#475569" text-anchor="middle" dominant-baseline="middle">урок</text>
+<text x="120" y="736.0" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#475569" text-anchor="start" dominant-baseline="middle">Главная ценность: решение можно объяснить после запуска, а не реконструировать по</text>
+<text x="120" y="764.3" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif" font-size="24" font-weight="700" fill="#475569" text-anchor="start" dominant-baseline="middle">памяти</text>
+</svg>

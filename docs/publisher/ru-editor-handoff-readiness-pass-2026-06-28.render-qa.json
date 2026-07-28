@@ -1,0 +1,92 @@
+{
+  "date": "2026-06-28",
+  "google_doc": {
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "tab_id": "t.0",
+    "revision_after_style_cleanup": "ALtnJHycqUJOlgHPJs2U9ylHl3Hb3yhnF1EbR9nU-226k7V7gsDB2qhrsoJHyuIcNkupHbgkOOZCTNgLuY7C4PZCthT9URSRwaB0eDeXCSo"
+  },
+  "raw_export": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-editor-handoff-pass-2026-06-28.docx",
+    "rendered_pages": 552,
+    "blank_like_pages": [],
+    "paragraphs": 8040,
+    "style_counts": {
+      "Heading 1": 26,
+      "Heading 2": 1393,
+      "Heading 3": 578
+    },
+    "style_debt": {
+      "long_heading_2_paragraphs": 629,
+      "note": "Long H2 paragraphs are likely body text inherited from previous Google Docs assembly. Fix in a dedicated global heading normalization pass."
+    }
+  },
+  "google_doc_style_cleanup": {
+    "changed_text": false,
+    "changed_styles_only": true,
+    "normalized_ranges": [
+      {
+        "description": "Chapter 3 body/practicum bridge before Part II",
+        "range": {
+          "startIndex": 123210,
+          "endIndex": 137056,
+          "tabId": "t.0"
+        }
+      },
+      {
+        "description": "Chapter 20 assurance-loop body before Part VII",
+        "range": {
+          "startIndex": 553247,
+          "endIndex": 576756,
+          "tabId": "t.0"
+        }
+      }
+    ],
+    "restored_subhead_styles": {
+      "Heading 2": [
+        "Практикум: один запрос как архитектурная трасса"
+      ],
+      "Heading 3": [
+        "Зачем трассировать архитектуру до кода",
+        "Шаг 1. Нормализованный вход",
+        "Шаг 2. Контекст и идентичность",
+        "Шаг 3. Решение политики",
+        "Шаг 4. Работа модели",
+        "Шаг 5. Инструмент и побочный эффект",
+        "Шаг 6. Ответ и доказательство",
+        "Минимальный артефакт ревью",
+        "Как читать эту трассу в команде",
+        "Что запомнить",
+        "1. Зачем контур заверения появляется после ADLC",
+        "2. Чем assurance loop отличается от evals и release gates",
+        "3. Сигналы production-контроля",
+        "4. Findings: общая единица анализа",
+        "5. Incident response: от trace к containment",
+        "6. Связь incident response с trace, change_id, rollout gate и owner map",
+        "7. Agent registry как production inventory",
+        "8. Retirement как инженерный процесс",
+        "9. Контур заверения как операционная практика",
+        "10. Readiness checklist для assurance loop",
+        "11. Companion route для главы 20",
+        "12. Короткий вывод"
+      ]
+    }
+  },
+  "template2000n": {
+    "status": "not regenerated in this pass",
+    "reason": "The next Template2000n proof should run after global H2 normalization so publisher-style mapping does not preserve body-like H2 debt."
+  },
+  "visual_qa": {
+    "checked": [
+      "DOCX render completed to 552 PNG pages",
+      "blank-like page detector returned zero pages",
+      "chapter 3 affected range now shows body paragraphs as normal style in python-docx audit",
+      "chapter 20 affected range now shows body paragraphs as normal style in python-docx audit"
+    ],
+    "notes": [
+      "The Google Doc remains the working manuscript source of truth.",
+      "This proof is suitable for editor handoff but not final publisher-ready formatting.",
+      "Do not commit transient PNG render output; use this JSON as the proof record."
+    ]
+  }
+}

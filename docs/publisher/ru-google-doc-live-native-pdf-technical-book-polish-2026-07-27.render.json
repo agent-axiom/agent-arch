@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-live-native-pdf-low-density.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.00416292754534969,
+      "page": 45
+    },
+    {
+      "density": 0.005654893572402222,
+      "page": 207
+    },
+    {
+      "density": 0.007806014469959107,
+      "page": 297
+    },
+    {
+      "density": 0.010176885813148788,
+      "page": 106
+    },
+    {
+      "density": 0.010264024326308062,
+      "page": 360
+    },
+    {
+      "density": 0.010697405892838418,
+      "page": 457
+    },
+    {
+      "density": 0.011150328195449302,
+      "page": 310
+    },
+    {
+      "density": 0.011465236447520184,
+      "page": 128
+    },
+    {
+      "density": 0.01232338471217364,
+      "page": 115
+    },
+    {
+      "density": 0.012842923351158645,
+      "page": 377
+    }
+  ],
+  "pages": 457,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-live-native-pdf-render"
+}

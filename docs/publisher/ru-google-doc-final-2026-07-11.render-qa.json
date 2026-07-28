@@ -1,0 +1,78 @@
+{
+  "blank_like_pages": [
+    53
+  ],
+  "contact_sheet": "/tmp/agent_arch_ru_google_doc_final_2026_07_11_rev2_low_density.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0,
+      "page": 53
+    },
+    {
+      "density": 0.0010679290663911964,
+      "page": 406
+    },
+    {
+      "density": 0.0020885466221875295,
+      "page": 17
+    },
+    {
+      "density": 0.0027927461206969087,
+      "page": 40
+    },
+    {
+      "density": 0.0049454172637563645,
+      "page": 111
+    },
+    {
+      "density": 0.006799182391646829,
+      "page": 411
+    },
+    {
+      "density": 0.008406909023594913,
+      "page": 135
+    },
+    {
+      "density": 0.009385160071819049,
+      "page": 271
+    },
+    {
+      "density": 0.009419298715723168,
+      "page": 378
+    },
+    {
+      "density": 0.010021807204429273,
+      "page": 190
+    }
+  ],
+  "manual_review": {
+    "all_page_contact_sheets": 15,
+    "all_pages_reviewed": true,
+    "blank_page_53": "intentional recto transition between part I exercise and part II",
+    "control_pages_reviewed_at_full_size": [
+      8,
+      17,
+      40,
+      52,
+      53,
+      82,
+      111,
+      135,
+      190,
+      212,
+      214,
+      271,
+      295,
+      318,
+      378,
+      386,
+      406,
+      411,
+      450
+    ],
+    "missing_figures": 0,
+    "overlap_or_clipping_found": false
+  },
+  "pages": 450,
+  "render_dir": "/tmp/agent_arch_ru_google_doc_final_2026_07_11_rev2_render"
+}

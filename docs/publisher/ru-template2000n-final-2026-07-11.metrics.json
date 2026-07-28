@@ -1,0 +1,33 @@
+{
+  "approximate_words": 98382,
+  "bodytext_mapped": 9101,
+  "document_text_equality": true,
+  "document_text_nodes": 12083,
+  "embedded_font_registrations_preserved": 6,
+  "media_equality": true,
+  "media_files": 25,
+  "non_empty_paragraphs": 9897,
+  "numbering_font_attributes_normalized": 4,
+  "output_bytes": 3052518,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-final-2026-07-11.docx",
+  "output_sha256": "d5ee6f14c2315847f3565e884b4fae8cf9cc104e8f244160edb07b9bc1c7a129",
+  "output_style_counts": {
+    "<none>": 375,
+    "Body Text": 9064,
+    "Heading 1": 16,
+    "Heading 2": 39,
+    "Heading 3": 627,
+    "Heading 4": 160
+  },
+  "paragraphs": 10281,
+  "raw_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-final-2026-07-11.docx",
+  "raw_style_counts": {
+    "Heading 1": 16,
+    "Heading 2": 39,
+    "Heading 3": 627,
+    "Heading 4": 160,
+    "normal": 9439
+  },
+  "template_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-official-style-pass-2026-07-03.docx",
+  "text_equality": true
+}

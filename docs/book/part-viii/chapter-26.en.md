@@ -229,6 +229,14 @@ To keep this from remaining a nice diagram, each such event should be persisted 
 
 Then telemetry stops being only a dashboard signal. It becomes input to a reviewable governance queue where the team can see who made the decision, from which evidence, and why the control loop can be considered governed again.
 
+Minimal acceptance criteria for governance-aware telemetry:
+
+- every signal has `source_signal`, decision owner, and action state;
+- containment, policy change, rollout gate, or registry update can be linked to concrete `evidence_refs`;
+- a waived action requires an owner, reason, review deadline, and audit trail;
+- action-state changes emit a new trace, not only a dashboard update;
+- a closed action shows which control changed and which new evidence confirmed the result.
+
 Telemetry then stops being only evidence after the fact. It becomes an operational input to the governance loop: observe → policy decision → containment or rollout action → new evidence about the result.
 
 Azure agentic cloud operations shows the same shift in the infrastructure control loop: observability signals should not stop at a dashboard once an agent is helping investigate, optimize, and prepare actions.[^azure-agentic-cloud-ops] The useful pattern for this book is: telemetry and topology provide context, an MCP resource server exposes standardized access to cost, usage, and resource data, the agent produces a recommendation or guided action, and the policy, approval, and audit layer decides whether that action can proceed. This does not remove the human from the loop. It makes human approval a reviewable part of closed-loop operations rather than a manual step outside the system.

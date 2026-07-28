@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-final-reader-copyedit-2026-07-23.docx",
+  "bookmarks": 108,
+  "code_lines": 1760,
+  "headings": 640,
+  "images": 56,
+  "internal_hyperlinks": 192,
+  "list_items": 3241,
+  "lists": 703,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 9012422,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-07-27.docx",
+  "output_sha256": "860f129a3e9e1b66174c9ac679a6a2ed853f8c850f0ae1519d9ddd1faafecec4",
+  "page_breaks": 30,
+  "paragraphs": 8203,
+  "tables": 10
+}

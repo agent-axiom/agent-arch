@@ -1,0 +1,15 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-technical-standards-2026-07-17.docx",
+  "code_lines": 1666,
+  "headings": 550,
+  "images": 56,
+  "list_items": 3616,
+  "lists": 768,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8975174,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-bookcraft-2026-07-17.docx",
+  "output_sha256": "e95f01d86cb0d6278409b109e2998a062f9ff63675a4f8fba9595e2af4d26bf6",
+  "page_breaks": 30,
+  "paragraphs": 8314,
+  "tables": 8
+}

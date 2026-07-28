@@ -1,0 +1,98 @@
+{
+  "raw": {
+    "png_pages": 623,
+    "pdf_pages": 623,
+    "blank_like_pages": [],
+    "blank_like_count": 0,
+    "marker_pages": {
+      "Глава 19. От SDLC к ADLC": [
+        29,
+        423
+      ],
+      "Readiness checklist для ADLC": [
+        443
+      ],
+      "Глава 20. Контур заверения": [
+        29,
+        445,
+        611,
+        617
+      ]
+    },
+    "sample_darkest_pages": [
+      {
+        "page": 424,
+        "nonwhite_ratio": 0.11526547143870997,
+        "mean": 232.1039119251789
+      },
+      {
+        "page": 435,
+        "nonwhite_ratio": 0.11414280612729223,
+        "mean": 232.63303018894487
+      },
+      {
+        "page": 426,
+        "nonwhite_ratio": 0.11256293803158703,
+        "mean": 232.59958270559434
+      },
+      {
+        "page": 433,
+        "nonwhite_ratio": 0.10959596318355207,
+        "mean": 233.3223692919879
+      },
+      {
+        "page": 440,
+        "nonwhite_ratio": 0.10822758366391204,
+        "mean": 233.71833628556317
+      }
+    ]
+  },
+  "template2000n": {
+    "png_pages": 322,
+    "pdf_pages": 322,
+    "blank_like_pages": [],
+    "blank_like_count": 0,
+    "marker_pages": {
+      "Глава 19. От SDLC к ADLC": [
+        17,
+        230
+      ],
+      "Readiness checklist для ADLC": [
+        237
+      ],
+      "Глава 20. Контур заверения": [
+        17,
+        238,
+        315,
+        318
+      ]
+    },
+    "sample_darkest_pages": [
+      {
+        "page": 235,
+        "nonwhite_ratio": 0.11049680765259304,
+        "mean": 237.672307976445
+      },
+      {
+        "page": 232,
+        "nonwhite_ratio": 0.10802997907070305,
+        "mean": 237.97712565391944
+      },
+      {
+        "page": 233,
+        "nonwhite_ratio": 0.10761152228508401,
+        "mean": 238.14948948917922
+      },
+      {
+        "page": 231,
+        "nonwhite_ratio": 0.10420348881887344,
+        "mean": 238.72149957347114
+      },
+      {
+        "page": 139,
+        "nonwhite_ratio": 0.10410242633901329,
+        "mean": 236.6530060114417
+      }
+    ]
+  }
+}

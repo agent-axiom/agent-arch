@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": ".tmp/render-google-doc-submission-readiness-2026-07-22-v2/low-density-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.008504517523871873,
+      "page": 241
+    },
+    {
+      "density": 0.010934165141549454,
+      "page": 197
+    },
+    {
+      "density": 0.013879148469817318,
+      "page": 332
+    },
+    {
+      "density": 0.01489261084302721,
+      "page": 343
+    },
+    {
+      "density": 0.01562330213229487,
+      "page": 103
+    },
+    {
+      "density": 0.016654067252949337,
+      "page": 9
+    },
+    {
+      "density": 0.018193087442868804,
+      "page": 371
+    },
+    {
+      "density": 0.02076430863456986,
+      "page": 218
+    },
+    {
+      "density": 0.02134010583001039,
+      "page": 2
+    },
+    {
+      "density": 0.02156500989156223,
+      "page": 15
+    }
+  ],
+  "pages": 436,
+  "render_dir": ".tmp/render-google-doc-submission-readiness-2026-07-22-v2"
+}

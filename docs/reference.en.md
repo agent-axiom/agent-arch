@@ -76,7 +76,11 @@ If you do not need the whole reference layer, but only a short path into one con
 - [Research Frontier: Memory, Observability, and Multi-Agent Reliability](appendix/research-frontier.en.md)
 - [Sources](appendix/sources.en.md)
 
+## Final Rule
+
 The simplest rule is:
 
-- use the book for argument and sequencing;
-- use the reference layer for support artifacts and implementation-facing detail.
+- use the book for the argument and sequence;
+- use the reference layer for supporting artifacts, contracts, and implementation-facing detail.
+
+If a reference page starts replacing the chapter itself, move the material back into the main text or explicitly keep it as companion detail.

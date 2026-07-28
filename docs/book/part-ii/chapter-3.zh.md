@@ -55,7 +55,7 @@
 !!! example "贯穿案例：支持分诊"
     [第 1 章](../part-i/chapter-1.zh.md)里的同一个支持分诊案例，在这里变成一张边界图：客户文本是不可信输入，用户画像和工单历史是有作用域的读取，`create_ticket` 是受治理的写入操作，升级处理则是可能需要审批的策略决策。
 
-**Trust-boundary case-spine note：**同样的 read/decide/act split 应该在三个 canonical cases 中都画出来。Support triage 区分 customer input、ticket history、escalation decisions 和 ticket writes。Internal knowledge assistant 区分 trusted instructions、retrieved documents、source authority、tenant scope 和 memory writes。Incident coordination 区分 incident reports、escalation authority、responder roles 和 external notifications。
+**信任边界案例主线说明（Trust-boundary case-spine note）：**同样的读/决策/行动拆分（read/decide/act split）应该在三个规范案例（canonical cases）中都画出来。支持分诊（Support triage）区分客户输入（customer input）、工单历史（ticket history）、升级决策（escalation decisions）和工单写入（ticket writes）。内部知识助手（Internal knowledge assistant）区分可信指令（trusted instructions）、检索文档（retrieved documents）、来源权威（source authority）、租户范围（tenant scope）和记忆写入（memory writes）。事故协调（Incident coordination）区分事故报告（incident reports）、升级权限（escalation authority）、响应者角色（responder roles）和外部通知（external notifications）。
 
 ## 4. 一个真实请求上的边界长什么样
 
@@ -100,22 +100,33 @@ flowchart LR
 - 可审计性不足；
 - 不安全的降级行为。
 
-可以把这张表看成用于 [追踪模式（trace schema）](../../appendix/trace-schema.zh.md) 的 unified agent threat evidence model：每一行都把 threat class、control 和可复查的 evidence/telemetry markers 连接起来。
+可以把这张表看成用于 [追踪模式（trace schema）](../../appendix/trace-schema.zh.md) 的统一智能体威胁证据模型（unified agent threat evidence model）：每一行都把威胁类别（threat class）、控制（control）和可复查的证据/遥测标记（evidence/telemetry markers）连接起来。
 
-| 威胁 | 最先该在哪一层拦 | 有效手段 | Evidence / telemetry |
+| 威胁 | 最先该在哪一层拦 | 有效手段 | 证据 / 遥测（Evidence / telemetry） |
 | --- | --- | --- | --- |
-| Prompt injection | 提示组装、retrieval、模型网关 | trusted/untrusted content 边界、policy checks、把 instructions 和 data 分开 | `prompt_boundary_event`、source labels、rejected-instruction trace |
-| Indirect injection | Retrieval、tool return values、memory write path | 来源标记、tool-output sanitization、防止不可信内容改写 policy/tool-use logic | `tool_output_sanitized`、untrusted-content marker、policy-decision trace |
-| RAG poisoning | 索引、retrieval、provenance layer | source allowlist、document provenance、freshness/reputation signals、隔离可疑来源 | `retrieval_source_id`、freshness score、quarantine event |
-| Memory poisoning | Memory write/retrieval path | 写入前 approval 或 confidence gate、TTL、provenance、audit trail、memory rollback | `memory_record_id`、validation state、rollback/replay evidence |
-| Tool abuse | Tool gateway、approval flow | allowlist、argument validation、risk-tiering、对 side effects 做 human approval | `tool_call_id`、approval record、argument validation result |
-| Confused deputy | Identity layer、delegated auth、MCP/A2A boundary | scoped tokens、subject binding、显式 delegation record、caller/callee identity checks | `subject_id`、`delegation_trace_id`、caller/callee identity check |
-| Excessive agency | Planner/orchestrator、action policy | bounded goals、stopping conditions、budget limits、用 escalation 代替开放式自治 | step budget event、stop reason、escalation decision |
-| Data exfiltration | Retrieval、egress、tool gateway | DLP、redaction、output filters、tenant-scoped access | `tenant_id`、egress decision、redaction/DLP result |
-| Denial of wallet | Planner、tool gateway、model gateway | rate limits、cost budgets、circuit breakers、per-run spend telemetry | `cost_budget_event`、rate-limit decision、circuit-breaker state |
-| Cascading multi-agent failure | A2A handoff、coordinator、eval loop | handoff contracts、containment、independent verification、traceable delegation | `handoff_id`、containment state、verifier verdict |
-| Supply-chain compromise | MCP servers、model/tool artifacts、dependency path | approved registry、signatures/provenance、sandboxing、lifecycle review | artifact digest、registry decision、sandbox profile id |
-| Missing audit trail | Runtime、telemetry plane | structured traces、immutable logs、reviewable approvals | `decision_trace_id`、immutable log pointer、evidence completeness flag |
+| 提示注入（Prompt injection） | 提示组装、检索（retrieval）、模型网关 | 可信/不可信内容（trusted/untrusted content）边界、策略检查（policy checks）、把指令（instructions）和数据（data）分开 | `prompt_boundary_event`、来源标签（source labels）、拒绝指令追踪（rejected-instruction trace） |
+| 间接注入（Indirect injection） | 检索（retrieval）、工具返回值（tool return values）、记忆写入路径（memory write path） | 来源标记、工具输出清洗（tool-output sanitization）、防止不可信内容改写策略/工具使用逻辑（policy/tool-use logic） | `tool_output_sanitized`、不可信内容标记（untrusted-content marker）、策略决策追踪（policy-decision trace） |
+| RAG 投毒（RAG poisoning） | 索引、检索（retrieval）、来源层（provenance layer） | 来源允许列表（source allowlist）、文档来源证明（document provenance）、新鲜度/信誉信号（freshness/reputation signals）、隔离可疑来源 | `retrieval_source_id`、新鲜度分数（freshness score）、隔离事件（quarantine event） |
+| 记忆投毒（Memory poisoning） | 记忆写入/检索路径（memory write/retrieval path） | 写入前审批（approval）或置信门禁（confidence gate）、TTL、来源证明（provenance）、审计轨迹（audit trail）、记忆回滚（memory rollback） | `memory_record_id`、验证状态（validation state）、回滚/重放证据（rollback/replay evidence） |
+| 工具滥用（Tool abuse） | 工具网关（tool gateway）、审批流（approval flow） | 允许列表（allowlist）、参数校验（argument validation）、风险分级（risk-tiering）、对副作用（side effects）做人工审批（human approval） | `tool_call_id`、审批记录（approval record）、参数校验结果（argument validation result） |
+| 被混淆代理（Confused deputy） | 身份层（identity layer）、委托授权（delegated auth）、MCP/A2A 边界 | 受限令牌（scoped tokens）、主体绑定（subject binding）、显式委托记录（delegation record）、调用方/被调用方身份检查（caller/callee identity checks） | `subject_id`、`delegation_trace_id`、调用方/被调用方身份检查 |
+| 过度代理性（Excessive agency） | 规划器/编排器（planner/orchestrator）、行动策略（action policy） | 有界目标（bounded goals）、停止条件（stopping conditions）、预算限制（budget limits）、用升级处理（escalation）代替开放式自治 | 步骤预算事件（step budget event）、停止原因（stop reason）、升级决策（escalation decision） |
+| 数据外泄（Data exfiltration） | 检索（retrieval）、出口（egress）、工具网关（tool gateway） | DLP、脱敏（redaction）、输出过滤（output filters）、按租户限定访问（tenant-scoped access） | `tenant_id`、出口决策（egress decision）、脱敏/DLP 结果 |
+| 钱包拒绝服务（Denial of wallet） | 规划器（planner）、工具网关、模型网关 | 速率限制（rate limits）、成本预算（cost budgets）、熔断器（circuit breakers）、单次运行花费遥测（per-run spend telemetry） | `cost_budget_event`、速率限制决策（rate-limit decision）、熔断状态（circuit-breaker state） |
+| 多智能体级联失败（Cascading multi-agent failure） | A2A 交接（A2A handoff）、协调器（coordinator）、评测循环（eval loop） | 交接契约（handoff contracts）、遏制（containment）、独立验证（independent verification）、可追踪委托（traceable delegation） | `handoff_id`、遏制状态（containment state）、验证器裁决（verifier verdict） |
+| 供应链妥协（Supply-chain compromise） | MCP 服务器、模型/工具工件（model/tool artifacts）、依赖路径（dependency path） | 已批准注册表（approved registry）、签名/来源证明（signatures/provenance）、沙箱（sandboxing）、生命周期复核（lifecycle review） | 工件摘要（artifact digest）、注册表决策（registry decision）、沙箱配置标识（sandbox profile id） |
+| 审计轨迹缺失（Missing audit trail） | 运行时（runtime）、遥测平面（telemetry plane） | 结构化追踪（structured traces）、不可变日志（immutable logs）、可复核审批（reviewable approvals） | `decision_trace_id`、不可变日志指针（immutable log pointer）、证据完整性标记（evidence completeness flag） |
+
+### 威胁证据模型的验收条件
+
+这张表只有在满足四个条件时，才算真正的运行工件：
+
+1. 每个威胁都有具体拦截边界，而不是一句“模型要小心”。
+2. 每个控制都有负责人：策略层、工具网关、记忆层、沙箱、A2A 轮廓或遥测层。
+3. 每一行都能在[追踪模式](../../appendix/trace-schema.zh.md)里留下可复核证据：事件、载荷字段或证据引用。
+4. 事故之后，这一行能连接到评测场景、发布规则或治理动作，而不是只停留在正文警告里。
+
+如果某一行无法通过这些条件，它还只是编辑说明，不是威胁模型。对于生产级安全智能体架构，这还不够。
 
 ### 5.1. 提示注入、越狱与动作幻觉不是一回事
 

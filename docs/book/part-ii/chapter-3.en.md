@@ -117,6 +117,17 @@ Read this table as a unified agent threat evidence model for the [trace schema](
 | Supply-chain compromise | MCP servers, model/tool artifacts, dependency path | approved registry, signatures/provenance, sandboxing, lifecycle review | artifact digest, registry decision, sandbox profile id |
 | Missing audit trail | Runtime, telemetry plane | structured traces, immutable logs, reviewable approvals | `decision_trace_id`, immutable log pointer, evidence completeness flag |
 
+### Acceptance Criteria for the Threat Evidence Model
+
+This table becomes an operational artifact only if four conditions hold:
+
+1. Every threat has a concrete interception boundary, not a vague claim that the model should be careful.
+2. Every control has an owner: policy layer, tool gateway, memory, sandbox, A2A contour, or telemetry.
+3. Every row leaves a reviewable trace in the [trace schema](../../appendix/trace-schema.en.md): an event, a payload field, or an evidence reference.
+4. After an incident, the row can be linked to an eval scenario, rollout rule, or governance action instead of remaining a warning in prose.
+
+If a row does not pass these conditions, it is still an editorial note, not a threat model. That is not enough for production safe-agent architecture.
+
 ### 5.1. Prompt Injection, Jailbreaking, and Action Hallucination Are Not the Same
 
 It is useful to distinguish at least three different failure classes:

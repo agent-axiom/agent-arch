@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/render-ru-template2000n-2026-07-16/contact-lowest.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0020735794871693577,
+      "page": 166
+    },
+    {
+      "density": 0.002340586267731787,
+      "page": 261
+    },
+    {
+      "density": 0.0025993411635451256,
+      "page": 66
+    },
+    {
+      "density": 0.0049913494493136305,
+      "page": 296
+    },
+    {
+      "density": 0.005444097709963332,
+      "page": 229
+    },
+    {
+      "density": 0.008967257440583421,
+      "page": 190
+    },
+    {
+      "density": 0.009514301559626476,
+      "page": 31
+    },
+    {
+      "density": 0.009961939400321088,
+      "page": 83
+    },
+    {
+      "density": 0.012565274187389097,
+      "page": 73
+    },
+    {
+      "density": 0.01580703540473874,
+      "page": 135
+    }
+  ],
+  "pages": 326,
+  "render_dir": "/private/tmp/render-ru-template2000n-2026-07-16"
+}

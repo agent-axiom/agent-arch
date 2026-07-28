@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": ".tmp/render-template2000n-online-sync-20260722/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0029298622591143217,
+      "page": 241
+    },
+    {
+      "density": 0.0029745974268579694,
+      "page": 157
+    },
+    {
+      "density": 0.005021190199333855,
+      "page": 263
+    },
+    {
+      "density": 0.005057722864483577,
+      "page": 286
+    },
+    {
+      "density": 0.005581218026558154,
+      "page": 2
+    },
+    {
+      "density": 0.009911791188645823,
+      "page": 249
+    },
+    {
+      "density": 0.010350370569390303,
+      "page": 217
+    },
+    {
+      "density": 0.01542181407575529,
+      "page": 84
+    },
+    {
+      "density": 0.015765427773488914,
+      "page": 42
+    },
+    {
+      "density": 0.01982832939523308,
+      "page": 7
+    }
+  ],
+  "pages": 318,
+  "render_dir": ".tmp/render-template2000n-online-sync-20260722"
+}

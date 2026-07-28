@@ -1,0 +1,104 @@
+{
+  "schema": "agent-arch-render-qa/v1",
+  "date": "2026-06-24",
+  "google_doc": {
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "tab_id": "t.0",
+    "revision_after_edits": "ALtnJHylPUTZQrNWZLCLS78JrNC-O65sp56zrtR8Ky1rcSMRIkPPsGwAJJYHQvUK-nvVhCHFsC4DVX3_0W8l4iUd86fAHmzOWZoHj0SFkkw"
+  },
+  "raw_google_docs_export": {
+    "docx_path": "docs/publisher/artifacts/agent-arch-ru-applied-pass-2026-06-24.docx",
+    "docx_size_bytes": 749362,
+    "render_dir": "/private/tmp/agent_arch_applied_pass_2026_06_24_render",
+    "pdf_name": "agent-arch-applied-pass-2026-06-24.pdf",
+    "pdf_size_bytes": 4288542,
+    "rendered_pages": 656,
+    "page_image_size": [1547, 2002],
+    "blank_like_pages": [656],
+    "edge_risk_count": 0,
+    "low_ink_pages_sample": [
+      [656, 0.0, 0],
+      [121, 0.004369257116509864, 13532],
+      [372, 0.004753165386649549, 14721],
+      [14, 0.014840363256652849, 45962],
+      [530, 0.014912689120833917, 46186]
+    ],
+    "high_ink_pages_sample": [
+      [423, 0.12084683254689718, 374274],
+      [479, 0.10238242688145727, 317088],
+      [102, 0.09671776187613292, 299544],
+      [96, 0.0962976906739027, 298243],
+      [100, 0.09531257365775789, 295192]
+    ],
+    "visual_spot_check": [
+      "page 1: clean first page, no service lines",
+      "page 121: intentional short tail page",
+      "page 372: intentional short tail page",
+      "page 656: trailing blank-like page"
+    ]
+  },
+  "template2000n_derivative": {
+    "docx_path": "docs/publisher/artifacts/agent-arch-ru-template2000n-applied-2026-06-24.docx",
+    "docx_size_bytes": 760470,
+    "render_dir": "/private/tmp/agent_arch_template2000n_applied_2026_06_24_render",
+    "pdf_name": "agent-arch-ru-template2000n-applied-2026-06-24.pdf",
+    "pdf_size_bytes": 5723306,
+    "rendered_pages": 411,
+    "page_image_size": [1547, 2002],
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "low_ink_pages_sample": [
+      [326, 0.0035533309612171926, 11005],
+      [193, 0.007245824634318493, 22441],
+      [396, 0.008057876189744321, 24956],
+      [328, 0.00939655044373855, 29102],
+      [343, 0.010837578710881878, 33565]
+    ],
+    "high_ink_pages_sample": [
+      [155, 0.09992011866607858, 309462],
+      [11, 0.09682657355572676, 299881],
+      [255, 0.09180444636165386, 284327],
+      [100, 0.09086485589394445, 281417],
+      [247, 0.0893553763624869, 276742]
+    ],
+    "style_metrics": {
+      "paragraphs": 7810,
+      "preserved_lists": 2817,
+      "code_like": 576,
+      "demoted_headings": 794,
+      "style_counts": {
+        "BodyText": 2865,
+        "Style18": 2817,
+        "Heading3": 835,
+        "Style16": 576,
+        "Heading2": 555,
+        "Heading1": 92,
+        "Heading4": 68,
+        "Style13": 1,
+        "Style14": 1
+      }
+    },
+    "visual_spot_check": [
+      "page 1: publisher template title box still present",
+      "page 326: low-ink page caused by isolated Markdown fence marker after heading",
+      "page 411: final page contains content, not blank"
+    ],
+    "known_issues": [
+      "Raw Google Docs export still has one trailing blank-like page.",
+      "Template2000n page 326 exposes a literal Markdown fence marker; schedule code-block normalization.",
+      "Template2000n title box requires publisher/template-owner confirmation."
+    ]
+  },
+  "connector_readback": {
+    "verified_text": [
+      "эта глава должна перевести tool calling из уровня демонстрации",
+      "эта глава должна объяснить память как управляемый риск",
+      "эта глава должна превратить короткую, долгосрочную и профильную память",
+      "эта глава должна показать retrieval как управляемую подачу контекста",
+      "эта глава должна закрепить модель выполнения вокруг каталога инструментов",
+      "Практическое следствие для глав 6-10"
+    ]
+  }
+}

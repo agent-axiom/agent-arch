@@ -29,8 +29,10 @@ from agent_runtime_ref.continuity import (
     validate_rehydration,
 )
 from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
+from agent_runtime_ref.evidence import verify_evidence_manifest
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
-from agent_runtime_ref.models import RunRequest, RunResult
+from agent_runtime_ref.models import RunRequest, RunResult, compute_input_sha256
+from agent_runtime_ref.policy import CapabilityPolicy
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
 from agent_runtime_ref.session import summarize_session
@@ -66,6 +68,12 @@ EVAL_DATASET_SCENARIOS: dict[str, tuple[str, tuple[str, ...], str, str | None]] 
         "trace-eval-failed-run",
         "tool_timeout",
     ),
+    "unknown_effect_reconciliation": (
+        "session-eval-unknown-effect",
+        ("Please create a ticket for this onboarding issue.",),
+        "trace-eval-unknown-effect",
+        "post_dispatch_timeout",
+    ),
 }
 EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
     "support_ticket": {
@@ -77,7 +85,7 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
             "sandbox_profile_review",
         ],
         "expected_outcomes": {
-            "latest_status": "success",
+            "latest_status": "waiting_for_approval",
             "approval_wait_runs": 1,
             "approval_status_counts": {"pending": 1},
             "required_output_substrings": ["waiting for human approval"],
@@ -126,13 +134,24 @@ EVAL_DATASET_LABELS: dict[str, dict[str, object]] = {
             "failed_run",
             "tool_timeout",
             "failure_drill",
-            "duplicate_ticket_eval_passed",
         ],
         "expected_outcomes": {
             "latest_status": "failed",
             "failed_runs": 1,
             "required_output_substrings": ["tool_timeout"],
             "failed_run_traceable": True,
+        },
+    },
+    "unknown_effect_reconciliation": {
+        "scenario": "unknown_effect_reconciliation",
+        "labels": [
+            "unknown_effect",
+            "reconciliation_required",
+            "duplicate_ticket_eval_passed",
+        ],
+        "expected_outcomes": {
+            "latest_status": "blocked_on_reconciliation",
+            "reconciliation_runs": 1,
             "duplicate_ticket_eval_passed": True,
             "idempotency_key_required": True,
             "max_ticket_side_effects": 1,
@@ -321,14 +340,21 @@ def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
     return cast(list[object], entries)
 
 
-def _build_runtime(config_dir: Path) -> AgentRuntime:
+def _build_runtime(
+    config_dir: Path,
+    *,
+    approval_store: Path | None = None,
+) -> AgentRuntime:
     agent, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
     runtime_controls = _read_runtime_controls(config_dir)
     sandbox_profile = _read_sandbox_profile(runtime_controls)
     _read_workspace_entries(_read_sandbox_profile_section(sandbox_profile, "workspace"))
     return AgentRuntime(
         agent=agent,
-        approvals=ApprovalQueue(load_approval_policy(config_dir / "approvals.yaml")),
+        approvals=ApprovalQueue(
+            load_approval_policy(config_dir / "approvals.yaml"),
+            storage_path=approval_store,
+        ),
         catalog=load_capability_catalog(config_dir / "capabilities.yaml"),
         memory=load_memory_store(config_dir / "memory.yaml"),
         policy=load_policy_engine(
@@ -351,9 +377,11 @@ def _run_runtime(
     authorization_mode: str = "platform_owned",
     delegated_principal_id: str = "",
     delegated_scope: str = "",
+    intent_id: str = "",
+    approval_store: Path | None = None,
     simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
-    runtime = _build_runtime(config_dir)
+    runtime = _build_runtime(config_dir, approval_store=approval_store)
     return _run_on_runtime(
         runtime,
         user_input=user_input,
@@ -365,6 +393,7 @@ def _run_runtime(
         authorization_mode=authorization_mode,
         delegated_principal_id=delegated_principal_id,
         delegated_scope=delegated_scope,
+        intent_id=intent_id,
         simulate_failure=simulate_failure,
     )
 
@@ -381,10 +410,14 @@ def _run_on_runtime(
     authorization_mode: str = "platform_owned",
     delegated_principal_id: str = "",
     delegated_scope: str = "",
+    intent_id: str = "",
     simulate_failure: str | None = None,
 ) -> tuple[AgentRuntime, RunResult]:
-    if simulate_failure and "ticket" in user_input.lower():
-        user_input = f"{user_input} [simulate_failure={simulate_failure}]"
+    if simulate_failure:
+        # The CLI fault drill is a trusted harness path. It forces the demo adapter
+        # through an explicit allow decision. Pre-dispatch faults guarantee no
+        # effect; post_dispatch_timeout deliberately leaves the effect unknown.
+        runtime.policy.capability_policies["create_ticket"] = CapabilityPolicy("allow")
     result = runtime.run(
         RunRequest(
             user_input=user_input,
@@ -396,6 +429,8 @@ def _run_on_runtime(
             authorization_mode=authorization_mode,
             delegated_principal_id=delegated_principal_id,
             delegated_scope=delegated_scope,
+            intent_id=intent_id,
+            test_fault=simulate_failure or "",
         ),
     )
     return runtime, result
@@ -478,13 +513,14 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         authorization_mode=args.authorization_mode,
         delegated_principal_id=args.delegated_principal_id,
         delegated_scope=args.delegated_scope,
+        intent_id=args.intent_id,
         simulate_failure=args.simulate_failure,
     )
     session_payload = runtime.sessions._session_payload(session_id)
     latest_run = session_payload["runs"][-1] if session_payload["runs"] else {}
     pending_approvals = runtime.approvals.pending()
     memory_record_ids = [record.memory_id for record in runtime.memory.all()]
-    return {
+    payload: dict[str, object] = {
         "agent_id": runtime.agent.agent_id,
         "request_agent_id": _run_start_field_from_events(runtime.telemetry.events, "agent_id"),
         "session_id": session_id,
@@ -504,8 +540,11 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         ),
         "result": result.output_text,
         "status": result.status,
+        "task_success": result.task_success,
+        "side_effect_status": result.side_effect_status,
         "failure_reason": latest_run.get("failure_reason", ""),
         "trace_id": trace_id,
+        "intent_id": args.intent_id,
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "approval_ids": _approval_ids_from_events(runtime.telemetry.events),
         "approval_capability_names": _approval_capability_names_from_events(
@@ -525,6 +564,15 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         ),
         "config_dir": str(config_dir),
     }
+    if args.output:
+        destination = Path(args.output)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        payload["output_path"] = str(destination)
+        destination.write_text(
+            json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
+    return payload
 
 
 def _inspect_memory(args: argparse.Namespace) -> dict[str, object]:
@@ -964,8 +1012,9 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if len(run_start_events) > 1:
         raise ValueError("Trace file contains multiple run_start events")
     run_start = run_start_events[0]
-    required_payload_keys = ("user_input", "tenant_id", "principal_id")
+    required_payload_keys = ("tenant_id", "principal_id")
     replay_payload_keys = (
+        "user_input",
         *required_payload_keys,
         "session_id",
         "agent_id",
@@ -973,7 +1022,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "delegated_principal_id",
         "delegated_scope",
     )
-    missing_payload_keys = [key for key in required_payload_keys if key not in run_start.payload]
+    missing_payload_keys = []
+    if "user_input" not in run_start.payload and args.user_input is None:
+        missing_payload_keys.append("user_input")
+    missing_payload_keys.extend(
+        key for key in required_payload_keys if key not in run_start.payload
+    )
     if missing_payload_keys:
         missing_keys = ", ".join(missing_payload_keys)
         raise ValueError(f"Trace run_start event is missing replay fields: {missing_keys}")
@@ -983,7 +1037,28 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if redacted_payload_keys:
         redacted_keys = ", ".join(redacted_payload_keys)
         raise ValueError(f"Trace run_start event has redacted replay fields: {redacted_keys}")
-    user_input = _read_replay_payload_string(run_start.payload, "user_input")
+    stored_user_input = (
+        _read_replay_payload_string(run_start.payload, "user_input")
+        if "user_input" in run_start.payload
+        else None
+    )
+    supplied_user_input = (
+        _read_required_cli_string(args.user_input, field="user_input")
+        if args.user_input is not None
+        else None
+    )
+    user_input = supplied_user_input or stored_user_input
+    if not user_input:
+        raise ValueError(
+            "Trace does not retain raw user input; pass --user-input to perform "
+            "a controlled diagnostic replay"
+        )
+    source_input_sha256 = _read_replay_payload_optional_string(
+        run_start.payload,
+        "input_sha256",
+    )
+    if source_input_sha256 and compute_input_sha256(user_input) != source_input_sha256:
+        raise ValueError("Replay user input does not match trace input_sha256")
     tenant_id = _read_replay_payload_string(run_start.payload, "tenant_id")
     principal_id = _read_replay_payload_string(run_start.payload, "principal_id")
     session_id = _read_replay_payload_string(run_start.payload, "session_id")
@@ -1007,6 +1082,12 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         if args.replay_trace_id is not None
         else f"{source_trace_id}-replay"
     )
+    source_failure_reason = _failure_reason_from_events(source_events)
+    replay_test_fault = (
+        source_failure_reason
+        if source_failure_reason in {"tool_timeout", "upstream_unavailable"}
+        else None
+    )
     runtime, result = _run_runtime(
         config_dir,
         user_input=cast(str, user_input),
@@ -1018,13 +1099,13 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         authorization_mode=authorization_mode,
         delegated_principal_id=delegated_principal_id,
         delegated_scope=delegated_scope,
+        simulate_failure=replay_test_fault,
     )
     source_status = _run_complete_field_from_events(source_events, "status")
     source_output_preview = _run_complete_field_from_events(
         source_events,
         "output_preview",
     )
-    source_failure_reason = _failure_reason_from_events(source_events)
     replay_failure_reason = _failure_reason_from_events(runtime.telemetry.events)
     replay_events = runtime.telemetry.events
     source_session_id = _run_start_field_from_events(source_events, "session_id")
@@ -1148,11 +1229,59 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
 
 def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     policy = load_rollout_policy(args.config)
-    observed = {name: True for name in policy.required_checks}
-    observed.update({name: False for name in policy.blocked_checks})
+    evidence_manifest = args.evidence_manifest
+    evidence_diagnostics: list[dict[str, str]] = []
+    evidence_verified = False
+    evidence_issuer: str | None = None
+    evidence_subject: str | None = None
+    evidence_measured_at: str | None = None
+    evidence_artifact_ids: list[str] = []
+
+    if evidence_manifest is None:
+        observed = {name: True for name in policy.required_checks}
+        observed.update({name: False for name in policy.blocked_checks})
+        evidence_mode = "declarative_only"
+    else:
+        verification = verify_evidence_manifest(
+            evidence_manifest,
+            required_artifact_ids=args.required_artifact_id,
+        )
+        evidence_verified = verification.verified
+        evidence_issuer = verification.issuer
+        evidence_subject = verification.subject
+        evidence_measured_at = verification.measured_at
+        evidence_artifact_ids = list(verification.artifact_ids)
+        evidence_diagnostics = [
+            {
+                "code": diagnostic.code,
+                "location": diagnostic.location,
+                "message": diagnostic.message,
+            }
+            for diagnostic in verification.diagnostics
+        ]
+        observed = {name: False for name in policy.required_checks}
+        observed.update({name: False for name in policy.blocked_checks})
+        if evidence_verified:
+            for name, value in verification.signals.items():
+                if isinstance(value, bool):
+                    observed[name] = value
+                    continue
+                if name in {*policy.required_checks, *policy.blocked_checks}:
+                    evidence_verified = False
+                    evidence_diagnostics.append(
+                        {
+                            "code": "invalid_signal_value",
+                            "location": f"signals.{name}.value",
+                            "message": "Rollout gate signal value must be a boolean",
+                        }
+                    )
+        evidence_mode = "verified" if evidence_verified else "invalid"
+
     for raw_signal in args.signal:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
+    if evidence_manifest is not None and args.signal and evidence_verified:
+        evidence_mode = "verified_with_overrides"
     assessment = assess_rollout(policy, observed)
     support_duplicate_required = [
         signal
@@ -1164,8 +1293,33 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
         for signal in assessment.missing_required
         if signal in support_duplicate_required
     ]
+    manifest_integrity_verified = evidence_verified
+    trusted_attestation_verified = False
+    production_ready = False
+    if evidence_manifest is None:
+        recommended_action = "attach_verified_evidence"
+    elif not evidence_verified:
+        recommended_action = "repair_evidence_manifest"
+    elif args.signal:
+        recommended_action = "remove_manual_overrides"
+    elif not assessment.ready:
+        recommended_action = "collect_missing_evidence"
+    else:
+        recommended_action = "attach_trusted_attestation"
     return {
         "ready": assessment.ready,
+        "production_ready": production_ready,
+        "manifest_integrity_verified": manifest_integrity_verified,
+        "trusted_attestation_verified": trusted_attestation_verified,
+        "evidence_mode": evidence_mode,
+        "evidence_verified": evidence_verified,
+        "evidence_manifest": evidence_manifest,
+        "evidence_issuer": evidence_issuer,
+        "evidence_subject": evidence_subject,
+        "evidence_measured_at": evidence_measured_at,
+        "evidence_artifact_ids": evidence_artifact_ids,
+        "evidence_diagnostics": evidence_diagnostics,
+        "recommended_action": recommended_action,
         "required_checks": list(policy.required_checks),
         "blocked_checks": list(policy.blocked_checks),
         "missing_required": list(assessment.missing_required),
@@ -1437,7 +1591,7 @@ def _check_change(args: argparse.Namespace) -> dict[str, object]:
 def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     plan = load_retirement_plan(config_dir / "retirement.yaml")
-    observed = {step: True for step in plan.required_steps}
+    observed = {step: False for step in plan.required_steps}
     for raw_step in args.step:
         key, value = _parse_signal(raw_step)
         observed[key] = value
@@ -1445,6 +1599,7 @@ def _check_retirement(args: argparse.Namespace) -> dict[str, object]:
     return {
         "system_id": plan.system_id,
         "ready": assessment.ready,
+        "evidence_mode": "declared" if args.step else "unknown",
         "triggers": list(plan.triggers),
         "required_steps": list(plan.required_steps),
         "missing_steps": list(assessment.missing_steps),
@@ -1473,18 +1628,21 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
     session_id = _read_cli_session_id(args.session_id)
-    runtime, _ = _run_runtime(
-        config_dir,
-        user_input=args.user_input,
-        tenant_id=args.tenant_id,
-        principal_id=args.principal_id,
-        trace_id=trace_id,
-        session_id=session_id,
-        agent_id=args.agent_id,
-        authorization_mode=args.authorization_mode,
-        delegated_principal_id=args.delegated_principal_id,
-        delegated_scope=args.delegated_scope,
-    )
+    approval_store = Path(args.approval_store) if args.approval_store else None
+    runtime = _build_runtime(config_dir, approval_store=approval_store)
+    if approval_store is None or not runtime.approvals.all():
+        _, _ = _run_on_runtime(
+            runtime,
+            user_input=args.user_input,
+            tenant_id=args.tenant_id,
+            principal_id=args.principal_id,
+            trace_id=trace_id,
+            session_id=session_id,
+            agent_id=args.agent_id,
+            authorization_mode=args.authorization_mode,
+            delegated_principal_id=args.delegated_principal_id,
+            delegated_scope=args.delegated_scope,
+        )
     approvals = runtime.approvals.all()
     idempotency_keys = list(
         dict.fromkeys(item.idempotency_key for item in approvals if item.idempotency_key)
@@ -1529,8 +1687,16 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
                 "authorization_mode": item.authorization_mode,
                 "delegated_principal_id": item.delegated_principal_id,
                 "delegated_scope": item.delegated_scope,
+                "principal_id": item.principal_id,
+                "policy_version": item.policy_version,
+                "capability_version": item.capability_version,
                 "idempotency_key": item.idempotency_key,
+                "action_digest": item.action_digest,
+                "payload_summary": item.payload_summary,
+                "expires_at": item.expires_at,
+                "nonce": item.nonce,
                 "status": item.status,
+                "resolved_by": item.resolved_by,
             }
             for item in approvals
         ],
@@ -1541,18 +1707,21 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     trace_id = _read_cli_trace_id(args.trace_id)
     session_id = _read_cli_session_id(args.session_id)
-    runtime, _ = _run_runtime(
-        config_dir,
-        user_input=args.user_input,
-        tenant_id=args.tenant_id,
-        principal_id=args.principal_id,
-        trace_id=trace_id,
-        session_id=session_id,
-        agent_id=args.agent_id,
-        authorization_mode=args.authorization_mode,
-        delegated_principal_id=args.delegated_principal_id,
-        delegated_scope=args.delegated_scope,
-    )
+    approval_store = Path(args.approval_store) if args.approval_store else None
+    runtime = _build_runtime(config_dir, approval_store=approval_store)
+    if approval_store is None:
+        _, _ = _run_on_runtime(
+            runtime,
+            user_input=args.user_input,
+            tenant_id=args.tenant_id,
+            principal_id=args.principal_id,
+            trace_id=trace_id,
+            session_id=session_id,
+            agent_id=args.agent_id,
+            authorization_mode=args.authorization_mode,
+            delegated_principal_id=args.delegated_principal_id,
+            delegated_scope=args.delegated_scope,
+        )
     pending = runtime.approvals.pending()
     if not pending:
         raise ValueError("No pending approval requests were generated for this run")
@@ -1570,6 +1739,8 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         target.approval_id,
         decision=args.decision,
         note=args.note,
+        resolved_by=args.resolved_by,
+        expected_action_digest=args.expected_action_digest,
     )
     approvals = runtime.approvals.all()
     pending_approvals = [item for item in approvals if item.status == "pending"]
@@ -1594,13 +1765,21 @@ def _resolve_demo_approval(args: argparse.Namespace) -> dict[str, object]:
         "requested_by": resolved.requested_by,
         "status": resolved.status,
         "reviewer": resolved.reviewer,
+        "resolved_by": resolved.resolved_by,
         "resolution_note": resolved.resolution_note,
         "capability_session_id": resolved.capability_session_id,
         "capability_session_status": resolved.capability_session_status,
         "authorization_mode": resolved.authorization_mode,
         "delegated_principal_id": resolved.delegated_principal_id,
         "delegated_scope": resolved.delegated_scope,
+        "principal_id": resolved.principal_id,
+        "policy_version": resolved.policy_version,
+        "capability_version": resolved.capability_version,
         "idempotency_key": resolved.idempotency_key,
+        "action_digest": resolved.action_digest,
+        "payload_summary": resolved.payload_summary,
+        "expires_at": resolved.expires_at,
+        "nonce": resolved.nonce,
         "idempotency_keys": [resolved.idempotency_key] if resolved.idempotency_key else [],
         "approval_status_counts": approval_status_counts,
     }
@@ -1671,8 +1850,11 @@ def _inspect_session(args: argparse.Namespace) -> dict[str, object]:
                 "trace_id": run.trace_id,
                 "status": run.status,
                 "user_input": run.user_input,
+                "input_sha256": run.input_sha256,
                 "output_text": run.output_text,
                 "failure_reason": run.failure_reason,
+                "task_success": run.task_success,
+                "side_effect_status": run.side_effect_status,
                 "request_agent_id": run.request_agent_id,
                 "capability_session_id": run.capability_session_id,
                 "capability_session_status": run.capability_session_status,
@@ -1800,8 +1982,11 @@ def _session_replay(args: argparse.Namespace) -> dict[str, object]:
                 "trace_id": run.trace_id,
                 "status": run.status,
                 "user_input": run.user_input,
+                "input_sha256": run.input_sha256,
                 "output_text": run.output_text,
                 "failure_reason": run.failure_reason,
+                "task_success": run.task_success,
+                "side_effect_status": run.side_effect_status,
                 "request_agent_id": run.request_agent_id,
                 "capability_session_id": run.capability_session_id,
                 "capability_session_status": run.capability_session_status,
@@ -2109,11 +2294,17 @@ def build_parser() -> argparse.ArgumentParser:
     simulate.add_argument("--principal-id", default="user-42")
     simulate.add_argument("--trace-id", default="trace-demo-001")
     simulate.add_argument("--session-id", default="session-demo-001")
+    simulate.add_argument("--intent-id", default="")
+    simulate.add_argument(
+        "--output",
+        default=None,
+        help="Optional path for the structured run result",
+    )
     simulate.add_argument("--agent-id", default=None)
     _add_authorization_arguments(simulate)
     simulate.add_argument(
         "--simulate-failure",
-        choices=["tool_timeout", "upstream_unavailable"],
+        choices=["tool_timeout", "post_dispatch_timeout", "upstream_unavailable"],
         default=None,
     )
 
@@ -2186,7 +2377,11 @@ def build_parser() -> argparse.ArgumentParser:
     _add_authorization_arguments(export_events)
     export_events.add_argument(
         "--simulate-failure",
-        choices=["tool_timeout", "upstream_unavailable"],
+        choices=[
+            "tool_timeout",
+            "post_dispatch_timeout",
+            "upstream_unavailable",
+        ],
         default=None,
     )
     export_events.add_argument(
@@ -2240,6 +2435,13 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Optional override for the replay trace ID",
     )
+    replay_run.add_argument(
+        "--user-input",
+        default=None,
+        help=(
+            "Original input supplied out of band when the trace retains only its SHA-256"
+        ),
+    )
 
     rollout = subparsers.add_parser("check-rollout", help="Evaluate rollout readiness")
     rollout.add_argument(
@@ -2252,6 +2454,17 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
         help="Override an observed signal, e.g. trace_coverage=true",
+    )
+    rollout.add_argument(
+        "--evidence-manifest",
+        default=None,
+        help="Path to a SHA-256-bound release evidence manifest",
+    )
+    rollout.add_argument(
+        "--required-artifact-id",
+        action="append",
+        default=[],
+        help="Require an artifact id; repeat for cumulative lab evidence",
     )
 
     controls = subparsers.add_parser(
@@ -2330,6 +2543,7 @@ def build_parser() -> argparse.ArgumentParser:
     inspect_approvals.add_argument("--trace-id", default="trace-approval-001")
     inspect_approvals.add_argument("--session-id", default="session-approval-001")
     inspect_approvals.add_argument("--agent-id", default=None)
+    inspect_approvals.add_argument("--approval-store", default=None)
     _add_authorization_arguments(inspect_approvals)
 
     resolve_approval = subparsers.add_parser(
@@ -2350,6 +2564,7 @@ def build_parser() -> argparse.ArgumentParser:
     resolve_approval.add_argument("--trace-id", default="trace-approval-001")
     resolve_approval.add_argument("--session-id", default="session-approval-001")
     resolve_approval.add_argument("--agent-id", default=None)
+    resolve_approval.add_argument("--approval-store", default=None)
     _add_authorization_arguments(resolve_approval)
     resolve_approval.add_argument("--approval-id", default=None)
     resolve_approval.add_argument(
@@ -2358,6 +2573,12 @@ def build_parser() -> argparse.ArgumentParser:
         default="approved",
     )
     resolve_approval.add_argument("--note", default="")
+    resolve_approval.add_argument("--resolved-by", default=None)
+    resolve_approval.add_argument(
+        "--expected-action-digest",
+        default=None,
+        help="Digest of the exact action reviewed by the approver",
+    )
 
     inspect_session = subparsers.add_parser(
         "inspect-session",

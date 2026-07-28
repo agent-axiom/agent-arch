@@ -94,7 +94,7 @@ flowchart LR
 !!! example "贯穿案例：防重复保护应该放在哪里"
     在支持分诊运行时里，防止重复工单的逻辑不应该藏在 helpdesk 适配器里。`runtime.py` 应该负责运行上下文和重试分支，`execution.py` 应该通过幂等契约执行写工具，`telemetry.py` 应该记录 `side_effect_unknown`，而 `policy.py` 加发布门应该决定运行是否可以继续。这样，同一个事故就不会散落到一堆处理器里。
 
-**Runtime case-spine note：**baseline runtime 应该支持三个 canonical cases，而不依赖本地绕路。Support triage 需要带 approval hooks、idempotency contract 和 duplicate-ticket telemetry 的 write-capability path。Internal knowledge assistant 需要带 source grounding、tenant filters、freshness checks 和 guarded memory writes 的 retrieval path。Incident coordination 需要带 responder-role checks、notification dispatch、incident-state updates 和 post-incident background tasks 的 escalation path。
+**运行时案例主线说明（Runtime case-spine note）：**基线运行时（baseline runtime）应该支持三个规范案例（canonical cases），并留下追踪证据（trace evidence），而不依赖本地绕路。支持分诊（Support triage）需要带审批钩子（approval hooks）、幂等契约（idempotency contract）和重复工单遥测（duplicate-ticket telemetry）的写入能力路径（write-capability path）。内部知识助手（Internal knowledge assistant）需要带来源锚定（source grounding）、租户过滤器（tenant filters）、新鲜度检查（freshness checks）和受保护记忆写入（guarded memory writes）的检索路径。事故协调（Incident coordination）需要带响应者角色检查（responder-role checks）、通知分发（notification dispatch）、事故状态更新（incident-state updates）和事件后后台任务（post-incident background tasks）的升级路径。
 
 ## 5. 不要把编排和业务适配器混在一起
 
@@ -302,11 +302,11 @@ GitHub Copilot code review 还有一个独立教训："better tools" 如果没�
 
 Real-time 这一侧又增加了一条边界：connection state 不等于 agent state。在 Cloudflare Agents WebSocket model 中，一个 connection 有自己的 `id`、`uri`、per-connection `state`、tags、lifecycle hooks，并且可以针对某个 connection 关闭 identity/state/MCP 等 protocol messages。[^cloudflare-websockets] 对 baseline runtime 来说，这意味着 broadcast、presence、approval UI 和 streaming updates 都应该经过 connection-scoped authorization 和可追踪的 fan-out，而不是直接暴露 agent 的整个 durable state。
 
-用 vendor-neutral 的说法，这个模式可以叫 **durable agent actor**：稳定身份、本地持久状态、可恢复 session、scheduled wake-ups，以及到 governed stores 的可追踪 handoff。本地状态可以保存 instance-scoped facts，例如当前 workflow cursor、UI/session preferences、实例队列位置、last processed event、schedule metadata，以及可以重建的小型 cached views。它不应该悄悄成为 user profile memory、tenant knowledge、secrets、policy、audit logs 或 cross-instance facts 的 system of record。这些数据应该属于 governed stores，并带有 provenance、retention、export 和 access-control contracts。
+用厂商中立（vendor-neutral）的说法，这个模式可以叫**持久化智能体 actor（durable agent actor）**：它有稳定身份、本地持久状态、可恢复会话、计划唤醒，以及到受治理存储（governed stores）的可追踪移交。本地状态可以保存实例作用域事实（instance-scoped facts），例如当前工作流游标（workflow cursor）、界面/会话偏好、实例队列位置、最后处理事件、计划元数据，以及可以重建的小型缓存视图。它不应该悄悄成为用户画像记忆、租户知识、密钥、策略、审计日志或跨实例事实的权威记录系统（system of record）。这些数据应该属于受治理存储，并带有来源、保留、导出和访问控制契约。
 
-这里的 anti-pattern 是 hidden durable memory：一个 named agent 持续积累私有状态，之后把它当作 validated knowledge 来检索或行动，但 operators 看不到 export、audit trail、schema migration path 或 deletion story。Durable actor state 只有在 ownership 和 lifecycle 明确时才有价值。
+这里的反模式是隐藏的持久记忆（hidden durable memory）：一个有名字的智能体持续积累私有状态，之后把它当作已验证知识来检索或行动，但操作员看不到导出、审计轨迹、模式迁移路径或删除故事。持久 actor 状态只有在负责人机制和生命周期明确时才有价值。
 
-### 8.4. Recoverable internal tasks / fibers
+### 8.4. 可恢复的内部任务与纤程（Recoverable internal tasks / fibers）
 
 Cloudflare 给这类拓扑又补了一条有用边界：durable work 不一定只能作为外部 workflow 存在，也可以是 agent 自己内部的 **recoverable internal task**。[^cloudflare-fibers] 在它的 API 里，`runFiber()` 会把工作登记到 SQLite，在执行期间保持 Durable Object 存活，允许 agent 用 `stash()` 保存中间 checkpoint，并在对象中途被 evict 后的下一次激活中调用 `onFiberRecovered()`。`startFiber()` 则适合那些需要 durable accept、用 idempotency key 去重、之后能 inspect/cancel，并且不保持原始 request 打开的 background work。
 
@@ -327,9 +327,9 @@ Cloudflare 关于 outbound connections 的另一条 changelog 说明，即使是
 
 Delegated tools 还有相邻规则。当 sub-agent 通过 `clientTools` 和 `onClientToolCall` 获得 **client-provided tools** 时，这不只是 callback convenience。[^cloudflare-agents-recovery] Parent runtime 应该保存这些 tools 的 allowlist、owner/caller identity、argument schema、expiration 和 trace evidence。否则 delegated sub-agent 会拿到隐式 capability leaks。Recovery path 也应该修复未完成的 tool calls：stream stall watchdog 和 interrupted tool-call repair 应该让 run 回到 last durable checkpoint，而不是从 transcript memory 重复 side effect。
 
-### 8.5. Agent shell + durable workflow spine
+### 8.5. 智能体外壳 + 持久工作流主线（Agent shell + durable workflow spine）
 
-Cloudflare 的下一个有用模式是：不要把所有长时间工作都塞进同一个 agent event loop。Agent 可以是 **stateful interaction boundary**：负责实例身份、WebSocket/HTTP 会话、本地状态、用户 callbacks 和当前对话视图。Workflow 则成为 **durable execution boundary**：负责步骤、重试、等待外部事件、长时间 approval gates，以及故障后的恢复。[^cloudflare-workflows]
+Cloudflare 的下一个有用模式是：不要把所有长时间工作都塞进同一个智能体事件循环（agent event loop）。智能体可以是**有状态交互边界（stateful interaction boundary）**：负责实例身份、WebSocket/HTTP 会话、本地状态、用户回调和当前对话视图。工作流则成为**持久执行边界（durable execution boundary）**：负责步骤、重试、等待外部事件、长时间审批门禁，以及故障后的恢复。[^cloudflare-workflows]
 
 <div class="diagram-card">
 <p>实时 agent 与 durable workflow 解决的是不同问题</p>
@@ -350,7 +350,7 @@ flowchart LR
 
 在 Cloudflare HITL API 中，这表现为 workflow 里的 `waitForApproval()`：等待可以持续 **months or longer**，而不需要 live agent process；agent shell 则提供 `approveWorkflow()` 和 `rejectWorkflow()` 来接收 human decision。对本书来说，重点不是 API 名称，而是边界：pending approval、timeout、escalation 和 audit trail 必须是 durable execution state。
 
-Cloudflare Agents SDK v0.16.1 在 Codemode runtime 侧展示了同一个契约：模型只拿到一个 `codemode` tool，对 typed globals 写代码，而 runtime 保存 durable execution log。[^cloudflare-agents-sdk-0161] 当代码到达 approval-gated action 时，execution pauses 并返回 pending approval；审批通过后，已经完成的 calls 从 durable log replay，approved action 被执行，同一段代码继续运行。用 vendor-neutral 的说法，这是 approval gate 的一个有用最小契约：
+Cloudflare Agents SDK v0.16.1 在 Codemode runtime 侧展示了同一个契约：模型只拿到一个 `codemode` tool，对 typed globals 写代码，而 runtime 保存 durable execution log。[^cloudflare-agents-sdk-0161] 当代码到达 approval-gated action 时，execution pauses 并返回 pending approval；审批通过后，已经完成的 calls 从 durable log replay，approved action 被执行，同一段代码继续运行。用厂商中立（vendor-neutral）的说法，这是 approval gate 的一个有用最小契约：
 
 - `approval_id`、`approval_status`、`requested_action`、`risk_tier`、`approver_ref`；
 - 指向已完成 deterministic/tool calls 的 `execution_log_ref`；

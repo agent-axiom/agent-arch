@@ -1,0 +1,47 @@
+{
+  "date": "2026-06-23",
+  "google_doc": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+  "tab_id": "t.0",
+  "fresh_export_docx": "docs/publisher/artifacts/agent-arch-ru-applied-pass-2026-06-23.docx",
+  "template2000n_applied_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-applied-2026-06-23.docx",
+  "fresh_google_docs_export": {
+    "rendered_pages": 654,
+    "image_size": [1547, 2002],
+    "docx_size_bytes": 747904,
+    "pdf_size_bytes": 4282872,
+    "blank_like_pages": [654],
+    "edge_risk_count": 0,
+    "high_ink_pages": [],
+    "low_ink_pages_sample": [[121, 0.0044], [370, 0.0048], [654, 0.0]],
+    "visual_spot_check_pages": [1, 121, 370, 654]
+  },
+  "template2000n_applied": {
+    "rendered_pages": 419,
+    "image_size": [1547, 2002],
+    "docx_size_bytes": 759235,
+    "pdf_size_bytes": 5878998,
+    "blank_like_pages": [],
+    "edge_risk_count": 0,
+    "high_ink_pages": [],
+    "low_ink_pages_sample": [[198, 0.0072], [403, 0.0081], [419, 0.006]],
+    "visual_spot_check_pages": [1, 419],
+    "paragraph_count": 7804,
+    "preserved_lists": 2817,
+    "style_counts": {
+      "Style18": 2817,
+      "BodyText": 2658,
+      "Heading3": 1281,
+      "Heading2": 598,
+      "Style16": 295,
+      "Heading1": 84,
+      "Heading4": 69,
+      "Style13": 1,
+      "Style14": 1
+    }
+  },
+  "known_layout_followups": [
+    "raw Google Docs export has one trailing blank-like page",
+    "Template2000n-applied first-page title retains template box treatment and still needs publisher confirmation",
+    "full human visual proofread of all 419 Template2000n pages is not yet complete"
+  ]
+}

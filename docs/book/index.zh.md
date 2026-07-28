@@ -6,7 +6,7 @@
 
 这本书有一个核心判断（main thesis）：智能体需要平台（platform），而不是魔法。
 
-构建智能体很枯燥，但结果令人震撼：你得到的不是一次性炫技（one-off trick），而是一个可以约束（constrain）、观察（observe）、发布（ship）并无需猜测地持续改进（improve without guessing）的系统。
+成熟的智能体要靠平稳的工程层来构建：信任边界、策略、追踪、审批和分阶段发布。这样得到的才是一个可以约束（constrain）、观察（observe）、发布（ship）并无需猜测地持续改进（improve without guessing）的系统。
 
 读完后，你应该能够做到（learning outcomes）：
 

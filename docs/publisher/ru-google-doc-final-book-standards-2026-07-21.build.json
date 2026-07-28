@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-2026-07-17.docx",
+  "bookmarks": 107,
+  "code_lines": 1665,
+  "headings": 622,
+  "images": 56,
+  "internal_hyperlinks": 175,
+  "list_items": 3432,
+  "lists": 743,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 8986016,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-final-book-standards-2026-07-21.docx",
+  "output_sha256": "117a3cf76742a4b3d0472274e7739962bd2d323122d6ad7a181c8e4319e3c667",
+  "page_breaks": 30,
+  "paragraphs": 8171,
+  "tables": 9
+}

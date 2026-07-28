@@ -46,7 +46,7 @@
 !!! example "贯穿案例：用模板代替本地补丁"
     在重复工单事故之后，面向支持类智能体的黄金路径应该已经包含幂等写工具、重试策略、[追踪（trace）](../../appendix/trace-schema.zh.md)/[评测（eval）](../../appendix/eval-schema.zh.md) 钩子，以及针对 `side_effect_unknown` 的发布门。这样，下一个团队就不用把复盘复制进 wiki 再重新修一遍同样的问题，而是从一条更安全的默认路径开始。
 
-**Golden-path case-spine note：**anti-zoo strategy 应该为三个 canonical cases 提供现成路径。Support triage 使用 workflow-agent template，内含 approved write gateway、approval hooks、idempotency defaults 和 duplicate-ticket evals。Internal knowledge assistant 使用 knowledge-agent template，内含 retrieval policy、source grounding、tenant filters 和 memory-write guardrails。Incident coordination 使用 incident-agent template，内含 escalation gateway、notification defaults、responder-role checks 和 post-incident regression hooks。
+**黄金路径案例主线说明（Golden-path case-spine note）：**反动物园策略（anti-zoo strategy）应该为三个规范案例（canonical cases）提供现成路径。支持分诊（Support triage）使用工作流智能体模板（workflow-agent template），内含已批准写入网关（approved write gateway）、审批钩子（approval hooks）、幂等默认值（idempotency defaults）和重复工单评测（duplicate-ticket evals）。内部知识助手（Internal knowledge assistant）使用知识智能体模板（knowledge-agent template），内含检索策略（retrieval policy）、来源锚定（source grounding）、租户过滤器（tenant filters）和记忆写入护栏（memory-write guardrails）。事故协调（Incident coordination）使用事故智能体模板（incident-agent template），内含升级网关（escalation gateway）、通知默认值（notification defaults）、响应者角色检查（responder-role checks）和事件后回归钩子（post-incident regression hooks）。
 
 ## 3. 共享网关的意义，是避免把关键错误复制到整个组织
 

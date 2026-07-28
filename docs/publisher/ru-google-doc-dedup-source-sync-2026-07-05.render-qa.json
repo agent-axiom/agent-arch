@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/tmp/agent_arch_ru_google_doc_reader_delight_2026_07_06_render/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0042162040907240345,
+      "page": 379
+    },
+    {
+      "density": 0.00510121714730255,
+      "page": 67
+    },
+    {
+      "density": 0.005539811722556313,
+      "page": 133
+    },
+    {
+      "density": 0.007827900960719699,
+      "page": 314
+    },
+    {
+      "density": 0.008763411702686961,
+      "page": 45
+    },
+    {
+      "density": 0.008944459345615283,
+      "page": 320
+    },
+    {
+      "density": 0.012564600564144273,
+      "page": 345
+    },
+    {
+      "density": 0.013255265717336519,
+      "page": 315
+    },
+    {
+      "density": 0.01353150442849671,
+      "page": 318
+    },
+    {
+      "density": 0.014124861411830497,
+      "page": 343
+    }
+  ],
+  "pages": 529,
+  "render_dir": "/tmp/agent_arch_ru_google_doc_reader_delight_2026_07_06_render"
+}

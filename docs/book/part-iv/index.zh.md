@@ -35,8 +35,8 @@
 
     这三章合在一起，才构成一个可以被当作生产层讨论的执行模型，而不只是“智能体会调工具”。
 
-!!! note "Part IV canonical case routes"
-    在 execution layer 中，三个 canonical cases 会落到不同 tool boundaries 上。**Support triage** 检查 ticket-write capability、approval gate、idempotency key 和 duplicate-ticket recovery。**Internal knowledge assistant** 检查 retrieval adapter、source attribution、tenant boundary 和 read-only MCP contract。**Incident coordination** 检查 escalation tool、notification side effects、incident state updates 和 rollback boundary。
+!!! note "第四部分规范案例路线（Part IV canonical case routes）"
+    在执行层（execution layer）中，三个规范案例（canonical cases）会落到不同工具边界（tool boundaries）上。**支持分诊（Support triage）** 检查工单写入能力（ticket-write capability）、审批门禁（approval gate）、幂等键（idempotency key）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 检查检索适配器（retrieval adapter）、来源归因（source attribution）、租户边界（tenant boundary）和只读 MCP 契约（read-only MCP contract）。**事故协调（Incident coordination）** 检查升级工具（escalation tool）、通知副作用（notification side effects）、事故状态更新（incident state updates）和回滚边界（rollback boundary）。
 
 ## 本部分内容
 

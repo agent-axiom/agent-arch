@@ -30,8 +30,8 @@
 
     这三步合在一起，说明运营模型不是给组织结构图看的，而是用来稳住整套生产系统的。
 
-!!! note "Part VI canonical case routes"
-    在 operating model 中，三个 canonical cases 需要不同 ownership boundaries。**Support triage** 检查谁拥有 ticket-write defaults、approval mode 和 duplicate-ticket recovery path。**Internal knowledge assistant** 检查谁拥有 corpus ownership、access review、retrieval quality 和 knowledge provenance。**Incident coordination** 检查谁拥有 escalation authority、notification policy、response ownership 和 post-incident action items。
+!!! note "第六部分规范案例路线（Part VI canonical case routes）"
+    在运营模型（operating model）中，三个规范案例（canonical cases）需要不同负责人边界（ownership boundaries）。**支持分诊（Support triage）** 检查谁拥有工单写入默认值（ticket-write defaults）、审批模式（approval mode）和重复工单恢复路径（duplicate-ticket recovery path）。**内部知识助手（Internal knowledge assistant）** 检查谁拥有语料责任（corpus ownership）、访问复核（access review）、检索质量（retrieval quality）和知识来源证明（knowledge provenance）。**事故协调（Incident coordination）** 检查谁拥有升级权限（escalation authority）、通知策略（notification policy）、响应归属（response ownership）和事件后行动项（post-incident action items）。
 
 ## 这一部分解决什么问题
 

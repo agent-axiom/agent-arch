@@ -1,0 +1,27 @@
+{
+  "approximate_words": 100045,
+  "bodytext_mapped": 4983,
+  "non_empty_paragraphs": 6139,
+  "output_bytes": 1281054,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-visual-edit-2026-07-05.docx",
+  "output_sha256": "49cf319e43e15191fbebcb69fb87dca402d7aa4b81b21c1438d5308aee99d813",
+  "output_style_counts": {
+    "<none>": 1128,
+    "Body Text": 4983,
+    "Heading 1": 27,
+    "Heading 2": 1422,
+    "Heading 3": 634,
+    "Heading 4": 51
+  },
+  "paragraphs": 8245,
+  "raw_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-visual-edit-2026-07-05.docx",
+  "raw_style_counts": {
+    "Heading 1": 27,
+    "Heading 2": 1422,
+    "Heading 3": 634,
+    "Heading 4": 51,
+    "normal": 6111
+  },
+  "template_docx": "/tmp/template2000n_visual_edit_2026_07_05/Template2000n.docx",
+  "text_equality": true
+}

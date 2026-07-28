@@ -1,0 +1,85 @@
+{
+  "date": "2026-06-27",
+  "google_doc": {
+    "id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "title": "Архитектура безопасных ИИ-агентов — полная рукопись",
+    "chapter": "Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы",
+    "revision_after_edit": "ALtnJHy_nhZtPAaknr8gSZ20lp3_iAMQsDSEa_Nit44PXXaYwPnVVc82ZUnlGwKpmmXBDHn6aGFKV_PPu25mUp3hmwir1smZbtPwCkxBG54",
+    "body_range_replaced": {
+      "start": 428401,
+      "end_before_edit": 476889,
+      "chapter_16_start_after_edit": 449330
+    }
+  },
+  "artifacts": {
+    "raw_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-ch15-eval-gates-pass-2026-06-27.docx",
+      "size_bytes": 685185,
+      "sha256": "b3fe3932d0e2424407049c58b380c94b53dfc0ee0e77cc6e405e16fa7c7f372c",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_ch15_eval_gates_pass_2026_06_27_render/agent-arch-ru-ch15-eval-gates-pass-2026-06-27.pdf",
+      "rendered_pdf_size_bytes": 3632591,
+      "page_count": 614,
+      "blankish_pages": 0,
+      "marker_pages": {
+        "Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы": [28, 343],
+        "Глава 14 закончилась на SLO": [343],
+        "Рабочее соглашение главы": [344],
+        "Regression gate contract": [352],
+        "Coverage по failure modes из главы 14": [355],
+        "Decision table для release gate": [357],
+        "False pass": [358, 359],
+        "False block": [360],
+        "Override не должен быть обходом контроля": [361],
+        "Eval readiness checklist перед rollout": [365],
+        "Companion route для главы 15": [367],
+        "Глава 16. Сквозная цепочка доказательств": [28, 368]
+      }
+    },
+    "template2000n_docx": {
+      "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch15-eval-gates-pass-2026-06-27.docx",
+      "size_bytes": 688053,
+      "sha256": "3d0a2d7634f3d84a730ce1378ebd5491165681e7a283683027b2a316a6b850e0",
+      "zip_test": "passed",
+      "rendered_pdf": "/private/tmp/agent_arch_template2000n_ch15_eval_gates_pass_2026_06_27_render_v4/agent-arch-ru-template2000n-ch15-eval-gates-pass-2026-06-27.pdf",
+      "rendered_pdf_size_bytes": 3480811,
+      "page_count": 330,
+      "blankish_pages": 0,
+      "marker_pages": {
+        "Глава 15. Офлайн- и онлайн-оценки и регрессионные шлюзы": [16],
+        "Глава 14 закончилась на SLO": [193],
+        "Рабочее соглашение главы": [194],
+        "Regression gate contract": [198],
+        "Coverage по failure modes из главы 14": [200],
+        "Decision table для release gate": [201],
+        "False pass": [202],
+        "False block": [202],
+        "Override не должен быть обходом контроля": [203],
+        "Eval readiness checklist перед rollout": [205],
+        "Companion route для главы 15": [206],
+        "Глава 16. Сквозная цепочка доказательств": [16, 207]
+      },
+      "visual_spot_check_pages": [193, 201, 205, 206, 207],
+      "visual_spot_check_result": "passed",
+      "style_mapping_notes": {
+        "marker_lists_normalized": 44,
+        "numbered_details_normalized": 30,
+        "numPr_removed_from_body": 2094,
+        "dense_left_aligned": 2479,
+        "style_counts": {
+          "BodyText": 6292,
+          "Heading1": 62,
+          "Heading3": 67
+        }
+      }
+    }
+  },
+  "qa_result": "passed",
+  "notes": [
+    "Raw Google Docs export keeps the full manuscript shape and renders to 614 pages.",
+    "Template2000n derivative renders to 330 pages after conservative style mapping.",
+    "Body paragraph numbering properties were removed in the Template2000n derivative to prevent oversized list markers in proof pages; raw Google Docs export remains the structure-preserving source.",
+    "Google Docs table-of-contents pages also contain chapter-title markers, so body marker positions are the later page hits."
+  ]
+}

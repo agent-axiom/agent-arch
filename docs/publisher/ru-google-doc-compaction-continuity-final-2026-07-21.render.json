@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-compaction-continuity-final-v2-2026-07-21-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.008514131849619891,
+      "page": 240
+    },
+    {
+      "density": 0.010947927568331385,
+      "page": 196
+    },
+    {
+      "density": 0.013881341543990315,
+      "page": 333
+    },
+    {
+      "density": 0.014890405106763142,
+      "page": 344
+    },
+    {
+      "density": 0.015621109058121873,
+      "page": 102
+    },
+    {
+      "density": 0.018198491623336675,
+      "page": 372
+    },
+    {
+      "density": 0.020747728892525272,
+      "page": 217
+    },
+    {
+      "density": 0.02134010583001039,
+      "page": 2
+    },
+    {
+      "density": 0.021561415123907995,
+      "page": 14
+    },
+    {
+      "density": 0.022074968012075886,
+      "page": 57
+    }
+  ],
+  "pages": 437,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-compaction-continuity-final-v2-2026-07-21-render"
+}

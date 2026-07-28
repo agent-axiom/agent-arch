@@ -1,0 +1,9 @@
+source	check_result	editorial_decision
+https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/	HEAD 403; body/title read confirmed "Guidelines for Human-AI Interaction - Microsoft Research"	Keep source; note automated HEAD is blocked but title/body route is readable.
+https://docs.anthropic.com/en/docs/claude-code/security	301 redirect to https://code.claude.com/docs/en/security; canonical title "Security - Claude Code Docs"	Update source catalog and Russian footnote to canonical code.claude.com URL.
+https://mlcommons.org/2024/12/mlcommons-ailuminate-v1-0-release/	HTTP 200; title confirmed "MLCommons Launches AILuminate, First-of-its-Kind Benchmark to Measure the Safety of Large Language Models - MLCommons"	Keep source; no replacement required.
+https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/	Cloudflare challenge; title "Just a moment..."	Do not use as primary source in final packet; replace with official Civil Resolution Tribunal decision.
+https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do	HTTP 200; title confirmed "Moffatt v. Air Canada - Civil Resolution Tribunal"	Use as primary source for the Air Canada chatbot case.
+https://openreview.net/forum?id=eJtBEBmYGB	Public page title "Verifying your browser | OpenReview"; API returned ChallengeRequiredError	Mark as browser/API-gated; do not use as primary evidence until metadata is manually verified.
+https://openreview.net/forum?id=dfPQrg1WA5 and 8 related OpenReview records	2026-06-29 pass returned HTTP 200 challenge redirects; 2026-06-30 API/page spot check confirms challenge-gated access	Mark subsection as research leads; require external browser/API metadata verification before final publisher packet.
+

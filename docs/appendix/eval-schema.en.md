@@ -168,7 +168,7 @@ already produces a small structured artifact with:
 
 The bundled export contract is intentionally concrete. Session eval config validation also keeps malformed eval specs separate from failed eval results with `Session eval specs must be a mapping`, `Session eval spec must be a mapping`, `Session eval spec key must be a string`, `Session eval spec key must not be empty`, and `Session eval spec keys must be unique`.
 
-The export contract is intentionally concrete: the default `dataset_name` is `agent-runtime-ref-eval-seed`; the top-level summary includes `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, and `latest_failure_reason`; approval-backed scenarios also carry `approval_status_counts` in `expected_outcomes`; and the built-in scenarios include `failed_run_timeout` with a `duplicate_ticket_eval_passed` label, `max_ticket_side_effects: 1`, and blocking `duplicate_ticket_guard` grading rule, `profile_memory` with `memory_read`, `profile_lookup`, and `grounded_answer` labels, `mixed_session` with `multi_run`, `approval_then_memory`, and `session_evals` labels plus `required_run_count` as an expected outcome, and `support_ticket` with a `sandbox_profile_review` label, `sandbox_profile_reviewed` expected outcome, and blocking `sandbox_profile_review` grading rule.
+The export contract is intentionally concrete: the default `dataset_name` is `agent-runtime-ref-eval-seed`; the top-level summary includes `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, and `latest_failure_reason`; approval-backed scenarios also carry `approval_status_counts` in `expected_outcomes`. The built-in `failed_run_timeout` scenario proves a known pre-dispatch failure and traceability. The separate `unknown_effect_reconciliation` scenario produces `side_effect_unknown`, expects one `reconciliation_runs` entry, and owns the `duplicate_ticket_eval_passed` label, `max_ticket_side_effects: 1`, and blocking `duplicate_ticket_guard` rule. `profile_memory` uses `memory_read`, `profile_lookup`, and `grounded_answer`; `mixed_session` uses `multi_run`, `approval_then_memory`, `session_evals`, and `required_run_count`; `support_ticket` uses `sandbox_profile_review` and `sandbox_profile_reviewed`.
 
 !!! example "Eval gate for the duplicate-ticket thread"
     For the running support-triage case, a dedicated eval should reproduce a timeout after `create_ticket`, require preserved `trace_id` and `idempotency_key`, expect exactly one ticket side effect or a `side_effect_unknown` stop, and block rollout if a new prompt/model/adapter version blindly retries and creates a second ticket.
@@ -209,6 +209,11 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `sandbox_profile_contract`
 - `workspace_manifest_ref`
 - `snapshot_policy`
+- `stop_condition`
+- `verification_command`
+- `verification_result`
+- `verifier_actor`
+- `evidence_refs`
 - `eval_audit_record`
 - `oracle_type`
 - `defect_labels`
@@ -219,6 +224,16 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `decision_impact`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
+
+### Verifier Verdict Acceptance Criteria
+
+A verifier verdict is a contract, not a reviewer comment, only if it passes a few checks:
+
+- it has stable `verdict_id`, `verifier_id`, and `verifier_contract_version`;
+- inputs (`input_refs`) and evidence (`verifier_evidence_refs` or `evidence_refs`) point to traces, scenarios, and policy versions;
+- `process_score`, `outcome_score`, and `failure_attribution` are separate, not collapsed into one label;
+- `blocking_decision`, `comparison_baseline`, and `reviewer_override` explain whether release is blocked, warned, or allowed;
+- `stop_condition`, `verification_command`, `verification_result`, and `verifier_actor` record how run completion was checked.
 
 ## Example grading contract
 
@@ -247,6 +262,16 @@ grading_rules:
       permissions_profile: restricted-shell-network-denied
       network_secrets_posture: network:denied,secrets:none
       snapshot_policy: required_on_completion
+    blocking: true
+  - type: stop_condition_verified
+    expected:
+      stop_condition: no duplicate ticket side effect after timeout replay
+      verification_command: .venv/bin/pytest tests/test_docs_surface.py
+      verification_result: pass
+      verifier_actor: deterministic_gate
+      evidence_refs:
+        - trace:trace_123
+        - artifact:pytest-output
     blocking: true
 verifier_outputs:
   verdict_id: verdict_failed_run_timeout_2026_05
@@ -298,6 +323,7 @@ Several mistakes are very common:
 - not linking dataset items to trace evidence or incident history;
 - collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution;
 - requiring `sandbox_profile_review` in rollout, but having no grading rule that checks workspace, permissions, and snapshot/resume evidence.
+- letting the agent finish a task without `stop_condition_verified` and without evidence that can be checked after the session.
 
 That makes eval culture fragile.
 
@@ -313,6 +339,7 @@ Start with this short list and mark every "no" explicitly:
 - Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
 - Can you tell which verifier identity and contract version produced that grading output?
 - Is there a dedicated rule for sandbox-backed paths that checks sandbox profile contract, workspace entries, permissions, and snapshot/resume evidence?
+- Is there a rule that checks stop condition, verification command/result, verifier actor, and evidence refs before run completion is accepted?
 - Do you support multi-run sessions?
 - Do you have dataset versioning and ownership?
 

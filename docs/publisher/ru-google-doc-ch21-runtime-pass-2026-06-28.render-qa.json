@@ -1,0 +1,39 @@
+{
+  "pass": "ch21-runtime-pass-2026-06-28",
+  "google_doc": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+  "raw": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-ch21-runtime-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_ch21_runtime_pass_2026_06_28_render_final",
+    "pdf": "/private/tmp/agent_arch_ch21_runtime_pass_2026_06_28_render_final/agent-arch-ru-ch21-runtime-pass-2026-06-28.pdf",
+    "pdf_pages": 601,
+    "png_pages": 601,
+    "blank_like_pages": [],
+    "marker_pages": {
+      "Глава 21. Базовая схема среды исполнения": [29, 470],
+      "Зачем нужна эталонная среда исполнения": [471],
+      "Walkthrough одного запуска": [479],
+      "Readiness checklist для reference runtime": [481],
+      "Глава 22. Слой политик и каталог возможностей": [29, 485]
+    }
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch21-runtime-pass-2026-06-28.docx",
+    "render_dir": "/private/tmp/agent_arch_template2000n_ch21_runtime_pass_2026_06_28_render_final2",
+    "pdf": "/private/tmp/agent_arch_template2000n_ch21_runtime_pass_2026_06_28_render_final2/agent-arch-ru-template2000n-ch21-runtime-pass-2026-06-28.pdf",
+    "pdf_pages": 277,
+    "png_pages": 277,
+    "blank_like_pages": [],
+    "marker_pages": {
+      "Глава 21. Базовая схема среды исполнения": [18, 218],
+      "Зачем нужна эталонная среда исполнения": [218],
+      "Walkthrough одного запуска": [224],
+      "Readiness checklist для reference runtime": [225],
+      "Глава 22. Слой политик и каталог возможностей": [18, 227]
+    }
+  },
+  "visual_spot_check": {
+    "raw_contact_sheet": "/private/tmp/agent_arch_ch21_raw_pages_470_485_final.png",
+    "template2000n_contact_sheet": "/private/tmp/agent_arch_ch21_template_pages_218_227_final.png",
+    "result": "Chapter 21 start, dense runtime components, walkthrough, readiness checklist, final transition and chapter 22 start are readable. The raw blank-like transition page found in the first render was removed by adding a short final review block."
+  }
+}

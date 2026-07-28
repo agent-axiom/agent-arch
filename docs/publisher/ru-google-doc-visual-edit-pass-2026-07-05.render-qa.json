@@ -1,0 +1,76 @@
+{
+  "date": "2026-07-05",
+  "google_doc": {
+    "document_id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "final_known_revision": "ALtnJHxx8GXfQQfPMrGfG7STCXtscwWkhPzWpj1AJa-vee0UADj3vnwYNiZkKG2wGfd2Xkdsizblmxq8xb8YyumfJxKOb8ujAWDn1wNGphY"
+  },
+  "docx_checks": {
+    "archive_integrity": {
+      "raw_google_doc_export": "passed",
+      "template2000n_derivative": "passed"
+    },
+    "embedded_png_files": {
+      "raw_google_doc_export": 12,
+      "template2000n_derivative": 12
+    },
+    "long_paragraphs_250_words_or_more": {
+      "raw_google_doc_export": 0,
+      "template2000n_derivative": 0
+    }
+  },
+  "raw_google_doc_export": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-visual-edit-2026-07-05.docx",
+    "bytes": 1273901,
+    "sha256": "90e32536e1befa07bfa2882f3d3d71f040ab39e5550e09f83aad1407f3092761",
+    "approximate_words": 100045,
+    "paragraphs": 8245,
+    "non_empty_paragraphs": 6139,
+    "render": {
+      "render_dir": "/tmp/agent_arch_ru_google_doc_visual_edit_2026_07_05_final_render",
+      "pages": 501,
+      "blank_like_pages": [],
+      "contact_sheet": "/tmp/agent_arch_ru_google_doc_visual_edit_2026_07_05_final_render/contact-sheet.png",
+      "lowest_density_pages": [
+        {"page": 358, "density": 0.0042162040907240345},
+        {"page": 62, "density": 0.00510121714730255},
+        {"page": 125, "density": 0.005539811722556313},
+        {"page": 296, "density": 0.007827900960719699},
+        {"page": 41, "density": 0.008763411702686961},
+        {"page": 302, "density": 0.008944459345615283},
+        {"page": 242, "density": 0.011827442744968126},
+        {"page": 326, "density": 0.012564600564144273},
+        {"page": 297, "density": 0.013255265717336519},
+        {"page": 300, "density": 0.01353150442849671}
+      ]
+    }
+  },
+  "template2000n_derivative": {
+    "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-visual-edit-2026-07-05.docx",
+    "bytes": 1281054,
+    "sha256": "49cf319e43e15191fbebcb69fb87dca402d7aa4b81b21c1438d5308aee99d813",
+    "approximate_words": 100045,
+    "paragraphs": 8245,
+    "non_empty_paragraphs": 6139,
+    "bodytext_mapped": 4983,
+    "text_equality": true,
+    "render": {
+      "render_dir": "/tmp/agent_arch_ru_template2000n_visual_edit_2026_07_05_final_render",
+      "pages": 366,
+      "blank_like_pages": [],
+      "contact_sheet": "/tmp/agent_arch_ru_template2000n_visual_edit_2026_07_05_final_render/contact-sheet.png",
+      "lowest_density_pages": [
+        {"page": 238, "density": 0.004786099485517715},
+        {"page": 240, "density": 0.006653179260502733},
+        {"page": 215, "density": 0.010146716029068971},
+        {"page": 208, "density": 0.010894580912452314},
+        {"page": 366, "density": 0.013664865370253408},
+        {"page": 219, "density": 0.013671306575979758},
+        {"page": 258, "density": 0.0142913869025128},
+        {"page": 344, "density": 0.016899350950075314},
+        {"page": 31, "density": 0.017715082109165534},
+        {"page": 141, "density": 0.017738146108046103}
+      ]
+    }
+  }
+}

@@ -95,7 +95,7 @@ flowchart LR
 !!! example "贯穿案例：用 trace 回答争议"
     在支持分诊事故里，trace 不应该只写“工单已创建”。它应该展示关联的 `trace_id`、`session_id`、`idempotency_key`、策略决策、审批状态，以及最终 `create_support_ticket` 结果。这样，“是模型重复调用，还是重试制造了重复工单？”就不再是猜测，而是对同一条事件链的检查。
 
-**Trace case-spine note：**trace structure 应该区分三个 canonical cases。Support triage 需要关联 tool spans、approval status、`idempotency_key` 和最终的 `create_support_ticket` outcome。Internal knowledge assistant 需要带有 source identifiers、freshness markers、tenant scope 和 memory-write events 的 retrieval spans。Incident coordination 需要 escalation spans、notification outcomes、responder-role changes 和 incident-state events，让 post-incident review 看到 decision chain，而不只是 final status。
+**追踪案例主线说明（Trace case-spine note）：**追踪结构（trace structure）应该区分三个规范案例（canonical cases）。支持分诊（Support triage）需要关联工具跨度（tool spans）、审批状态（approval status）、`idempotency_key` 和最终 `create_support_ticket` 结果（outcome）。内部知识助手（Internal knowledge assistant）需要带有来源标识（source identifiers）、新鲜度标记（freshness markers）、租户范围（tenant scope）和记忆写入事件（memory-write events）的检索跨度（retrieval spans）。事故协调（Incident coordination）需要升级跨度（escalation spans）、通知结果（notification outcomes）、响应者角色变更（responder-role changes）和事故状态事件（incident-state events），让事件后复盘（post-incident review）看到决策链（decision chain），而不只是最终状态（final status）。
 
 ## 5. 哪些东西适合做成独立 span
 
@@ -247,32 +247,35 @@ side_effect: created
 下面这个骨架不是为了替代 tracing SDK，而是为了说明一个原则：span 不只是开始和结束，它还必须把步骤类型和结果记录成可分析的结构。
 
 ```python
-from dataclasses import dataclass
 from time import monotonic
 
-
-@dataclass
-class SpanResult:
-    name: str
-    status: str
-    duration_ms: int
+from agent_runtime_ref.models import ToolResult
 
 
 def traced_step(name: str, fn):
     started = monotonic()
+    status = "success"
     try:
-        fn()
-        status = "success"
+        result = fn()
+        if isinstance(result, ToolResult) and result.status != "success":
+            status = "failure"
+        return result
     except Exception:
         status = "failure"
         raise
     finally:
         duration_ms = int((monotonic() - started) * 1000)
-        emit_span(SpanResult(name=name, status=status, duration_ms=duration_ms))
+        emit_span(name=name, status=status, duration_ms=duration_ms)
 
 
-def emit_span(result: SpanResult) -> None:
-    print({"span_name": result.name, "status": result.status, "duration_ms": result.duration_ms})
+def emit_span(*, name: str, status: str, duration_ms: int) -> None:
+    print(
+        {
+            "span_name": name,
+            "status": status,
+            "duration_ms": duration_ms,
+        }
+    )
 ```
 
 这个例子故意很简单。它的重点不是替代 tracing SDK，而是强调：每个重要步骤都应该留下结构化的痕迹。
@@ -292,7 +295,7 @@ Observability 不应该变成数据泄漏渠道。
 最实用的规则是：
 
 - 记录元数据和派生事实；
-- 在有帮助时记录标识符和哈希；
+- 非密钥哈希只用于非秘密完整性校验；敏感值关联应使用 keyed HMAC；
 - 没有充分理由时，不要把完整敏感载荷丢进通用遥测流水线。
 
 ## 13. 智能体可观测性最常见的崩坏点

@@ -94,7 +94,7 @@ MCP 有用，不是因为它“新潮”，而是因为它能在智能体和外�
 
 当你有的不是一个运行时 + 一个集成，而是一组能力时，这一点就尤其重要。
 
-**Sandbox/MCP case-spine note：**sandbox 和 MCP contract 应该用三个 canonical cases 来测试。Support triage 需要 helpdesk writes 的 sandbox limits、approval-aware MCP tools，以及 timeout 后的 reconciliation path。Internal knowledge assistant 需要 read-only MCP resources、corpus-scoped network access、source validation，并禁止 hidden side effects。Incident coordination 需要隔离的 escalation adapters、notification scopes、responder-role enforcement，以及不会绕过 audit trail 的 emergency paths。
+**沙箱/MCP 案例主线说明（Sandbox/MCP case-spine note）：**沙箱（sandbox）和 MCP 契约（MCP contract）应该用三个规范案例（canonical cases）来测试。支持分诊（Support triage）需要帮助台写入（helpdesk writes）的沙箱限制（sandbox limits）、感知审批的 MCP 工具（approval-aware MCP tools），以及超时后的对账路径（reconciliation path）。内部知识助手（Internal knowledge assistant）需要只读 MCP 资源（read-only MCP resources）、按语料限定的网络访问（corpus-scoped network access）、来源验证（source validation），并禁止隐藏副作用（hidden side effects）。事故协调（Incident coordination）需要隔离的升级适配器（escalation adapters）、通知作用域（notification scopes）、响应者角色执行（responder-role enforcement），以及不会绕过审计轨迹（audit trail）的应急路径（emergency paths）。
 
 ### 4.1. MCP 是安全边界，不只是方便的连接器
 
@@ -115,7 +115,7 @@ Microsoft 的 MCP tool poisoning 案例把这条边界说得更尖锐：**tool d
 
 ### 4.2. MCP 威胁模型矩阵
 
-对 MCP 来说，[MCP 威胁模型（MCP threat model）](../../appendix/trace-schema.zh.md) 不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。一个最小版本可以这样看：
+对 MCP 来说，[MCP 威胁模型（MCP threat model）](../../appendix/trace-schema.zh.md) 不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。MCP 的安全与授权材料已经明确讨论 token passthrough、scope selection、HTTPS/SSRF 限制和有状态会话保护；因此这张矩阵不是装饰性安全文字，而是授权与运行契约的一部分。[^mcp-security][^mcp-authorization] 一个最小版本可以这样看：
 
 - **tool poisoning** — 工具描述或工具结果试图引导模型行为；控制方式是验证 tool descriptions，把 tool output 与指令分离，并只允许已知契约。
 - **rug pull attack** — 已获批准的 MCP server 在审查后改变 tools、scopes 或行为；控制方式是 version pinning、重新认证、diff review 和快速隔离路径。
@@ -129,9 +129,18 @@ Microsoft 的 MCP tool poisoning 案例把这条边界说得更尖锐：**tool d
 
 这张矩阵不是为了禁止 MCP，而是为了让每个 MCP endpoint 都能回答三个问题：它增加了哪类威胁，哪项控制在限制它，事故之后 telemetry 里还能留下什么证据。
 
-### 4.3. 最小 MCP server contract
+MCP 连接的最低验收条件：
 
-Threat model 只有变成可审查的 server artifact 才真正有用。每个 approved endpoint 都应该携带一份最小 MCP server 记录：
+1. 服务器在已批准注册表中，负责人和契约版本可见。
+2. 令牌确实签发给 MCP 服务器或对应资源受众，而不是从另一层盲目透传。
+3. 权限范围限制在具体操作上，不依赖宽泛的长期密钥。
+4. 工具模式、描述或权限范围变化时，会触发重新审查。
+5. 工具输出在过滤和分类之前，一律当作不可信内容。
+6. 追踪里保留 `mcp_server_id`、`tool_contract_version`、`scope_review`、`quarantine_state` 和证据链接。
+
+### 4.3. 最小 MCP server contract（服务器契约）
+
+威胁模型只有变成可审查的服务器工件才真正有用。每个已批准端点都应该携带一份最小 MCP 服务器记录：
 
 ```yaml
 mcp_server:
@@ -722,6 +731,9 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 
+[^mcp-security]: [Model Context Protocol, Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
+
+[^mcp-authorization]: [Model Context Protocol, Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
 [^microsoft-autojack]: Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)

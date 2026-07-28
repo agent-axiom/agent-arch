@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <title>Непрерывная сверка реестра с фактическим исполнением</title>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,8 L10,4 z" fill="#3f4b45"/>
+    </marker>
+    <style>
+      .box { fill: #edf7f1; stroke: #2f6f4e; stroke-width: 2; }
+      .decision { fill: #f3f5f4; stroke: #2f6f4e; stroke-width: 2; }
+      .line { fill: none; stroke: #3f4b45; stroke-width: 2.2; marker-end: url(#arrow); }
+      .dash { fill: none; stroke: #66736c; stroke-width: 2; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+      .label { font: 28px Arial, sans-serif; fill: #17201b; text-anchor: middle; }
+      .edge { font: 28px Arial, sans-serif; fill: #17201b; text-anchor: middle; }
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="#ffffff"/>
+
+  <rect class="box" x="45" y="70" width="420" height="165" rx="4"/>
+  <text class="label" x="255" y="108"><tspan x="255">Фактическое исполнение</tspan><tspan x="255" dy="36">Трассы, принципалы, шлюзы</tspan><tspan x="255" dy="36">и активные возможности</tspan></text>
+
+  <rect class="box" x="45" y="690" width="420" height="165" rx="4"/>
+  <text class="label" x="255" y="730"><tspan x="255">Утвержденный реестр</tspan><tspan x="255" dy="36">Владелец, состояние, версии</tspan><tspan x="255" dy="36">и разрешенные полномочия</tspan></text>
+
+  <rect class="box" x="500" y="95" width="380" height="120" rx="4"/>
+  <text class="label" x="690" y="135"><tspan x="690">Нормализация</tspan><tspan x="690" dy="36">обнаруженных сущностей</tspan></text>
+
+  <polygon class="decision" points="900,280 1160,430 900,580 640,430"/>
+  <text class="label" x="900" y="366"><tspan x="900">Есть расхождение</tspan><tspan x="900" dy="36">идентичности, владельца,</tspan><tspan x="900" dy="36">версии или</tspan><tspan x="900" dy="36">области действия?</tspan></text>
+
+  <rect class="box" x="1205" y="70" width="350" height="180" rx="4"/>
+  <text class="label" x="1380" y="112"><tspan x="1380">Совпадение</tspan><tspan x="1380" dy="36">Обновить last_seen</tspan><tspan x="1380" dy="36">Обновить ссылку</tspan><tspan x="1380" dy="36">на доказательства</tspan></text>
+
+  <rect class="box" x="1200" y="290" width="355" height="300" rx="4"/>
+  <text class="label" x="1378" y="326"><tspan x="1378">Классифицировать</tspan><tspan x="1378" dy="36">расхождение</tspan><tspan x="1378" dy="36">Неизвестный агент</tspan><tspan x="1378" dy="36">или версия</tspan><tspan x="1378" dy="36">Лишнее полномочие</tspan><tspan x="1378" dy="36">или потерянный</tspan><tspan x="1378" dy="36">владелец</tspan></text>
+
+  <polygon class="decision" points="900,620 1120,730 900,840 680,730"/>
+  <text class="label" x="900" y="716"><tspan x="900">Рискованный путь</tspan><tspan x="900" dy="36">остается активным?</tspan></text>
+
+  <rect class="box" x="1205" y="620" width="350" height="180" rx="4"/>
+  <text class="label" x="1380" y="656"><tspan x="1380">Карантин</tspan><tspan x="1380" dy="36">или исправление</tspan><tspan x="1380" dy="36">до следующего</tspan><tspan x="1380" dy="36">внешнего действия</tspan></text>
+
+  <rect class="box" x="1205" y="835" width="350" height="125" rx="4"/>
+  <text class="label" x="1380" y="872"><tspan x="1380">Задача исправления</tspan><tspan x="1380" dy="36">с владельцем и сроком</tspan></text>
+
+  <rect class="box" x="390" y="860" width="480" height="120" rx="4"/>
+  <text class="label" x="630" y="886"><tspan x="630">Обновить реестр</tspan><tspan x="630" dy="36">политику и доказательства</tspan><tspan x="630" dy="36">закрытия</tspan></text>
+
+  <path class="line" d="M465 152 L498 152"/>
+  <path class="line" d="M880 155 L900 155 L900 278"/>
+  <path class="line" d="M465 772 L560 772 L560 430 L638 430"/>
+  <path class="line" d="M1160 430 L1185 430 L1185 160 L1203 160"/>
+  <text class="edge" x="1175" y="270">Нет</text>
+  <path class="line" d="M1160 430 L1198 430"/>
+  <text class="edge" x="1172" y="404">Да</text>
+  <path class="line" d="M1200 590 L1085 600 L1020 655"/>
+  <path class="line" d="M1120 730 L1203 705"/>
+  <text class="edge" x="1170" y="690">Да</text>
+  <path class="line" d="M1030 815 L1203 890"/>
+  <text class="edge" x="1115" y="835">Нет</text>
+  <path class="dash" d="M1205 760 L1050 900 L872 918"/>
+  <path class="dash" d="M1205 900 L872 918"/>
+  <path class="dash" d="M390 918 L255 918 L255 857"/>
+</svg>

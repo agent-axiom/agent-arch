@@ -1,0 +1,58 @@
+{
+  "date": "2026-06-26",
+  "google_doc": {
+    "id": "1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "url": "https://docs.google.com/document/d/1LJHcIIpggUwaFYRXvSZ91KyNzb2kyxCsESVRAHMWlxI",
+    "final_revision_id": "ALtnJHwPmsHNKoBZV8Pfz8or5JcnrMP3FJaAJRzQyNJa3dKvBFCM2dHPMoXksWF2KaURo6e9YH56QaWYxxMM9UO2AD4fT_vb1_cLU6n5iFg"
+  },
+  "raw_google_docx": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-ch13-trace-pass-2026-06-26.docx",
+    "render_dir": "/private/tmp/agent_arch_ch13_trace_pass_2026_06_26_render",
+    "pdf": "/private/tmp/agent_arch_ch13_trace_pass_2026_06_26_render/agent-arch-ru-ch13-trace-pass-2026-06-26.pdf",
+    "page_count": 616,
+    "zero_byte_pages": [],
+    "blank_like_pages": [],
+    "docx_bytes": 717558,
+    "pdf_bytes": 3965543,
+    "zip_test": "passed",
+    "marker_pages": {
+      "Глава 13. Трассы, спаны и структурированные события": [28, 309, 610],
+      "Глава 12 закончилась на write-path": [309],
+      "Trace, span, event и session": [312],
+      "Минимальный набор полей для расследуемого trace": [316],
+      "Trace readiness checklist перед эксплуатацией": [320],
+      "Companion route для главы 13": [321, 322],
+      "Глава 14. SLO для агентных систем": [28, 322]
+    },
+    "visual_spot_pages": [309, 312, 316, 320, 322],
+    "visual_spot_result": "passed"
+  },
+  "template2000n": {
+    "docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-ch13-trace-pass-2026-06-26.docx",
+    "render_dir": "/private/tmp/agent_arch_template2000n_ch13_trace_pass_2026_06_26_render_v2",
+    "pdf": "/private/tmp/agent_arch_template2000n_ch13_trace_pass_2026_06_26_render_v2/agent-arch-ru-template2000n-ch13-trace-pass-2026-06-26.pdf",
+    "page_count": 308,
+    "zero_byte_pages": [],
+    "blank_like_pages": [],
+    "docx_bytes": 724854,
+    "pdf_bytes": 5343195,
+    "zip_test": "passed",
+    "marker_pages": {
+      "Глава 13. Трассы, спаны и структурированные события": [17],
+      "Глава 12 закончилась на write-path": [168],
+      "Trace, span, event и session": [169],
+      "Минимальный набор полей для расследуемого trace": [171],
+      "Trace readiness checklist перед эксплуатацией": [174],
+      "Companion route для главы 13": [175],
+      "Глава 14. SLO для агентных систем": [17, 175]
+    },
+    "visual_spot_pages": [168, 171, 174, 175],
+    "visual_spot_result": "passed",
+    "notes": [
+      "Template2000n derivative uses copied style assets from the previous checked Template2000n proof.",
+      "The numbered question-list in chapter 13 opening was remapped away from heading styles after visual QA.",
+      "Only targeted visual spot pages were manually inspected; all rendered PNG pages were scanned for missing and blank-like outputs."
+    ]
+  }
+}
+
