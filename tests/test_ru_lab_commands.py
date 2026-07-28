@@ -83,6 +83,56 @@ def test_shell_syntax_error_names_the_laboratory_and_command() -> None:
     assert "sh -n" in diagnostic
 
 
+def test_default_shell_syntax_uses_only_available_checkers(monkeypatch) -> None:
+    markdown = dedent(
+        """
+        ### Лабораторная работа 2. Переносимая проверка
+
+        ```sh
+        python -m agent_runtime_ref inspect-agent
+        ```
+        """
+    )
+    system_sh = verifier.shutil.which("sh")
+    assert system_sh is not None
+    monkeypatch.setattr(
+        verifier.shutil,
+        "which",
+        lambda shell: system_sh if shell == "sh" else None,
+    )
+
+    report = verifier.verify_text(
+        markdown,
+        repo_root=REPO_ROOT,
+        run_smoke=False,
+    )
+
+    assert report.ok, report.format_issues()
+
+
+def test_explicit_missing_shell_remains_an_error(monkeypatch) -> None:
+    markdown = dedent(
+        """
+        ### Лабораторная работа 2. Явная проверка
+
+        ```sh
+        python -m agent_runtime_ref inspect-agent
+        ```
+        """
+    )
+    monkeypatch.setattr(verifier.shutil, "which", lambda _shell: None)
+
+    report = verifier.verify_text(
+        markdown,
+        repo_root=REPO_ROOT,
+        shells=("zsh",),
+        run_smoke=False,
+    )
+
+    assert not report.ok
+    assert "required syntax checker is unavailable: zsh" in report.format_issues()
+
+
 def test_smoke_executes_only_allowlisted_runtime_commands_in_clean_tmp(
     tmp_path: Path,
 ) -> None:
