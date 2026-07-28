@@ -22,6 +22,7 @@ from pathlib import Path
 from typing import Sequence
 
 SHELL_LANGUAGES = frozenset({"bash", "console", "sh", "shell", "zsh"})
+DEFAULT_SHELL_CANDIDATES = ("sh", "zsh")
 SAFE_RUNTIME_SUBCOMMANDS = frozenset(
     {
         "check-change",
@@ -195,7 +196,7 @@ def verify_text(
     markdown: str,
     *,
     repo_root: str | Path,
-    shells: Sequence[str] = ("sh", "zsh"),
+    shells: Sequence[str] | None = None,
     run_smoke: bool = True,
 ) -> VerificationReport:
     """Verify laboratory shell blocks and optionally smoke safe runtime commands."""
@@ -203,7 +204,8 @@ def verify_text(
     root = Path(repo_root).resolve()
     blocks = extract_lab_shell_blocks(markdown)
     commands = extract_runtime_commands(blocks)
-    issues = list(_check_shell_syntax(blocks, shells=shells))
+    selected_shells = _available_default_shells() if shells is None else tuple(shells)
+    issues = list(_check_shell_syntax(blocks, shells=selected_shells))
     issues.extend(_check_runtime_selection(blocks, commands))
     smoke_results: tuple[SmokeResult, ...] = ()
 
@@ -223,7 +225,7 @@ def verify_manuscript(
     manuscript: str | Path,
     *,
     repo_root: str | Path,
-    shells: Sequence[str] = ("sh", "zsh"),
+    shells: Sequence[str] | None = None,
     run_smoke: bool = True,
 ) -> VerificationReport:
     """Read and verify one Markdown manuscript."""
@@ -353,6 +355,13 @@ def _runtime_argv(command: str) -> tuple[str, ...] | None:
 def _is_python_launcher(token: str) -> bool:
     name = Path(token).name
     return name == "python" or name == "python3" or name.startswith("python3.")
+
+
+def _available_default_shells() -> tuple[str, ...]:
+    available = tuple(
+        shell for shell in DEFAULT_SHELL_CANDIDATES if shutil.which(shell) is not None
+    )
+    return available or DEFAULT_SHELL_CANDIDATES[:1]
 
 
 def _check_shell_syntax(
@@ -629,7 +638,10 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         dest="shells",
         default=None,
-        help="Syntax checker to run; repeat for several shells (default: sh and zsh)",
+        help=(
+            "Syntax checker to run; repeat for several shells "
+            "(default: installed checkers among sh and zsh)"
+        ),
     )
     parser.add_argument(
         "--syntax-only",
@@ -641,7 +653,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Sequence[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
-    shells = tuple(args.shells) if args.shells else ("sh", "zsh")
+    shells = tuple(args.shells) if args.shells else None
     try:
         report = verify_manuscript(
             args.manuscript,
