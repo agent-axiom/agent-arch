@@ -168,7 +168,7 @@
 
 Контракт пакетного экспорта намеренно конкретен. Проверка конфигурации сессионных оценок также отделяет некорректно сформированные спецификации оценки от неуспешных результатов оценки через `Session eval specs must be a mapping`, `Session eval spec must be a mapping`, `Session eval spec key must be a string`, `Session eval spec key must not be empty` и `Session eval spec keys must be unique`.
 
-Контракт экспорта намеренно конкретен: значение `dataset_name` по умолчанию — `agent-runtime-ref-eval-seed`; верхнеуровневая сводка (`top-level summary`) включает `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`; сценарии с ожиданием подтверждения также несут `approval_status_counts` в `expected_outcomes`; встроенные сценарии включают `failed_run_timeout` с меткой `duplicate_ticket_eval_passed`, `max_ticket_side_effects: 1` и блокирующим правилом проверки `duplicate_ticket_guard`, `profile_memory` с метками `memory_read`, `profile_lookup` и `grounded_answer`, `mixed_session` с метками `multi_run`, `approval_then_memory` и `session_evals`, плюс `required_run_count` как ожидаемый результат, а также `support_ticket` с меткой `sandbox_profile_review`, ожидаемым результатом `sandbox_profile_reviewed` и блокирующим правилом проверки `sandbox_profile_review`.
+Контракт экспорта намеренно конкретен: значение `dataset_name` по умолчанию — `agent-runtime-ref-eval-seed`; верхнеуровневая сводка (`top-level`) включает `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`; сценарии с ожиданием подтверждения также несут `approval_status_counts` в `expected_outcomes`. Эти встроенные сценарии разделяют известный преддиспетчерский отказ и неопределённый внешний эффект: `failed_run_timeout` доказывает отказ до вызова инструмента и трассируемость, а `unknown_effect_reconciliation` создаёт `side_effect_unknown`, ожидает одну запись `reconciliation_runs` и содержит метку `duplicate_ticket_eval_passed`, ограничение `max_ticket_side_effects: 1` и блокирующее правило `duplicate_ticket_guard`. `profile_memory` использует `memory_read`, `profile_lookup` и `grounded_answer`; `mixed_session` — `multi_run`, `approval_then_memory`, `session_evals` и `required_run_count`; `support_ticket` — `sandbox_profile_review` и `sandbox_profile_reviewed`.
 
 !!! example "Шлюз оценки для цепочки дубля тикета"
     Для сквозного кейса разбора обращений поддержки отдельная оценка должна воспроизводить тайм-аут после `create_ticket`, требовать сохраненные `trace_id` и `idempotency_key`, ожидать ровно один побочный эффект тикета или остановку `side_effect_unknown`, и блокировать раскатку, если новая версия подсказки, модели или адаптера снова делает слепой повтор и создает второй тикет.
@@ -239,6 +239,16 @@
 - `decision_impact`
 
 Тогда оценочный артефакт начинает жить не как временный JSON, а как часть дисциплины выпуска.
+
+### Критерии приемки вердикта проверяющего
+
+Вердикт проверяющего можно считать контрактом, а не комментарием ревьюера, только если он проходит несколько проверок:
+
+- у него есть стабильные `verdict_id`, `verifier_id` и `verifier_contract_version`;
+- входы (`input_refs`) и доказательства (`verifier_evidence_refs` или `evidence_refs`) указывают на трассы, сценарии и версии политик;
+- `process_score`, `outcome_score` и `failure_attribution` разделены и не схлопнуты в один ярлык;
+- `blocking_decision`, `comparison_baseline` и `reviewer_override` объясняют, почему выпуск блокируется, предупреждается или пропускается;
+- `stop_condition`, `verification_command`, `verification_result` и `verifier_actor` фиксируют, как именно проверено завершение запуска.
 
 ## Пример правил проверки
 

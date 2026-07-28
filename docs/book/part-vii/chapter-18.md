@@ -295,12 +295,10 @@ rollout:
     - policy_prechecks
     - capability_owners
     - offline_eval_pass
+    - duplicate_ticket_eval_passed
     - slo_defined
     - rollback_plan
     - oncall_owner
-    - approval_queue_owner
-    - session_expiry_signals_visible
-    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -309,10 +307,6 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
-    - approval_backlog_unbounded
-    - paused_runs_without_expiry
-    - capability_session_reinit_unmodeled
-    - orchestration_pattern_change_unreviewed
 ```
 
 Такой checklist хорош тем, что делает готовность предметом инженерного разговора, а не уверенности в голосе автора релиза.
@@ -322,29 +316,23 @@ rollout:
 Ниже каркас, который показывает, как готовность можно оценивать как набор обязательных условий:
 
 ```python
-from dataclasses import dataclass
+from agent_runtime_ref.rollout import RolloutPolicy, assess_rollout
 
 
-@dataclass
-class RolloutReadiness:
-    trace_coverage: bool
-    offline_eval_pass: bool
-    slo_defined: bool
-    rollback_plan: bool
-    approval_path_defined: bool
-
-
-def ready_for_rollout(state: RolloutReadiness) -> bool:
-    return (
-        state.trace_coverage
-        and state.offline_eval_pass
-        and state.slo_defined
-        and state.rollback_plan
-        and state.approval_path_defined
-    )
+def ready_for_rollout(
+    config: dict[str, object],
+    observed_checks: dict[str, bool],
+) -> dict[str, object]:
+    policy = RolloutPolicy.from_dict(config)
+    assessment = assess_rollout(policy, observed_checks)
+    return {
+        "ready": assessment.ready,
+        "missing_required": list(assessment.missing_required),
+        "blocking_signals": list(assessment.blocking_signals),
+    }
 ```
 
-Очень простой пример, но он помогает удерживать одну важную мысль: готовность к промышленной среде должна быть формализуемой.
+`observed_checks` должны поступать из проверенного манифеста, а не из ручных галочек. Отсутствующий обязательный сигнал и активный `block_if` дают разные диагностические списки, но оба удерживают `ready=false`.
 
 ## 13. Что чаще всего ломается в процессе запуска
 
@@ -382,6 +370,114 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - владение, дежурство и ручной резервный путь описаны конкретно.
 
 Если большинство этих условий не выполняется, у команды уже может быть инерция запуска, но реальной готовности к поэтапному выпуску у нее пока нет.
+
+**Рубрика готовности 0–4.** Оценка 0 означает отсутствие воспроизводимых контрактов и доказательств; 1 — документированные контракты без исполняемых проверок; 2 — детерминированные проверки с пробелами в материальных доказательствах; 3 — готовность к контрольной волне с проверенным пакетом и владельцем отката; 4 — наблюдаемую промышленную эксплуатацию с отрепетированным реагированием и выводом из эксплуатации. Любой жесткий блокер принудительно возвращает решение `hold` независимо от суммы баллов. Машиночитаемая рубрика находится в `docs/companion/examples/readiness-rubric-support-ticket.yaml`.
+
+### 14.1. Практикум: пройти цепочку trace → eval gate → rollout wave → containment
+
+Чеклист промышленного запуска становится сильным только тогда, когда он связывает наблюдаемое поведение системы с конкретным выпускным решением. Недостаточно написать “трассы есть”, “оценки пройдены”, “откат подготовлен”. Нужно показать, какая трасса доказывает какой путь, какая оценка блокирует какую волну, какое условие удерживает расширение и какой containment включается при неизвестном результате.
+
+Практический объект для этого — запись выпускного решения. Она должна быть достаточно короткой, чтобы ее можно было заполнить перед реальной волной, и достаточно строгой, чтобы команда не могла спрятать неопределенность за общими словами.
+
+```yaml
+rollout_decision_record:
+  release_name: support_agent_ticket_creation_wave_2
+  release_owner: customer_ops_platform
+  decision_time: 2026-06-21T10:00:00Z
+  target_wave:
+    name: operator_assisted
+    population: support_operators_eu_pilot
+    traffic_limit: 10_percent_of_eligible_requests
+    write_capabilities_enabled:
+      - support.order.create_ticket
+  evidence:
+    trace_sample:
+      required_paths:
+        - happy_path_ticket_created
+        - policy_requires_confirmation
+        - confirmation_timeout
+        - tool_unknown_result
+        - verifier_rejects_inconsistent_state
+      required_events:
+        - run_start
+        - policy_precheck
+        - capability_selected
+        - tool_policy_decision
+        - approval_requested
+        - approval_resolved
+        - tool_execution
+        - verification_result
+        - run_complete
+    eval_gate:
+      suite: eval.support.ticket_creation.policy_edges
+      pass_rate: 0.992
+      critical_failures: 0
+      known_accepted_failures:
+        - slow_operator_resolution_in_sandbox
+    slo_snapshot:
+      confirmation_queue_p95_age: 3m
+      ticket_creation_p95_latency: 8s
+      verifier_rejection_rate: 0.7_percent
+      unknown_result_rate: 0.1_percent
+  decision_rules:
+    expand_when:
+      - eval_gate.critical_failures == 0
+      - unknown_result_rate <= 0.2_percent
+      - confirmation_queue_p95_age <= 5m
+      - verifier_rejection_rate <= 1_percent
+    hold_when:
+      - confirmation_queue_p95_age > 5m
+      - verifier_rejection_rate > 1_percent
+      - policy_reason_code_distribution_shifts == true
+    freeze_when:
+      - unknown_result_rate > 0.5_percent
+      - missing_required_trace_event_detected == true
+      - on_call_owner_unavailable == true
+    rollback_when:
+      - critical_eval_regression_detected == true
+      - unauthorized_write_detected == true
+      - repeated_idempotency_conflict == true
+  containment:
+    default_action: hold_wave
+    safe_mode:
+      disable_write_capabilities: true
+      keep_read_only_assistance: true
+      require_operator_confirmation_for_all_writes: true
+    rollback_playbook_ref: rollback.support.ticket_creation.v1
+    customer_communication_ref: comms.support_agent_limited_beta.v1
+```
+
+Эта запись связывает четыре уровня, которые в слабом процессе живут отдельно.
+
+Первый уровень — trace. Команда не просто смотрит на наличие логов, а требует образцы конкретных путей: штатный путь, подтверждение, таймаут подтверждения, неизвестный результат инструмента и отказ проверяющего. Такой набор нужен потому, что первые инциденты обычно происходят не на счастливом пути. Если система умеет показать только успешный запуск, она еще не готова к расширению волны.
+
+Второй уровень — eval gate. Оценка должна иметь отношение к переходу, который команда собирается сделать. Для операторской волны важны не только общие ответы модели, но и политические границы, объяснимость подтверждения, корректность отказов и отсутствие критических регрессий. Если eval suite не покрывает новые риски этой волны, зеленый результат почти ничего не доказывает.
+
+Третий уровень — rollout wave. Волна должна быть описана как управляемая популяция и набор включенных возможностей. “Включаем для 10%” недостаточно. Нужно понимать, какие пользователи или операторы входят в эти 10%, какие write-capabilities действительно активированы, какие ограничения на трафик действуют и какие условия остановят расширение.
+
+Четвертый уровень — containment. Хороший выпуск заранее знает, что делать при неопределенности. Не каждый сбой требует полного отката. Иногда достаточно удержать волну, выключить пишущие возможности, оставить read-only помощь и потребовать подтверждение для всех действий. Но это решение должно быть готово до инцидента. Если команда впервые обсуждает safe mode во время сбоя, safe mode фактически отсутствует.
+
+Удобно перевести правила решения в короткую таблицу:
+
+| Сигнал | Решение | Что делает система | Кто подтверждает |
+| --- | --- | --- | --- |
+| Все eval gates зелёные, трассы полные, SLO в пределах | expand | расширяет волну по заранее заданному лимиту | release owner |
+| Очередь подтверждений растёт, но writes корректны | hold | удерживает текущую волну, не расширяет трафик | on-call + release owner |
+| Пропало обязательное событие трассы или недоступен дежурный | freeze | останавливает новые включения, сохраняет текущий безопасный режим | incident commander |
+| Найдена неавторизованная запись или критическая регрессия | rollback | выключает пишущие возможности и запускает rollback playbook | incident commander + owner |
+
+Обрати внимание на различие между `hold`, `freeze` и `rollback`. В слабых процессах все это называют “остановить релиз”, но для агентной системы разница важна. `hold` означает: текущая волна не ухудшается критически, но доказательств для расширения недостаточно. `freeze` означает: появились сигналы, что контрольная поверхность неполная, поэтому новые включения запрещены. `rollback` означает: система уже нарушила ключевое условие безопасности, корректности или доверия, поэтому нужно возвращать состояние к заведомо безопасной конфигурации.
+
+Хорошая практика — заранее определить, какие артефакты должен приложить владелец выпуска к каждому решению:
+
+- для `expand`: ссылку на eval gate, образцы трасс всех обязательных путей, снимок SLO и список включенных возможностей;
+- для `hold`: сигнал, который удержал волну, срок следующего пересмотра и владельца устранения причины;
+- для `freeze`: отсутствующий контроль или недостоверный сигнал, решение о safe mode и критерий разморозки;
+- для `rollback`: нарушенное правило, затронутые возможности, выполненные шаги playbook и проверку восстановления.
+
+Это особенно важно для книг и внутренних руководств по ИИ-агентам: читателю нужно видеть не только “архитектурно правильно”, но и “как это выглядит в день запуска”. В день запуска не хватает времени вспоминать главы про трассы, SLO и политики. Поэтому выпускная запись должна собрать их в один операционный документ.
+
+После заполнения `rollout_decision_record` команда должна уметь ответить на простой вопрос: “Почему мы имеем право расширить эту волну именно сейчас?” Если ответ опирается на трассы, оценки, SLO, явные правила и готовый containment, поэтапный выпуск похож на инженерное решение. Если ответ звучит как “вроде всё работает”, это еще не выпускная готовность.
 
 ## 15. Что делать сразу после этой главы
 
@@ -426,7 +522,7 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - [Источники](../../appendix/sources.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
-[^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
+[^moffatt]: Civil Resolution Tribunal, [Moffatt v. Air Canada](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
 [^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/)
 

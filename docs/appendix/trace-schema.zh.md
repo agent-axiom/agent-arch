@@ -35,17 +35,22 @@
 
 ```json
 {
+  "schema_version": "1.0",
   "event_type": "run_start",
   "trace_id": "trace-demo-001",
   "payload": {
-    "agent_id": "support-triage-ref",
+    "input_description": "[REDACTED]",
+    "input_sha256": "edaf461dd5cf4ef498bfddb0a480355e6e42f669768fe3d42f9da2e67d88b81a",
     "tenant_id": "tenant-acme",
     "principal_id": "user-42",
     "session_id": "session-demo-001",
-    "user_input": "Please create a ticket for this onboarding issue."
-  }
+    "agent_id": "support-triage-ref"
+  },
+  "redacted_fields": []
 }
 ```
+
+教学包中的非密钥 SHA-256 只是一项用于受控重放的确定性校验和。它不适合关联低熵敏感输入；生产环境应使用 keyed HMAC 和受管密钥轮换。
 
 最小可用字段集是：
 
@@ -392,7 +397,7 @@
 ```bash
 .venv/bin/python -m agent_runtime_ref dump-events
 .venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl
-.venv/bin/python -m agent_runtime_ref export-events --output artifacts/trace-demo.jsonl --redact-field user_input
+.venv/bin/python -m agent_runtime_ref export-events --simulate-failure post_dispatch_timeout --output artifacts/trace-post-dispatch.jsonl
 .venv/bin/python -m agent_runtime_ref inspect-trace --input artifacts/trace-demo.jsonl
 .venv/bin/python -m agent_runtime_ref export-session --output artifacts/session-demo-001.json
 .venv/bin/python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json

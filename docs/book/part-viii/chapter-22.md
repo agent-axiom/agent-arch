@@ -1,7 +1,7 @@
 # Глава 22. Цепочка поставки, происхождение и доверенные артефакты
 
 !!! info "Актуальность главы"
-    Последняя редакционная проверка: **14 мая 2026 года**. Следующая плановая проверка: **14 июня 2026 года**.
+    Последняя редакционная проверка источников и платформенных ссылок: **29 июня 2026 года**. Предыдущая полная редакционная проверка: **14 мая 2026 года**. Следующая плановая проверка полного каталога: **29 июля 2026 года**.
 
     Что изменилось после предыдущей проверки: поверхности безопасности MCP/A2A, контракты проверяющего, управленческая телеметрия и замечания по готовности к печатной версии теперь покрыты конкретными контрактами и проверками документации.
 
@@ -298,29 +298,26 @@ inventory:
 Ниже очень простой каркас:
 
 ```python
-from dataclasses import dataclass
+from pathlib import Path
+
+from agent_runtime_ref.evidence import verify_evidence_manifest
 
 
-@dataclass
-class ArtifactRecord:
-    has_owner: bool
-    has_version: bool
-    has_provenance: bool
-    review_passed: bool
-    schema_linked: bool
-
-
-def artifact_ready(record: ArtifactRecord) -> bool:
-    return (
-        record.has_owner
-        and record.has_version
-        and record.has_provenance
-        and record.review_passed
-        and record.schema_linked
+def artifact_ready(
+    manifest_path: Path,
+    *,
+    required_artifact_ids: tuple[str, ...],
+) -> bool:
+    result = verify_evidence_manifest(
+        manifest_path,
+        required_artifact_ids=required_artifact_ids,
     )
+    required = set(required_artifact_ids)
+    observed = set(result.artifact_ids)
+    return result.verified and not result.diagnostics and required <= observed
 ```
 
-Идея здесь простая: доверенный артефакт полезно определять не по интуиции, а по четким признакам. Если платформа не умеет явно проверять готовность артефакта, она почти неизбежно скатывается к социальному доверию, устаревшим значениям по умолчанию и хрупкой идентичности выпуска.
+Булевы заявления вроде `review_passed=true` сами по себе не являются доказательствами. Проверяемый манифест связывает идентификатор с файлом, SHA-256, временем измерения и диагностикой. Даже успешная структурная проверка не заменяет доверенную аттестацию предметного сигнала.
 
 ## 12. Что чаще всего ломается в дисциплине артефактов
 

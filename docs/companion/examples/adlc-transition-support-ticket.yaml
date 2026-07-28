@@ -1,0 +1,19 @@
+schema_version: 1
+transition_id: adlc-support-ticket-baseline-to-canary-001
+change_id: chg-support-ticket-idempotency-v2
+from_state: evaluation_baseline
+to_state: staged_rollout
+owner: runtime-release-owner
+required_evidence:
+  - artifact:eval-dataset.json
+  - eval:unknown_effect_reconciliation
+  - test:action_digest_mutation
+  - slo:slo-support-ticket-known-effect-v1
+  - plan:rollback-support-ticket-v2
+decision: hold
+blockers:
+  - duplicate_ticket_eval_not_attested
+decided_at: 2026-07-23T09:30:00Z
+next_review:
+  owner: agent-security
+  condition: trusted_attestation_attached

@@ -133,8 +133,8 @@ Escalate when approval is required or when the outcome of a write action is unce
 Always return a structured decision object.
 ```
 
-!!! note "Routine case-spine note"
-    这组 instructions 看起来像 Support triage example，但同样的 routine discipline 也需要覆盖三个 canonical cases。**Support triage** 在创建 ticket 前检查 approved write routine。**Internal knowledge assistant** 检查 retrieval routine、source attribution 和 tenant boundary。**Incident coordination** 检查 incident escalation routine、notification handoff 和 owner record。
+!!! note "例程案例主线说明（Routine case-spine note）"
+    这组指令（instructions）看起来像支持分诊示例（Support triage example），但同样的例程纪律（routine discipline）也需要覆盖三个规范案例（canonical cases）。**支持分诊（Support triage）** 在创建工单（ticket）前检查已批准写入例程（approved write routine）。**内部知识助手（Internal knowledge assistant）** 检查检索例程（retrieval routine）、来源归因（source attribution）和租户边界（tenant boundary）。**事故协调（Incident coordination）** 检查事故升级例程（incident escalation routine）、通知交接（notification handoff）和负责人记录（owner record）。
 
 这比在一个过载段落里硬塞整家公司内部世界要有效得多。
 

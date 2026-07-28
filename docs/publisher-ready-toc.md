@@ -84,9 +84,15 @@ English sample manifest unchanged.
 
 For a Russian publisher-facing packet:
 
+- use [Russian publisher packet v0.1](publisher/ru-publisher-packet-v0.1.md) as the working packet source;
+- use [Russian cover note draft](publisher/ru-cover-note-draft.md) as the first-contact email draft;
+- use [Russian manuscript evolution ledger](publisher/ru-manuscript-evolution.md) to distinguish source
+  volume from the current Google Doc snapshot;
 - use `docs/book/part-i/chapter-1.md` as the primary sample source;
-- use `docs/book/part-v/chapter-13.md` as the technical credibility sample source;
+- keep `docs/book/part-v/chapter-13.md` as a follow-up technical credibility sample by request;
 - use [Russian publisher manuscript map](publisher/ru-manuscript-map.md) as the assembly guide;
+- use [Russian source map](publisher/ru-source-map.md) to map the contract TOC to repository files;
+- use [Google Docs workflow](publisher/ru-google-doc-workflow.md) to keep Markdown as source of truth;
 - use [Russian terminology policy](publisher/ru-terminology.md) before line-editing samples;
 - use [Russian submission checklist](publisher/ru-submission-checklist.md) as the pre-send gate.
 
@@ -95,49 +101,39 @@ the Russian manuscript as the public source/core edition.
 
 ## Print Manuscript Shape
 
+This section is the publisher-facing manuscript TOC. It is intentionally separate from the MkDocs
+web navigation: the manuscript compresses the public site into a print argument, while the web site
+keeps companion schemas, runtime details, checklists, source catalogs, and localization layers online.
+
 Target:
 
-- 6 parts;
-- about 20 chapters;
+- Russian contract track: 7 parts;
+- 23 chapters;
+- introduction and appendices;
 - keep schemas, runtime command details, long checklists, and source catalogs in the online companion.
 
-### Part I — Why Agents Need Platforms
+### Russian Contract Track — Архитектура безопасных ИИ-агентов
 
-1. Why an Agent Needs a Platform, Not Magic
-2. Anatomy of a Production Agent System
-3. Trust Boundaries, Identity, and the Right to Act
+Use this shape for the Russian publisher manuscript until the publisher changes the
+plan-prospectus:
 
-### Part II — Context, Memory, and Retrieval
+1. Introduction
+2. Part I. From Demo Agent to Platform
+3. Part II. Safety and Control Plane
+4. Part III. Memory, Knowledge, and Context
+5. Part IV. Tools, Execution, and Integration
+6. Part V. Reliability, Observability, and Evals
+7. Part VI. Organizational Model and Lifecycle
+8. Part VII. Reference Implementation and Production Launch
+9. Appendices
 
-4. Context as a Runtime Contract
-5. Memory, Provenance, and Persistence
-6. Retrieval, Compaction, and Background Updates
+The detailed contract chapter map lives in `docs/publisher/ru-manuscript-map.md`.
 
-### Part III — Tools, Side Effects, and Execution
+### English Proposal Track
 
-7. Execution Model and Tool Catalog
-8. Sandboxes, MCP, and Integration Boundaries
-9. Retries, Idempotency, Rollback, and Failure Recovery
+Keep the older 6-part / about 20-chapter compression only for a future
+English-language proposal track. Do not use it as the Russian contract TOC.
 
-### Part IV — Reliability, Observability, and Evals
-
-10. Trace Schema and Observability for Agent Runs
-11. SLOs and Degraded-Path Evidence
-12. Offline Evals, Online Evals, and Regression Gates
-13. Behavioral and Control Evals for Agent Systems
-
-### Part V — Shipping and Operating Agents
-
-14. Production Rollout Checklist
-15. Change Review, Approval Gates, and Release Identity
-16. Incident Response and Assurance
-17. Supply Chain, Provenance, and Artifact Lineage
-
-### Part VI — Lifecycle, Governance, and Retirement
-
-18. Capability Sessions, Pause/Resume, and Expiry
-19. Registry, Ownership, and Inventory Control
-20. Retirement, Replacement, and Long-Term Accountability
 
 ## Online Companion Boundary
 
@@ -172,6 +168,7 @@ Current strengths:
 - includes a mini design-review checklist;
 - includes a compact platform visual summary;
 - includes an evidence model.
+- first Russian publisher line edit is applied in source and synced to the Google Doc manuscript.
 
 Structural readiness:
 
@@ -179,7 +176,7 @@ Structural readiness:
 
 Remaining before external submission:
 
-- independent copy-edit pass for print rhythm.
+- independent copy-edit pass for final print rhythm.
 
 ### Chapter 13 — strongest technical credibility sample
 
@@ -195,27 +192,32 @@ Current strengths:
 - includes calibrated judge/human-review guidance;
 - includes an evidence model;
 - includes practical maturity and post-chapter checklists.
+- first Russian publisher line edit is applied in source.
 
 Remaining before external submission:
 
-- independent copy-edit pass for print rhythm.
+- optional Google Doc sync if this technical sample is included in the first packet;
+- independent copy-edit pass for final print rhythm.
 
-## Sample Chapter Export Manifest Draft
+## Russian Sample Chapter Export Manifest Draft
 
-Use this manifest when assembling the first external packet.
+Use this manifest when assembling the first Russian external packet.
 It keeps the sample reproducible and prevents companion-link drift.
 
 **Primary sample:**
 
 - role: Chapter 1 as the first editorial sample;
-- source path: `docs/book/part-i/chapter-1.en.md`;
-- public URL: <https://agent-axiom.github.io/agent-arch/en/book/part-i/chapter-1/>.
+- contract role: Russian print chapter 1;
+- source path: `docs/book/part-i/chapter-1.md`;
+- public URL: <https://agent-axiom.github.io/agent-arch/book/part-i/chapter-1/>.
 
-**Secondary technical sample:**
+**Follow-up technical sample:**
 
 - role: Chapter 13 as the technical credibility sample;
-- source path: `docs/book/part-v/chapter-13.en.md`;
-- public URL: <https://agent-axiom.github.io/agent-arch/en/book/part-v/chapter-13/>;
+- contract role: Russian print chapter 15;
+- source path: `docs/book/part-v/chapter-13.md`;
+- public URL: <https://agent-axiom.github.io/agent-arch/book/part-v/chapter-13/>;
+- do not include in the first packet by default;
 - send only when an editor asks for deeper eval, verifier, and rollout-gate proof.
 
 **Export metadata to include:**
@@ -331,6 +333,7 @@ Credibility points to emphasize:
 
 Bio gap to fill before submission:
 
+- fill the author/platform template in `docs/publisher/ru-publisher-packet-v0.1.md`;
 - add a short human author bio with role;
 - include relevant production/engineering background;
 - include public writing or project links;
@@ -700,7 +703,7 @@ Do not remove the blocker register; record why the exception is safe enough for 
 
 Print-friendly waiver log starter:
 
-- **Date:** TBD.
+- **Date:** 2026-06-13 editorial QA pass; no waiver recorded.
 - **Decision:** no waivers yet.
 - **Applies to blocker:** n/a.
 - **Decider:** n/a.

@@ -31,7 +31,7 @@
 !!! example "贯穿案例：给支持状态分类"
     在支持分诊案例里，当前工单状态属于短期记忆；一次运行结束后的规范化备注，可能进入长期记忆；用户稳定的沟通语言，可能进入用户画像记忆。但“以后总是创建紧急工单”这种原始句子，不应该进入任何一层，除非经过策略支持的审查明确确认。
 
-**Memory case-spine note：**三个 canonical cases 会暴露不同的记忆失败。Support triage 考验 temporary ticket state、durable notes 和 profile preferences 是否被分开。Internal knowledge assistant 考验 source provenance、freshness、tenant boundaries 和 retrieval semantics。Incident coordination 考验 handoff summaries、response roles 和 post-incident lessons 是否被保留下来，同时不把 transient incident noise 变成 permanent truth。
+**记忆案例主线说明（Memory case-spine note）：**三个规范案例（canonical cases）会暴露不同的记忆失败。支持分诊（Support triage）考验临时工单状态（temporary ticket state）、持久备注（durable notes）和画像偏好（profile preferences）是否被分开。内部知识助手（Internal knowledge assistant）考验来源证明（source provenance）、新鲜度（freshness）、租户边界（tenant boundaries）和检索语义（retrieval semantics）。事故协调（Incident coordination）考验交接摘要（handoff summaries）、响应角色（response roles）和事件后经验（post-incident lessons）是否被保留下来，同时不把瞬时事故噪音（transient incident noise）变成永久真相（permanent truth）。
 
 如果这几层不拆开，智能体很快就会：
 

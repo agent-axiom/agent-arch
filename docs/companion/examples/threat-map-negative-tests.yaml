@@ -1,0 +1,29 @@
+schema_version: 1
+threat_map_id: threat-map-support-ticket-v1
+system_id: support-triage-ref
+owner: agent-security
+negative_tests:
+  - test_id: nt-approval-digest-mutation
+    threat: action_changed_after_approval
+    boundary: approval_gateway
+    command: uv run pytest -q tests/test_review_remediations.py -k action_digest
+    expected_result: closed_failure
+    evidence_ref: test:action_digest_mutation
+  - test_id: nt-cross-tenant-memory
+    threat: cross_tenant_context_disclosure
+    boundary: memory_retrieval
+    command: uv run python -m agent_runtime_ref inspect-memory --tenant-id tenant-beta
+    expected_result: zero_records
+    evidence_ref: lab:lab-03-memory-boundary
+  - test_id: nt-unknown-side-effect-retry
+    threat: duplicate_external_write
+    boundary: capability_gateway
+    command: uv run pytest -q tests/test_review_remediations.py -k unknown_effect
+    expected_result: blocked_on_reconciliation
+    evidence_ref: eval:unknown_effect_reconciliation
+  - test_id: nt-untrusted-memory
+    threat: delayed_memory_poisoning
+    boundary: context_builder
+    command: uv run pytest -q tests/test_review_remediations.py -k memory_retrieval
+    expected_result: excluded_before_ranking
+    evidence_ref: test:memory_trust_filter

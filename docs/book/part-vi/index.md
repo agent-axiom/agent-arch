@@ -40,6 +40,61 @@
 - объясняет, кто должен владеть теми слоями, которые предыдущие части уже определили технически;
 - подготавливает переход от операционной модели к эталонной реализации.
 
+Редакционная связка с предыдущей частью такая: если в Части V команда научилась доказывать, что произошло и можно ли выпускать изменение дальше, то в Части VI она назначает владельцев этих доказательств. Без этого trace, SLO и eval gate остаются правильными артефактами без операционной ответственности.
+
+## Практический мост от SLO и eval к владельцам и золотому пути
+
+После trace review, SLO-карты и regression gate следующий вопрос уже не технический: кто владеет этим контуром и как сделать его путем по умолчанию для следующих команд.
+
+Минимальная связка ответственности выглядит так:
+
+```yaml
+responsibility_map:
+  support_ticket_write_path:
+    product_owner:
+      owns:
+        - user_workflow
+        - task_success_definition
+        - escalation_policy_for_support
+    platform_owner:
+      owns:
+        - runtime_retry_contract
+        - trace_schema
+        - eval_gate_integration
+        - rollout_default_policy
+    security_owner:
+      owns:
+        - high_risk_write_policy
+        - approval_requirements
+        - audit_retention_expectations
+    oncall_owner:
+      owns:
+        - containment_decision
+        - rollback_or_freeze_execution
+```
+
+А минимальный золотой путь для пишущего агента должен уже включать не только runtime template, но и общий tool gateway, idempotency key, `tool_policy_decision`, approval path, trace events, eval gates и staged canary по умолчанию.
+
+```yaml
+golden_path:
+  name: support_write_agent
+  required_controls:
+    - shared_tool_gateway
+    - idempotency_key
+    - standard_trace_schema
+    - approval_for_high_risk_write
+    - duplicate_ticket_after_timeout_eval
+    - no_open_side_effect_unknown_incidents
+  rollout:
+    default_mode: staged_canary
+    expansion_requires:
+      - offline_eval_passed
+      - online_slo_within_budget
+      - responsibility_confirmed
+```
+
+Этот мост нужен для логической нити рукописи: часть про надежность доказывает, что произошло и можно ли выпускать изменение дальше; организационная часть назначает владельцев этих доказательств; золотой путь делает безопасный маршрут проще локального обхода.
+
 ## В этой части
 
 - [Глава 14. Платформенная команда и продуктовые команды](chapter-14.md)

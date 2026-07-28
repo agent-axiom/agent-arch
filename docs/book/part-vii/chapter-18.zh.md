@@ -79,7 +79,7 @@
 !!! example "贯穿案例：重复工单后的金丝雀"
     在把支持智能体放到 5% rollout 之前，团队不应该只展示一次成功的状态检查和工单创建。评审应该看到：重复工单回归门已经通过，`create_support_ticket` 有幂等策略，`side_effect_unknown` 会让运行停在对账前，[追踪（traces）](../../appendix/trace-schema.zh.md) 保留了结果，而且回滚负责人已经明确。否则，金丝雀测试的是希望，而不是就绪性。
 
-**Rollout case-spine note：**production checklist 应该分别闭合三个 canonical cases。Support triage 需要 duplicate-ticket regression gate、approval coverage、idempotency strategy 和 rollback owner。Internal knowledge assistant 需要 retrieval freshness gate、source-grounding evals、tenant-boundary checks 和 memory-write review。Incident coordination 需要 escalation-drill evidence、notification delivery checks、responder handoff owner，以及 canary 之前的 post-incident regression plan。
+**发布案例主线说明（Rollout case-spine note）：**生产检查清单（production checklist）应该分别闭合三个规范案例（canonical cases）。支持分诊（Support triage）需要重复工单回归门禁（duplicate-ticket regression gate）、审批覆盖（approval coverage）、幂等策略（idempotency strategy）和回滚负责人（rollback owner）。内部知识助手（Internal knowledge assistant）需要检索新鲜度门禁（retrieval freshness gate）、来源锚定评测（source-grounding evals）、租户边界检查（tenant-boundary checks）和记忆写入复核（memory-write review）。事故协调（Incident coordination）需要升级演练证据（escalation-drill evidence）、通知送达检查（notification delivery checks）、响应者交接负责人（responder handoff owner），以及金丝雀发布（canary）之前的事件后回归计划（post-incident regression plan）。
 
 ## 4. 运行时正确性
 
@@ -295,12 +295,10 @@ rollout:
     - policy_prechecks
     - capability_owners
     - offline_eval_pass
+    - duplicate_ticket_eval_passed
     - slo_defined
     - rollback_plan
     - oncall_owner
-    - approval_queue_owner
-    - session_expiry_signals_visible
-    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -309,10 +307,6 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
-    - approval_backlog_unbounded
-    - paused_runs_without_expiry
-    - capability_session_reinit_unmodeled
-    - orchestration_pattern_change_unreviewed
 ```
 
 这种检查清单的价值在于：它把就绪性变成一个工程讨论对象，而不是靠发布者语气里的自信。
@@ -322,29 +316,23 @@ rollout:
 下面这个骨架展示的是：如何把就绪性看成一组必须同时满足的条件。
 
 ```python
-from dataclasses import dataclass
+from agent_runtime_ref.rollout import RolloutPolicy, assess_rollout
 
 
-@dataclass
-class RolloutReadiness:
-    trace_coverage: bool
-    offline_eval_pass: bool
-    slo_defined: bool
-    rollback_plan: bool
-    approval_path_defined: bool
-
-
-def ready_for_rollout(state: RolloutReadiness) -> bool:
-    return (
-        state.trace_coverage
-        and state.offline_eval_pass
-        and state.slo_defined
-        and state.rollback_plan
-        and state.approval_path_defined
-    )
+def ready_for_rollout(
+    config: dict[str, object],
+    observed_checks: dict[str, bool],
+) -> dict[str, object]:
+    policy = RolloutPolicy.from_dict(config)
+    assessment = assess_rollout(policy, observed_checks)
+    return {
+        "ready": assessment.ready,
+        "missing_required": list(assessment.missing_required),
+        "blocking_signals": list(assessment.blocking_signals),
+    }
 ```
 
-这个例子很简单，但它强化了一件重要的事：生产就绪性应该是可形式化的。
+`observed_checks` 应来自经过验证的清单，而不是人工勾选。缺失必需信号和命中 `block_if` 会产生不同诊断，但两者都会让 `ready=false`。
 
 ## 13. 上线流程最常见的崩坏点
 
@@ -382,6 +370,8 @@ def ready_for_rollout(state: RolloutReadiness) -> bool:
 - 负责人归属、值班机制和人工回退路径都足够具体。
 
 如果这些条件大多不成立，那团队也许已经有上线动能，但还没有真正的 rollout 就绪性。
+
+**0–4 级就绪度量表。** 0 级表示没有可复现契约或证据；1 级表示只有文档化契约、没有可执行检查；2 级表示有确定性检查，但实质证据仍有缺口；3 级表示验证包和回滚负责人均已就绪，可以进入金丝雀；4 级表示生产运行可观测，响应和下线流程经过演练。任何硬阻断项都会无视总分并强制返回 `hold`。机器可读量表位于 `docs/companion/examples/readiness-rubric-support-ticket.yaml`。
 
 ## 15. 读完这一章后先做什么
 

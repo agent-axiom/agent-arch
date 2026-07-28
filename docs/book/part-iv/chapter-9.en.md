@@ -115,7 +115,7 @@ If those answers are missing, MCP does not stop being a risk. It becomes an impl
 
 ### 4.2. MCP Threat Model Matrix
 
-For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. A minimal version looks like this:
+For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. The MCP security and authorization material explicitly calls out token passthrough, scope selection, HTTPS/SSRF limits, and stateful-session protection; that makes the matrix part of the authorization and runtime contract, not decorative security prose.[^mcp-security][^mcp-authorization] A minimal version looks like this:
 
 - **tool poisoning** — a tool description or tool result tries to steer the model; control it by validating tool descriptions, separating tool output from instructions, and allowing only known contracts.
 - **rug pull attack** — a previously approved MCP server changes tools, scopes, or behavior after review; control it with version pinning, re-attestation, diff review, and a fast quarantine path.
@@ -128,6 +128,15 @@ For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not st
 - **sandbox escape** — a tool or adapter crosses the network, filesystem, or process boundary; control it with ephemeral sandboxes, minimal egress rules, secret isolation, and runtime-level containment.
 
 The matrix is not there to forbid MCP. It is there so every MCP endpoint has an explicit answer to three questions: which threat class it adds, which control limits it, and which telemetry will still be available after an incident.
+
+Minimum acceptance criteria for an MCP connection:
+
+1. The server is in the approved registry, and owner plus contract version are visible.
+2. The token is issued for the MCP server or its resource audience, not blindly passed through from another layer.
+3. Scopes are limited to the concrete operation and do not require a broad persistent secret.
+4. Any tool schema, description, or scope change triggers re-review.
+5. Tool output is treated as untrusted content until filtered and classified.
+6. The trace preserves `mcp_server_id`, `tool_contract_version`, `scope_review`, `quarantine_state`, and evidence links.
 
 ### 4.3. Minimal MCP Server Contract
 
@@ -722,6 +731,9 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 
 [^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), and [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 
+[^mcp-security]: [Model Context Protocol, Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
+
+[^mcp-authorization]: [Model Context Protocol, Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
 [^microsoft-autojack]: Microsoft Security Blog, [AutoJack: How a single page can RCE the host running your AI agent](https://www.microsoft.com/en-us/security/blog/2026/06/18/autojack-single-page-rce-host-running-ai-agent/)
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)

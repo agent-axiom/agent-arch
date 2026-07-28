@@ -6,15 +6,21 @@ from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.background import BackgroundWorker
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.execution import execute_tool, normalize_tool_capability_name
+from agent_runtime_ref.idempotency import (
+    IdempotencyStore,
+    compute_idempotency_request_digest,
+)
 from agent_runtime_ref.identity import AgentIdentity
 from agent_runtime_ref.memory import MemoryStore
 from agent_runtime_ref.models import (
+    REDACTED_INPUT_DESCRIPTION,
     ModelOutput,
     RunContext,
     RunRequest,
     RunResult,
     ToolRequest,
     ToolResult,
+    compute_input_sha256,
     normalize_tool_arguments,
 )
 from agent_runtime_ref.policy import PolicyDecision, PolicyEngine
@@ -88,6 +94,7 @@ class AgentRuntime:
         agent: AgentIdentity | None = None,
         approvals: ApprovalQueue | None = None,
         sessions: SessionStore | None = None,
+        idempotency: IdempotencyStore | None = None,
         sandbox_profile: dict[str, object] | None = None,
     ) -> None:
         if catalog is None:
@@ -120,6 +127,11 @@ class AgentRuntime:
         if not isinstance(sessions, SessionStore):
             raise TypeError("Runtime sessions must be SessionStore")
         self.sessions = sessions
+        if idempotency is None:
+            idempotency = IdempotencyStore()
+        if not isinstance(idempotency, IdempotencyStore):
+            raise TypeError("Runtime idempotency must be IdempotencyStore")
+        self.idempotency = idempotency
         if sandbox_profile is None:
             sandbox_profile = {}
         if not isinstance(sandbox_profile, dict):
@@ -178,6 +190,14 @@ class AgentRuntime:
             request.delegated_scope,
             field="delegated_scope",
         )
+        request.intent_id = _read_optional_request_string(
+            request.intent_id,
+            field="intent_id",
+        )
+        request.test_fault = _read_optional_request_string(
+            request.test_fault,
+            field="test_fault",
+        )
         if request.authorization_mode == "user_delegated":
             request.delegated_principal_id = _read_required_delegated_string(
                 request.delegated_principal_id,
@@ -198,7 +218,8 @@ class AgentRuntime:
         self.telemetry.emit(
             "run_start",
             request.trace_id,
-            user_input=request.user_input,
+            input_description=REDACTED_INPUT_DESCRIPTION,
+            input_sha256=compute_input_sha256(request.user_input),
             tenant_id=request.tenant_id,
             principal_id=request.principal_id,
             session_id=request.session_id,
@@ -219,7 +240,12 @@ class AgentRuntime:
             session_id=request.session_id,
         )
         if precheck.action != "allow":
-            result = RunResult(output_text="Request denied by policy.", status="denied")
+            result = RunResult(
+                output_text="Request denied by policy.",
+                status="denied",
+                task_success=False,
+                side_effect_status="not_executed",
+            )
             self.sessions.register_run(
                 session_id=request.session_id,
                 tenant_id=request.tenant_id,
@@ -229,6 +255,8 @@ class AgentRuntime:
                 user_input=request.user_input,
                 output_text=result.output_text,
                 failure_reason=precheck.reason,
+                task_success=result.task_success,
+                side_effect_status=result.side_effect_status,
                 request_agent_id=request.agent_id,
                 authorization_mode=authorization_mode,
                 delegated_principal_id=delegated_principal_id,
@@ -298,15 +326,62 @@ class AgentRuntime:
                 idempotency_key = latest_tool.payload.get("idempotency_key", idempotency_key)
                 approval_id = latest_tool.payload.get("approval_id", approval_id)
                 capability_name = latest_tool.capability_name
-                if latest_tool.status in {"denied", "validation_failure", "failed"}:
-                    failure_reason = latest_tool.payload.get("reason", latest_tool.status)
+                if latest_tool.status == "approval_required":
                     result = RunResult(
                         output_text=(
-                            "Runtime halted before side effects completed: "
-                            f"{latest_tool.capability_name} returned {latest_tool.status} "
-                            f"({failure_reason})."
+                            "Ticket request is waiting for human approval "
+                            f"({approval_id or 'pending'})."
                         ),
-                        status="failed",
+                        status="waiting_for_approval",
+                        task_success=None,
+                        side_effect_status="not_executed",
+                    )
+                    self.sessions.register_run(
+                        session_id=request.session_id,
+                        tenant_id=request.tenant_id,
+                        principal_id=request.principal_id,
+                        trace_id=request.trace_id,
+                        status=result.status,
+                        user_input=request.user_input,
+                        output_text=result.output_text,
+                        failure_reason="",
+                        task_success=result.task_success,
+                        side_effect_status=result.side_effect_status,
+                        request_agent_id=request.agent_id,
+                        capability_session_id=capability_session_id,
+                        capability_session_status=capability_session_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                        idempotency_key=idempotency_key,
+                        approval_id=approval_id,
+                        capability_name=capability_name,
+                    )
+                    self.telemetry.emit(
+                        "run_complete",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        status=result.status,
+                        output_preview=result.output_text[:80],
+                        task_success="null",
+                        side_effect_status=result.side_effect_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                    )
+                    return result
+                if latest_tool.status == "side_effect_unknown":
+                    failure_reason = latest_tool.payload.get(
+                        "reason", "post_dispatch_timeout"
+                    )
+                    result = RunResult(
+                        output_text=(
+                            "Runtime blocked the write path until the external effect "
+                            "is reconciled."
+                        ),
+                        status="blocked_on_reconciliation",
+                        task_success=None,
+                        side_effect_status="side_effect_unknown",
                     )
                     self.sessions.register_run(
                         session_id=request.session_id,
@@ -317,6 +392,65 @@ class AgentRuntime:
                         user_input=request.user_input,
                         output_text=result.output_text,
                         failure_reason=str(failure_reason),
+                        task_success=result.task_success,
+                        side_effect_status=result.side_effect_status,
+                        request_agent_id=request.agent_id,
+                        capability_session_id=capability_session_id,
+                        capability_session_status=capability_session_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                        idempotency_key=idempotency_key,
+                        approval_id=approval_id,
+                        capability_name=capability_name,
+                    )
+                    self.telemetry.emit(
+                        "effect_reconciliation_required",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        capability=latest_tool.capability_name,
+                        intent_id=request.intent_id,
+                        idempotency_key=idempotency_key,
+                        failure_reason=str(failure_reason),
+                        effect_state=result.side_effect_status,
+                    )
+                    self.telemetry.emit(
+                        "run_complete",
+                        request.trace_id,
+                        session_id=request.session_id,
+                        status=result.status,
+                        output_preview=result.output_text[:80],
+                        failure_reason=str(failure_reason),
+                        task_success="null",
+                        side_effect_status=result.side_effect_status,
+                        authorization_mode=authorization_mode,
+                        delegated_principal_id=delegated_principal_id,
+                        delegated_scope=delegated_scope,
+                    )
+                    return result
+                if latest_tool.status in {"denied", "validation_failure", "failed"}:
+                    failure_reason = latest_tool.payload.get("reason", latest_tool.status)
+                    result = RunResult(
+                        output_text=(
+                            "Runtime halted before side effects completed: "
+                            f"{latest_tool.capability_name} returned {latest_tool.status} "
+                            f"({failure_reason})."
+                        ),
+                        status="failed",
+                        task_success=False,
+                        side_effect_status="not_executed",
+                    )
+                    self.sessions.register_run(
+                        session_id=request.session_id,
+                        tenant_id=request.tenant_id,
+                        principal_id=request.principal_id,
+                        trace_id=request.trace_id,
+                        status=result.status,
+                        user_input=request.user_input,
+                        output_text=result.output_text,
+                        failure_reason=str(failure_reason),
+                        task_success=False,
+                        side_effect_status="not_executed",
                         request_agent_id=request.agent_id,
                         capability_session_id=capability_session_id,
                         capability_session_status=capability_session_status,
@@ -346,6 +480,8 @@ class AgentRuntime:
                         status=result.status,
                         output_preview=result.output_text[:80],
                         failure_reason=str(failure_reason),
+                        task_success="false",
+                        side_effect_status=result.side_effect_status,
                         authorization_mode=authorization_mode,
                         delegated_principal_id=delegated_principal_id,
                         delegated_scope=delegated_scope,
@@ -357,7 +493,15 @@ class AgentRuntime:
             self._emit_model_reasoning_evidence(request, model_output)
 
         self._schedule_background_updates(request, context, model_output)
-        result = RunResult(output_text=model_output.text, status="success")
+        successful_side_effect = any(
+            tool_result.status == "success" for tool_result in context.tool_results
+        )
+        result = RunResult(
+            output_text=model_output.text,
+            status="success",
+            task_success=True,
+            side_effect_status=("executed" if successful_side_effect else "not_executed"),
+        )
         self.sessions.register_run(
             session_id=request.session_id,
             tenant_id=request.tenant_id,
@@ -367,6 +511,8 @@ class AgentRuntime:
             user_input=request.user_input,
             output_text=result.output_text,
             failure_reason="",
+            task_success=result.task_success,
+            side_effect_status=result.side_effect_status,
             request_agent_id=request.agent_id,
             capability_session_id=capability_session_id,
             capability_session_status=capability_session_status,
@@ -470,11 +616,7 @@ class AgentRuntime:
                 "requester_id": request.principal_id,
             }
             if "without the usual safeguards" not in lowered:
-                arguments["idempotency_key"] = request.trace_id
-            if "simulate_failure=tool_timeout" in lowered:
-                arguments["simulate_failure"] = "tool_timeout"
-            if "simulate_failure=upstream_unavailable" in lowered:
-                arguments["simulate_failure"] = "upstream_unavailable"
+                arguments["idempotency_key"] = request.intent_id or request.trace_id
             return ModelOutput(
                 text="I need to create a ticket before I can answer fully.",
                 tool_request=ToolRequest(
@@ -547,6 +689,7 @@ class AgentRuntime:
             approval_request = self.approvals.submit(
                 trace_id=request.trace_id,
                 capability_name=tool_request.capability_name,
+                arguments=tool_request.arguments,
                 requested_by=request.principal_id,
                 tenant_id=request.tenant_id,
                 agent_id=request.agent_id,
@@ -612,14 +755,80 @@ class AgentRuntime:
             )
             return decision
 
-        tool_result = cast(
-            ToolResult,
-            self.telemetry.traced_call(
+        idempotency_key = tool_request.arguments.get("idempotency_key", "")
+        idempotency_action = "not_required"
+        request_digest = ""
+        reserved = None
+        if (
+            decision.action == "allow"
+            and capability.idempotency_key_required
+            and idempotency_key
+        ):
+            request_digest = compute_idempotency_request_digest(
+                capability_name=tool_request.capability_name,
+                arguments=tool_request.arguments,
+                tenant_id=request.tenant_id,
+                principal_id=request.principal_id,
+            )
+            reserved = self.idempotency.reserve(idempotency_key, request_digest)
+            idempotency_action = reserved.action
+            self.telemetry.emit(
+                "idempotency_decision",
                 request.trace_id,
-                f"tool:{tool_request.capability_name}",
-                lambda: execute_tool(capability, tool_request, decision),
-            ),
-        )
+                session_id=request.session_id,
+                capability=tool_request.capability_name,
+                idempotency_key=idempotency_key,
+                action=idempotency_action,
+            )
+
+        if reserved is None or reserved.action == "execute":
+            tool_result = cast(
+                ToolResult,
+                self.telemetry.traced_call(
+                    request.trace_id,
+                    f"tool:{tool_request.capability_name}",
+                    lambda: execute_tool(
+                        capability,
+                        tool_request,
+                        decision,
+                        test_fault=request.test_fault,
+                    ),
+                ),
+            )
+            if reserved is not None:
+                self.idempotency.complete(
+                    idempotency_key,
+                    request_digest,
+                    tool_result,
+                )
+        elif reserved.action == "replay" and reserved.result is not None:
+            tool_result = reserved.result
+            tool_result.payload["idempotency_resolution"] = "replayed"
+        elif reserved.action == "reconcile":
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="side_effect_unknown",
+                payload={
+                    "reason": "previous_effect_unknown",
+                    "effect_state": "side_effect_unknown",
+                    "reconciliation_required": "true",
+                },
+            )
+        elif reserved.action == "conflict":
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="validation_failure",
+                payload={"reason": "idempotency_key_payload_mismatch"},
+            )
+        else:
+            tool_result = ToolResult(
+                capability_name=tool_request.capability_name,
+                status="failed",
+                payload={
+                    "reason": "idempotency_request_in_progress",
+                    "effect_state": "not_executed",
+                },
+            )
         tool_result.payload["authorization_mode"] = tool_result.payload.get(
             "authorization_mode", request.authorization_mode
         )

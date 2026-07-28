@@ -138,13 +138,10 @@ class BackgroundWorker:
                 tenant_id=request.tenant_id,
                 memory_class="long_term",
                 kind="session_summary",
-                content=(
-                    f"User asked: {request.user_input}. "
-                    f"Runtime returned: {model_output.text}"
-                ),
-                source="approved_summarizer",
+                content="Sanitized runtime summary; raw user input was not retained.",
+                source="runtime_sanitizer",
                 confidence=0.82,
-                provenance="conversation_summary",
+                provenance="sanitized_summary",
                 revision_mode="replace",
             ),
         ]

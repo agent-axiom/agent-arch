@@ -48,7 +48,7 @@ tools:
     approval: none
     allowed_roles: ["agent_runtime"]
   create_ticket:
-    risk: medium
+    risk: high
     approval: manager
     allowed_roles: ["agent_runtime"]
   prod_db_write:

@@ -295,12 +295,10 @@ rollout:
     - policy_prechecks
     - capability_owners
     - offline_eval_pass
+    - duplicate_ticket_eval_passed
     - slo_defined
     - rollback_plan
     - oncall_owner
-    - approval_queue_owner
-    - session_expiry_signals_visible
-    - orchestration_pattern_reviewed
   rollout_mode:
     initial: canary
     max_tenant_exposure_pct: 5
@@ -309,10 +307,6 @@ rollout:
     - unknown_side_effect_path_missing
     - direct_tool_access_present
     - policy_decisions_not_traced
-    - approval_backlog_unbounded
-    - paused_runs_without_expiry
-    - capability_session_reinit_unmodeled
-    - orchestration_pattern_change_unreviewed
 ```
 
 This kind of checklist is powerful because it turns readiness into an engineering discussion instead of confidence in someone's tone of voice.
@@ -322,29 +316,23 @@ This kind of checklist is powerful because it turns readiness into an engineerin
 This small skeleton shows how readiness can be evaluated as a set of required conditions:
 
 ```python
-from dataclasses import dataclass
+from agent_runtime_ref.rollout import RolloutPolicy, assess_rollout
 
 
-@dataclass
-class RolloutReadiness:
-    trace_coverage: bool
-    offline_eval_pass: bool
-    slo_defined: bool
-    rollback_plan: bool
-    approval_path_defined: bool
-
-
-def ready_for_rollout(state: RolloutReadiness) -> bool:
-    return (
-        state.trace_coverage
-        and state.offline_eval_pass
-        and state.slo_defined
-        and state.rollback_plan
-        and state.approval_path_defined
-    )
+def ready_for_rollout(
+    config: dict[str, object],
+    observed_checks: dict[str, bool],
+) -> dict[str, object]:
+    policy = RolloutPolicy.from_dict(config)
+    assessment = assess_rollout(policy, observed_checks)
+    return {
+        "ready": assessment.ready,
+        "missing_required": list(assessment.missing_required),
+        "blocking_signals": list(assessment.blocking_signals),
+    }
 ```
 
-Very simple, but it reinforces one important idea: production readiness should be formalizable.
+`observed_checks` should come from a verified manifest, not manual checkboxes. A missing required signal and an active `block_if` produce different diagnostics, but both keep `ready=false`.
 
 ## 13. What Usually Breaks in Go-Live
 
@@ -382,6 +370,8 @@ A stronger bar is this:
 - ownership, on-call, and manual fallback are concrete.
 
 If most of those conditions are missing, the team may have launch momentum, but it still does not have real rollout readiness.
+
+**Readiness rubric, levels 0–4.** Level 0 means no reproducible contracts or evidence; 1 means documented contracts without executable checks; 2 means deterministic checks with gaps in material evidence; 3 means canary-ready with a verified package and rollback owner; 4 means observable production operation with rehearsed response and retirement. Any hard blocker forces `hold` regardless of the score. The machine-readable rubric is in `docs/companion/examples/readiness-rubric-support-ticket.yaml`.
 
 ## 15. What to Do Right After This Chapter
 

@@ -179,6 +179,28 @@ Google Research хорошо показывает, что заверение б�
 7. Реагирование на инциденты и исправительные действия
 8. Вывод из эксплуатации или замена
 
+Переход между стадиями фиксируется отдельным решением, а не следует из номера этапа. Для сквозного сценария поддержки запись выглядит так:
+
+**Конфигурация перехода ADLC.** Тип фрагмента: YAML.
+
+```yaml
+transition_id: adlc-support-ticket-baseline-to-canary-001
+change_id: chg-support-ticket-idempotency-v2
+from_state: evaluation_baseline
+to_state: staged_rollout
+owner: runtime-release-owner
+required_evidence:
+  - artifact:eval-dataset.json
+  - eval:unknown_effect_reconciliation
+  - slo:slo-support-ticket-known-effect-v1
+  - plan:rollback-support-ticket-v2
+decision: hold
+blockers: [duplicate_ticket_eval_not_attested]
+decided_at: "2026-07-23T09:30:00Z"
+```
+
+Полный пример находится в `docs/companion/examples/adlc-transition-support-ticket.yaml`. Значение `hold` показывает, что наличие файлов не равно праву перейти к контрольной волне: обязательное доказательство должно быть проверено и принято владельцем.
+
 <div class="diagram-card">
 <p>ADLC полезно мыслить как непрерывный контур, а не как путь до первой выкладки</p>
 

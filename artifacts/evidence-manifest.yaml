@@ -1,0 +1,42 @@
+version: 1
+issuer: book-fixture-not-production
+subject: support-triage-ref@teaching-fixture
+measured_at: 2026-07-16T00:00:00Z
+artifacts:
+  - id: eval-dataset
+    path: eval-dataset.json
+    sha256: 3f635aa83cea597ddea5babdb5acbb5c87d2e67f8d8f7221f61d728fedeb590e
+signals:
+  trace_coverage:
+    value: true
+    artifact_refs: [eval-dataset]
+  policy_prechecks:
+    value: true
+    artifact_refs: [eval-dataset]
+  capability_owners:
+    value: true
+    artifact_refs: [eval-dataset]
+  offline_eval_pass:
+    value: true
+    artifact_refs: [eval-dataset]
+  duplicate_ticket_eval_passed:
+    value: false
+    artifact_refs: [eval-dataset]
+  slo_defined:
+    value: true
+    artifact_refs: [eval-dataset]
+  rollback_plan:
+    value: true
+    artifact_refs: [eval-dataset]
+  oncall_owner:
+    value: true
+    artifact_refs: [eval-dataset]
+  unknown_side_effect_path_missing:
+    value: false
+    artifact_refs: [eval-dataset]
+  direct_tool_access_present:
+    value: false
+    artifact_refs: [eval-dataset]
+  policy_decisions_not_traced:
+    value: false
+    artifact_refs: [eval-dataset]

@@ -179,6 +179,28 @@ Google 还有一个很有价值的修正：AI 软件供应链不只包含库和�
 7. 事故响应与纠正行动
 8. 退役或替换
 
+阶段转换必须记录为一项显式决策，而不是由阶段编号自动推导。对于贯穿全书的支持场景，记录如下：
+
+**ADLC 转换配置。** 片段类型：YAML。
+
+```yaml
+transition_id: adlc-support-ticket-baseline-to-canary-001
+change_id: chg-support-ticket-idempotency-v2
+from_state: evaluation_baseline
+to_state: staged_rollout
+owner: runtime-release-owner
+required_evidence:
+  - artifact:eval-dataset.json
+  - eval:unknown_effect_reconciliation
+  - slo:slo-support-ticket-known-effect-v1
+  - plan:rollback-support-ticket-v2
+decision: hold
+blockers: [duplicate_ticket_eval_not_attested]
+decided_at: "2026-07-23T09:30:00Z"
+```
+
+完整示例位于 `docs/companion/examples/adlc-transition-support-ticket.yaml`。`hold` 表明文件存在并不等于可以进入金丝雀阶段：必需证据必须经过验证并由负责人接受。
+
 <div class="diagram-card">
 <p>把 ADLC 看成持续循环，而不是“第一次上线之前的流程”，会更接近真实世界</p>
 

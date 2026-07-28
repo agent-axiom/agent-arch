@@ -1,0 +1,21 @@
+schema_version: 1
+rubric_id: readiness-support-ticket-v1
+owner: agent-platform
+levels:
+  - score: 0
+    anchor: no_reproducible_contract_or_evidence
+  - score: 1
+    anchor: documented_contracts_without_executable_checks
+  - score: 2
+    anchor: deterministic_checks_with_material_evidence_gaps
+  - score: 3
+    anchor: canary_ready_with_verified_evidence_and_owned_rollback
+  - score: 4
+    anchor: production_observed_with_rehearsed_response_and_retirement
+hard_blockers:
+  - unknown_side_effect_path_missing
+  - approval_digest_not_bound
+  - cross_tenant_access_confirmed
+  - direct_tool_access_present
+  - required_evidence_unverified
+decision_rule: hard_blocker_forces_hold_regardless_of_score

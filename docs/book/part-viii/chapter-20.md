@@ -1,7 +1,7 @@
 # Глава 20. Управление изменениями в агентных системах
 
 !!! info "Актуальность главы"
-    Последняя редакционная проверка: **14 мая 2026 года**. Следующая плановая проверка: **14 июня 2026 года**.
+    Последняя редакционная проверка источников и платформенных ссылок: **29 июня 2026 года**. Предыдущая полная редакционная проверка: **14 мая 2026 года**. Следующая плановая проверка полного каталога: **29 июля 2026 года**.
 
     Что изменилось после предыдущей проверки: поверхности безопасности MCP/A2A, контракты проверяющего, управленческая телеметрия и замечания по готовности к печатной версии теперь покрыты конкретными контрактами и проверками документации.
 
@@ -262,26 +262,18 @@ changes:
 Ниже каркас, который показывает саму идею:
 
 ```python
-from dataclasses import dataclass
+from agent_runtime_ref.lifecycle import classify_change_surfaces
 
 
-@dataclass
-class ChangeRequest:
-    touches_prompt: bool = False
-    touches_policy: bool = False
-    touches_write_capability: bool = False
-    touches_egress: bool = False
-
-
-def classify_change(change: ChangeRequest) -> str:
-    if change.touches_write_capability or change.touches_egress:
-        return "high_risk"
-    if change.touches_policy or change.touches_prompt:
-        return "medium_risk"
-    return "low_risk"
+def classify_change(affected_surfaces: tuple[str, ...]) -> str:
+    classification = classify_change_surfaces(affected_surfaces)
+    if classification.review_required:
+        unknown = ",".join(classification.unknown_surfaces)
+        return f"review_required:{unknown or 'missing_surface'}"
+    return classification.risk_level
 ```
 
-Это очень простой пример, но он хорошо показывает правильное направление: сначала формализовать логику решения, потом автоматизировать шлюз.
+Классификатор перечисляет поддерживаемые поверхности явно. Пустой или неизвестный тип не становится низкорисковым: он возвращает `review_required`, пока владелец не расширит схему и проверки.
 
 ## 13. Что чаще всего ломается в управлении изменениями
 

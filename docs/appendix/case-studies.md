@@ -232,6 +232,9 @@ GitHub case study о Copilot code review уточняет tool-часть это
 - [Глава 3. Контур безопасности и границы доверия](../book/part-ii/chapter-3.md)
 - [Глава 8. Модель выполнения и каталог инструментов](../book/part-iv/chapter-8.md)
 - [Практика. Инструкции, сценарии и шаблоны запросов](../book/part-i/practical-routines.md)
+- [Companion: заполненный capability contract](../companion/examples/capability-contract-support-ticket.md)
+- [Companion: incident record для timeout-пути](../companion/examples/incident-record-support-ticket-timeout.md)
+- [Companion: release decision record](../companion/examples/release-decision-record-support-ticket.md)
 
 ## Кейс 2. Внутренний агент знаний
 

@@ -95,6 +95,69 @@ def _read_review_evidence(items: object) -> dict[str, object]:
     return normalized
 
 
+_CHANGE_SURFACE_RISK = {
+    "documentation_only": "low_risk",
+    "eval_dataset": "medium_risk",
+    "model_route": "medium_risk",
+    "prompt_bundle": "medium_risk",
+    "retrieval_corpus": "medium_risk",
+    "approval_contract": "high_risk",
+    "capability_contract": "high_risk",
+    "capability_session_contract": "high_risk",
+    "delegated_authorization_contract": "high_risk",
+    "egress_policy": "high_risk",
+    "failed_run_handling": "high_risk",
+    "memory_write_semantics": "high_risk",
+    "orchestration_pattern": "high_risk",
+    "policy_bundle": "high_risk",
+    "rollout_parameters": "high_risk",
+    "runtime_control_schema": "high_risk",
+    "runtime_interrupt_policy": "high_risk",
+    "sandbox_profile_contract": "high_risk",
+    "verifier_contract": "high_risk",
+}
+_RISK_ORDER = {"low_risk": 0, "medium_risk": 1, "high_risk": 2}
+
+
+@dataclass(frozen=True, slots=True)
+class ChangeSurfaceClassification:
+    risk_level: str
+    review_required: bool
+    unknown_surfaces: tuple[str, ...]
+
+
+def classify_change_surfaces(
+    affected_surfaces: Sequence[str],
+) -> ChangeSurfaceClassification:
+    if not isinstance(affected_surfaces, Sequence) or isinstance(
+        affected_surfaces,
+        str,
+    ):
+        raise TypeError("Change affected surfaces must be a sequence")
+    normalized = _normalize_string_items(
+        affected_surfaces,
+        key="affected_surfaces",
+    )
+    unknown = tuple(
+        surface for surface in normalized if surface not in _CHANGE_SURFACE_RISK
+    )
+    if not normalized or unknown:
+        return ChangeSurfaceClassification(
+            risk_level="review_required",
+            review_required=True,
+            unknown_surfaces=unknown,
+        )
+    risk_level = max(
+        (_CHANGE_SURFACE_RISK[surface] for surface in normalized),
+        key=_RISK_ORDER.__getitem__,
+    )
+    return ChangeSurfaceClassification(
+        risk_level=risk_level,
+        review_required=False,
+        unknown_surfaces=(),
+    )
+
+
 @dataclass(frozen=True, slots=True)
 class ChangeRecord:
     change_id: str

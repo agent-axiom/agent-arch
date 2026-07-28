@@ -10,6 +10,7 @@ __pycache__/
 site/
 artifacts/*
 !artifacts/eval-dataset.json
+!artifacts/evidence-manifest.yaml
 docs/book-backlog.md
 
 .worktrees/
