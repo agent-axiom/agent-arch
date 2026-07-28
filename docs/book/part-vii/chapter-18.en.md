@@ -171,6 +171,14 @@ Before production, you should be confident that:
 - the regression gate is documented;
 - online monitoring is ready for the first rollout waves.
 
+DeepMind's AI Control Roadmap adds a useful control trio here: coverage, recall, and time-to-response.[^deepmind-ai-control] Before expanding rollout, the team should know not only whether monitoring exists, but also what share of relevant actions/plans it covers, how often the supervisor actually catches dangerous events, and how quickly the system can block, pause, remediate, or escalate the problem.
+
+That check matters especially for agent paths where failure does not have to look like an attack. Misinterpretation, overeagerness, and excessive optimization of a local task should count as rollout signals when they can lead to real side effects. If the control layer does not cover those trajectories, the first rollout wave is testing a blind spot rather than readiness.
+
+OpenAI Deployment Simulation adds another useful pre-deployment signal here: not only running hand-written challenging tasks, but replaying realistic future-deployment contexts with the candidate model before release.[^openai-deployment-simulation] For an agent platform, that means a readiness gate can require a `deployment_simulation_report`: which prompt/session distribution was used, which undesired behaviors were measured, how estimates will be calibrated after real deployment, and where simulation fidelity is too weak to support expansion. This does not replace adversarial evals or tail-risk red teaming, because rare events below the sample rate may never appear, but it closes a different gap: how the model or agent is likely to behave on a production-like distribution rather than only in a recognizable test set.
+
+For tool-heavy agent trajectories, this signal matters even more. OpenAI separately shows that live tool calls during pre-release simulation may be dangerous or unrealistic, so the tool environment has to be simulated with high fidelity: repository state from the original trajectory, a database of past tool-call/response pairs, read-only connectors, and explicit comparison against real rollouts. In this book's terms, that becomes a release requirement: if the canary depends on tools, files, network, or external systems, the rollout gate should see not only `offline_eval_pass`, but also `simulation_environment_fidelity`, `tool_simulator_scope`, `representative_prefix_window`, `post_release_calibration_plan`, and the list of behaviors where simulation is not strong enough evidence.
+
 Without that, the first incident turns into blind investigation.
 
 For the support agent, this matters even more because the first canary tenants will almost certainly generate imperfect inputs. If the team cannot see:
@@ -398,4 +406,6 @@ This chapter turns the governed runtime path from Chapter 17 into rollout discip
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^moffatt]: American Bar Association, [BC Tribunal Confirms Companies Remain Liable for Information Provided by AI Chatbot](https://www.americanbar.org/groups/business_law/resources/business-law-today/2024-february/bc-tribunal-confirms-companies-remain-liable-information-provided-ai-chatbot/)
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
+[^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/)
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).

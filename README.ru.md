@@ -30,6 +30,7 @@
 - многоязычная книга по архитектуре безопасных ИИ-агентов
 - документационный сайт на GitHub Pages, собранный на `MkDocs` и `Material for MkDocs`
 - исполняемая эталонная среда в `agent_runtime_ref/`
+- устанавливаемый агентный skill в `skills/safe-agent-architecture/`
 - практические схемы, чеклисты и операционные артефакты
 - современный стек с приоритетом Python и `uv`
 
@@ -57,6 +58,22 @@ uv run mkdocs serve
 ```
 
 Локальный сайт будет доступен по адресу `http://127.0.0.1:8000/`.
+
+## Агентный skill
+
+В репозитории есть `safe-agent-architecture` — устанавливаемый skill для проектирования, разработки и ревью безопасных агентных систем.
+
+Из локального checkout:
+
+```bash
+npx skills add /path/to/agent-arch --skill safe-agent-architecture --agent codex
+```
+
+После публикации репозитория на GitHub тот же skill можно будет установить так:
+
+```bash
+npx skills add agent-axiom/agent-arch --skill safe-agent-architecture --agent codex
+```
 
 ## Проверки
 

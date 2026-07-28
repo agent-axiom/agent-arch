@@ -171,6 +171,14 @@ flowchart LR
 - регрессионный шлюз задокументирован;
 - онлайн-наблюдение готово к первым волнам выкладки.
 
+DeepMind AI Control Roadmap добавляет к этому полезную контрольную тройку: coverage, recall и time-to-response.[^deepmind-ai-control] Перед расширением поэтапного выпуска команда должна знать не только “есть ли мониторинг”, но и какую долю релевантных действий/планов он покрывает, насколько часто supervisor действительно ловит опасные события и как быстро система способна заблокировать, поставить на паузу, устранить или эскалировать проблему.
+
+Эта проверка особенно важна для агентных путей, где сбой не обязан выглядеть как атака. Misinterpretation, overeagerness и чрезмерная оптимизация локальной задачи должны считаться rollout signals, если они ведут к реальному побочному эффекту. Если контрольный слой не покрывает такие траектории, первая волна выкладки проверяет не готовность, а слепое пятно.
+
+OpenAI Deployment Simulation добавляет сюда еще один полезный pre-deployment signal: не только прогонять заранее написанные сложные задания, но и переигрывать реалистичные контексты будущей выкладки с candidate model до выпуска.[^openai-deployment-simulation] Для агентной платформы это означает, что readiness gate может требовать `deployment_simulation_report`: какая prompt/session distribution была взята за основу, какие нежелательные поведения измерялись, насколько оценки откалиброваны после фактической выкладки, и где simulation fidelity недостаточна для решения о расширении. Это не заменяет adversarial evals и tail-risk red teaming, потому что редкие события ниже частоты выборки могут не всплыть, но закрывает другой пробел: насколько модель или агент поведет себя на похожем на production распределении, а не только в узнаваемом тестовом наборе.
+
+Для tool-heavy agent trajectories такой сигнал особенно важен. OpenAI отдельно показывает, что live tool calls при предрелизной симуляции могут быть опасны или нереалистичны, поэтому окружение инструментов нужно симулировать с высокой fidelity: состояние репозитория на момент исходной траектории, база прошлых tool-call/response pairs, read-only connectors и явное сравнение с реальными rollouts. В терминах этой книги это превращается в выпускное требование: если canary зависит от инструментов, файлов, сети или внешних систем, то rollout gate должен видеть не только `offline_eval_pass`, но и `simulation_environment_fidelity`, `tool_simulator_scope`, `representative_prefix_window`, `post_release_calibration_plan` и список behaviors, где simulation не дает достаточной уверенности.
+
 Если этого нет, первый же инцидент превращается в расследование вслепую.
 
 Для нашего агента поддержки это особенно важно, потому что первые контрольные клиенты почти наверняка принесут неидеальные входы. Если на этих входах команда не увидит:
@@ -515,5 +523,7 @@ rollout_decision_record:
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 [^moffatt]: Civil Resolution Tribunal, [Moffatt v. Air Canada](https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
+[^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/)
 
-[^anthropic-harness]: Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps).
+[^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).

@@ -99,6 +99,21 @@ Cloudflare Agents SDK хорошо подсвечивает еще одну гр
 
 Практическое правило простое: устойчивое состояние должно иметь экземпляр-владельца, версию схемы, ограничения сериализации и политику синхронизации; запись памяти должна иметь класс, происхождение, границу арендатора, правило хранения и семантику извлечения. Оба слоя могут жить в устойчивом хранилище, но эксплуатационный контракт у них разный.
 
+### 4.2. Cross-agent memory — это инфраструктурная способность, а не “общая память”
+
+GitHub Copilot Memory показывает следующий шаг: память может использоваться сразу несколькими агентными поверхностями — coding agent, CLI и code review, — чтобы сохранять сведения о репозиториях и устойчивые coding preferences.[^github-copilot-memory][^github-copilot-memory-docs] Это полезный production-сигнал, но его легко неверно прочитать как “пусть все агенты читают одну общую память”.
+
+Зрелая архитектура должна описывать такую память как **cross-agent memory contract**. У каждой записи должны быть не только `memory_class` и `provenance`, но и:
+
+- `producer_surface`: кто создал запись — coding agent, CLI, review agent, IDE или человек;
+- `consumer_surfaces`: какие поверхности имеют право использовать запись;
+- `scope`: personal, repository, organization, tenant или workflow;
+- `conflict_policy`: что делать, если новые наблюдения противоречат старой записи;
+- `expiry` или review interval, чтобы устаревшие предпочтения и repo facts не жили бесконечно;
+- `export_delete_policy`, чтобы память можно было просмотреть, удалить и перенести.
+
+Это особенно важно для engineering agents: одно дело помнить “в этом репозитории принято использовать conventional commits”, и совсем другое — запомнить случайный workaround из неудачного pull request как устойчивое правило. Cross-agent memory полезна ровно тогда, когда она повышает преемственность между инструментами и не превращает личные предпочтения, факты репозитория и временные рабочие выводы в один неуправляемый слой.
+
 <div class="diagram-card">
 <p>Разные типы памяти решают разные задачи и не должны сливаться в одно хранилище</p>
 
@@ -328,5 +343,9 @@ def select_memory_bucket(record: MemoryRecord) -> str | None:
 - [Источники](../../appendix/sources.md)
 
 [^cloudflare-state]: [Cloudflare Agents SDK, Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/)
+
+[^github-copilot-memory]: GitHub Blog, [Building an agentic memory system for GitHub Copilot](https://github.blog/ai-and-ml/github-copilot/building-an-agentic-memory-system-for-github-copilot/)
+
+[^github-copilot-memory-docs]: GitHub Docs, [About GitHub Copilot Memory](https://docs.github.com/copilot/concepts/agents/copilot-memory)
 
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

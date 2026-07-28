@@ -70,6 +70,29 @@ In production, this usually needs to grow to include:
 - `span_id`
 - `parent_span_id`
 
+For production observability, this usually also needs fields that make spans searchable and useful for regression review:
+
+- `span_type`
+- `input_ref`
+- `output_ref`
+- `latency_ms`
+- `retry_count`
+- `token_input_count`
+- `token_output_count`
+- `token_cost`
+- `approval_state`
+- `pii_redacted`
+- `redaction_policy_id`
+- `retention_class`
+- `trace_search_tags`
+- `workspace_id`
+- `workspace_persistence`
+- `credential_scope`
+- `egress_profile`
+- `security_validation_status`
+- `validation_gate_results`
+- `human_review_artifact_ref`
+
 In the reference runtime, some of those fields still live inside `payload` to keep the structure small and easy to inspect. At the same time, serialized events now carry `schema_version` and `redacted_fields`, and the export path supports redaction for selected fields. The event loader validates this shape explicitly: `Telemetry path must be a string or path-like object`, `Telemetry event line is not valid JSON: {line_number}`, `Telemetry event must be a mapping`, `Telemetry event is missing required field: {required_field}`, `Telemetry event field must be a string: {field}`, `Telemetry event field must not be empty: {field}`, `Telemetry schema version is not supported: {schema_version}`, `Telemetry event payload must be a mapping`, `Telemetry event payload key must be a string`, `Telemetry event payload key must not be empty`, `Telemetry event payload keys must be unique`, `Telemetry event payload value must be a string: {payload_key}`, `Telemetry event redacted_fields must be a tuple`, `Telemetry event redacted_fields must be a list`, `Telemetry event redacted_fields entries must be strings`, `Telemetry redact field must not be empty`, and `Telemetry redact field is not present in events: {missing}`.
 
 ## How trace and session relate
@@ -107,18 +130,27 @@ Below is the current minimal event catalog.
 | `mcp_tool_risk_review` | during MCP tool/server risk review | links threat class, registry evidence, scope review, and quarantine state |
 | `tool_execution` | after a capability call or approval handoff | records capability status and tool-principal context |
 | `a2a_handoff` | when one agent delegates work to another agent | records delegation chain, authorization, and failure-attribution context |
+| `subagent_delegation_decision` | when a manager decides whether to spawn subagents | records the fanout gate, budget, and delegation reason |
+| `durable_agent_instance_state` | when a named agent instance loads, sleeps, wakes, or saves durable state | records owner instance, state version, wakeup, and resumable stream linkage |
+| `resumable_agent_recovery` | when a run continues after deploy/eviction/connection churn | records `continuation_id`, `last_durable_checkpoint`, `recovery_reason`, and `client_tool_allowlist` |
 | `approval_requested` | on a high-risk write path | shows that execution moved into human review |
 | `sandbox_profile_reviewed` | when a sandbox-backed path is reviewed | records workspace, permissions, and snapshot/resume evidence review |
 | `memory_write_decision` | before background memory persistence | records whether a candidate memory write was allowed or denied |
 | `memory_persisted` | after a background write | records provenance and revision of a memory record |
 | `background_compaction` | after background memory maintenance | records tenant-level compaction results |
+| `context_compaction` | when a live context view is replaced by a shorter derived view | binds `envelope_id`, source event range, and `summary_sha256` without transferring authority |
+| `context_rehydration` | after durable state has been validated and a context view rebuilt | records checkpoint, validation outcome, and `requires_reauthorization=true` |
+| `continuity_validation_failed` | when summary, identity, policy, capability, approval, event lineage, or side-effect state does not permit safe continuation | stops continuation with a stable reason and may carry `blocked_on_reconciliation` when an external effect is unknown |
 | `background_update_scheduled` | after background work is queued or completed | records background update status for the run |
+| `verification_result` | when a run verifies its stop condition | records stop condition, verifier actor, verification mechanism, pass/fail/warning/blocked result, and evidence links |
 | `run_failed` | when a tool failure becomes the run outcome | preserves explicit failed-run traceability |
 | `governance_action` | when a telemetry signal triggers a policy, containment, rollout, or registry decision | links a governance action record to trace evidence |
 | `run_complete` | at the end of a run | closes the run-level outcome |
 | `span` | around individual calls | provides simple latency and status telemetry |
 
 This is not meant to be a universal perfect catalog. It is a compact operational vocabulary that is already enough to support:
+
+`background_compaction` describes maintenance of stored memory records. It is not interchangeable with `context_compaction`, which marks a live execution boundary and must follow the [Context Continuity Envelope Schema](continuity-envelope-schema.en.md).
 
 A stronger production vocabulary should also make room for verifier-aware evidence, so traces can later explain not only what the runtime did, but also what evidence a verifier used to judge process quality, outcome quality, or failure attribution.
 
@@ -167,6 +199,11 @@ For `agent_threat_evidence`, preserve the evidence markers from the unified agen
 - `cost_budget_event`
 - `rate_limit_decision`
 - `circuit_breaker_state`
+- `agent_identity_mode`
+- `agent_registry_record`
+- `capability_loading_mode`
+- `semantic_policy_decision`
+- `agent_gateway_audit_event`
 - `handoff_id`
 - `containment_state`
 - `verifier_verdict`
@@ -196,7 +233,17 @@ For `mcp_tool_risk_review`, production traces should record MCP threat-model evi
 - `quarantine_state`
 - `evidence_refs`
 
-Keep `threat_class` on the MCP threat model vocabulary: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`.
+Keep `threat_class` on the MCP threat model vocabulary: `tool poisoning`, `rug pull attack`, `tool shadowing`, `confused deputy`, `over-scoped tokens`, `data exfiltration through legitimate channels`, `supply-chain attack`, `replay/tampering`, `sandbox escape`, `local control-plane crossing`.
+
+`local control-plane crossing` covers AutoJack-class scenarios: untrusted web content reaches a browser/tool agent, uses its local network position, calls a `localhost` MCP/debug/control socket, and attempts to turn a control-plane parameter into host command execution. For that event, the trace should record at least:
+
+- `untrusted_content_origin`
+- `browser_tool_identity`
+- `local_control_channel`
+- `loopback_auth_result`
+- `mcp_server_params_source`
+- `executable_allowlist_result`
+- `containment_action`
 
 For `a2a_handoff`, the payload should preserve the A2A handoff trust contract, not only the delegated message text:
 
@@ -207,6 +254,19 @@ For `a2a_handoff`, the payload should preserve the A2A handoff trust contract, n
 - `policy_inheritance`
 - `non_repudiation`
 - `failure_attribution`
+
+For `subagent_delegation_decision`, the payload should preserve not only the fact of fanout, but also the economics of the decision:
+
+- `subagent_count`
+- `delegation_reason`
+- `independence_assessment`
+- `shared_context_need`
+- `write_risk`
+- `context_handoff_size`
+- `token_budget`
+- `tool_budget`
+- `merge_conflict_risk`
+- `fanout_decision`
 
 !!! example "Trace for the duplicate-ticket thread"
     In the support-triage case, `tool_policy_decision`, `approval_requested`, `tool_execution`, and the final outcome should be tied by one `trace_id`, `session_id`, `approval_id`, `tool_principal`, and `idempotency_key`. If `create_ticket` times out and the side-effect status is unknown, the trace should show `side_effect_unknown` instead of masking the run as successful or repeating the write without reconciliation.
@@ -231,6 +291,62 @@ If rollout or eval requires `sandbox_profile_review`, the trace should also be a
 - `snapshot_policy`
 - `reviewed_by`
 - `review_evidence_refs`
+
+For a **governed agent execution loop**, the trace should connect sandbox boundary, policy-mediated tools/network, staged output, and validation gates into one reviewable path:
+
+- `execution_loop_id`
+- `bounded_workspace_ref`
+- `tool_policy_ref`
+- `network_policy_decision`
+- `approval_decision_id`
+- `staged_output_ref`
+- `validation_gate_results`
+- `monitoring_signal_id`
+- `constraint_bypass_attempt`
+
+For an **agentic enterprise control plane**, record that the agent is not a local script with implicit authority, but is passing through a governed control path:
+
+- `agent_identity_mode`
+- `agent_registry_record`
+- `agent_gateway_audit_event`
+- `semantic_policy_decision`
+- `capability_loading_mode`
+- `cost_control_signal`
+
+For **model_tool_gateway_boundary**, the trace should show how one gateway/control-plane loop connected tool side effects, model/provider routing, cost, and capacity:
+
+- `provider_route_decision`
+- `cost_capacity_signal`
+- `capacity_backpressure_decision`
+- `budget_exhausted`
+
+For a **gateway-ready runtime**, extend that same loop so the AI gateway is not only a billing proxy, but an auditable runtime boundary:
+
+- `gateway_id`
+- `gateway_policy_version`
+- `client_user_agent`
+- `provider_name`
+- `model_name`
+- `retry_count`
+- `fallback_reason`
+- `dlp_result`
+- `pii_redaction_policy_id`
+- `cache_policy`
+- `rate_limit_decision`
+- `token_input_count`
+- `token_output_count`
+- `cost_attribution_ref`
+
+For **networked_agent_message**, the trace should show why a message from another agent remained data instead of becoming authority:
+
+- `source_agent_id`
+- `principal_id`
+- `message_provenance_chain`
+- `peer_originated_instruction`
+- `propagation_depth`
+- `fanout_anomaly_score`
+- `sybil_independence_check`
+- `quarantine_event`
 
 If the system relies on verifier-aware evals, it is also useful to define an event or linked payload contract for a verifier verdict record:
 
@@ -274,7 +390,7 @@ And `memory_persisted` should usually include:
 - `provenance`
 - `revision`
 
-The current reference payloads also use operational metadata fields such as `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, and `duration_ms`. Tool request/result model validation is part of the same trace boundary: malformed tool calls fail with `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, and malformed tool results fail with `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique`, and `Tool result payload value must be a string: {payload_key}`.
+The current reference payloads also use operational metadata fields such as `runtime_principal`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `policy_id`, `static_items`, `session_items`, `retrieved_items`, `tool_items`, `approval_id`, `reviewer`, `capability_session_id`, `capability_session_status`, `tool_status`, `output_preview`, `model_output_preview`, `reasoning_summary`, `reasoning_reference`, `encrypted_reasoning_item`, `memory_id`, `revision_mode`, `compacted_records`, `persisted_records`, `tool_results`, `span_name`, `duration_ms`, `span_type`, `input_ref`, `output_ref`, `latency_ms`, `retry_count`, `token_input_count`, `token_output_count`, `token_cost`, `approval_state`, `pii_redacted`, `redaction_policy_id`, `retention_class`, `trace_search_tags`, `subagent_count`, `delegation_reason`, `context_handoff_size`, `token_budget`, `merge_conflict_risk`, `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id`, and `resumable_stream_id`. Tool request/result/model validation is part of the same trace boundary: malformed model outputs fail with `Model output reasoning_summary must be a string`, `Model output reasoning_reference must be a string`, or `Model output encrypted_reasoning_item must be a string`; malformed tool calls fail with `Tool request capability name must be a string`, `Tool request capability name must not be empty`, `Tool request arguments must be a mapping`, `Tool request argument key must be a string`, `Tool request argument key must not be empty`, `Tool request argument keys must be unique`, `Tool request argument value must be a string: {argument_key}`, and malformed tool results fail with `Tool result status must be a string`, `Tool result status must not be empty`, `Tool result payload must be a mapping`, `Tool result payload key must be a string`, `Tool result payload key must not be empty`, `Tool result payload keys must be unique`, and `Tool result payload value must be a string: {payload_key}`.
 
 ## What the package already supports
 
@@ -309,6 +425,8 @@ The reference runtime is intentionally small, so a more mature system should qui
 - a stable way to record which verifier contract version produced the grading output;
 - sandbox state fields for runs that materialize a workspace, use shell/filesystem capabilities, or continue from a snapshot;
 - an event or linked payload for `sandbox_profile_reviewed`, so rollout/eval evidence for workspace, permissions, and snapshot/resume policy is traceable.
+- a `governed_execution_loop_step` event that shows bounded workspace, Agent Workflow Firewall or another network gate, approval decision, staged output, Safe Outputs / validation gates, and audit/monitoring signal;
+- production runtime contract fields: `workspace_id`, `workspace_persistence`, `credential_scope`, `egress_profile`, `cost_ledger_ref`, `security_validation_status`, `validation_gate_results`, and `human_review_artifact_ref`;
 
 That is what turns an event stream from debug output into a real platform artifact.
 
@@ -323,6 +441,10 @@ Start with this short list and mark every "no" explicitly:
 - Can you build an eval dataset from a session export?
 - Can you link a trace to verifier evidence used in grading or rollout review?
 - If rollout requires `sandbox_profile_review`, is there trace evidence for workspace entries, permissions, and snapshot/resume policy?
+- For an agent-generated patch/PR, is there a governed agent execution loop path: bounded workspace, policy-mediated tools/network, approval gates, staged output, automated validation, and audit/monitoring?
+- Does the trace show that Safe Outputs, CodeQL, secret scanning, dependency risk, or another validation gate checked staged output before an external write?
+- Does the trace show which isolated session and durable workspace were used, which scoped credentials and egress/tool boundaries applied, and which `human_review_artifact_ref` closes the work?
+- Is there a separate failure mode for `constraint_bypass_attempt` when an agent tries to route around a network allow/deny, approval gate, or staged output boundary?
 - Can you tell which verifier contract version produced that grading output?
 - Do you have a plan for redaction and schema versioning?
 

@@ -188,6 +188,51 @@ flowchart LR
 
 Статичный набор оценок хорош для сравнения известных сценариев. Симулятор пользователя полезен там, где важна динамика поведения, а не только итоговый балл на одном заранее подготовленном примере.
 
+### 4.1.1. Deployment simulation добавляет предрелизный replay реального распределения
+
+OpenAI описывает еще один полезный уровень между статичным eval set и живым rollout: deployment simulation.[^openai-deployment-simulation] Вместо того чтобы проверять только специально написанные или adversarial prompts, команда берет реалистичные исторические контексты, приватно очищает их, убирает прежний ответ ассистента и проигрывает тот же префикс на candidate model до релиза. Для agentic settings эта идея требует не просто transcript replay, а правдоподобной симуляции tool environment, потому что одно агентное поведение может зависеть от сотен tool calls, состояния репозитория, сетевых ответов и временных сбоев.
+
+Архитектурный вывод для этой книги простой: pre-release gate должен уметь воспроизводить не только curated incidents, но и кусок реального распределения задач. Минимальный контракт такого replay:
+
+- `source_window` и правила privacy filtering;
+- `candidate_model` или новая версия policy/runtime;
+- replayed `conversation_prefix` без старого assistant completion;
+- simulated или read-only `tool_environment_ref`;
+- verdict по новым failure modes, behavior delta и tool-use regression;
+- post-release validation hook, чтобы сравнить прогноз с фактическим rollout traffic.
+
+Deployment simulation не заменяет red team и targeted tail-risk evals. Она закрывает другой пробел: помогает увидеть частые или emerging failures в deployment-like contexts до того, как новый model/runtime/policy попадет к широкому кругу пользователей.
+
+### 4.1.2. ToolSimulator показывает отдельный контракт для симуляции инструментов
+
+AWS ToolSimulator полезен как более узкий, но важный слой рядом с deployment simulation: это LLM-powered tool simulation для агентов, которые зависят от внешних инструментов.[^aws-toolsimulator] Вместо live API calls, которые могут раскрыть PII, выполнить реальный side effect или упереться в rate limit, и вместо static mocks, которые плохо держат multi-turn workflows, симулятор генерирует ответы инструментов по registered schemas и поддерживает stateful tool simulations.
+
+Для книги это не аргумент "используй именно Strands Evals". Это недостающий tool simulator contract для любой agent-eval платформы:
+
+- какие инструменты разрешено симулировать, а какие должны быть read-only или запрещены;
+- `simulated_tool_state`, начальное состояние и правила reset между прогоном cases;
+- schema enforcement для tool responses и ошибок;
+- fault/latency/empty-result cases, которые покрывают recovery path, а не только happy path;
+- границы fidelity: что симулятор умеет имитировать, где нужен real sandbox или canary;
+- метрики tool simulator fidelity, чтобы команда не путала правдоподобный mock с production-доказательством.
+
+Практический вывод простой: для tool-heavy evals нужно отдельно ревьюить качество симулятора инструментов. Если агент проходит тест только потому, что simulator всегда возвращает удобный ответ, rollout gate должен считать это слабым сигналом, даже если финальный текст выглядит правильным.
+
+### 4.1.3. Analytics-agent evals должны проверять query path, а не только ответ
+
+Кейс GitHub Qubot показывает хороший production pattern для внутреннего analytics agent: context layer и agent configuration меняются через pull request, а затем проходят offline evals с known prompts, ground-truth SQL, metadata, multiple trials и отчетами по completion, accuracy и duration.[^github-qubot]
+
+Для этой книги важен не сам SQL-agent, а форма eval contract. Внутренний knowledge/data agent должен проверяться не только по тексту финального ответа, а по пути, который привел к нему:
+
+- какой context layer был загружен;
+- какие mandatory filters и ownership rules применились;
+- какой query engine был выбран и почему;
+- есть ли source attribution к dataset/model definition;
+- что произошло при недостаточных правах или неоднозначном grain/filter;
+- какой trace доказывает, что query review и access boundary не были обойдены.
+
+Такой eval лучше ловит реальные production regressions: agent может дать правдоподобный ответ, но выбрать неправильный grain, пропустить обязательный фильтр, сослаться на устаревшее определение метрики или выполнить query там, где должен был отказать.
+
 ### 4.2. Непрерывный контур оценки должен замыкаться в решения о поэтапном выпуске
 
 Когда онлайн-оценки, оценивание трасс и симулированные диалоги уже есть, следующий важный шаг очень простой: результаты должны не просто собираться, а влиять на процесс релиза.
@@ -204,6 +249,10 @@ flowchart LR
 Эта граница важна, потому что оценки (evals) не стоит перегружать чужими функциями жизненного цикла. Их задача — производить суждения, которыми поэтапный выпуск может пользоваться дальше, а не заменять реагирование на инциденты, дизайн телеметрии или владение парком систем.
 
 Это означает и то, что оценки не владеют сдерживанием. Они не замораживают маршрут, не отключают возможность и не назначают экстренное реагирование. Они говорят команде, заслуживает ли изменение доверия, где сидит риск регрессии и можно ли продолжать поэтапный выпуск.
+
+Отдельный lifecycle-риск — путать eval discipline с конкретным hosted eval product. OpenAI в июне 2026 объявила deprecation для Evals platform и Agent Builder: существующие evals должны стать read-only 31 октября 2026 года, а dashboard/API Evals и Agent Builder запланированы к отключению 30 ноября 2026 года.[^openai-deprecations] Практический вывод для этой главы простой: hosted dashboard может быть удобным интерфейсом, но долговечной основой должны оставаться переносимые datasets, verifier contracts, traces, grading rules, export paths и release-gate decisions, которые переживают замену продукта или миграцию на другой инструмент. Если workflow должен жить дольше одного UI-продукта, перенос лучше проектировать в сторону Agents SDK или другого code-owned runtime, где eval artifacts версионируются рядом с кодом.
+
+LangChain State of Agent Engineering добавляет к этому полезный production-readiness baseline.[^langchain-state-agent-engineering] В их опросе 57.3% респондентов уже держат agents в production, но главным production barrier остается quality: 32% называют ее основным blocker. Одновременно observability стала почти базовой практикой: 89% организаций уже внедрили какой-то слой наблюдаемости, тогда как offline evals есть только у 52.4%. Для этой главы это важный разрыв: зрелость агента нельзя доказывать только наличием traces. Release gate должен явно видеть `quality blocker`, `observability baseline` и `eval adoption gap`: какие failures команда умеет объяснить, какие умеет заранее поймать, а какие пока только обнаруживает после факта.
 
 Это означает и еще одну вещь: дисциплина выпуска должна аккуратно выбирать, что именно она вознаграждает. Один балл конечного состояния часто слишком слаб, потому что скрывает частичный успех, заблокированное, но корректное поведение или случайный успех через плохой контрольный путь. Зрелый контур оценки использует более богатые выводы проверяющего, чтобы решения о поэтапном выпуске отражали не только то, как выглядел последний экран, но и то, как именно система себя вела.
 
@@ -223,6 +272,36 @@ flowchart LR
 Эти уровни не заменяют друг друга. Для низкого риска достаточно явной команды “запусти тесты и покажи вывод”. Для релизного изменения нужен шлюз с машинно читаемым результатом. Для высокорискового поведения полезен независимый проверяющий, потому что агент, который делал работу, не должен быть единственным судьей собственного успеха.
 
 В схеме оценок это лучше отражать явно: `stop_condition`, `verification_command`, `verification_result`, `verifier_actor`, `evidence_refs` и решение, блокирует ли провал дальнейший поэтапный выпуск. Тогда “готово” становится не настроением модели, а проверяемым фактом, связанным с трассой, артефактами и политикой выпуска.
+
+### 4.4. Eval readiness начинается с чистой среды и воспроизводимого следа
+
+LangChain checklist по agent evaluation полезен как практическая проверка зрелости: до сложных метрик команда должна убедиться, что может запускать evals в чистой среде, повторять несколько trials, смотреть traces, фиксировать dataset и связывать verdict с конкретным поведением агента.[^langchain-eval-readiness]
+
+Для этой книги это не отдельная методика, а усиление существующего контура. Eval readiness перед релизом должна включать:
+
+- изолированную eval environment, чтобы тест не зависел от случайного состояния production;
+- несколько прогонов там, где поведение недетерминированно;
+- trace review для tool calls, approvals, retrieval и recovery branches;
+- метрики эффективности рядом с метриками качества: latency, tool count, token budget и cost delta;
+- явные scenario IDs, чтобы failed run можно было превратить в regression case;
+- сохраненный verdict record, чтобы решение о rollout можно было оспорить и переиграть.
+
+Иначе команда рискует получить красивый eval score, который нельзя расследовать. Для production agent это почти так же плохо, как отсутствие оценки: релиз выглядит управляемым, но при спорном verdict никто не может восстановить, какая версия политики, какой trace и какой tool outcome на самом деле стояли за решением.
+
+### 4.5. Vulnerability harness как validation funnel, а не один scanner
+
+Cloudflare описывает хороший security-вариант того же принципа: vulnerability discovery полезен только тогда, когда raw findings проходят независимую validation system, а не сразу попадают к инженерам как “баги”.[^cloudflare-vulnerability-harness] Их схема разделяет VDH (Vulnerability Discovery Harness), который активно ищет кандидатов, и VVS (Vulnerability Validation System), который делает deduplication, judgment и fixing. Discovery может быть шумным и model-volatile; validation должна быть более строгой, воспроизводимой и независимой.
+
+Для eval-архитектуры это переносится почти напрямую:
+
+- finding без threat model, affected boundary и working PoC/test остается candidate, а не verified issue;
+- deterministic checks должны подтверждать schema, files, functions, paths, parseability patch/test и отсутствие подмены исходного кода;
+- independent validator не должен иметь права создавать собственные findings и должен пытаться опровергнуть hunter;
+- triage должен отделять real-but-latent, wrong-repo, duplicate и production-reachable findings;
+- fixing gate должен требовать targeted fail→pass flip, блокировать post-patch failure и оставлять branch на human review;
+- harness health должен ловить shallow runs: слишком быстрый hunt без findings, sub-hunts или gap tasks скорее похож на сбой инструмента, чем на доказательство отсутствия багов.
+
+Главный вывод: хороший eval loop не просто считает score. Он превращает дешевый шум модели в проверяемые артефакты, которые можно дедуплицировать, переиграть, оспорить, связать с владельцем и безопасно довести до patch review.
 
 ## 5. Оценивание трасс особенно полезно для агентных систем
 
@@ -285,6 +364,14 @@ flowchart LR
 Разбор Anthropic про многоагентную исследовательскую систему добавляет к этому экономический шлюз оценивания: если многоагентный режим выигрывает потому, что тратит больше токенов, вызовов инструментов и параллельных окон контекста, то релизный шлюз должен проверять не только качество ответа, но и оправданность этого бюджета.[^anthropic-multi-agent-research] Для широкого исследования это может быть честным компромиссом. Для плотной задачи с общим состоянием тот же прирост расходов должен считаться регрессией архитектуры, даже если финальный ответ выглядит лучше на нескольких примерах.
 
 ### 5.3. Многоходовую согласованность тоже стоит проверять отдельно
+Минимальный eval для этого выбора должен сравнивать single-agent и multi-agent режим на двух классах задач:
+
+- **read-heavy breadth-first:** несколько независимых источников, отдельные retrieval branches, финальный synthesis; multi-agent может пройти, если качество растет при приемлемом `token_budget` и понятной трассе;
+- **write-heavy shared-state:** несколько шагов меняют один объект или один incident record; multi-agent должен проигрывать или блокироваться, если появляются конфликтующие действия, потеря контекста, лишние approvals или высокий `merge_conflict_risk`.
+
+Такой gate защищает от красивого, но неправильного вывода “multi-agent дал лучший ответ на research demo, значит надо включить его везде”.
+
+### 5.3. Multi-turn consistency тоже стоит проверять отдельно
 
 Еще один полезный сигнал свежих работ: агент может выглядеть разумно в коротком сценарии и при этом постепенно входить в противоречие с самим собой в длинном контуре взаимодействия.
 
@@ -390,6 +477,30 @@ flowchart LR
 
 Тогда решение о поэтапном выпуске перестает зависеть только от интуиции автора изменения.
 
+### 7.1. Harness тоже должен оцениваться как часть системы
+
+GitHub Copilot agentic harness дает хороший практический сигнал: качество агентной системы нельзя сводить к качеству модели.[^github-copilot-agentic-harness] Harness управляет tools, context и workflow, поэтому его нужно сравнивать как отдельный слой: same model, same benchmark task, нормализованный context window, reasoning effort, tool selection и MCP servers, а затем сравнение с model-vendor harness.
+
+Для release gate это меняет набор метрик. Помимо task resolution стоит явно смотреть:
+
+- token efficiency;
+- run-to-run variance;
+- wall-clock duration;
+- tool-call count и retry budget;
+- cost profile для разных классов задач;
+- качество Auto model selection или другого model router;
+- деградации памяти, context handling и skill triggering.
+
+Практический вывод: если команда меняет harness, context strategy или model routing, ей нужен harness-level release gate. Иначе можно ошибочно решить, что "модель стала лучше" или "модель стала хуже", хотя реальная причина лежит в orchestration layer.
+
+### 7.2. Quality regression может жить в продуктовой обвязке
+
+Постмортем Anthropic по Claude Code quality reports показывает ту же проблему в более болезненном виде.[^anthropic-claude-code-quality-reports] Пользователи видели деградацию Claude Code, Claude Agent SDK и Claude Cowork, хотя API и inference layer не были причиной. Три изменения лежали в продуктовой обвязке: default reasoning effort был снижен ради latency, stale-session optimization начала repeatedly pruning older thinking, а system prompt instruction для меньшей verbose output ухудшила coding quality.
+
+Для release gate это отдельный failure pattern: **model unchanged → harness/config/prompt/context change → quality regression → user reports before eval reproduction**. Значит, проверка релиза должна явно версионировать `model_id`, `effort_default`, `context_pruning_policy`, `prompt_bundle_version`, `cache_header_behavior`, `harness_version` и `rollout_slice`. Иначе команда будет искать "ухудшение модели" там, где регресс создали latency optimization, cache policy или prompt hygiene.
+
+Практический контракт после такого инцидента: prompt changes получают per-model eval suite and ablation; intelligence/latency tradeoffs получают soak period and gradual rollout; context-pruning changes получают stale-session regression cases; dogfooding должно использовать public build, а не только internal testing build. User feedback тоже становится сигналом gate, но его нужно связывать с конкретными version slices, чтобы broad complaint не растворялся в normal variance.
+
 ## 8. Практические правила для контура оценки
 
 Если нужен короткий инженерный каркас, обычно достаточно таких правил:
@@ -478,6 +589,32 @@ def passes_regression_gate(summary: EvalSummary) -> bool:
 - дисциплину эскалации;
 - качество fallback;
 - policy-sensitive ходы.
+
+### 11.2. Production evals должны замыкать цикл обратно в разработку
+
+Отдельный практический паттерн хорошо виден в AWS Agent-EvalKit: оценка агента не должна оставаться разовым benchmark перед запуском.[^aws-agent-evalkit] Полный цикл выглядит как pipeline: план оценки по коду и risk areas, генерация или импорт тестовых случаев, инструментирование трасс, запуск агента по сценариям, вычисление метрик по трассам и отчет с конкретными рекомендациями к коду.
+
+Microsoft Foundry Open Trust Stack добавляет к этому удобную связку между политиками, evals и runtime controls.[^microsoft-open-trust-stack] ASSERT полезен как напоминание, что eval cases должны выводиться из organizational policies and requirements, а не только из случайных regression prompts. Agent Control Specification (ACS) дополняет это переносимыми control checkpoints: если eval показывает, что агент проваливает policy requirement, исправление должно выражаться не только в prompt change, но и в контрольной точке до tool call, после tool result или перед external action.
+
+Новый слой Foundry делает этот контур еще более прикладным: production traces можно превращать в curated, versioned evaluation datasets.[^microsoft-traces-to-dataset] Это важная граница между observability и learning system. Трасса сама по себе еще не тест: ее нужно отобрать, очистить, привязать к expected outcome, версии агента, evaluator version и privacy policy. Но когда такая запись становится dataset item, реальное поведение пользователя возвращается в offline regression gate, а не остается только строкой в dashboard.
+
+Google Cloud Agent Platform делает production-сторону этого контура явной: **Online Monitors** постоянно берут выборку трасс развернутого агента из Cloud Trace и Cloud Logging, запускают настроенные evaluation metrics, пишут результаты обратно в Cloud Logging и экспортируют численные оценки в Cloud Monitoring.[^google-evaluate-agents][^google-agent-online-monitors] Переносимый контракт здесь не “посмотреть dashboard”, а **live trace → sampled eval → score → alert or regression gate → reviewed improvement**. Каждая выбранная строка должна сохранять `trace_id`, `agent_version`, `tool_calls`, `expected_outcome`, `grader_version`, `score`, `failure_mode` и `review_required`, чтобы команда могла переиграть решение и сравнить его между релизами.
+
+Работа Google Discovery Bench добавляет второе предупреждение: командам нужно **evaluate your evals**.[^google-evaluate-agent-performance] Benchmark может скрывать хрупкий ground truth, нестабильную сложность или pass/fail threshold, который не видит cliff, где агент резко ломается при чуть более расплывчатом запросе пользователя. Поэтому зрелый eval loop калибрует сам evaluator: измеряет сложность задачи, разбирает disagreement, версионирует rubrics и считает grader drift релизным риском.
+
+Самое важное здесь не конкретный toolkit, а форма контура. Production traces нужно превращать не только в dashboards, но и в новые тестовые случаи, regression thresholds и code-level fixes. Если реальный трафик показывает, что агент красиво отвечает поверх пустого tool output, это не просто observability signal. Это будущий eval case на faithfulness, tool-use discipline и fallback behavior.
+
+Anthropic хорошо формулирует соседний риск: агентные evals часто требуют экспертного суждения, но эксперт не должен превращаться в бесконечный ручной grader.[^anthropic-agent-evals][^anthropic-expertise] Правильный контракт — **expert review → rubric update → representative dataset item → automated or sampled regression**. Эксперт нужен, чтобы определить, что считается хорошим исходом в неоднозначной задаче, отличить допустимый альтернативный путь от ошибки и отбраковать хрупкие path-based проверки. После этого система должна сохранять критерий, пример, причину решения и границу применимости, иначе expertise остается устной традицией команды.
+
+В зрелом контуре после каждого значимого изменения команда должна уметь:
+
+- переиспользовать уже собранные test cases и instrumentation;
+- добавить сценарии из production logs или ручного разбора;
+- сравнить отчеты между версиями агента;
+- привязать failed metric к конкретной трассе и месту в коде;
+- прогнать качество на реальных traces из production sampling, а не только на синтетике.
+
+Именно так eval loop становится release discipline: он принимает сигналы из разработки, production, инцидентов и ручной экспертизы, а возвращает не “score ухудшился”, а проверяемую работу для следующего изменения.
 
 ## 12. Что чаще всего ломается в культуре оценки
 
@@ -653,4 +790,21 @@ rollout_judgment:
 [^anthropic-claude-code-best-practices]: Anthropic, [Best practices for Claude Code](https://code.claude.com/docs/en/best-practices).
 [^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
 [^google-govern]: [Google Cloud, More ways to build, scale, and govern AI agents with Vertex AI Agent Builder](https://cloud.google.com/blog/products/ai-machine-learning/more-ways-to-build-and-scale-ai-agents-with-vertex-ai-agent-builder)
+[^langchain-eval-readiness]: LangChain, [Agent Evaluation Readiness Checklist](https://www.langchain.com/blog/agent-evaluation-readiness-checklist).
+[^langchain-state-agent-engineering]: LangChain, [State of Agent Engineering](https://www.langchain.com/state-of-agent-engineering).
+[^openai-deployment-simulation]: OpenAI, [Predicting model behavior before release by simulating deployment](https://openai.com/index/deployment-simulation/).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^github-copilot-agentic-harness]: GitHub Blog, [Evaluating performance and efficiency of the GitHub Copilot agentic harness across models and tasks](https://github.blog/ai-and-ml/github-copilot/evaluating-performance-and-efficiency-of-the-github-copilot-agentic-harness-across-models-and-tasks/).
+[^openai-deprecations]: OpenAI, [Deprecations](https://developers.openai.com/api/docs/deprecations).
+[^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
+[^aws-agent-evalkit]: AWS, [Evaluate AI agents systematically with Agent-EvalKit](https://aws.amazon.com/blogs/machine-learning/evaluate-ai-agents-systematically-with-agent-evalkit/).
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).
+[^microsoft-traces-to-dataset]: Microsoft Learn, [Convert agent traces into evaluation datasets](https://learn.microsoft.com/en-us/azure/foundry/observability/how-to/traces-to-dataset).
+[^google-agent-online-monitors]: Google Cloud, [Continuous evaluation with online monitors](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-online).
+[^google-evaluate-agents]: Google Cloud, [Evaluate your agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-agents).
+[^google-evaluate-agent-performance]: Google Cloud Blog, [Evaluate agent performance](https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance).
+[^anthropic-agent-evals]: Anthropic, [Demystifying evals for AI agents](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents).
+[^anthropic-expertise]: Anthropic, [Agentic coding and persistent returns to expertise](https://www.anthropic.com/research/claude-code-expertise).
+[^anthropic-claude-code-quality-reports]: Anthropic, [An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem), 23 April 2026.
+[^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)

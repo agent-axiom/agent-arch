@@ -200,6 +200,10 @@ flowchart LR
 
 否则团队会很晚才发现退化：那时智能体也许还“在帮忙”，但成本已经显著变高。
 
+Cloudflare AI Gateway spend limits 说明，这类 budget gate 不只应该存在于 billing dashboard，也可以直接位于 runtime path。[^cloudflare-ai-gateway-spend-limits] 当额度耗尽时，gateway 会返回 `429`，agent platform 应该把它当作普通 runtime outcome：`budget_exhausted`，而不是神秘的 provider failure。在 budget-aware gateway 里，SLO 应该覆盖 retry/backoff、fallback policy、provider/model choice、per-agent spend limits 和 trace attribution，让 operator 能看清是哪一个 capability、tenant、run 或 automation 消耗了预算。这样 cost SLO 就会成为 control plane，而不是事后报告。
+
+对自主智能体来说，这里还有一条边界很重要：预算应该绑定到 agent identity，而不只是 API key 或 provider account。如果 coding agent、support agent 和 incident agent 都通过同一个 AI gateway，SLO 必须区分 `agent_identity`、`provider_route`、`fallback_reason`、`rate_limit_decision` 和 degraded mode。否则，fallback 到更便宜或更可用的模型可能会悄悄改变质量、安全姿态或延迟，而 cost dashboard 只会显示花费下降。一个好的契约应该是：**identity-bound spend limit -> provider routing decision -> fallback/degraded mode -> run-level SLO impact -> trace attribution**。
+
 ## 8. 升级 SLO 保护的是系统周围的人
 
 人在环路不是一个免费的安全网。
@@ -359,3 +363,5 @@ def classify_run_health(run: RunHealth) -> str:
 - [第 14 章：平台团队与产品团队](../part-vi/chapter-14.zh.md)
 - [第五部分：可靠性与可观测性](index.zh.md)
 - [参考来源](../../appendix/sources.zh.md)
+
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).

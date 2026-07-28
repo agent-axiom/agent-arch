@@ -16,6 +16,27 @@ That complements the OpenAI, Anthropic, and LangGraph material already embedded 
 !!! note "Canonical Google integration cases"
     The Google integration roadmap is more useful when platform-grade ideas are checked against the three canonical cases. **Support triage** tests agent identity, least privilege, approval/audit linkage, sandbox profile, high-risk tools, and duplicate-ticket controls. **Internal knowledge assistant** tests context layers, memory governance, retrieval policy, source provenance, and tenant-aware access. **Incident coordination** tests registry governance, A2A boundaries, continuous controls, rollout gates, escalation traces, and response ownership.
 
+## Agentic enterprise control-plane checklist
+
+Google Cloud's recent **20 questions for the Agentic Enterprise** checklist is useful less as a product map and more as an operating questionnaire. Read it as a vendor-neutral check: does the enterprise have a single agent control plane, or just scattered harnesses, tools, and dashboards?
+
+A minimal portable checklist:
+
+1. Who is building the agent: an engineering team, a low-code team, or a business owner?
+2. Who is it built for: a human, another agent, or a background task chain?
+3. Does the agent have a stable identity model: its own identity, user-delegated authority, or a platform-owned runtime principal?
+4. Is there an approved agent registry with owner, purpose, datasets, permitted tools, and review cadence?
+5. Do tool/data calls pass through an agent gateway instead of local untracked connectors?
+6. Are MCP for tools/data and A2A for agent-to-agent delegation kept separate?
+7. Does the agent load task-specific capabilities instead of stuffing the whole tool catalog into context?
+8. Is a sandbox required for browser use, scripts, code execution, and other risky tools?
+9. Is there a semantic policy gate that checks intent and planned action before execution?
+10. Is there an eval loop that checks the result, not only tool-call success?
+11. Are there cost controls: model tiering, context trimming, hard iteration stops, and budget telemetry?
+12. Does the gateway write an audit event for every user-agent-tool interaction, including deny, sanitize, prompt-injection block, and anomaly signal?
+
+The book takeaway is that the control plane should bind **identity → registry → gateway → policy → sandbox → evals → cost controls → audit trail**. If any of these nodes remains a local team setting, the system drifts toward shadow AI at the execution-path level.
+
 ## Step-by-step plan
 
 ### Step 1. Five pillars of the platform and context layers
@@ -146,3 +167,4 @@ If we rank by practical reader value, the order is:
 - Google Cloud, [Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 - Google Cloud, [Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 - Google Cloud, [Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
+- Google Cloud, [20 questions for the Agentic Enterprise](https://cloud.google.com/blog/products/ai-machine-learning/20-questions-for-the-agentic-enterprise)

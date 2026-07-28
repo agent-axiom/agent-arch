@@ -136,7 +136,16 @@
           "delegated_scope": "",
           "idempotency_key": "trace-eval-support-001",
           "approval_id": "apr-001",
-          "capability_name": "create_ticket"
+          "capability_name": "create_ticket",
+          "subagent_count": "",
+          "delegation_reason": "",
+          "context_handoff_size": "",
+          "token_budget": "",
+          "merge_conflict_risk": "",
+          "agent_instance_id": "",
+          "durable_state_version": "",
+          "scheduled_wakeup_id": "",
+          "resumable_stream_id": ""
         }
       ],
       "eval": {
@@ -235,7 +244,16 @@
           "delegated_scope": "",
           "idempotency_key": "",
           "approval_id": "",
-          "capability_name": ""
+          "capability_name": "",
+          "subagent_count": "",
+          "delegation_reason": "",
+          "context_handoff_size": "",
+          "token_budget": "",
+          "merge_conflict_risk": "",
+          "agent_instance_id": "",
+          "durable_state_version": "",
+          "scheduled_wakeup_id": "",
+          "resumable_stream_id": ""
         }
       ],
       "eval": {
@@ -343,7 +361,16 @@
           "delegated_scope": "",
           "idempotency_key": "trace-eval-mixed-001",
           "approval_id": "apr-002",
-          "capability_name": "create_ticket"
+          "capability_name": "create_ticket",
+          "subagent_count": "",
+          "delegation_reason": "",
+          "context_handoff_size": "",
+          "token_budget": "",
+          "merge_conflict_risk": "",
+          "agent_instance_id": "",
+          "durable_state_version": "",
+          "scheduled_wakeup_id": "",
+          "resumable_stream_id": ""
         },
         {
           "trace_id": "trace-eval-mixed-002",
@@ -362,7 +389,16 @@
           "delegated_scope": "",
           "idempotency_key": "",
           "approval_id": "",
-          "capability_name": ""
+          "capability_name": "",
+          "subagent_count": "",
+          "delegation_reason": "",
+          "context_handoff_size": "",
+          "token_budget": "",
+          "merge_conflict_risk": "",
+          "agent_instance_id": "",
+          "durable_state_version": "",
+          "scheduled_wakeup_id": "",
+          "resumable_stream_id": ""
         }
       ],
       "eval": {
@@ -456,7 +492,16 @@
           "delegated_scope": "",
           "idempotency_key": "trace-eval-failed-run-001",
           "approval_id": "",
-          "capability_name": "create_ticket"
+          "capability_name": "create_ticket",
+          "subagent_count": "",
+          "delegation_reason": "",
+          "context_handoff_size": "",
+          "token_budget": "",
+          "merge_conflict_risk": "",
+          "agent_instance_id": "",
+          "durable_state_version": "",
+          "scheduled_wakeup_id": "",
+          "resumable_stream_id": ""
         }
       ],
       "eval": {
@@ -542,7 +587,16 @@
           "delegated_scope": "",
           "idempotency_key": "trace-eval-unknown-effect-001",
           "approval_id": "",
-          "capability_name": "create_ticket"
+          "capability_name": "create_ticket",
+          "subagent_count": "",
+          "delegation_reason": "",
+          "context_handoff_size": "",
+          "token_budget": "",
+          "merge_conflict_risk": "",
+          "agent_instance_id": "",
+          "durable_state_version": "",
+          "scheduled_wakeup_id": "",
+          "resumable_stream_id": ""
         }
       ],
       "eval": {

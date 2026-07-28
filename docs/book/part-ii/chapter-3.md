@@ -146,6 +146,23 @@ flowchart LR
 
 Практическое правило простое: решения с высокой ставкой не должны оставаться на свободном вероятностном суждении модели. Финальное право на действие лучше держать в слое политики и пути подтверждения.
 
+### 5.2. Сдерживание сильнее бесконечного надзора
+
+Свежий практический урок Anthropic полезен именно как инженерная инварианта: при росте возможностей агента растет не только вероятность ошибки, но и потенциальный blast radius. Одними подтверждениями это не удержать. Если пользователь видит десятки prompts, он начинает подтверждать почти автоматически; такой human-in-the-loop быстро превращается из контроля в ритуал.[^anthropic-containment]
+
+Поэтому угрозы выше стоит читать через вопрос: **что агент физически способен сделать, даже если модель ошиблась или пользователь устал подтверждать?** Для каждой рискованной возможности нужны не только approval rules, но и архитектурные пределы:
+
+- egress controls: куда среда исполнения вообще может подключаться;
+- filesystem scope: какие директории, mounts и snapshots доступны;
+- credentials scope: какие токены существуют внутри этого запуска и как быстро они истекают;
+- rollback boundary: что можно откатить без восстановления всей системы;
+- audit boundary: какие события остаются видимыми без доступа к пользовательским данным.
+
+Это не отменяет подтверждения. Оно ставит подтверждение на правильное место: approval решает, можно ли выполнить действие; containment ограничивает ущерб, если решение оказалось ошибочным, неполным или атакованным.
+
+Практическая формула для зрелого рантайма звучит жестко: **contain capability before supervising behavior**. То есть детерминированная среда обязана сдерживать capability до того, как модель, пользователь или внешний контент начнут спорить о допустимости конкретного шага. Если агент не видит сеть, секрет, файл, tenant или write endpoint, он не может случайно или намеренно использовать их в обход уставшего approval path.
+
+
 ## 6. Защитные правила работают слоями, а не одним фильтром
 
 Практический гайд OpenAI хорошо попадает в реальность: защитные правила полезнее проектировать как многоуровневую защиту, а не как одну "умную" проверку на входе.[^openai-practical]
@@ -324,7 +341,8 @@ def assemble_prompt(user_input: str, retrieved_docs: list[str]) -> str:
 - [Источники](../../appendix/sources.md)
 
 [^owasp]: [OWASP, LLM Prompt Injection Prevention Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/LLM_Prompt_Injection_Prevention_Cheat_Sheet.html)
-[^anthropic-security]: [Anthropic, Claude Code Security](https://code.claude.com/docs/en/security)
+[^anthropic-security]: [Anthropic, Claude Code Security](https://docs.anthropic.com/en/docs/claude-code/security)
+[^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude)
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^google-secure-agents]: [Google Cloud, How Google secures AI Agents](https://cloud.google.com/blog/products/identity-security/cloud-ciso-perspectives-how-google-secures-ai-agents)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)

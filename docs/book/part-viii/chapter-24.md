@@ -3,7 +3,7 @@
 !!! info "Актуальность главы"
     Последняя редакционная проверка источников и платформенных ссылок: **29 июня 2026 года**. Предыдущая полная редакционная проверка: **17 мая 2026 года**. Следующая плановая проверка полного каталога: **29 июля 2026 года**.
 
-    Что изменилось после предыдущей проверки: поверхности безопасности MCP/A2A, контракты проверяющего, управленческая телеметрия и замечания по готовности к печатной версии теперь покрыты конкретными контрактами и проверками документации.
+    Что изменилось после предыдущей проверки: поверхности безопасности MCP/A2A, контракты проверяющего, управленческая телеметрия и замечания по готовности к печатной версии теперь покрыты конкретными контрактами и проверками документации. Также добавлена связь AI Control Roadmap, runtime monitoring внутренних coding agents и release-bearing control metrics с моделью инсайдерского риска.
 
     Быстрее всего здесь меняются:
 
@@ -107,6 +107,8 @@
 
 Google Research формулирует это через три простых принципа: human controllers, limited powers и observable actions. [^google-secure-agents]
 
+Google DeepMind и OpenAI добавляют к этой рамке операционный слой: внутреннего агента с доступом к рабочим системам полезно считать потенциальной insider threat, а мониторинг его траекторий — частью runtime control, а не обычной панели наблюдаемости.[^deepmind-ai-control][^openai-agent-monitoring] Поэтому контроль должен иметь измеримые пороги: какая доля трафика реально покрыта мониторингом, какую долю misalignment-relevant behavior ловит проверяющий, сколько времени проходит до реакции и какие действия переходят из asynchronous review в synchronous block. Если эти числа неизвестны, утверждение “у нас есть мониторинг” не должно считаться доказательством безопасности.
+
 ## 5. Несоответствие целей особенно опасно в переходных состояниях
 
 На практике самые интересные режимы отказа часто возникают не в устойчивом состоянии, а в переходах:
@@ -165,6 +167,7 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 - неизменяемая связь между `trace_id`, `approval_id`, `tool_principal`, `contract_version` и `artifact_bundle`;
 - аварийная остановка для семейства возможностей;
 - поведенческие оценки, которые проверяют саботаж, сокрытие, обход надзора и злоупотребление схемами оркестрации.
+- release-bearing control metrics: monitored coverage, verifier recall, time-to-response и граница, где риск действия требует synchronous block вместо delayed review.
 
 <div class="diagram-card">
 <p>Риск несоответствия целей лучше воспринимать как конфликт между автономией и поверхностями контроля</p>
@@ -298,4 +301,6 @@ def safe_for_high_risk_autonomy(state: AgenticRiskState) -> bool:
 
 [^anthropic-misalignment]: Anthropic, [Agentic Misalignment](https://www.anthropic.com/research/agentic-misalignment)
 [^google-secure-agents]: Google Research, [An Introduction to Google’s Approach for Secure AI Agents](https://research.google/pubs/an-introduction-to-googles-approach-for-secure-ai-agents/)
+[^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/blog/securing-the-future-of-ai-agents/)
+[^openai-agent-monitoring]: OpenAI, [How we monitor internal coding agents for misalignment](https://openai.com/index/how-we-monitor-internal-coding-agents-misalignment/)
 [^ms-agentic-risk]: Microsoft Learn, [Reduce autonomous agentic AI risk](https://learn.microsoft.com/en-us/security/zero-trust/sfi/manage-agentic-risk)

@@ -212,6 +212,26 @@ Useful additions now include:
 
 That prevents a policy bundle from approving a capability statically while leaving the live session lifecycle uncontrolled.
 
+Microsoft Foundry's Open Trust Stack is useful here as an external reference point: policy should compile into named runtime checkpoints instead of remaining prose beside an eval report.[^microsoft-open-trust-stack] In portable YAML, that can look like this:
+
+```yaml
+control_checkpoints:
+  - checkpoint: tool_execution
+    policy_requirement: no_external_write_without_approval
+    predicate: risk_tier == "high" and side_effect == "external_write"
+    action: require_approval
+    audit_fields:
+      - checkpoint
+      - policy_requirement
+      - predicate_result
+      - action
+      - control_version
+      - eval_case_id
+      - trace_id
+```
+
+The minimal contract surface is: `checkpoint`, `policy_requirement`, `predicate` or `judge`, `action`, `control_version`, `eval_case_id`, `trace_id`, and `observed_signal`. Checkpoints should be named by the places in the agent cycle: `input`, `llm`, `state`, `tool_execution`, and `output`. Then a failed eval can connect not only to a prompt diff, but also to a specific runtime hook, audit event, and regression case.
+
 Anthropic's workflow taxonomy adds another useful contract dimension here.[^anthropic] Mature policy bundles increasingly need to state not only whether a capability is allowed, but which orchestration patterns it is allowed to participate in.
 
 Useful additions now include fields such as:
@@ -293,3 +313,4 @@ If several answers are “no,” your policy layer exists, but is not yet shaped
 - [Policy Templates and Checklists by Use Case](policy-templates.en.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).

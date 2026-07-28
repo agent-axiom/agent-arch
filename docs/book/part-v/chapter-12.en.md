@@ -200,6 +200,10 @@ That is why cost SLO should at least look at:
 
 Without that, the team notices degradation too late: when the agent still “helps,” but now costs materially more.
 
+Cloudflare AI Gateway spend limits show that this budget gate can live on the runtime path, not only in a billing dashboard.[^cloudflare-ai-gateway-spend-limits] When the limit is exhausted, the gateway returns `429`, and the agent platform should treat it as an ordinary runtime outcome: `budget_exhausted`, not a mysterious provider failure. In a budget-aware gateway, SLO should cover retry/backoff, fallback policy, provider/model choice, per-agent spend limits, and trace attribution, so an operator can see which capability, tenant, run, or automation spent the budget. Then cost SLO becomes a control plane, not an after-the-fact report.
+
+For autonomous agents, one more boundary matters here: the budget should attach to agent identity, not only to an API key or provider account. If a coding agent, support agent, and incident agent all pass through the same AI gateway, SLO must distinguish `agent_identity`, `provider_route`, `fallback_reason`, `rate_limit_decision`, and degraded mode. Otherwise, fallback to a cheaper or more available model can silently change quality, safety posture, or latency, while the cost dashboard only shows that spend went down. A good contract looks like this: **identity-bound spend limit -> provider routing decision -> fallback/degraded mode -> run-level SLO impact -> trace attribution**.
+
 ## 8. Escalation SLO Protect the Humans Around the System
 
 Human-in-the-loop is not a free safety net.
@@ -359,3 +363,5 @@ After SLO, the next step in the same story is the eval loop: offline evals, onli
 - [Chapter 14. Platform Team vs Product Teams](../part-vi/chapter-14.en.md)
 - [Part V. Reliability and Observability](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).

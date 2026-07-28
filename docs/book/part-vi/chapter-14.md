@@ -257,6 +257,10 @@ registry:
 - сколько MCP-серверов подняли;
 - сколько продуктовых команд “подключились”.
 
+Исследование rollout командных coding agents в Microsoft хорошо показывает соседнюю ловушку.[^microsoft-cli-agent-rollout] В их ранней раскатке Claude Code и GitHub Copilot CLI первое использование распространялось в основном через социальные сети внутри организации, удержание сильнее связывалось с активностью разработки, чем с демографией, а adopters merged примерно на 24% больше pull requests. Это полезный сигнал для платформенной команды, но не финальный ответ: авторы прямо используют merged PR как proxy for output и отдельно оговаривают, что PR не равен доставленной ценности.
+
+Для агентной платформы вывод практический: adoption, retention и output lift нужны, но они не должны становиться единственным scoreboard. Если команда оптимизирует только число пользователей, запусков или merged PR, она может получить больше активности, больше review burden и больше скрытого риска без сопоставимого product value. Минимальный набор метрик для rollout должен смотреть шире: adoption по командам, retention по типам задач, task mix, review latency, долю принятых изменений, defect rate, security findings, cost per accepted change и incidents caused or prevented.
+
 Сильная платформа должна уменьшать:
 
 - дублирование;
@@ -345,3 +349,4 @@ registry:
 
 [^google-ai-controls]: [Google Cloud, Recommended AI Controls framework](https://cloud.google.com/blog/products/identity-security/audit-smarter-introducing-our-recommended-ai-controls-framework)
 [^google-agent-overview]: [Google Cloud, Vertex AI Agent Builder overview](https://docs.cloud.google.com/agent-builder/overview)
+[^microsoft-cli-agent-rollout]: Emerson Murphy-Hill, Jenna Butler, Alexandra Savelieva, [Adoption and Impact of Command-Line AI Coding Agents: A Study of Microsoft's Early 2026 Rollout of Claude Code and GitHub Copilot CLI](https://arxiv.org/abs/2607.01418), arXiv:2607.01418, 1 July 2026.

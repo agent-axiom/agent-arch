@@ -212,6 +212,26 @@ approval_contract:
 
 这些字段可以避免一种危险情况：策略包在静态层面批准了能力，但把真实会话生命周期留在控制模型之外。
 
+Microsoft Foundry 的 Open Trust Stack 在这里可以作为外部参照：policy 应该编译成具名 runtime checkpoints，而不是停留在 eval report 旁边的一段 prose。[^microsoft-open-trust-stack] 用可移植 YAML 表达时，可以长这样：
+
+```yaml
+control_checkpoints:
+  - checkpoint: tool_execution
+    policy_requirement: no_external_write_without_approval
+    predicate: risk_tier == "high" and side_effect == "external_write"
+    action: require_approval
+    audit_fields:
+      - checkpoint
+      - policy_requirement
+      - predicate_result
+      - action
+      - control_version
+      - eval_case_id
+      - trace_id
+```
+
+最小 contract surface 包括：`checkpoint`、`policy_requirement`、`predicate` 或 `judge`、`action`、`control_version`、`eval_case_id`、`trace_id` 和 `observed_signal`。Checkpoints 应该按 agent cycle 中的位置命名：`input`、`llm`、`state`、`tool_execution` 和 `output`。这样 failed eval 不只会指向 prompt diff，还能连到具体 runtime hook、audit event 和 regression case。
+
 Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthropic] 成熟的策略包不应只说明能力原则上能不能用，还应说明它可以出现在哪些编排模式里。
 
 这时很快就会需要补上这些字段：
@@ -293,3 +313,4 @@ Anthropic 的工作流分类又补上了一个很有用的契约维度。[^anthr
 - [按场景组织的策略模板与检查清单](policy-templates.zh.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).

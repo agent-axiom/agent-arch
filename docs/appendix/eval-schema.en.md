@@ -29,6 +29,21 @@ That is a problem for three reasons:
 
 That is why it helps to treat an eval dataset as a contract.
 
+## Eval integrity as a first-class control
+
+OpenAI's SWE-Bench Pro audit shows why that contract is not enough by itself: even a realistic benchmark can produce noisy signal when the tasks are broken. [OpenAI found](https://openai.com/index/separating-signal-from-noise-coding-evaluations/) that an automated pipeline flagged 200 of 731 public-split tasks as broken, while a campaign with five experienced engineers per task identified 249. In the language of this book, the eval artifact itself needs quality assurance because it shapes deployment safety, research priorities, and safety-case claims.
+
+A minimal defect taxonomy is useful directly in the schema:
+
+- `overly_strict_tests`: hidden tests require a specific implementation that the prompt did not require;
+- `underspecified_prompt`: the prompt omits requirements that the oracle later enforces;
+- `low_coverage_tests`: tests allow incomplete solutions to pass;
+- `misleading_prompt`: the prompt points toward behavior that conflicts with tests or the gold patch.
+
+That means `verifier_outputs` should sit beside a separate `eval_audit_record`. This record describes not how the agent performed on a scenario, but whether the measurement artifact is trustworthy: `source_task_id`, `oracle_type`, `defect_labels`, `agent_audit_refs`, `human_reviewer_count`, `human_agreement`, `reviewer_confidence`, and `decision_impact`.
+
+The practical pattern is not "let an agent grade the eval." The stronger shape is **agent-assisted eval audit + independent human adjudication**: agents help inspect prompts, tests, traces, and patches at scale, while the final label, confidence, and release impact remain a separate human-reviewed artifact.
+
 ## Minimal eval artifact shape
 
 For agent systems, it is very useful for one dataset item to contain at least:
@@ -110,10 +125,19 @@ For reference-grade agent evals, it helps to distinguish at least these rules:
 - `failure_attribution_valid`
 - `failed_run_traceable`
 - `sandbox_profile_review`
+- `stop_condition_verified`
+- `delegation_budget_respected`
+- `single_vs_multi_agent_regression`
 
 `failed_run_traceable` becomes important once release review expects failed-run drills. It checks that a degraded path did not merely fail, but failed in a way the team can still inspect through status, a concrete failure reason such as `failure_reason`, trace linkage, and governed release identity.
 
 `sandbox_profile_review` matters for sandbox-backed paths: it checks that workspace materialization, shell/filesystem permissions, network/secrets posture, and snapshot/resume policy were explicitly represented as reviewable evidence instead of remaining implicit runtime settings.
+
+`stop_condition_verified` matters for agent-run paths where a free-text “done” is not enough. It checks that the scenario carries an explicit stop condition, verification mechanism, verification result, verifier actor, and evidence link such as test output, trace, screenshot, diff, or artifact.
+
+`delegation_budget_respected` matters for manager/subagent paths. It checks that fanout passed an explicit gate, `subagent_count` stayed within limit, `context_handoff_size` and `token_budget` remained within scenario bounds, and `delegation_reason` explains why the single-agent path was insufficient.
+
+`single_vs_multi_agent_regression` compares modes. It checks that multi-agent genuinely wins on read-heavy breadth-first work and fails or blocks on write-heavy shared-state work when conflicting actions, approvals, context loss, or `merge_conflict_risk` increase.
 
 That means the grading contract should not focus only on the final answer text, but also on system behavior.
 
@@ -148,6 +172,9 @@ The export contract is intentionally concrete: the default `dataset_name` is `ag
 
 !!! example "Eval gate for the duplicate-ticket thread"
     For the running support-triage case, a dedicated eval should reproduce a timeout after `create_ticket`, require preserved `trace_id` and `idempotency_key`, expect exactly one ticket side effect or a `side_effect_unknown` stop, and block rollout if a new prompt/model/adapter version blindly retries and creates a second ticket.
+
+!!! example "Compaction continuity matrix"
+    Run every long-horizon case once with full history and once through the [Context Continuity Envelope](continuity-envelope-schema.en.md). Bind the compacted view with `summary_sha256` and require the same or a stricter safety outcome after compaction. Blocking variants must cover a negative user constraint, a modified summary, expired and revoked approval, changed policy and capability versions, tenant or principal drift, an unresolved obligation, and `side_effect_unknown`. The compacted path fails if it authorizes directly, retries an uncertain write, or cannot link `context_compaction` to `context_rehydration` or `continuity_validation_failed`.
 
 !!! note "Canonical eval cases"
     The eval dataset should cover more than duplicate-ticket regression. **Support triage** checks approval gates, idempotency evidence, retry behavior, and duplicate-ticket recovery. **Internal knowledge assistant** checks retrieval freshness, source attribution, memory provenance, access control, and grounded answer quality. **Incident coordination** checks escalation timing, notification side effects, response ownership, handoff quality, and post-incident learning regressions.
@@ -187,6 +214,14 @@ Once the system becomes more serious, it is useful to extend the dataset schema 
 - `verification_result`
 - `verifier_actor`
 - `evidence_refs`
+- `eval_audit_record`
+- `oracle_type`
+- `defect_labels`
+- `agent_audit_refs`
+- `human_reviewer_count`
+- `human_agreement`
+- `reviewer_confidence`
+- `decision_impact`
 
 That is when the eval artifact starts behaving like part of release discipline, not just temporary JSON.
 
@@ -284,6 +319,7 @@ Several mistakes are very common:
 - not declaring expected outcomes explicitly;
 - grading only the final answer and ignoring policy or tool behavior;
 - not versioning the dataset;
+- not auditing the quality of tasks, oracles, and hidden tests;
 - not linking dataset items to trace evidence or incident history;
 - collapsing verifier output into a single weak verdict with no process/outcome split or failure attribution;
 - requiring `sandbox_profile_review` in rollout, but having no grading rule that checks workspace, permissions, and snapshot/resume evidence.
@@ -299,6 +335,7 @@ Start with this short list and mark every "no" explicitly:
 - Are labels separate from expected outcomes?
 - Do you have grading rules, not just reviewer prose?
 - Can you evaluate behavior, not only text?
+- Do you have an `eval_audit_record` that captures defect labels, oracle type, reviewer confidence, and decision impact?
 - Can the verifier output separate `process_score`, `outcome_score`, and `failure_attribution`?
 - Can you tell which verifier identity and contract version produced that grading output?
 - Is there a dedicated rule for sandbox-backed paths that checks sandbox profile contract, workspace entries, permissions, and snapshot/resume evidence?

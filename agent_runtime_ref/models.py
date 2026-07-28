@@ -199,6 +199,9 @@ class ToolResult:
 class ModelOutput:
     text: str
     tool_request: ToolRequest | None = None
+    reasoning_summary: str = ""
+    reasoning_reference: str = ""
+    encrypted_reasoning_item: str = ""
 
 
 @dataclass(slots=True)

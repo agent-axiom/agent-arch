@@ -100,6 +100,8 @@ For the book, this strongly reinforces `single-agent first`, manager/handoff dis
 
 Recent work on causal tracing for multi-agent systems adds another point: reliability should be designed not only as an orchestration pattern, but as a diagnosable system. If root cause cannot be localized, the workflow may exist, but operational maturity is still low.
 
+A separate line of work such as Symphony shows a different frontier pressure: moving away from a centralized orchestrator toward a capability ledger, dynamic coordinator selection, and result voting.[^symphony-decentralized] The related SYMPHONY planning work uses a pool of heterogeneous LLM agents to increase rollout diversity in MCTS planning.[^symphony-heterogeneous] For this book, the lesson is not to copy either runtime shape as a default. It is to treat distributed coordination as a control problem that needs capability records, quorum/retry semantics, vote provenance, cost ceilings, and conflict diagnosis.
+
 What can already be taken into practice with confidence:
 
 - skepticism toward premature multi-agent decomposition;
@@ -142,6 +144,20 @@ If you are extending this book or building a platform team around it, three ques
 
 The next truly important design shifts will likely emerge at the intersection of those three themes.
 
+## Production Lessons: Data Analytics Agents
+
+GitHub's Qubot write-up is a useful production case for an internal analytics agent where the value does not come from "magic SQL prompts"; it comes from a governed combination of interface, context layer, query engine, and eval loop.[^github-qubot] The agent is available through Slack, VS Code, and Copilot CLI; context is contributed across bronze/silver/gold data layers, loaded through the GitHub MCP Server, and context-layer changes pass offline evals with known prompts, ground-truth SQL, metadata, multiple trials, and completion, accuracy, and duration reports.
+
+The architecture lesson for this book is that an internal knowledge assistant should treat query review, source attribution, access boundaries, and dataset ownership as part of the runtime contract. If the agent answers an analytics question, the trace should show which context layer was used, which mandatory filters applied, which query engine was selected, why access was allowed or denied, and which eval case protects that path from regression.
+
+## Production Lessons: Multi-Agent Research
+
+Anthropic's production Research write-up belongs next to the research taxonomy because it shows when multi-agent is justified operationally, not only conceptually.[^anthropic-multi-agent-research] The strong signal is breadth-first work with independent branches, a large corpus, complex tools, and enough task value to pay for the extra token/tool budget. The weak signal is coding-like or incident-like work with dense shared state, where coordination and merge risk quickly consume the benefit.
+
+LangChain's newer architecture-selection frame adds a practical decision table: subagents, skills, handoffs, and routers solve different constraints, while a single agent with good tools remains the starting point until the team hits context, parallelism, or distributed ownership limits.[^langchain-multi-agent-architecture]
+
+The engineering lesson for this book is that multi-agent frontier work should be judged through a delegation contract, effort budget, stop condition, source quality, tool efficiency, checkpoint/resume, and traceability. Otherwise teams compare only the attractive final answer and miss that the process became more expensive, less reproducible, or harder to govern.
+
 ## Recommended research readings
 
 - EVOLVE-MEM, [A Self-Adaptive Hierarchical Memory Architecture for Next-Generation Agentic AI Systems](https://openreview.net/forum?id=dfPQrg1WA5)
@@ -149,6 +165,11 @@ The next truly important design shifts will likely emerge at the intersection of
 - AgentTrace, [A Structured Logging Framework for Agent System Observability](https://openreview.net/forum?id=8IkLxhPY3G)
 - AgentTrace, [Causal Graph Tracing for Root Cause Analysis in Deployed Multi-Agent Systems](https://openreview.net/forum?id=22qiB2JpzZ)
 - [Why Do Multiagent Systems Fail?](https://openreview.net/forum?id=wM521FqPvI)
+- Symphony, [A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019)
+- SYMPHONY, [Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623)
+- Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system)
+- LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)
+- GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/)
 
 ## What to Do Next
 
@@ -158,3 +179,9 @@ The next truly important design shifts will likely emerge at the intersection of
 - [Chapter 7. Retrieval, Compaction, and Background Updates](../book/part-iii/chapter-7.en.md)
 - [Chapter 13. Offline Evals, Online Evals, and Regression Gates](../book/part-v/chapter-13.en.md)
 - [Practice. MCP for tools, A2A for agents](../book/part-iv/practical-mcp-a2a.en.md)
+
+[^anthropic-multi-agent-research]: Anthropic, [How we built our multi-agent research system](https://www.anthropic.com/engineering/multi-agent-research-system).
+[^langchain-multi-agent-architecture]: LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture).
+[^github-qubot]: GitHub Blog, [How we built an internal data analytics agent](https://github.blog/ai-and-ml/github-copilot/how-we-built-an-internal-data-analytics-agent/).
+[^symphony-decentralized]: Ji Wang, Kashing Chen, Xinyuan Song, Ke Zhang, Lynn Ai, Eric Yang, Bill Shi, [Symphony: A Decentralized Multi-Agent Framework for Scalable Collective Intelligence](https://arxiv.org/abs/2508.20019).
+[^symphony-heterogeneous]: Wei Zhu, Zhiwen Tang, Kun Yue, [SYMPHONY: Synergistic Multi-agent Planning with Heterogeneous Language Model Assembly](https://arxiv.org/abs/2601.22623).

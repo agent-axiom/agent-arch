@@ -115,6 +115,40 @@ decided_by:
 
 一旦运行时里已经有审批和有状态能力会话，门禁还应该明确说明：中断行为是否被单独审过，而不是默认“应该没问题”。
 
+### 4.1. Versioned Risk Posture
+
+Anthropic 最新的 Responsible Scaling Policy 更新给这里提供了一个有用的治理模式：risk posture 应该是有版本的工件，而不是团队背景里的感觉。在 3.4 版中，Anthropic 明确记录 effective date，调整 automated R&D risk 阈值，允许 Risk Report 按单独的 coverage date 分析风险，要求公开报告标出被 redacted 的材料，并澄清完整报告不同部分的 external review 要求。[^anthropic-rsp][^anthropic-roadmap]
+
+对智能体系统来说，这可以作为 `rollout_gate_record` 里的独立块：
+
+```yaml
+risk_posture:
+  policy_version: rsp-v3.4
+  coverage_date: 2026-07-08
+  assessed_capabilities:
+    - autonomous_rd
+    - tool_use_with_external_side_effects
+  redactions:
+    public_summary_redactions_marked: true
+    internal_unredacted_report_ref: risk-report-internal-2026-07
+  reviewers:
+    internal_reviewers:
+      - safety_owner
+      - runtime_owner
+    external_review_refs:
+      - external-review-section-a
+      - external-review-section-b
+  release_decision: approve_canary
+risk_report_lifecycle:
+  - draft
+  - internal_review
+  - external_review
+  - public_summary
+  - post_release_monitoring
+```
+
+重点不是复制 Anthropic 的政策，而是让高风险 agent capability 只有在携带 policy version、coverage date、被评估能力列表、公开版本 redaction 状态、reviewers 和明确 release decision 时才能进入发布。这样 risk report 就不再是事后文档，而是 agent 获得新工具、自主性或影响半径之前的准入工件。
+
 ## 5. 变更评审和发布门禁的区别
 
 这两层经常被混在一起，但它们其实回答的是不同问题：
@@ -134,6 +168,7 @@ decided_by:
 - 运行追踪、审批记录与会话导出之间的委派授权连续性是否已验证；
 - 编排模式变更是否在发布前被当成运行时控制变更单独评审；
 - 如果变更触及由沙箱（sandbox）支撑的执行，沙箱配置文件契约（sandbox profile contract）是否也进入评审，包括工作区物化（workspace materialization）、权限（permissions）与快照/恢复策略（snapshot/resume policy）；
+- 哪个 `policy_version` 和 `coverage_date` 支撑了高风险能力的 risk posture；
 - 如果中断语义在发布后开始漂移，紧急冻结由谁负责。
 
 ## 6. 它和评测模式的关系
@@ -197,6 +232,7 @@ decided_by:
 - 如果发布控制依赖打分结果，验证器质量与证据链接也会在发布前被检查；
 - 编排模式变更会在发布前被检查，尤其是它们引入路由、并行化或委派工作器表面时；
 - 沙箱配置文件（sandbox profile）变更会在发布前被检查，尤其是它们改变工作区条目（workspace entries）、shell/文件系统权限（shell/filesystem permissions）或快照/恢复行为（snapshot/resume behavior）时；
+- 高风险能力的 risk posture 有版本、coverage date，并且链接到 risk report，而不是靠团队记忆重建；
 - 回滚计划不能只存在于人的脑子里。
 
 ## 10. 最常见的断裂点
@@ -208,6 +244,7 @@ decided_by:
 - 遥测准备度靠肉眼判断；
 - 安全发现结果没有被当作阻断项；
 - 验证器质量或证据链接被默认假定，而不是被检查；
+- risk report 是事后才写的，不能影响 capability 准入；
 - 能力会话过期或重新初始化行为没有被建模；
 - 编排模式变更被当成“实现细节”溜过去，没有显式评审；
 - 发布波次的定义太模糊；
@@ -222,6 +259,7 @@ decided_by:
 - 是否能清楚看到发布前必须通过哪些检查？
 - 是否能看到 `change_id→bundle_id→rollout_wave` 这条链？
 - 当打分结果会影响发布时，验证器质量与证据链接检查是否可见？
+- 对高风险 risk posture，是否有 `policy_version`、`coverage_date`、redaction status 和 reviewers？
 - 阻断性发现结果和决策负责人是否被保留？
 - 事故复盘时能不能还原出到底是哪个门禁放行了这个变化？
 
@@ -235,3 +273,6 @@ decided_by:
 - [参考包](reference-package.zh.md)
 - [第 18 章：生产上线检查清单](../book/part-vii/chapter-18.zh.md)
 - [第 20 章：智能体系统的变更管理](../book/part-viii/chapter-20.zh.md)
+
+[^anthropic-rsp]: Anthropic, [Responsible Scaling Policy](https://www.anthropic.com/responsible-scaling-policy).
+[^anthropic-roadmap]: Anthropic, [Frontier Safety Roadmap](https://www.anthropic.com/responsible-scaling-policy/roadmap).

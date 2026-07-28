@@ -6,6 +6,8 @@
 
 Этот пакет намеренно задуман как практическая опора реализации, а не как параллельный продукт. Его ценность в том, что читатель может посмотреть на работающую структуру системы, которая стоит за аргументом книги, не превращая проект в руководство по фреймворку.
 
+Managed Agents добавляют к этой странице короткую карту **Brain / Hands / Session**. Brain — это model/harness control loop; Session — durable append-only log, доступный через `wake(sessionId)`, `getEvents()` и `emitEvent(id, event)`; Hands — sandbox/tool слой, который исполняет `execute(name, input)` и выдает ресурсы через `provision({resources})`. Если failed sandbox/tool возникает на стороне hands, reference package должен показывать это как управляемый failed run или tool-call failure, а не как потерянный процесс. Secrets при этом остаются за proxy/vault boundary: executor получает brokered capability и scoped resource, а не raw token.
+
 Чего эта страница **не** обещает:
 
 - она не заменяет книжное объяснение того, зачем вообще существуют эти слои;
@@ -97,6 +99,8 @@
   Проверка непрерывных контролей и расхождения инвентаря с утвержденным реестром.
 - [approvals.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/approvals.py)
   Шлюзы подтверждения, семантика паузы/возобновления, простая очередь человеческой проверки для действий высокого риска и та поверхность управления, где состояние подтверждения должно оставаться синхронизированным с состоянием сессии возможности.
+- [continuity.py](https://github.com/agent-axiom/agent-arch/blob/main/agent_runtime_ref/continuity.py)
+  Отказоустойчивый валидатор `ContinuityEnvelope`: связывает производную сводку с долговечным состоянием, обнаруживает дрейф идентичности, политики, возможности и подтверждения, блокирует неизвестные внешние эффекты и всегда требует повторной авторизации.
 
 Эта же поверхность управления средой выполнения естественно расширяется и на предположения делегированного разрешения: какой субъект делегировал доступ, переживает ли такая авторизация паузу/возобновление и что делает среда выполнения, если делегированный доступ отозвали до завершения действия.
 
@@ -121,6 +125,17 @@
 .venv/bin/python -m agent_runtime_ref simulate-run
 .venv/bin/python -m agent_runtime_ref simulate-run --simulate-failure tool_timeout
 ```
+
+Проверьте безопасность сжатия и сброса контекста:
+
+```bash
+.venv/bin/python -m agent_runtime_ref inspect-continuity
+.venv/bin/python -m agent_runtime_ref inspect-continuity --tamper-summary
+.venv/bin/python -m agent_runtime_ref inspect-continuity --current-policy-version policy-v5
+.venv/bin/python -m agent_runtime_ref inspect-continuity --side-effect-status side_effect_unknown
+```
+
+Штатный путь записывает `context_compaction` и `context_rehydration`, но возвращает `authorized: false` и `reauthorization_required`. Подмена или дрейф политики дают `continuity_validation_failed`. Неизвестный эффект записывает то же событие остановки со статусом `blocked_on_reconciliation`; до успешной сверки событие восстановления не появляется. Это детерминированная учебная реализация, а не промышленный долговечный исполнитель: журнал событий, контрольные точки, политика, подтверждения и состояние внешних эффектов должны жить в управляемых хранилищах вне контекста модели. Полный контракт полей и оценок описан в [схеме непрерывности контекста](continuity-envelope-schema.md).
 
 Второй вариант специально добавлен как сценарий с явным отказом. Он позволяет пакету показать, что даже разрешенная возможность может завершиться как управляемый неудачный запуск с явной телеметрией, а не раствориться за общим успешным путем. `simulate-run` возвращает `agent_id`, `request_agent_id`, `config_dir`, `trace_id`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `event_types`, `session_id`, `tenant_id`, `principal_id`, `authorization_mode`, `delegated_principal_id`, `delegated_scope`, `status`, `result`, `events`, `memory_records`, `memory_record_ids`, `pending_approvals`, `pending_approval_ids`, `pending_approval_capability_names` и опциональный `failure_reason`. Общие переопределения идентичности и трассы включают `--config-dir`, `--agent-id`, `--tenant-id`, `--principal-id`, `--trace-id` и `--session-id`, чтобы примеры можно было сделать детерминированными без редактирования конфигураций. Более специальные переключатели включают `--limit` для инспекции памяти, `--approval-id` для закрытия подтверждения, `--replay-trace-id` для повторного прогона трассы, `--trace-prefix` для команд сессий и `--session-prefix` для экспортов оценочных наборов.
 
@@ -229,6 +244,13 @@
 `session-eval-summary` возвращает короткую рабочую сводку по серии запусков, включая неудачные запуски и `traceable_failed_runs`, а не сводя все обратно только к успехам и отказам. Теперь туда можно напрямую инъецировать упражнение с отказом, а сводка сразу показывает `latest_failure_reason` для быстрого разбора.
 `session-replay` позволяет прогнать несколько связанных запросов в одной `session_id`. Теперь туда тоже можно инъецировать упражнение с отказом, а сводка повторного прогона сохраняет `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids` и `latest_failure_reason` вместе с полями отдельных запусков `failure_reason` и `request_agent_id`.
 `export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как исходный материал для офлайн-оценок. Теперь он еще и сохраняет поля жизненного цикла сессии возможности (`capability_session_id`, `capability_session_status`), контекст делегированного разрешения, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`, а также `idempotency_key` и `approval_id`, а в сводке самой команды показывает `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids` и `latest_failure_reason` для упражнений с отказом.
+`inspect-approvals` теперь возвращает `trace_id`, `session_id`, `tenant_id`, `agent_id`, `count`, `approval_ids`, `pending_approval_ids`, `approval_capability_names`, `pending_approval_capability_names`, `approval_status_counts`, `idempotency_keys` и `approvals`, включая `tenant_id`, `agent_id`, capability-session lifecycle fields (`capability_session_id`, `capability_session_status`), delegated authorization context: `authorization_mode`, `delegated_principal_id` и `delegated_scope`, а также `idempotency_key`, так что review approval path можно напрямую сопоставить с session evidence и duplicate-write intent. `resolve-approval` возвращает `approval_id`, `approval_ids`, `trace_id`, `session_id`, `tenant_id`, `agent_id`, `capability_name`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `requested_by`, `status`, `reviewer`, `resolution_note`, `capability_session_id`, `capability_session_status`, тот же delegated context, `idempotency_key`, `idempotency_keys` и `approval_status_counts` после принятого решения, чтобы capability-session, acting-identity, idempotency lineage и итоговый approval status не терялись на этапе closure.
+`inspect-session` показывает session-level историю запусков и связанные `trace_id`. Теперь туда тоже можно инъецировать failed drill, а summary сохраняет `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `latest_failure_reason`, а также per-run поля `output_text`, `failure_reason`, `request_agent_id`, `capability_session_id`, `capability_session_status` и `idempotency_key`.
+
+Для durable named-agent паттерна session export уже оставляет место под `agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id` и `resumable_stream_id`. В маленьком reference runtime эти поля обычно пустые, потому что он не реализует Durable Object/actor store, WebSocket transport или durable scheduler. Но contract surface важен: downstream eval, replay и incident review должны различать user-facing `session_id`, конкретный `trace_id`, capability-session state и long-lived agent instance state, если production runtime добавит named actor topology.
+`session-eval-summary` возвращает короткую operational summary по серии запусков, включая и failed runs, и `traceable_failed_runs`, а не сводя все обратно только к успехам и отказам. Теперь туда можно напрямую инъецировать failed drill, а summary сразу показывает и `latest_failure_reason` для быстрого разбора.
+`session-replay` позволяет прогнать несколько связанных запросов в одной `session_id`. Теперь туда тоже можно инъецировать failed drill, а replay summary сохраняет `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids` и `latest_failure_reason` вместе с per-run полями `failure_reason` и `request_agent_id`.
+`export-session` сохраняет сессию как структурированный JSON, который уже можно использовать как seed для offline evals. Теперь он еще и сохраняет capability-session lifecycle fields (`capability_session_id`, `capability_session_status`), delegated authorization context, включая `authorization_mode`, `delegated_principal_id` и `delegated_scope`, durable named-agent placeholders (`agent_instance_id`, `durable_state_version`, `scheduled_wakeup_id`, `resumable_stream_id`), а также `idempotency_key` и `approval_id`, а в summary самой CLI-команды показывает `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids` и `latest_failure_reason` для failed drills.
 
 Команды сессий и оценок явно показывают поля сводки: `inspect-session` возвращает `session_id`, `tenant_id`, `principal_id`, `trace_count`, `trace_ids`, `failed_trace_ids`, `latest_status`, `latest_failure_reason`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `summary` и `runs`; `session-eval-summary` возвращает `session_id`, `total_runs`, `success_runs`, `approval_wait_runs`, `denied_runs`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `latest_status`, `latest_trace_id` и `latest_failure_reason`; `session-replay` возвращает `session_id`, `run_count`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `latest_failure_reason`, `summary` и `runs`; `export-session` возвращает `output_path`, `session_id`, `total_runs`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `latest_trace_id` и `latest_failure_reason`; экспортированный JSON сессии также несёт на верхнем уровне `total_runs`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `latest_failure_reason`, `latest_trace_id` и идентификатор `session` рядом с вложенной `summary`; `export-eval-dataset` возвращает `dataset_name`, `output_path`, `session_count`, `session_ids`, `run_count`, `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts`, `duplicate_ticket_scenarios`, `latest_failure_reason` и `sessions` как список `session_id`, а экспортированный артефакт оценочного набора несёт на верхнем уровне `failed_runs`, `traceable_failed_runs`, `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names`, `approval_status_counts` и `latest_failure_reason`. Каждая экспортированная оценочная сессия несёт на верхнем уровне `trace_ids`, `failed_trace_ids`, `idempotency_keys`, `approval_ids`, `approval_capability_names`, `pending_approval_ids`, `pending_approval_capability_names` и `approval_status_counts` рядом с `summary.trace_ids`, `summary.failed_trace_ids`, `summary.idempotency_keys`, `summary.approval_ids`, `summary.approval_capability_names`, `summary.pending_approval_ids`, `summary.pending_approval_capability_names` и `summary.approval_status_counts`, а также `session` и блок `eval` с `scenario`, `labels`, `expected_outcomes` и `grading_rules`; вложенные записи запусков сохраняют `request_agent_id` и `user_input` для каждого запуска. По умолчанию `dataset_name` равен `agent-runtime-ref-eval-seed`, если вызывающий не передал `--dataset-name`; экспорт оценок также валидирует внутреннюю основу `session_prefix` перед генерацией `session_id`, а команды сессий валидируют внутреннюю основу `trace_prefix` перед генерацией `trace_id`.
 
@@ -320,7 +342,33 @@ sandbox_profile:
 
 Такой пример не делает эталонную среду выполнения полноценным оркестратором песочниц. Он фиксирует поверхность контракта, которую главы 9 и 16 требуют от настоящей среды выполнения с песочницей: манифест, права, материализация рабочей области, состояние сессии и политика снимка/возобновления должны быть видимыми для проверки.
 
-### Паттерн долговечного агентного исполнителя
+### Паттерн polymorphic schema registry
+
+Для high-cardinality tool/API domains reference package стоит держать пример `polymorphic_schema_registry`, а не размазывать structural rules по prompt text. Минимальная запись может выглядеть так:
+
+```yaml
+polymorphic_schema_registry:
+  schema_descriptor_id: travel_expense.v3
+  schema_version: "3.2"
+  source_of_truth: registry://schemas/travel_expense.v3
+  fields:
+    amount:
+      type: float
+      description: Total transaction amount in local currency
+      validation_hook: check_positive_bounds
+  validated_tool_call:
+    capability_name: submit_expense
+    validation_boundary: before_tool_execution
+    validation_error_code: invalid_amount_bounds
+    trace_fields:
+      - schema_descriptor_id
+      - schema_version
+      - validation_hook
+```
+
+Такой пример показывает contract surface из Chapter 9: агент может reason over intent, но runtime загружает descriptor, вызывает validator и фиксирует schema evidence до side effect.
+
+### Паттерн durable agent actor
 
 В будущем примере эталонной среды выполнения стоит отдельно смоделировать границу долговечного агентного исполнителя из главы 16. Среде выполнения не нужна зависящая от поставщика реализация Durable Object, но ей нужен видимый контракт для стабильной идентичности агента, локального состояния экземпляра, возобновляемых сессий, запланированных пробуждений и передачи в управляемые хранилища.
 
@@ -335,7 +383,22 @@ sandbox_profile:
 - `connection_scope` для WebSocket/потокового распространения и видимости интерфейса подтверждения;
 - `export_ref`, `delete_ref` и `audit_refs`, чтобы скрытая долговечная память была невозможна.
 
-### Паттерн агентной оболочки и долговечного стержня процесса
+### Паттерн recoverable internal fiber
+
+Между простым background task и полноценным durable workflow полезно оставить еще одну contract surface: recoverable internal fiber. Это работа, которая остается частью собственного цикла агента, но имеет durable acceptance, checkpoint/stash, recovery hook, inspection и cancellation.
+
+Минимальная contract surface для такого примера:
+
+- `fiber_id`, `fiber_name`, `fiber_status` и `owner_agent_instance_id`;
+- `fiber_idempotency_key` для дедупликации повторных webhook/request deliveries;
+- `fiber_checkpoint_ref` или `stash_snapshot` для последнего безопасного промежуточного состояния;
+- `recovery_handler` и `recovery_reason`, чтобы resume был явной процедурой, а не неявным повтором;
+- `cancellation_status`, `last_safe_step` и `evidence_refs`;
+- policy rule, запрещающий использовать checkpoint как profile memory, tenant knowledge или system of record.
+
+Такой паттерн хорошо закрывает агентную работу, которая слишком важна для простого in-memory loop, но еще не требует полного workflow spine с внешними events и HITL gates.
+
+### Паттерн Agent shell + durable workflow spine
 
 Для будущего расширения эталонной среды выполнения полезно держать отдельный паттерн: агент не обязан владеть всей долгой работой. Он может быть оболочкой взаимодействия — `agent_instance_id`, состояние сессии, пользовательский поток, разрешение в области соединения, интерфейс подтверждения. Рядом с ним долговечный стержень процесса должен владеть шагами, повторами, ожиданием внешних событий, долговечными записями подтверждения, ключами идемпотентности и ссылками на доказательства.
 

@@ -212,6 +212,26 @@ approval_contract:
 
 Именно они не дают ситуации, когда набор политик формально одобряет возможность, но оставляет ее реальный жизненный цикл сессии вне контроля.
 
+Microsoft Foundry Open Trust Stack полезен здесь как внешний ориентир: политика должна компилироваться в именованные runtime checkpoints, а не оставаться prose рядом с eval report.[^microsoft-open-trust-stack] В переносимом YAML это может выглядеть так:
+
+```yaml
+control_checkpoints:
+  - checkpoint: tool_execution
+    policy_requirement: no_external_write_without_approval
+    predicate: risk_tier == "high" and side_effect == "external_write"
+    action: require_approval
+    audit_fields:
+      - checkpoint
+      - policy_requirement
+      - predicate_result
+      - action
+      - control_version
+      - eval_case_id
+      - trace_id
+```
+
+Минимальный contract surface: `checkpoint`, `policy_requirement`, `predicate` или `judge`, `action`, `control_version`, `eval_case_id`, `trace_id` и `observed_signal`. Checkpoints стоит называть по местам агентного цикла: `input`, `llm`, `state`, `tool_execution` и `output`. Тогда failed eval можно связать не только с prompt diff, но и с конкретным runtime hook, audit event и regression case.
+
 Таксономия паттернов рабочих процессов у Anthropic добавляет сюда еще одно полезное контрактное измерение.[^anthropic] По мере взросления набор политик должен описывать не только то, разрешена ли возможность вообще, но и в каких схемах оркестрации она допустима.
 
 Здесь быстро становятся полезны и такие поля, как:
@@ -293,3 +313,4 @@ approval_contract:
 - [Шаблоны политик и проверочные списки по кейсам](policy-templates.md)
 
 [^anthropic]: [Anthropic, Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
+[^microsoft-open-trust-stack]: Microsoft Foundry Blog, [Build agents you can trust across any framework with open evals and a control standard](https://devblogs.microsoft.com/foundry/build-2026-open-trust-stack-ai-agents/).

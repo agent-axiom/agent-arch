@@ -194,6 +194,21 @@ flowchart LR
 
 </div>
 
+### 6.1. Containment should be the first governed action
+
+Once a signal is credible, the team should not wait for full root-cause analysis before reducing blast radius. Containment practice suggests a faster first move: shift the run, capability, sandbox profile, or rollout wave into a narrower mode, then investigate more deeply.[^anthropic-containment]
+
+Common fast actions are:
+
+- close external egress and keep only the brokered internal gateway;
+- move a write capability to approval-only or deny-by-default;
+- revoke delegated credentials and require re-approval after resume;
+- stop sandbox snapshot reuse and start fresh sessions;
+- preserve session evidence while forbidding direct debug inside an environment containing user data.
+
+Then the assurance loop is not merely “find the bug.” It becomes an operational loop: signal → containment decision → owner → remediation → updated policy/eval/telemetry.
+
+
 ## 7. Remediation should change the system, not only the document trail
 
 A common weakness is this: the incident is reviewed, a document is written, but the actual system behavior barely changes.
@@ -256,6 +271,10 @@ It helps to know in advance:
 - who updates monitoring and response rules.
 
 This connects directly to the organizational part of the book: security discipline breaks where ownership is unclear.
+
+Anthropic's Fable 5 redeployment post adds a practical way to grade jailbreak-finding severity.[^anthropic-fable-5] The useful lesson is not the product incident itself, but the triage shape: a finding is scored by `capability_gain`, `breadth_of_capability_gain`, `ease_of_weaponization`, and `discoverability`. For an agent system, that rubric is useful beyond cyber: the same frame helps distinguish a low-risk safety-margin bypass from a finding that opens a dangerous-tool path, generalizes across tasks, and is easy to reproduce with one prompt.
+
+A red-team finding should therefore carry more than "jailbreak found." It needs a severity record: which control was bypassed, which new capability became available, how broad the failure is, how easy it is to turn into a harmful workflow, whether the technique is publicly discoverable, and which response path starts. Low severity may route to queue + monitoring; high severity needs hot mitigation, emergency disable, classifier/policy update, and a regression eval before the next rollout.
 
 ## 10. Example assurance policy
 
@@ -404,3 +423,4 @@ This chapter closes the loop opened in Chapters 17 and 18. Policy, approval, and
 - [Sources](../../appendix/sources.en.md)
 
 [^google-assurance]: [Google Research, Security Assurance in the Age of Generative AI](https://research.google/pubs/security-assurance-in-the-age-of-generative-ai/)
+[^anthropic-fable-5]: Anthropic, [Redeploying Fable 5](https://www.anthropic.com/news/redeploying-fable-5)
