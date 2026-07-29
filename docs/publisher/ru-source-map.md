@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъёмной сборки на 2026-07-27. Репозиторий
+Status: актуальная карта полнообъёмной сборки на 2026-07-29. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -23,19 +23,29 @@ Status: актуальная карта полнообъёмной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - 10 нумерованных таблиц в канонической и локальных издательских производных;
-- около 93 242 слов по метрике издательской сборки;
-- 446 страниц в Google-ориентированной производной, 321 страница в производной
-  `Template2000n`, 489 страниц при локальном рендеринге свежего DOCX-экспорта
-  Google Doc и 457 страниц в нативном PDF Google Docs; разница вызвана
-  параметрами страницы и движком вёрстки, а не сокращением содержания; пустых
-  технических страниц нет.
+- около 95 049 слов по метрике издательской сборки;
+- 453 страницы в Google-ориентированной производной и 327 страниц в
+  производной `Template2000n`; разница вызвана типографикой и плотностью
+  стилей, а не сокращением содержания; пустых технических страниц нет.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW36zOf2ZNRM-XL1tdd9LEuHsKy-qYN8botKOL9dlIezh0tQp_2J2mIN70uICM8a0nxtHH5ARYrY2_3iLbsgS8CJUm0ayFLnmCVV1Tlc`.
+  `AIroW37NwVSClQSSYb85bVaTYYACE8Aqb6aH6XOkFCe1A1H14ur34HHhJRFMT2ZzDBGtc3w0uyZb4VMrOhKLxXrqHcIcnHvzC766M4EUyEM`.
+
+Контрольная точка синхронизации с актуальной онлайн-книгой:
+
+- `docs/publisher/ru-online-manuscript-sync-2026-07-29.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-29.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-29.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-online-sync-2026-07-29.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-online-sync-2026-07-29.pdf`;
+- `docs/publisher/ru-google-doc-online-sync-2026-07-29.render-qa.json`;
+- `docs/publisher/ru-template2000n-online-sync-2026-07-29.render-qa.json`;
+- `docs/publisher/ru-template2000n-online-sync-2026-07-29.visual-audit.json`;
+- `docs/publisher/ru-template2000n-online-sync-2026-07-29.font-audit.json`.
 
 Контрольная точка редакционной полировки технической книги:
 

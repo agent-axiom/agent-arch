@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from datetime import UTC, datetime, timedelta
 
+import pytest
+
 from agent_runtime_ref.idempotency import (
     IdempotencyStore,
     compute_idempotency_request_digest,
 )
 from agent_runtime_ref.models import ToolResult
-
 
 NOW = datetime(2026, 7, 23, 10, 0, tzinfo=UTC)
 
@@ -76,7 +77,7 @@ def test_known_pre_dispatch_failure_can_be_retried() -> None:
         digest,
         ToolResult(
             "create_ticket",
-            "failed",
+            "retryable_failure",
             {"reason": "tool_timeout", "effect_state": "not_executed"},
         ),
         now=NOW,
@@ -101,6 +102,7 @@ def test_unknown_effect_requires_reconciliation_even_after_ttl() -> None:
                 "reason": "post_dispatch_timeout",
                 "effect_state": "side_effect_unknown",
             },
+            side_effect_status="side_effect_unknown",
         ),
         now=NOW,
     )
@@ -108,6 +110,48 @@ def test_unknown_effect_requires_reconciliation_even_after_ttl() -> None:
     retry = store.reserve("intent-001", digest, now=NOW + timedelta(days=1))
 
     assert retry.action == "reconcile"
+
+
+@pytest.mark.parametrize(
+    ("outcome", "side_effect_status"),
+    [
+        ("success", "side_effect_unknown"),
+        ("success", "partial_side_effect"),
+        ("side_effect_unknown", "not_executed"),
+        ("partial_side_effect", "not_executed"),
+        ("side_effect_unknown", "partial_side_effect"),
+        ("partial_side_effect", "side_effect_unknown"),
+    ],
+)
+def test_unresolved_outcome_or_effect_prevents_replay(
+    outcome: str,
+    side_effect_status: str,
+) -> None:
+    store = IdempotencyStore()
+    digest = _digest()
+    store.reserve("intent-001", digest, now=NOW)
+    store.complete(
+        "intent-001",
+        digest,
+        ToolResult(
+            "create_ticket",
+            outcome,
+            {"ticket_id": "T-42"},
+            side_effect_status=side_effect_status,
+        ),
+        now=NOW,
+    )
+
+    retry = store.reserve(
+        "intent-001",
+        digest,
+        now=NOW + timedelta(seconds=1),
+    )
+
+    assert retry.action == "reconcile"
+    assert retry.result is not None
+    assert retry.result.status == outcome
+    assert retry.result.side_effect_status == side_effect_status
 
 
 def test_completed_record_expires_after_configured_ttl() -> None:

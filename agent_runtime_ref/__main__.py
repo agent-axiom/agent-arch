@@ -28,14 +28,26 @@ from agent_runtime_ref.continuity import (
     summary_sha256,
     validate_rehydration,
 )
-from agent_runtime_ref.controls import assess_controls, assess_inventory_drift
+from agent_runtime_ref.controls import (
+    CREATE_TICKET_APPROVAL_CONTROL,
+    CREATE_TICKET_IDEMPOTENCY_CONTROL,
+    assess_controls,
+    assess_inventory_drift,
+)
 from agent_runtime_ref.evidence import verify_evidence_manifest
 from agent_runtime_ref.lifecycle import assess_change_gate, assess_retirement
-from agent_runtime_ref.models import RunRequest, RunResult, compute_input_sha256
+from agent_runtime_ref.models import (
+    RunContext,
+    RunRequest,
+    RunResult,
+    ToolRequest,
+    compute_input_sha256,
+)
 from agent_runtime_ref.policy import CapabilityPolicy
 from agent_runtime_ref.rollout import assess_rollout
 from agent_runtime_ref.runtime import AgentRuntime
 from agent_runtime_ref.session import summarize_session
+from agent_runtime_ref.states import SIDE_EFFECT_STATUSES
 from agent_runtime_ref.telemetry import REDACTED_VALUE, StructuredEvent, TelemetryEmitter
 
 DEFAULT_SESSION_INPUTS = ("Please create a ticket for this onboarding issue.",)
@@ -177,16 +189,17 @@ def _duplicate_ticket_eval_scenarios(scenarios: Sequence[str]) -> list[str]:
         spec = EVAL_DATASET_LABELS[scenario]
         labels = spec.get("labels")
         grading_rules = spec.get("grading_rules")
-        has_label = isinstance(labels, Sequence) and not isinstance(labels, str) and any(
-            label == "duplicate_ticket_eval_passed" for label in labels
+        has_label = (
+            isinstance(labels, Sequence)
+            and not isinstance(labels, str)
+            and any(label == "duplicate_ticket_eval_passed" for label in labels)
         )
         has_guard = (
             isinstance(grading_rules, Sequence)
             and not isinstance(grading_rules, str)
             and any(
                 isinstance(rule, Mapping)
-                and cast(Mapping[str, object], rule).get("type")
-                == "duplicate_ticket_guard"
+                and cast(Mapping[str, object], rule).get("type") == "duplicate_ticket_guard"
                 for rule in grading_rules
             )
         )
@@ -550,9 +563,7 @@ def _simulate_run(args: argparse.Namespace) -> dict[str, object]:
         "approval_capability_names": _approval_capability_names_from_events(
             runtime.telemetry.events
         ),
-        "approval_status_counts": _approval_status_counts_from_events(
-            runtime.telemetry.events
-        ),
+        "approval_status_counts": _approval_status_counts_from_events(runtime.telemetry.events),
         "event_types": _event_types_from_events(runtime.telemetry.events),
         "events": len(runtime.telemetry.events),
         "memory_records": len(memory_record_ids),
@@ -671,7 +682,6 @@ def _inspect_agent(args: argparse.Namespace) -> dict[str, object]:
             for spec in catalog_specs
         ],
     }
-
 
 
 def _idempotency_keys_from_events(events: Sequence[StructuredEvent]) -> list[str]:
@@ -877,9 +887,7 @@ def _dump_events(args: argparse.Namespace) -> dict[str, object]:
         "pending_approval_capability_names": _pending_approval_capability_names_from_events(
             runtime.telemetry.events
         ),
-        "approval_status_counts": _approval_status_counts_from_events(
-            runtime.telemetry.events
-        ),
+        "approval_status_counts": _approval_status_counts_from_events(runtime.telemetry.events),
         "idempotency_keys": _idempotency_keys_from_events(runtime.telemetry.events),
         "events": runtime.telemetry.as_dicts(),
     }
@@ -949,25 +957,19 @@ def _export_events(args: argparse.Namespace) -> dict[str, object]:
         "output_path": str(output_path),
         "redact_fields": list(redact_fields),
         "approval_ids": _approval_ids_from_events(exported_events),
-        "approval_capability_names": _approval_capability_names_from_events(
-            exported_events
-        ),
+        "approval_capability_names": _approval_capability_names_from_events(exported_events),
         "pending_approval_ids": _pending_approval_ids_from_events(exported_events),
         "pending_approval_capability_names": _pending_approval_capability_names_from_events(
             exported_events
         ),
-        "approval_status_counts": _approval_status_counts_from_events(
-            exported_events
-        ),
+        "approval_status_counts": _approval_status_counts_from_events(exported_events),
         "idempotency_keys": _idempotency_keys_from_events(exported_events),
     }
 
 
 def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
     events = TelemetryEmitter.load_jsonl(args.input)
-    requested_trace_id = (
-        _read_cli_trace_id(args.trace_id) if args.trace_id is not None else None
-    )
+    requested_trace_id = _read_cli_trace_id(args.trace_id) if args.trace_id is not None else None
     trace_id = _resolve_trace_id(events, requested_trace_id)
     filtered = [event for event in events if event.trace_id == trace_id]
     return {
@@ -1001,9 +1003,7 @@ def _inspect_trace(args: argparse.Namespace) -> dict[str, object]:
 
 def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     events = TelemetryEmitter.load_jsonl(args.input)
-    requested_trace_id = (
-        _read_cli_trace_id(args.trace_id) if args.trace_id is not None else None
-    )
+    requested_trace_id = _read_cli_trace_id(args.trace_id) if args.trace_id is not None else None
     source_trace_id = _resolve_trace_id(events, requested_trace_id)
     source_events = [event for event in events if event.trace_id == source_trace_id]
     run_start_events = [event for event in source_events if event.event_type == "run_start"]
@@ -1031,9 +1031,7 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     if missing_payload_keys:
         missing_keys = ", ".join(missing_payload_keys)
         raise ValueError(f"Trace run_start event is missing replay fields: {missing_keys}")
-    redacted_payload_keys = [
-        key for key in replay_payload_keys if key in run_start.redacted_fields
-    ]
+    redacted_payload_keys = [key for key in replay_payload_keys if key in run_start.redacted_fields]
     if redacted_payload_keys:
         redacted_keys = ", ".join(redacted_payload_keys)
         raise ValueError(f"Trace run_start event has redacted replay fields: {redacted_keys}")
@@ -1064,8 +1062,7 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     session_id = _read_replay_payload_string(run_start.payload, "session_id")
     agent_id = _read_replay_payload_string(run_start.payload, "agent_id")
     authorization_mode = (
-        _read_replay_payload_string(run_start.payload, "authorization_mode")
-        or "platform_owned"
+        _read_replay_payload_string(run_start.payload, "authorization_mode") or "platform_owned"
     )
     delegated_principal_id = _read_replay_payload_optional_string(
         run_start.payload,
@@ -1139,25 +1136,19 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     source_approval_ids = _approval_ids_from_events(source_events)
     replay_approval_ids = _approval_ids_from_events(runtime.telemetry.events)
     source_pending_approval_ids = _pending_approval_ids_from_events(source_events)
-    replay_pending_approval_ids = _pending_approval_ids_from_events(
-        runtime.telemetry.events
-    )
-    source_approval_capability_names = _approval_capability_names_from_events(
-        source_events
-    )
+    replay_pending_approval_ids = _pending_approval_ids_from_events(runtime.telemetry.events)
+    source_approval_capability_names = _approval_capability_names_from_events(source_events)
     replay_approval_capability_names = _approval_capability_names_from_events(
         runtime.telemetry.events
     )
-    source_pending_approval_capability_names = (
-        _pending_approval_capability_names_from_events(source_events)
+    source_pending_approval_capability_names = _pending_approval_capability_names_from_events(
+        source_events
     )
-    replay_pending_approval_capability_names = (
-        _pending_approval_capability_names_from_events(runtime.telemetry.events)
-    )
-    source_approval_status_counts = _approval_status_counts_from_events(source_events)
-    replay_approval_status_counts = _approval_status_counts_from_events(
+    replay_pending_approval_capability_names = _pending_approval_capability_names_from_events(
         runtime.telemetry.events
     )
+    source_approval_status_counts = _approval_status_counts_from_events(source_events)
+    replay_approval_status_counts = _approval_status_counts_from_events(runtime.telemetry.events)
     approval_status_counts: dict[str, int] = {}
     for status_counts in (source_approval_status_counts, replay_approval_status_counts):
         for status, count in status_counts.items():
@@ -1193,9 +1184,7 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "source_event_types": _event_types_from_events(source_events),
         "replay_event_count": len(runtime.telemetry.events),
         "replay_event_types": _event_types_from_events(runtime.telemetry.events),
-        "idempotency_keys": list(
-            dict.fromkeys(source_idempotency_keys + replay_idempotency_keys)
-        ),
+        "idempotency_keys": list(dict.fromkeys(source_idempotency_keys + replay_idempotency_keys)),
         "source_idempotency_keys": source_idempotency_keys,
         "replay_idempotency_keys": replay_idempotency_keys,
         "approval_ids": list(dict.fromkeys(source_approval_ids + replay_approval_ids)),
@@ -1207,16 +1196,13 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
         "source_pending_approval_ids": source_pending_approval_ids,
         "replay_pending_approval_ids": replay_pending_approval_ids,
         "approval_capability_names": list(
-            dict.fromkeys(
-                source_approval_capability_names + replay_approval_capability_names
-            )
+            dict.fromkeys(source_approval_capability_names + replay_approval_capability_names)
         ),
         "source_approval_capability_names": source_approval_capability_names,
         "replay_approval_capability_names": replay_approval_capability_names,
         "pending_approval_capability_names": list(
             dict.fromkeys(
-                source_pending_approval_capability_names
-                + replay_pending_approval_capability_names
+                source_pending_approval_capability_names + replay_pending_approval_capability_names
             )
         ),
         "source_pending_approval_capability_names": source_pending_approval_capability_names,
@@ -1284,14 +1270,10 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
         evidence_mode = "verified_with_overrides"
     assessment = assess_rollout(policy, observed)
     support_duplicate_required = [
-        signal
-        for signal in ("duplicate_ticket_eval_passed",)
-        if signal in policy.required_checks
+        signal for signal in ("duplicate_ticket_eval_passed",) if signal in policy.required_checks
     ]
     missing_support_duplicate_required = [
-        signal
-        for signal in assessment.missing_required
-        if signal in support_duplicate_required
+        signal for signal in assessment.missing_required if signal in support_duplicate_required
     ]
     manifest_integrity_verified = evidence_verified
     trusted_attestation_verified = False
@@ -1336,6 +1318,10 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
     policy = load_controls_policy(config_dir / "controls.yaml")
     _, approved_inventory = load_agent_profile(config_dir / "agent.yaml")
     catalog = load_capability_catalog(config_dir / "capabilities.yaml")
+    runtime_policy = load_policy_engine(
+        config_dir / "policy.yaml",
+        approved_inventory=approved_inventory,
+    )
     observed = {
         "registry_reviewed": True,
         "capability_owners_confirmed": True,
@@ -1349,6 +1335,38 @@ def _check_controls(args: argparse.Namespace) -> dict[str, object]:
     for raw_signal in args.signal:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
+    create_ticket = catalog.get("create_ticket")
+    create_ticket_policy_decision = (
+        runtime_policy.evaluate_tool(
+            RunContext(
+                tenant_id="controls-probe",
+                principal_id="controls-probe",
+                trace_id="controls-probe",
+            ),
+            ToolRequest(
+                "create_ticket",
+                {
+                    "requester_id": "controls-probe",
+                    "idempotency_key": "controls-probe",
+                },
+            ),
+            create_ticket,
+        )
+        if create_ticket is not None
+        else None
+    )
+    observed[CREATE_TICKET_APPROVAL_CONTROL] = bool(
+        create_ticket is not None
+        and create_ticket.mode == "write"
+        and create_ticket.approval_required
+        and create_ticket_policy_decision is not None
+        and create_ticket_policy_decision.action == "approval_required"
+    )
+    observed[CREATE_TICKET_IDEMPOTENCY_CONTROL] = bool(
+        create_ticket is not None
+        and create_ticket.mode == "write"
+        and create_ticket.idempotency_key_required
+    )
     inventory_drift = assess_inventory_drift(approved_inventory, catalog)
     assessment = assess_controls(
         policy,
@@ -1552,29 +1570,30 @@ def _inspect_lifecycle(args: argparse.Namespace) -> dict[str, object]:
 def _check_change(args: argparse.Namespace) -> dict[str, object]:
     config_dir = Path(args.config_dir)
     change = load_change_record(config_dir / "change.yaml")
+    controls_policy = load_controls_policy(config_dir / "controls.yaml")
     observed = {signal: True for signal in change.required_signals}
     for raw_signal in args.signal:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
-    assessment = assess_change_gate(change, observed)
-    failed_run_signals = [
-        signal for signal in change.required_signals if "failed_run" in signal
-    ]
+    assessment = assess_change_gate(
+        change,
+        observed,
+        controls_policy.required_approval_roles,
+    )
+    failed_run_signals = [signal for signal in change.required_signals if "failed_run" in signal]
     support_duplicate_signals = [
-        signal
-        for signal in ("duplicate_ticket_eval_passed",)
-        if signal in change.required_signals
+        signal for signal in ("duplicate_ticket_eval_passed",) if signal in change.required_signals
     ]
     missing_support_duplicate_signals = [
-        signal
-        for signal in assessment.missing_signals
-        if signal in support_duplicate_signals
+        signal for signal in assessment.missing_signals if signal in support_duplicate_signals
     ]
     return {
         "change_id": change.change_id,
         "ready": assessment.ready,
         "required_signals": list(change.required_signals),
         "approval_roles": list(change.approval_roles),
+        "required_approval_roles": list(controls_policy.required_approval_roles),
+        "missing_approval_roles": list(assessment.missing_approval_roles),
         "missing_signals": list(assessment.missing_signals),
         "failed_run_signals": failed_run_signals,
         "missing_failed_run_signals": [
@@ -1651,13 +1670,9 @@ def _inspect_approvals(args: argparse.Namespace) -> dict[str, object]:
         status: sum(1 for item in approvals if item.status == status)
         for status in sorted({item.status for item in approvals})
     }
-    approval_capability_names = list(
-        dict.fromkeys(item.capability_name for item in approvals)
-    )
+    approval_capability_names = list(dict.fromkeys(item.capability_name for item in approvals))
     pending_approval_capability_names = list(
-        dict.fromkeys(
-            item.capability_name for item in approvals if item.status == "pending"
-        )
+        dict.fromkeys(item.capability_name for item in approvals if item.status == "pending")
     )
     return {
         "trace_id": trace_id,
@@ -2125,15 +2140,11 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
             )
         ),
         "idempotency_keys": list(
-            dict.fromkeys(
-                key for summary in session_summaries for key in summary.idempotency_keys
-            )
+            dict.fromkeys(key for summary in session_summaries for key in summary.idempotency_keys)
         ),
         "approval_ids": list(
             dict.fromkeys(
-                approval_id
-                for summary in session_summaries
-                for approval_id in summary.approval_ids
+                approval_id for summary in session_summaries for approval_id in summary.approval_ids
             )
         ),
         "approval_capability_names": list(
@@ -2160,9 +2171,7 @@ def _export_eval_dataset(args: argparse.Namespace) -> dict[str, object]:
         "approval_status_counts": _merge_status_counts(
             summary.approval_status_counts for summary in session_summaries
         ),
-        "duplicate_ticket_scenarios": _duplicate_ticket_eval_scenarios(
-            selected_scenarios
-        ),
+        "duplicate_ticket_scenarios": _duplicate_ticket_eval_scenarios(selected_scenarios),
         "latest_failure_reason": latest_failed_run.failure_reason if latest_failed_run else "",
         "sessions": session_ids,
     }
@@ -2180,6 +2189,10 @@ def _inspect_continuity(args: argparse.Namespace) -> dict[str, object]:
         args.current_policy_version,
         field="current_policy_version",
     )
+    side_effect_status = {
+        "not_started": "not_executed",
+        "side_effect_committed": "applied",
+    }.get(args.side_effect_status, args.side_effect_status)
     envelope = ContinuityEnvelope(
         schema_version="continuity-envelope/v1",
         envelope_id="ce-demo-001",
@@ -2197,7 +2210,7 @@ def _inspect_continuity(args: argparse.Namespace) -> dict[str, object]:
         action_digest="sha256:approved-ticket-action",
         approval_expires_at="2099-01-01T00:00:00Z",
         idempotency_key="ticket-intent-demo-001",
-        side_effect_status=args.side_effect_status,
+        side_effect_status=side_effect_status,
         checkpoint_ref="checkpoint:demo-step-6",
         summary_sha256=summary_sha256(summary),
         requires_reauthorization=True,
@@ -2438,9 +2451,7 @@ def build_parser() -> argparse.ArgumentParser:
     replay_run.add_argument(
         "--user-input",
         default=None,
-        help=(
-            "Original input supplied out of band when the trace retains only its SHA-256"
-        ),
+        help=("Original input supplied out of band when the trace retains only its SHA-256"),
     )
 
     rollout = subparsers.add_parser("check-rollout", help="Evaluate rollout readiness")
@@ -2500,7 +2511,7 @@ def build_parser() -> argparse.ArgumentParser:
     check_change.add_argument(
         "--config-dir",
         default=str(config_dir),
-        help="Directory with change.yaml",
+        help="Directory with change.yaml and controls.yaml",
     )
     check_change.add_argument(
         "--signal",
@@ -2747,7 +2758,11 @@ def build_parser() -> argparse.ArgumentParser:
     )
     inspect_continuity.add_argument(
         "--side-effect-status",
-        choices=("not_started", "side_effect_committed", "side_effect_unknown"),
+        choices=(
+            *sorted(SIDE_EFFECT_STATUSES),
+            "not_started",
+            "side_effect_committed",
+        ),
         default="not_started",
     )
     inspect_continuity.add_argument(

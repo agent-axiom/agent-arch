@@ -32,7 +32,7 @@ def _envelope(**overrides: object) -> ContinuityEnvelope:
         "action_digest": "sha256:approved-action",
         "approval_expires_at": "2026-07-21T18:00:00Z",
         "idempotency_key": "ticket-intent-017",
-        "side_effect_status": "not_started",
+        "side_effect_status": "not_executed",
         "checkpoint_ref": "checkpoint:support-042-step-6",
         "summary_sha256": summary_sha256(SUMMARY),
         "requires_reauthorization": True,
@@ -55,7 +55,7 @@ def _state(**overrides: object) -> ContinuityState:
         "action_digest": "sha256:approved-action",
         "approval_status": "approved",
         "idempotency_key": "ticket-intent-017",
-        "side_effect_status": "not_started",
+        "side_effect_status": "not_executed",
         "checkpoint_ref": "checkpoint:support-042-step-6",
     }
     values.update(overrides)
@@ -103,7 +103,7 @@ def test_tampered_summary_fails_closed() -> None:
         ({"action_digest": "sha256:other-action"}, "action_digest_changed"),
         ({"delegated_scope": "tickets:read"}, "delegated_scope_changed"),
         ({"idempotency_key": "ticket-intent-099"}, "idempotency_key_changed"),
-        ({"side_effect_status": "side_effect_committed"}, "side_effect_status_changed"),
+        ({"side_effect_status": "applied"}, "side_effect_status_changed"),
         ({"checkpoint_ref": "checkpoint:other"}, "checkpoint_changed"),
     ],
 )
@@ -146,10 +146,20 @@ def test_invalid_approval_cannot_cross_the_context_boundary(
     assert decision.reason == reason
 
 
-def test_unknown_side_effect_blocks_replay_until_reconciliation() -> None:
+@pytest.mark.parametrize(
+    ("side_effect_status", "reason"),
+    [
+        ("side_effect_unknown", "unknown_side_effect"),
+        ("partial_side_effect", "partial_side_effect"),
+    ],
+)
+def test_unresolved_side_effect_blocks_replay_until_reconciliation(
+    side_effect_status: str,
+    reason: str,
+) -> None:
     decision = validate_rehydration(
-        _envelope(side_effect_status="side_effect_unknown"),
-        _state(side_effect_status="side_effect_unknown"),
+        _envelope(side_effect_status=side_effect_status),
+        _state(side_effect_status=side_effect_status),
         SUMMARY,
         now=datetime(2026, 7, 21, 17, 0, tzinfo=UTC),
     )
@@ -157,7 +167,31 @@ def test_unknown_side_effect_blocks_replay_until_reconciliation() -> None:
     assert decision.status == "blocked_on_reconciliation"
     assert decision.authorized is False
     assert decision.requires_reauthorization is True
-    assert decision.reason == "unknown_side_effect"
+    assert decision.reason == reason
+
+
+@pytest.mark.parametrize(
+    ("side_effect_status", "reason"),
+    [
+        ("side_effect_unknown", "unknown_side_effect"),
+        ("partial_side_effect", "partial_side_effect"),
+    ],
+)
+def test_current_unresolved_effect_takes_priority_over_envelope_drift(
+    side_effect_status: str,
+    reason: str,
+) -> None:
+    decision = validate_rehydration(
+        _envelope(side_effect_status="not_executed"),
+        _state(side_effect_status=side_effect_status),
+        SUMMARY,
+        now=datetime(2026, 7, 21, 17, 0, tzinfo=UTC),
+    )
+
+    assert decision.status == "blocked_on_reconciliation"
+    assert decision.authorized is False
+    assert decision.requires_reauthorization is True
+    assert decision.reason == reason
 
 
 def test_envelope_cannot_disable_reauthorization() -> None:
@@ -232,3 +266,46 @@ def test_cli_blocks_unknown_side_effect_instead_of_replaying(cli_json) -> None:
         "context_compaction",
         "continuity_validation_failed",
     ]
+
+
+def test_cli_blocks_partial_side_effect_instead_of_replaying(cli_json) -> None:
+    exit_code, payload = cli_json(
+        [
+            "inspect-continuity",
+            "--side-effect-status",
+            "partial_side_effect",
+        ]
+    )
+
+    assert exit_code == 0
+    assert payload["side_effect_status"] == "partial_side_effect"
+    assert payload["status"] == "blocked_on_reconciliation"
+    assert payload["authorized"] is False
+    assert payload["reason"] == "partial_side_effect"
+
+
+@pytest.mark.parametrize(
+    ("cli_status", "canonical_status"),
+    [
+        ("not_executed", "not_executed"),
+        ("not_started", "not_executed"),
+        ("applied", "applied"),
+        ("side_effect_committed", "applied"),
+    ],
+)
+def test_cli_accepts_canonical_side_effect_statuses_and_legacy_aliases(
+    cli_status: str,
+    canonical_status: str,
+    cli_json,
+) -> None:
+    exit_code, payload = cli_json(
+        [
+            "inspect-continuity",
+            "--side-effect-status",
+            cli_status,
+        ]
+    )
+
+    assert exit_code == 0
+    assert payload["side_effect_status"] == canonical_status
+    assert payload["status"] == "reauthorization_required"

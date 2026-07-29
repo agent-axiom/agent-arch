@@ -312,9 +312,14 @@ class AgentRuntime:
             self._handle_tool_request(context, request, model_output.tool_request)
             latest_tool = context.tool_results[-1] if context.tool_results else None
             if latest_tool is not None:
+                legacy_tool_status = latest_tool.outcome
+                if latest_tool.outcome == "permission_denied":
+                    legacy_tool_status = "denied"
+                elif latest_tool.outcome == "retryable_failure":
+                    legacy_tool_status = "failed"
                 capability_session_id = latest_tool.payload.get("capability_session_id", "")
                 capability_session_status = latest_tool.payload.get(
-                    "capability_session_status", latest_tool.status
+                    "capability_session_status", legacy_tool_status
                 )
                 authorization_mode = latest_tool.payload.get(
                     "authorization_mode", authorization_mode
@@ -326,7 +331,15 @@ class AgentRuntime:
                 idempotency_key = latest_tool.payload.get("idempotency_key", idempotency_key)
                 approval_id = latest_tool.payload.get("approval_id", approval_id)
                 capability_name = latest_tool.capability_name
-                if latest_tool.status == "approval_required":
+                unresolved_effects = {"side_effect_unknown", "partial_side_effect"}
+                if latest_tool.side_effect_status in unresolved_effects:
+                    reconciliation_effect = latest_tool.side_effect_status
+                elif latest_tool.outcome in unresolved_effects:
+                    reconciliation_effect = latest_tool.outcome
+                else:
+                    reconciliation_effect = ""
+                requires_reconciliation = bool(reconciliation_effect)
+                if latest_tool.outcome == "approval_required" and not requires_reconciliation:
                     result = RunResult(
                         output_text=(
                             "Ticket request is waiting for human approval "
@@ -370,10 +383,8 @@ class AgentRuntime:
                         delegated_scope=delegated_scope,
                     )
                     return result
-                if latest_tool.status == "side_effect_unknown":
-                    failure_reason = latest_tool.payload.get(
-                        "reason", "post_dispatch_timeout"
-                    )
+                if requires_reconciliation:
+                    failure_reason = latest_tool.payload.get("reason", "post_dispatch_timeout")
                     result = RunResult(
                         output_text=(
                             "Runtime blocked the write path until the external effect "
@@ -381,7 +392,7 @@ class AgentRuntime:
                         ),
                         status="blocked_on_reconciliation",
                         task_success=None,
-                        side_effect_status="side_effect_unknown",
+                        side_effect_status=reconciliation_effect,
                     )
                     self.sessions.register_run(
                         session_id=request.session_id,
@@ -428,17 +439,21 @@ class AgentRuntime:
                         delegated_scope=delegated_scope,
                     )
                     return result
-                if latest_tool.status in {"denied", "validation_failure", "failed"}:
-                    failure_reason = latest_tool.payload.get("reason", latest_tool.status)
+                if latest_tool.outcome in {
+                    "permission_denied",
+                    "validation_failure",
+                    "retryable_failure",
+                }:
+                    failure_reason = latest_tool.payload.get("reason", latest_tool.outcome)
                     result = RunResult(
                         output_text=(
                             "Runtime halted before side effects completed: "
-                            f"{latest_tool.capability_name} returned {latest_tool.status} "
+                            f"{latest_tool.capability_name} returned {legacy_tool_status} "
                             f"({failure_reason})."
                         ),
                         status="failed",
                         task_success=False,
-                        side_effect_status="not_executed",
+                        side_effect_status=latest_tool.side_effect_status,
                     )
                     self.sessions.register_run(
                         session_id=request.session_id,
@@ -450,7 +465,7 @@ class AgentRuntime:
                         output_text=result.output_text,
                         failure_reason=str(failure_reason),
                         task_success=False,
-                        side_effect_status="not_executed",
+                        side_effect_status=result.side_effect_status,
                         request_agent_id=request.agent_id,
                         capability_session_id=capability_session_id,
                         capability_session_status=capability_session_status,
@@ -466,7 +481,7 @@ class AgentRuntime:
                         request.trace_id,
                         session_id=request.session_id,
                         capability=latest_tool.capability_name,
-                        tool_status=latest_tool.status,
+                        tool_outcome=latest_tool.outcome,
                         failure_reason=str(failure_reason),
                         authorization_mode=authorization_mode,
                         delegated_principal_id=delegated_principal_id,
@@ -487,20 +502,18 @@ class AgentRuntime:
                         delegated_scope=delegated_scope,
                     )
                     return result
-            model_output = _read_model_output(
-                self._call_model(request, context, second_pass=True)
-            )
+            model_output = _read_model_output(self._call_model(request, context, second_pass=True))
             self._emit_model_reasoning_evidence(request, model_output)
 
         self._schedule_background_updates(request, context, model_output)
         successful_side_effect = any(
-            tool_result.status == "success" for tool_result in context.tool_results
+            tool_result.side_effect_status == "applied" for tool_result in context.tool_results
         )
         result = RunResult(
             output_text=model_output.text,
             status="success",
             task_success=True,
-            side_effect_status=("executed" if successful_side_effect else "not_executed"),
+            side_effect_status=("applied" if successful_side_effect else "not_executed"),
         )
         self.sessions.register_run(
             session_id=request.session_id,
@@ -593,7 +606,7 @@ class AgentRuntime:
         lowered = request.user_input.lower()
         if second_pass:
             latest_tool = context.tool_results[-1] if context.tool_results else None
-            if latest_tool is not None and latest_tool.status == "approval_required":
+            if latest_tool is not None and latest_tool.outcome == "approval_required":
                 approval_id = latest_tool.payload.get("approval_id", "pending")
                 return ModelOutput(
                     text=f"Ticket request is waiting for human approval ({approval_id}).",
@@ -637,9 +650,7 @@ class AgentRuntime:
         request: RunRequest,
         tool_request: ToolRequest,
     ) -> PolicyDecision:
-        tool_request.capability_name = normalize_tool_capability_name(
-            tool_request.capability_name
-        )
+        tool_request.capability_name = normalize_tool_capability_name(tool_request.capability_name)
         tool_request.arguments = normalize_tool_arguments(tool_request.arguments)
         capability = self.catalog.get(tool_request.capability_name)
         decision = self.policy.evaluate_tool(context, tool_request, capability)
@@ -656,7 +667,7 @@ class AgentRuntime:
         if capability is None:
             tool_result = ToolResult(
                 capability_name=tool_request.capability_name,
-                status="denied",
+                status="permission_denied",
                 payload={
                     "reason": decision.reason,
                     "authorization_mode": request.authorization_mode,
@@ -673,7 +684,8 @@ class AgentRuntime:
                 request.trace_id,
                 session_id=request.session_id,
                 capability=tool_result.capability_name,
-                status=tool_result.status,
+                outcome=tool_result.outcome,
+                side_effect_status=tool_result.side_effect_status,
                 tool_principal="n/a",
                 authorization_mode=tool_result.payload["authorization_mode"],
                 delegated_principal_id=tool_result.payload["delegated_principal_id"],
@@ -746,7 +758,8 @@ class AgentRuntime:
                 request.trace_id,
                 session_id=request.session_id,
                 capability=tool_result.capability_name,
-                status=tool_result.status,
+                outcome=tool_result.outcome,
+                side_effect_status=tool_result.side_effect_status,
                 tool_principal="pending_review",
                 authorization_mode=tool_result.payload["authorization_mode"],
                 delegated_principal_id=tool_result.payload["delegated_principal_id"],
@@ -759,11 +772,7 @@ class AgentRuntime:
         idempotency_action = "not_required"
         request_digest = ""
         reserved = None
-        if (
-            decision.action == "allow"
-            and capability.idempotency_key_required
-            and idempotency_key
-        ):
+        if decision.action == "allow" and capability.idempotency_key_required and idempotency_key:
             request_digest = compute_idempotency_request_digest(
                 capability_name=tool_request.capability_name,
                 arguments=tool_request.arguments,
@@ -804,6 +813,14 @@ class AgentRuntime:
         elif reserved.action == "replay" and reserved.result is not None:
             tool_result = reserved.result
             tool_result.payload["idempotency_resolution"] = "replayed"
+        elif reserved.action == "reconcile" and reserved.result is not None:
+            tool_result = reserved.result
+            tool_result.payload.setdefault("reason", "previous_effect_unresolved")
+            tool_result.payload.setdefault(
+                "effect_state",
+                tool_result.side_effect_status,
+            )
+            tool_result.payload["reconciliation_required"] = "true"
         elif reserved.action == "reconcile":
             tool_result = ToolResult(
                 capability_name=tool_request.capability_name,
@@ -813,6 +830,7 @@ class AgentRuntime:
                     "effect_state": "side_effect_unknown",
                     "reconciliation_required": "true",
                 },
+                side_effect_status="side_effect_unknown",
             )
         elif reserved.action == "conflict":
             tool_result = ToolResult(
@@ -823,7 +841,7 @@ class AgentRuntime:
         else:
             tool_result = ToolResult(
                 capability_name=tool_request.capability_name,
-                status="failed",
+                status="retryable_failure",
                 payload={
                     "reason": "idempotency_request_in_progress",
                     "effect_state": "not_executed",
@@ -850,7 +868,8 @@ class AgentRuntime:
             request.trace_id,
             session_id=request.session_id,
             capability=tool_result.capability_name,
-            status=tool_result.status,
+            outcome=tool_result.outcome,
+            side_effect_status=tool_result.side_effect_status,
             tool_principal=tool_result.payload.get("tool_principal", "n/a"),
             authorization_mode=tool_result.payload.get(
                 "authorization_mode", request.authorization_mode

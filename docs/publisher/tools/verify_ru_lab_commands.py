@@ -48,6 +48,7 @@ _FENCE = re.compile(r"^\s*(?P<fence>`{3,}|~{3,})(?P<info>[^`]*)$")
 _CONTROL_OPERATORS = frozenset({"&", "&&", ";", ";;", "<", "<<", ">", ">>", "|", "||"})
 _SMOKE_PATH_FLAGS = frozenset({"--evidence-manifest", "--input", "--output"})
 _REPO_PATH_FLAGS = frozenset({"--config", "--config-dir"})
+_SHELL_VARIABLE = re.compile(r"\$(?:[A-Za-z_][A-Za-z0-9_]*|\{[A-Za-z_][A-Za-z0-9_]*\})")
 
 
 @dataclass(frozen=True, slots=True)
@@ -432,7 +433,7 @@ def _check_runtime_selection(
     issues: list[VerificationIssue] = []
     for block in blocks:
         for text, offset in _logical_commands(block.text):
-            if "agent_runtime_ref" not in text:
+            if not _contains_runtime_module_reference(text):
                 continue
             key = (block.lab_number, block.start_line + offset, text)
             if key not in selected:
@@ -445,6 +446,16 @@ def _check_runtime_selection(
                     )
                 )
     return tuple(issues)
+
+
+def _contains_runtime_module_reference(command: str) -> bool:
+    try:
+        tokens = shlex.split(command, comments=True, posix=True)
+    except ValueError:
+        return "agent_runtime_ref" in command
+    return any(
+        tokens[index : index + 2] == ["-m", "agent_runtime_ref"] for index in range(len(tokens) - 1)
+    )
 
 
 def _smoke_runtime_commands(
@@ -544,15 +555,42 @@ def _prepare_smoke_argv(command: RuntimeCommand, *, cwd: Path, repo_root: Path) 
             index += 2
             continue
         if token in _REPO_PATH_FLAGS and index + 1 < len(args):
-            value = Path(args[index + 1])
-            if not value.is_absolute():
-                value = repo_root / value
+            raw_value = args[index + 1]
+            if token == "--config-dir" and _SHELL_VARIABLE.search(raw_value):
+                value = _copy_clean_runtime_configs(
+                    command,
+                    cwd=cwd,
+                    repo_root=repo_root,
+                )
+            else:
+                value = Path(raw_value)
+                if not value.is_absolute():
+                    value = repo_root / value
             prepared.extend((token, str(value)))
             index += 2
             continue
         prepared.append(token)
         index += 1
     return [sys.executable, "-m", "agent_runtime_ref", *prepared]
+
+
+def _copy_clean_runtime_configs(
+    command: RuntimeCommand,
+    *,
+    cwd: Path,
+    repo_root: Path,
+) -> Path:
+    source = repo_root / "agent_runtime_ref/configs"
+    copies = cwd / "runtime-config-copies"
+    copies.mkdir(parents=True, exist_ok=True)
+    destination = Path(
+        tempfile.mkdtemp(
+            prefix=f"lab-{command.lab_number:02d}-line-{command.line}-",
+            dir=copies,
+        )
+    )
+    shutil.copytree(source, destination, dirs_exist_ok=True)
+    return destination
 
 
 def _sandbox_path(raw_path: str, *, cwd: Path) -> Path:

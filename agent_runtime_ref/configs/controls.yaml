@@ -6,6 +6,11 @@ controls:
     - policy_traces_present
     - duplicate_ticket_eval_passed
     - idempotency_keys_present
+    - create_ticket_approval_required
+    - create_ticket_idempotency_key_required
   block_if:
     - direct_tool_access_present
     - unmanaged_runtime_present
+  required_approval_roles:
+    - platform-owner
+    - security-reviewer

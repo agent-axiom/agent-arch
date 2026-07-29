@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-render-google-doc-2026-07-29-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.007196780556984367,
+      "page": 79
+    },
+    {
+      "density": 0.00826920902208936,
+      "page": 297
+    },
+    {
+      "density": 0.00828053399634068,
+      "page": 284
+    },
+    {
+      "density": 0.009312068972132092,
+      "page": 345
+    },
+    {
+      "density": 0.010159354062164054,
+      "page": 453
+    },
+    {
+      "density": 0.012662807742468566,
+      "page": 322
+    },
+    {
+      "density": 0.013052475997835137,
+      "page": 162
+    },
+    {
+      "density": 0.014838457611947098,
+      "page": 175
+    },
+    {
+      "density": 0.015018855689603627,
+      "page": 95
+    },
+    {
+      "density": 0.01613398199199941,
+      "page": 256
+    }
+  ],
+  "pages": 453,
+  "render_dir": "/private/tmp/agent-arch-render-google-doc-2026-07-29"
+}
