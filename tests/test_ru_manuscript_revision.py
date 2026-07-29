@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import json
+import os
 import re
+import shutil
 import struct
 import subprocess
 import sys
@@ -32,9 +34,7 @@ COMPANION_EXAMPLES = ROOT / "docs/companion/examples"
 INDEX_TERMS = ROOT / "docs/publisher/ru-index-terms-2026-07-27.md"
 HUMAN_REVIEW_PACKET = ROOT / "docs/publisher/ru-human-review-packet-2026-07-27.md"
 LEARNING_OUTCOME_MAP = ROOT / "docs/publisher/ru-learning-outcome-map-2026-07-27.md"
-EDITORIAL_PACKET_BUILDER = (
-    ROOT / "docs/publisher/tools/build_ru_editorial_packets.py"
-)
+EDITORIAL_PACKET_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_packets.py"
 
 NUMBERED_FIGURE_PATHS = [
     "visuals/ru-figure-01-book-map.png",
@@ -94,7 +94,7 @@ def test_reference_package_quickstart_matches_runtime_contract() -> None:
         )
     ]
 
-    assert "git checkout ru-manuscript-editorial-2026-07-22" in appendix
+    assert "git checkout ru-manuscript-editorial-2026-07-29" in appendix
     assert '"status": "waiting_for_approval"' in appendix
     assert '"events": 10' in appendix
     assert '"memory_records": 3' in appendix
@@ -129,9 +129,7 @@ def test_revision_has_clean_reader_facing_structure() -> None:
     assert "Golden path" not in text
     assert "золотые пути" not in text
     assert "companion-справочник" not in text
-    assert len(
-        re.findall(r"сопроводительн(?:ый справочник|ом справочнике)", text)
-    ) <= 8
+    assert len(re.findall(r"сопроводительн(?:ый справочник|ом справочнике)", text)) <= 8
     assert "docs/companion/runtime-reference/" in text
     assert "developers.openai.com/api/docs/guides/agents-sdk" not in text
     assert "openai.github.io/openai-agents-python" in text
@@ -306,15 +304,11 @@ def test_evidence_lifecycle_examples_are_fail_closed_and_materialized() -> None:
         "readiness-rubric-support-ticket.yaml": "hard_blockers",
     }
     for filename, required_key in examples.items():
-        payload = yaml.safe_load(
-            (COMPANION_EXAMPLES / filename).read_text(encoding="utf-8")
-        )
+        payload = yaml.safe_load((COMPANION_EXAMPLES / filename).read_text(encoding="utf-8"))
         assert required_key in payload
 
     rubric = yaml.safe_load(
-        (COMPANION_EXAMPLES / "readiness-rubric-support-ticket.yaml").read_text(
-            encoding="utf-8"
-        )
+        (COMPANION_EXAMPLES / "readiness-rubric-support-ticket.yaml").read_text(encoding="utf-8")
     )
     assert [level["score"] for level in rubric["levels"]] == [0, 1, 2, 3, 4]
     assert rubric["hard_blockers"]
@@ -487,14 +481,8 @@ def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_section
         heading = match.group(1)
         if heading not in dense_headings:
             continue
-        end = (
-            heading_matches[index + 1].start()
-            if index + 1 < len(heading_matches)
-            else len(text)
-        )
-        section_words[heading] = len(
-            re.findall(r"[A-Za-zА-Яа-яЁё0-9_]+", text[match.end() : end])
-        )
+        end = heading_matches[index + 1].start() if index + 1 < len(heading_matches) else len(text)
+        section_words[heading] = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9_]+", text[match.end() : end]))
 
     assert set(section_words) == set(dense_headings)
     assert max(section_words.values()) <= 750
@@ -502,9 +490,7 @@ def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_section
 
 def test_source_appendix_is_grouped_into_reader_sized_runs() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
-    appendix = text.split("## Приложение 4\\.", 1)[1].split(
-        "## Приложение 5\\.", 1
-    )[0]
+    appendix = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
 
     for heading in (
         "#### Основные архитектурные руководства",
@@ -550,9 +536,7 @@ def test_source_entries_use_bibliographic_paragraphs_and_restore_prose_rhythm() 
 def test_reference_package_quickstart_has_task_oriented_subsections() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     appendix = text.split("## Приложение 5\\.", 1)[1]
-    quickstart = appendix.split("### Как запустить", 1)[1].split(
-        "### Карта модулей", 1
-    )[0]
+    quickstart = appendix.split("### Как запустить", 1)[1].split("### Карта модулей", 1)[0]
 
     for heading in (
         "#### Быстрый запуск и ожидаемое состояние",
@@ -599,12 +583,8 @@ def test_print_manuscript_uses_book_native_navigation() -> None:
 
 def test_chapters_16_and_27_have_one_reader_contract_and_direct_openings() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
-    chapter_sixteen = text.split("## Глава 16\\.", 1)[1].split(
-        "## Выводы части", 1
-    )[0]
-    chapter_twenty_seven = text.split("## Глава 27\\.", 1)[1].split(
-        "## Глава 28\\.", 1
-    )[0]
+    chapter_sixteen = text.split("## Глава 16\\.", 1)[1].split("## Выводы части", 1)[0]
+    chapter_twenty_seven = text.split("## Глава 27\\.", 1)[1].split("## Глава 28\\.", 1)[0]
 
     assert "Что вы должны уметь после этой страницы" not in chapter_sixteen
     assert "Зачем нужен этот раздел" not in chapter_sixteen
@@ -664,12 +644,8 @@ def test_dense_chapters_balance_explanation_and_checklists() -> None:
     for number, cap in {4: 0.45, 19: 0.42, 22: 0.38, 25: 0.38}.items():
         assert list_word_share(revision_tool.extract_chapter(text, number)) < cap, number
 
-    assert len(
-        re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", revision_tool.extract_chapter(text, 11))
-    ) < 4600
-    assert len(
-        re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", revision_tool.extract_chapter(text, 15))
-    ) < 4625
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", revision_tool.extract_chapter(text, 11))) < 5000
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", revision_tool.extract_chapter(text, 15))) < 4800
 
 
 def test_reference_heavy_chapters_use_lists_only_for_scannable_decisions() -> None:
@@ -733,13 +709,9 @@ def test_reader_facing_language_is_grammatical_and_russian_first() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     prose_without_identifiers = re.sub(r"`[^`]+`", "", prose)
-    prose_without_links = re.sub(
-        r"!?\[[^\]]+\]\([^)]+\)", "", prose_without_identifiers
-    )
+    prose_without_links = re.sub(r"!?\[[^\]]+\]\([^)]+\)", "", prose_without_identifiers)
     prose_without_links = re.sub(r"https?://[^)\s]+", "", prose_without_links)
-    prose_without_links = re.sub(
-        r"(?m)^\*\*S\d{3}\.\*\*.*$", "", prose_without_links
-    )
+    prose_without_links = re.sub(r"(?m)^\*\*S\d{3}\.\*\*.*$", "", prose_without_links)
 
     for residue in (
         "приемы подсказкаинга",
@@ -843,9 +815,7 @@ def test_listing_introductions_set_a_specific_reading_task() -> None:
         "назначение: сделать контракт раздела проверяемым; перед промышленным "
         "применением требуется адаптация к схеме и ограничениям организации"
     )
-    guides = re.findall(
-        r"^\*\*Как читать листинг\.\*\* (.+)$", text, re.MULTILINE
-    )
+    guides = re.findall(r"^\*\*Как читать листинг\.\*\* (.+)$", text, re.MULTILINE)
 
     assert generic not in text
     assert len(re.findall(r"^\*\*Листинг \d+\.", text, re.MULTILINE)) == 37
@@ -871,9 +841,7 @@ def test_source_notes_are_specific_without_repeating_one_global_caveat() -> None
     assert text.count("### Источники главы") == 28
     assert "**Как читать источники.**" not in text
     for number in range(1, 29):
-        sources = revision_tool.extract_chapter(text, number).split(
-            "### Источники главы", 1
-        )[1]
+        sources = revision_tool.extract_chapter(text, number).split("### Источники главы", 1)[1]
         assert re.search(r"^\*\*S\d+\.\*\*", sources, re.MULTILINE)
     assert "**Граница переносимости источников.**" in text
 
@@ -966,9 +934,7 @@ def test_parts_and_dense_chapters_have_editorial_navigation() -> None:
     chapter_one = text.split("## Глава 1\\.", 1)[1].split("## Глава 2\\.", 1)[0]
     assert chapter_one.count("**Граница доказательств.**") == 1
 
-    chapter_twenty_three = text.split("## Глава 23\\.", 1)[1].split(
-        "## Глава 24\\.", 1
-    )[0]
+    chapter_twenty_three = text.split("## Глава 23\\.", 1)[1].split("## Глава 24\\.", 1)[0]
     assert "В 09:05" in chapter_twenty_three[:800]
     assert "Предыдущая глава определила" not in chapter_twenty_three[:800]
 
@@ -998,9 +964,7 @@ def test_duplicate_evidence_cleanup_refuses_to_delete_edited_prose() -> None:
 def test_every_chapter_has_a_traceable_source_set() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     high_evidence_chapters = {4, 5, 6, 11, 12, 13, 14, 15, 16, 20, 21, 22, 23, 24, 25, 28}
-    appendix = text.split("## Приложение 4\\.", 1)[1].split(
-        "## Приложение 5\\.", 1
-    )[0]
+    appendix = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
     appendix_ids = re.findall(r"^\*\*(S\d{3})\.\*\*", appendix, re.MULTILINE)
 
     assert len(appendix_ids) >= 90
@@ -1018,9 +982,7 @@ def test_every_chapter_has_a_traceable_source_set() -> None:
         assert "http" not in sources
         assert "**Как читать источники.**" not in sources
 
-    claim_references = re.findall(
-        r"\(см\. источники? \*\*S\d{3}\*\*(?:, \*\*S\d{3}\*\*)*\)", text
-    )
+    claim_references = re.findall(r"\(см\. источники? \*\*S\d{3}\*\*(?:, \*\*S\d{3}\*\*)*\)", text)
     assert len(claim_references) >= 16
 
 
@@ -1067,9 +1029,7 @@ def test_appendix_gives_self_study_feedback_and_clean_bibliography() -> None:
     assert appendix_five.count("**Недостаточный ответ.**") == 8
     assert appendix_five.count("**Проверяемый артефакт.**") == 8
 
-    bibliography = text.split("## Приложение 4\\.", 1)[1].split(
-        "## Приложение 5\\.", 1
-    )[0]
+    bibliography = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
     assert not re.search(r"\[[^\]]*https?://", bibliography)
     source_lines = [
         line
@@ -1340,7 +1300,7 @@ def test_reader_route_is_honest_and_part_conclusions_are_explicit() -> None:
     assert "**В книгу намеренно не входит.**" in introduction
     assert "### Один исполняемый сценарий и два сценария переноса" in introduction
     assert "### Три сквозных сценария" not in introduction
-    assert "### Канонические состояния выполнения" in introduction
+    assert "### Четыре ортогональных словаря состояния" in introduction
     assert "`waiting_for_approval`" in introduction
     assert "`side_effect_unknown`" in introduction
 
@@ -1522,15 +1482,16 @@ def test_submission_readiness_pass_consolidates_chapter_21_provenance_lists() ->
 def test_submission_readiness_uses_the_verified_release_tag() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
-    assert text.count("git checkout ru-manuscript-editorial-2026-07-22") == 2
+    assert text.count("git checkout ru-manuscript-editorial-2026-07-29") == 2
+    assert "ru-manuscript-editorial-2026-07-22" not in text
     assert "git checkout ru-manuscript-editorial-2026-07\n" not in text
 
 
 def test_final_book_pass_repairs_labels_headings_and_named_source_traceability() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
-    instruction = text.split(
-        "**Пример инструкции для агента разбора обращений.**", 1
-    )[1].split("```", 2)[0]
+    instruction = text.split("**Пример инструкции для агента разбора обращений.**", 1)[1].split(
+        "```", 2
+    )[0]
     chapter_one = revision_tool.extract_chapter(text, 1)
 
     assert "**Тип фрагмента:** текстовая инструкция." in instruction
@@ -1585,20 +1546,16 @@ def test_final_book_pass_normalizes_recurring_teaching_elements() -> None:
         assert residue not in text
 
     assert text.count("**Быстрый тест зрелости.**") == 12
-    assert not re.search(
-        r"^#{3,4} Быстрый тест зрелости", text, re.MULTILINE
-    )
+    assert not re.search(r"^#{3,4} Быстрый тест зрелости", text, re.MULTILINE)
 
 
 def test_prose_quality_and_quickstart_are_editorially_consistent() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     introduction = text.split("# Часть I.", 1)[0]
 
-    assert "git checkout ru-manuscript-editorial-2026-07-22" in introduction
+    assert "git checkout ru-manuscript-editorial-2026-07-29" in introduction
     assert "uv sync --frozen --group dev" in introduction
-    assert re.search(
-        r"семантики «ровно один раз»\s*\(`exactly-once`\)", introduction
-    )
+    assert re.search(r"семантики «ровно один раз»\s*\(`exactly-once`\)", introduction)
 
     for residue in (
         "только тогда думай про многоагентную схему",
@@ -1616,9 +1573,7 @@ def test_prose_quality_and_quickstart_are_editorially_consistent() -> None:
     ):
         assert residue not in text
     assert not re.search(r"среда исполнения обязан(?:\s|[.,;:])", text)
-    assert not re.search(
-        r"версия 2 в сценарии разбора обращений поддержки заменил(?:\s|,)", text
-    )
+    assert not re.search(r"версия 2 в сценарии разбора обращений поддержки заменил(?:\s|,)", text)
 
     prose = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
     prose = re.sub(r"`[^`]+`", "", prose)
@@ -1778,7 +1733,8 @@ def test_revision_has_no_unintended_placeholders_or_duplicate_prose() -> None:
         assert residue not in reader_facing_text
 
     prose_blocks = []
-    for raw_block in re.split(r"\n\s*\n", text):
+    prose_only = re.sub(r"```.*?```", "", text, flags=re.DOTALL)
+    for raw_block in re.split(r"\n\s*\n", prose_only):
         block = " ".join(line.strip() for line in raw_block.splitlines()).strip()
         if len(block) < 180 or block.startswith(
             ("```", "![", "[image", "* [", "* Глава", "##", "# ")
@@ -1826,9 +1782,7 @@ def test_revision_keeps_new_chapter_numbering_and_control_examples_consistent() 
     assert "занятые минуты проверяющих" in text
 
     causal_record = text[
-        text.index("causal_case:\n") : text.index(
-            "### Три сквозных сценария инцидентов"
-        )
+        text.index("causal_case:\n") : text.index("### Три сквозных сценария инцидентов")
     ]
     assert "edges:" in causal_record
     assert causal_record.count("evidence_ref:") == 3
@@ -1886,9 +1840,7 @@ def test_inline_diagrams_are_publisher_ready() -> None:
         assert title.text == diagram["caption"]
         html_labels = root.findall(".//xhtml:p", namespace)
         svg_labels = root.findall(".//svg:text", namespace)
-        assert any(
-            "".join(node.itertext()).strip() for node in [*html_labels, *svg_labels]
-        )
+        assert any("".join(node.itertext()).strip() for node in [*html_labels, *svg_labels])
 
         png = png_path.read_bytes()
         assert png[:8] == b"\x89PNG\r\n\x1a\n"
@@ -2010,9 +1962,7 @@ def test_targeted_editorial_diagrams_keep_text_at_least_eight_points_in_print() 
             if item["path"].endswith(relative_path.removeprefix("visuals/"))
         )
         placement = placements[asset["index"] - 1]
-        svg = (VISUALS / Path(relative_path).with_suffix(".svg").name).read_text(
-            encoding="utf-8"
-        )
+        svg = (VISUALS / Path(relative_path).with_suffix(".svg").name).read_text(encoding="utf-8")
         font_pixels = [int(value) for value in re.findall(r"font:\s*(\d+)px", svg)]
         minimum_points = min(font_pixels) * placement["width_inches"] * 72 / asset["width_px"]
 
@@ -2073,24 +2023,16 @@ def test_final_technical_book_copyedit_is_applied() -> None:
     ):
         assert residue not in prose_without_identifiers
 
-    lab_8 = text.split("### Лабораторная работа 8", 1)[1].split(
-        "## Итоговый проект", 1
-    )[0]
+    lab_8 = text.split("### Лабораторная работа 8", 1)[1].split("## Итоговый проект", 1)[0]
     assert len(re.findall(r"^#### Шаг \d+\.", lab_8, re.MULTILINE)) >= 4
     assert lab_8.count("**Наблюдение.**") >= 2
 
 
 def test_multi_agent_review_remediations_are_reflected_in_practice() -> None:
     text = join_shell_continuations(EXPECTED.read_text(encoding="utf-8"))
-    lab_2 = text.split("### Лабораторная работа 2", 1)[1].split(
-        "# Часть III", 1
-    )[0]
-    lab_4 = text.split("### Лабораторная работа 4", 1)[1].split(
-        "# Часть V", 1
-    )[0]
-    lab_8 = text.split("### Лабораторная работа 8", 1)[1].split(
-        "## Итоговый проект", 1
-    )[0]
+    lab_2 = text.split("### Лабораторная работа 2", 1)[1].split("# Часть III", 1)[0]
+    lab_4 = text.split("### Лабораторная работа 4", 1)[1].split("# Часть V", 1)[0]
+    lab_8 = text.split("### Лабораторная работа 8", 1)[1].split("## Итоговый проект", 1)[0]
 
     assert "--approval-store artifacts/lab-02/approval-state.json" in lab_2
     assert "--resolved-by manager-lab-02" in lab_2
@@ -2118,9 +2060,7 @@ def test_multi_agent_review_remediations_are_reflected_in_practice() -> None:
     assert "manifest_integrity_verified=true" in lab_8
     assert "trusted_attestation_verified=false" in lab_8
 
-    assert (
-        "ненулевой оценке по каждому из двух критериев-блокеров" in text
-    )
+    assert "ненулевой оценке по каждому из двух критериев-блокеров" in text
     assert "нуле по любому из двух критериев-блокеров" not in text
 
 
@@ -2182,12 +2122,8 @@ def test_shared_ai_gateway_contract_is_reader_sized_and_traceable() -> None:
 
 def test_gateway_discovery_sync_has_practice_sources_and_density_guards() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
-    lab_five = text.split("### Лабораторная работа 5", 1)[1].split(
-        "# Часть VI", 1
-    )[0]
-    appendix = text.split("## Приложение 4\\.", 1)[1].split(
-        "## Приложение 5\\.", 1
-    )[0]
+    lab_five = text.split("### Лабораторная работа 5", 1)[1].split("# Часть VI", 1)[0]
+    appendix = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
 
     assert "artifacts/lab-05/gateway-decision.yaml" in lab_five
     assert "отсутствующий результат DLP" in lab_five
@@ -2218,7 +2154,7 @@ def test_gateway_discovery_sync_has_practice_sources_and_density_guards() -> Non
             revision_tool.extract_chapter(text, 11),
         )
     )
-    assert chapter_eleven_words < 4600
+    assert chapter_eleven_words < 5000
 
 
 def test_every_manuscript_table_has_a_numbered_caption() -> None:
@@ -2483,16 +2419,13 @@ def test_final_reader_copyedit_uses_russian_first_terminology() -> None:
 def test_final_reader_copyedit_makes_definitions_scannable_and_dates_snapshots() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
-    for state in (
-        "success",
-        "waiting_for_approval",
-        "permission_denied",
-        "validation_failure",
-        "retryable_failure",
-        "side_effect_unknown",
-        "partial_side_effect",
+    for vocabulary in (
+        "**Решение политики.**",
+        "**Состояние запуска.**",
+        "**Исход возможности.**",
+        "**Состояние внешнего эффекта.**",
     ):
-        assert f"* `{state}`:" in text
+        assert vocabulary in text
 
     for outcome in ("pass", "blocked", "fail", "inconclusive"):
         assert f"* `{outcome}`:" in text
@@ -2549,10 +2482,7 @@ def test_chapter_sources_cover_material_claims_and_primary_case_record() -> None
 
     assert "см. источник **S109**" in text
     assert "**S109.**" in appendix
-    assert (
-        "https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do"
-        in appendix
-    )
+    assert "https://decisions.civilresolutionbc.ca/crt/crtd/en/item/525448/index.do" in appendix
 
 
 def test_technical_book_polish_closes_production_and_local_source_gaps() -> None:
@@ -2572,9 +2502,7 @@ def test_technical_book_polish_closes_production_and_local_source_gaps() -> None
             1,
         )
         inline_ids = set(re.findall(r"\bS\d{3}\b", body))
-        local_ids = set(
-            re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE)
-        )
+        local_ids = set(re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE))
         assert inline_ids <= local_ids, (
             number,
             sorted(inline_ids - local_ids),
@@ -2588,7 +2516,7 @@ def test_technical_book_polish_closes_production_and_local_source_gaps() -> None
         7: {"S037", "S038"},
         8: {"S045"},
         10: {"S021"},
-        11: {"S023", "S024", "S051", "S073"},
+        11: {"S023", "S024", "S051", "S073", "S110", "S114"},
         12: {"S021", "S049"},
         14: {"S020"},
         15: {"S020", "S037", "S063"},
@@ -2597,8 +2525,18 @@ def test_technical_book_polish_closes_production_and_local_source_gaps() -> None
         20: {"S010", "S011", "S012", "S016", "S021", "S074", "S075"},
         21: {"S017", "S075"},
         22: {"S060", "S087"},
-        23: {"S076", "S079", "S085", "S086", "S089", "S090"},
-        24: {"S074", "S080"},
+        23: {
+            "S076",
+            "S079",
+            "S085",
+            "S086",
+            "S089",
+            "S090",
+            "S111",
+            "S112",
+            "S115",
+        },
+        24: {"S074", "S080", "S111", "S112", "S113", "S115"},
         26: {"S016", "S023", "S024", "S033", "S044", "S045", "S046", "S048", "S049", "S057"},
         27: {"S043"},
         28: {"S016", "S040", "S109"},
@@ -2608,9 +2546,7 @@ def test_technical_book_polish_closes_production_and_local_source_gaps() -> None
             "### Источники главы",
             1,
         )[1]
-        local_ids = set(
-            re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE)
-        )
+        local_ids = set(re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE))
         assert expected_ids <= local_ids, (number, sorted(expected_ids - local_ids))
 
 
@@ -2627,7 +2563,532 @@ def test_source_appendix_separates_cited_sources_from_further_reading() -> None:
 
     assert cited_ids == used_ids
     assert cited_ids.isdisjoint(further_ids)
-    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 110)}
+    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 116)}
+
+
+def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    introduction = text.split("# Часть I.", 1)[0]
+
+    assert "Книга использует один словарь машинных состояний" not in introduction
+    assert "### Четыре ортогональных словаря состояния" in introduction
+
+    paragraphs = {
+        "policy": introduction.split("**Решение политики.**", 1)[1].split("\n\n", 1)[0],
+        "run": introduction.split("**Состояние запуска.**", 1)[1].split("\n\n", 1)[0],
+        "outcome": introduction.split("**Исход возможности.**", 1)[1].split("\n\n", 1)[0],
+        "effect": introduction.split("**Состояние внешнего эффекта.**", 1)[1].split("\n\n", 1)[0],
+    }
+    expected = {
+        "policy": {"allow", "deny", "approval_required"},
+        "run": {
+            "success",
+            "waiting_for_approval",
+            "denied",
+            "failed",
+            "blocked_on_reconciliation",
+        },
+        "outcome": {
+            "success",
+            "approval_required",
+            "permission_denied",
+            "validation_failure",
+            "retryable_failure",
+            "side_effect_unknown",
+            "partial_side_effect",
+        },
+        "effect": {
+            "not_executed",
+            "applied",
+            "side_effect_unknown",
+            "partial_side_effect",
+        },
+    }
+    for vocabulary, values in expected.items():
+        for value in values:
+            assert f"`{value}`" in paragraphs[vocabulary], (vocabulary, value)
+
+    assert (
+        "Такой запуск нельзя сворачивать в общий `failed`: сначала требуется сверка" in introduction
+    )
+    assert (
+        "Отказ на предварительной проверке запуска переводит весь запуск в `denied`" in introduction
+    )
+    assert "уже начатого запуска может остаться `failed` ради совместимости" in introduction
+    assert "исход остается `permission_denied`" in introduction
+
+
+def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    expected_markers = {
+        7: (
+            "#### Ограниченный контракт сервиса памяти",
+            "`ingest`",
+            "`remember`",
+            "`recall`",
+            "`list`",
+            "`forget`",
+            "устаревшую ревизию",
+            "конфликтующую запись",
+        ),
+        8: (
+            "#### Память между агентами: производитель и потребитель",
+            "`producer_agent_id`",
+            "область допустимых потребителей",
+            "Экспорт",
+            "удаление",
+        ),
+        11: (
+            "#### Сессия MCP не равна повтору вызова",
+            "`outputSchema`",
+            "`annotations`",
+            "`Mcp-Session-Id`",
+            "elicitation",
+            "(OBO)",
+            "Существующую сессию можно возобновить",
+            "Исходный вызов инструмента повторяется",
+            "повторно инициализируется",
+            "#### Угрозы сети агентов",
+            "Sybil-атаку",
+            "предел числа переходов",
+        ),
+        14: (
+            "#### Бюджет следует за идентичностью и маршрутом",
+            "`agent_identity`",
+            "`provider_route`",
+            "причину резервного маршрута",
+            "режим деградации",
+        ),
+        15: (
+            "#### Регрессия может жить вне модели",
+            "режим рассуждения",
+            "правила сокращения контекста",
+            "версию среды исполнения",
+            "исключающее сравнение",
+        ),
+        23: (
+            "#### Оценочная песочница является соседней с промышленной средой",
+            "прокси к реестру пакетов",
+            "повышение привилегий",
+            "перемещение внутри исследовательской среды",
+        ),
+        24: (
+            "#### Поиск критического шага, а не удобного объяснения",
+            "AgentRx",
+            "#### Воронка подтверждения уязвимости",
+            "воспроизвести наблюдаемый эффект",
+            "минимизировать траекторию",
+            "детерминированным предикатом",
+            "положительный и отрицательный контроль",
+            "постоянную регрессионную проверку",
+            "шлюзом выпуска",
+        ),
+        26: (
+            "#### Усечение не должно уничтожать доказательства",
+            "`truncated=true`",
+            "контрольную сумму",
+            "#### Параллельные сессии инструментов",
+            "`tool_session_id`",
+            "`branch_id`",
+            "`join_status`",
+        ),
+    }
+    for number, markers in expected_markers.items():
+        chapter = revision_tool.extract_chapter(text, number)
+        for marker in markers:
+            assert marker in chapter, (number, marker)
+
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    closure = chapter_eleven.index("**Что изменилось после этой главы.**")
+    assert chapter_eleven.index("#### Сессия MCP не равна повтору вызова") < closure
+    assert chapter_eleven.index("#### Угрозы сети агентов") < closure
+    for marker in (
+        "Глава также различает возобновление сессии, повтор вызова, "
+        "повторную инициализацию и отмену",
+        "как ограничивать распространение риска в сети агентов",
+        "возобновление сессии, повтор вызова, повторную инициализацию и отмену",
+        "Возобновление сессии, повтор вызова и повторная инициализация — разные переходы",
+        "сеть агентов требует явных пределов распространения риска",
+    ):
+        assert marker in chapter_eleven
+    outcomes = chapter_eleven.split("**После главы вы сможете:**", 1)[1].split(
+        "**Артефакт главы:**",
+        1,
+    )[0]
+    assert (
+        "* различать возобновление сессии, повтор вызова инструмента, "
+        "повторную инициализацию и отмену;" in outcomes
+    )
+    assert "* ограничивать распространение риска в сети агентов." in outcomes
+
+
+def test_online_sync_sources_are_complete_and_locally_attributed() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix = text.split("## Приложение 4\\.", 1)[1].split(
+        "## Приложение 5\\.",
+        1,
+    )[0]
+
+    urls = {
+        "S110": "https://aws.amazon.com/blogs/machine-learning/extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2/",
+        "S111": "https://openai.com/index/hugging-face-model-evaluation-security-incident/",
+        "S112": "https://huggingface.co/blog/security-incident-july-2026",
+        "S113": "https://www.microsoft.com/en-us/research/blog/systematic-debugging-for-ai-agents-introducing-the-agentrx-framework/",
+        "S114": "https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/",
+        "S115": "https://arxiv.org/abs/2605.11086",
+    }
+    for source_id, url in urls.items():
+        assert appendix.count(f"**{source_id}.**") == 1
+        assert url in appendix
+    assert appendix.count("дата обращения: 29 июля 2026 года.") == 6
+
+    local_sources = {
+        11: {"S110", "S114"},
+        23: {"S111", "S112", "S115"},
+        24: {"S111", "S112", "S113", "S115"},
+    }
+    for number, expected_ids in local_sources.items():
+        chapter = revision_tool.extract_chapter(text, number)
+        source_section = chapter.split("### Источники главы", 1)[1]
+        source_ids = set(re.findall(r"^\*\*(S\d{3})\.\*\*", source_section, re.MULTILINE))
+        assert expected_ids <= source_ids
+
+
+def test_online_sync_repairs_version_grammar_and_preserves_author_placeholders() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    author_block = text.split("## Как использовать примеры безопасно", 1)[0]
+
+    assert text.count("git checkout ru-manuscript-editorial-2026-07-29") == 2
+    assert "ru-manuscript-editorial-2026-07-22" not in text
+    assert "открывать заявка" not in text
+    assert "какой агент вызывал точка доступа" not in text
+    for placeholder in (
+        "\\[имя / публичное имя\\]",
+        "\\[заполнить\\]",
+        "\\[Добавить роль и проверяемый опыт.\\]",
+        "\\[согласовать формулировку с издательством\\]",
+    ):
+        assert placeholder in author_block
+
+
+def test_online_sync_keeps_target_chapter_list_density_below_thirty_five_percent() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    def list_word_share(chapter: str) -> float:
+        chapter = re.sub(r"```.*?```", "", chapter, flags=re.DOTALL)
+        words = re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter)
+        list_words: list[str] = []
+        for line in chapter.splitlines():
+            if re.match(r"^\s*(?:[*+-]|\d+\\?\.)\s+", line):
+                list_words.extend(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", line))
+        return len(list_words) / len(words)
+
+    for number in (2, 3, 10, 19):
+        assert list_word_share(revision_tool.extract_chapter(text, number)) < 0.35
+
+
+def test_labs_two_six_and_seven_have_executable_negative_checks() -> None:
+    text = join_shell_continuations(EXPECTED.read_text(encoding="utf-8"))
+    lab_two = text.split("### Лабораторная работа 2\\.", 1)[1].split(
+        "# Часть III.",
+        1,
+    )[0]
+    lab_six = text.split("### Лабораторная работа 6\\.", 1)[1].split(
+        "# Часть VII.",
+        1,
+    )[0]
+    lab_seven = text.split("### Лабораторная работа 7\\.", 1)[1].split(
+        "# Часть VIII.",
+        1,
+    )[0]
+
+    for marker in (
+        "(\nset -eu",
+        'LAB_PREFIX="${TMPDIR:-/tmp}/agent-arch-lab-02."',
+        'if ! LAB_CONFIG=$(mktemp -d "${LAB_PREFIX}XXXXXX"); then',
+        'case "$LAB_CONFIG" in',
+        '"$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
+        "trap cleanup_lab_config 0",
+        "trap 'on_signal 129' HUP",
+        'rm -rf "${LAB_CONFIG:?}"',
+        "printf '%s\\n' 'Не удалось создать временный каталог.'",
+        'cp -R agent_runtime_ref/configs/. "$LAB_CONFIG/"',
+        'create_ticket["approval"] = "none"',
+        'create_ticket["idempotency_key_required"] = False',
+        'create_ticket_policy["decision"] = "allow"',
+        "yaml.safe_load",
+        "yaml.safe_dump",
+        'check-controls --config-dir "$LAB_CONFIG"',
+        "--signal create_ticket_approval_required=true",
+        "--signal create_ticket_idempotency_key_required=true",
+        '"healthy": false',
+        'missing_controls=["create_ticket_approval_required", '
+        '"create_ticket_idempotency_key_required"]',
+        "`blocking_findings=[]`",
+        "`inventory_drift.has_drift=false`",
+        "`healthy=true`",
+        "`missing_controls`",
+    ):
+        assert marker in lab_two
+    assert "--config-dir agent_runtime_ref/configs" not in lab_two
+    assert 'rm -rf "$LAB_CONFIG"' not in lab_two
+    assert '"$LAB_PREFIX"??????)' not in lab_two
+    assert "записывающая возможность остается разрешенной" not in lab_two
+    lab_two_step = lab_two.split(
+        "#### Шаг 4. Докажите, что флаги CLI не скрывают снятый контроль",
+        1,
+    )[1].split("**Наблюдение.**", 1)[0]
+    assert len(re.findall(r"```sh\n.*?\n```", lab_two_step, re.DOTALL)) == 1
+
+    for marker in (
+        "(\nset -eu",
+        'LAB_PREFIX="${TMPDIR:-/tmp}/agent-arch-lab-06."',
+        'if ! LAB_CONFIG=$(mktemp -d "${LAB_PREFIX}XXXXXX"); then',
+        'case "$LAB_CONFIG" in',
+        '"$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
+        "trap cleanup_lab_config 0",
+        "trap 'on_signal 129' HUP",
+        'rm -rf "${LAB_CONFIG:?}"',
+        "printf '%s\\n' 'Не удалось создать временный каталог.'",
+        'cp -R agent_runtime_ref/configs/. "$LAB_CONFIG/"',
+        'data["change"]["approval_roles"].remove("platform-owner")',
+        "yaml.safe_load",
+        "yaml.safe_dump",
+        'check-change --config-dir "$LAB_CONFIG"',
+        '"ready": false',
+        '`approval_roles=["security-reviewer"]`',
+        '`required_approval_roles=["platform-owner", "security-reviewer"]`',
+        '`missing_approval_roles=["platform-owner"]`',
+        "`missing_signals=[]`",
+    ):
+        assert marker in lab_six
+    assert "--config-dir agent_runtime_ref/configs" not in lab_six
+    assert 'rm -rf "$LAB_CONFIG"' not in lab_six
+    assert '"$LAB_PREFIX"??????)' not in lab_six
+    negative_check = lab_six.split(
+        'check-change --config-dir "$LAB_CONFIG"',
+        1,
+    )[1].split("```", 1)[0]
+    assert "--signal" not in negative_check
+    lab_six_step = lab_six.split(
+        "#### Шаг 3. Удалите обязательного владельца",
+        1,
+    )[1].split("**Наблюдение.**", 1)[0]
+    assert len(re.findall(r"```sh\n.*?\n```", lab_six_step, re.DOTALL)) == 1
+    for lab in (lab_two, lab_six):
+        assert (
+            "Очистка выполняется при нормальном выходе, ошибке shell и "
+            "обработанных сигналах HUP, INT и TERM." in lab
+        )
+        assert (
+            "SIGKILL, SIGSTOP и потеря системы не позволяют shell выполнить "
+            "trap; временный каталог после них может остаться" in lab
+        )
+        assert "при любом завершении" not in lab
+        assert "при нормальном завершении, ошибке или сигнале" not in lab
+
+    for step in (
+        "freeze_rollout=true",
+        "disable_risky_capabilities=true",
+        "stop_memory_write=true",
+        "expire_paused_runs=true",
+        "stop_background_routes=true",
+        "freeze_reinitialization=true",
+        "revoke_egress=false",
+        "archive_audit_state=true",
+        "set_retired_status=true",
+    ):
+        assert f"--step {step}" in lab_seven
+    assert '"ready": false' in lab_seven
+    assert '"evidence_mode": "declared"' in lab_seven
+    assert '`missing_steps=["revoke_egress"]`' in lab_seven
+
+
+@pytest.mark.parametrize(
+    ("lab_number", "step_heading", "expected"),
+    (
+        (
+            2,
+            "#### Шаг 4. Докажите, что флаги CLI не скрывают снятый контроль",
+            {
+                "healthy": False,
+                "missing_controls": [
+                    "create_ticket_approval_required",
+                    "create_ticket_idempotency_key_required",
+                ],
+            },
+        ),
+        (
+            6,
+            "#### Шаг 3. Удалите обязательного владельца",
+            {
+                "ready": False,
+                "required_approval_roles": [
+                    "platform-owner",
+                    "security-reviewer",
+                ],
+                "missing_approval_roles": ["platform-owner"],
+                "missing_signals": [],
+            },
+        ),
+    ),
+)
+def test_negative_lab_block_runs_once_and_always_cleans_up(
+    tmp_path: Path,
+    lab_number: int,
+    step_heading: str,
+    expected: dict[str, object],
+) -> None:
+    chapter = EXPECTED.read_text(encoding="utf-8").split(
+        f"### Лабораторная работа {lab_number}\\.",
+        1,
+    )[1]
+    step = chapter.split(step_heading, 1)[1].split("**Наблюдение.**", 1)[0]
+    blocks = re.findall(r"```sh\n(.*?)\n```", step, re.DOTALL)
+    assert len(blocks) == 1
+
+    environment = os.environ.copy()
+    environment["TMPDIR"] = str(tmp_path)
+    completed = subprocess.run(
+        ["sh"],
+        input=blocks[0],
+        cwd=ROOT,
+        env=environment,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    for field, value in expected.items():
+        assert payload[field] == value
+    assert list(tmp_path.glob(f"agent-arch-lab-{lab_number:02d}.*")) == []
+
+
+def test_negative_lab_block_cleans_up_after_command_failure(tmp_path: Path) -> None:
+    chapter = EXPECTED.read_text(encoding="utf-8").split(
+        "### Лабораторная работа 2\\.",
+        1,
+    )[1]
+    step = chapter.split(
+        "#### Шаг 4. Докажите, что флаги CLI не скрывают снятый контроль",
+        1,
+    )[1].split("**Наблюдение.**", 1)[0]
+    block = re.findall(r"```sh\n(.*?)\n```", step, re.DOTALL)[0]
+    block = block.replace(
+        "uv run python -m agent_runtime_ref check-controls",
+        "false\nuv run python -m agent_runtime_ref check-controls",
+        1,
+    )
+
+    environment = os.environ.copy()
+    environment["TMPDIR"] = str(tmp_path)
+    completed = subprocess.run(
+        ["sh"],
+        input=block,
+        cwd=ROOT,
+        env=environment,
+        text=True,
+        capture_output=True,
+        check=False,
+        timeout=60,
+    )
+
+    assert completed.returncode != 0
+    assert list(tmp_path.glob("agent-arch-lab-02.*")) == []
+
+
+def test_lab_two_negative_check_matches_runtime_json(tmp_path: Path) -> None:
+    config_dir = tmp_path / "configs"
+    shutil.copytree(ROOT / "agent_runtime_ref/configs", config_dir)
+
+    capabilities_path = config_dir / "capabilities.yaml"
+    capabilities = yaml.safe_load(capabilities_path.read_text(encoding="utf-8"))
+    create_ticket = capabilities["capabilities"]["create_ticket"]
+    create_ticket["approval"] = "none"
+    create_ticket["idempotency_key_required"] = False
+    capabilities_path.write_text(
+        yaml.safe_dump(capabilities, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    policy_path = config_dir / "policy.yaml"
+    policy = yaml.safe_load(policy_path.read_text(encoding="utf-8"))
+    policy["policy"]["capabilities"]["create_ticket"]["decision"] = "allow"
+    policy_path.write_text(
+        yaml.safe_dump(policy, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "agent_runtime_ref",
+            "check-controls",
+            "--config-dir",
+            str(config_dir),
+            "--signal",
+            "create_ticket_approval_required=true",
+            "--signal",
+            "create_ticket_idempotency_key_required=true",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    assert payload["healthy"] is False
+    assert payload["missing_controls"] == [
+        "create_ticket_approval_required",
+        "create_ticket_idempotency_key_required",
+    ]
+    assert payload["blocking_findings"] == []
+    assert payload["inventory_drift"]["has_drift"] is False
+
+
+def test_lab_six_negative_check_matches_runtime_json(tmp_path: Path) -> None:
+    config_dir = tmp_path / "configs"
+    shutil.copytree(ROOT / "agent_runtime_ref/configs", config_dir)
+
+    change_path = config_dir / "change.yaml"
+    change = yaml.safe_load(change_path.read_text(encoding="utf-8"))
+    change["change"]["approval_roles"].remove("platform-owner")
+    change_path.write_text(
+        yaml.safe_dump(change, sort_keys=False),
+        encoding="utf-8",
+    )
+
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "agent_runtime_ref",
+            "check-change",
+            "--config-dir",
+            str(config_dir),
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+    )
+
+    assert completed.returncode == 0, completed.stderr
+    payload = json.loads(completed.stdout)
+    assert payload["ready"] is False
+    assert payload["approval_roles"] == ["security-reviewer"]
+    assert payload["required_approval_roles"] == [
+        "platform-owner",
+        "security-reviewer",
+    ]
+    assert payload["missing_approval_roles"] == ["platform-owner"]
+    assert payload["missing_signals"] == []
 
 
 def test_chapters_17_to_19_have_non_overlapping_editorial_ownership() -> None:

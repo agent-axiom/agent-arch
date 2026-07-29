@@ -4,13 +4,10 @@ import hashlib
 from dataclasses import dataclass
 from datetime import UTC, datetime
 
+from agent_runtime_ref.states import validate_side_effect_status
+
 _SCHEMA_VERSION = "continuity-envelope/v1"
 _AUTHORIZATION_MODES = {"platform_owned", "user_delegated", "human_approved"}
-_SIDE_EFFECT_STATUSES = {
-    "not_started",
-    "side_effect_committed",
-    "side_effect_unknown",
-}
 _APPROVAL_STATUSES = {"approved", "pending", "rejected", "revoked", "expired"}
 
 
@@ -102,6 +99,11 @@ class ContinuityEnvelope:
                 field,
                 _optional_string(getattr(self, field), field=field),
             )
+        object.__setattr__(
+            self,
+            "side_effect_status",
+            validate_side_effect_status(self.side_effect_status),
+        )
 
         if self.schema_version != _SCHEMA_VERSION:
             raise ValueError(f"Continuity schema version is not supported: {self.schema_version}")
@@ -114,10 +116,6 @@ class ContinuityEnvelope:
                 raise ValueError("Continuity field is required: delegated_principal_id")
             if not self.delegated_scope:
                 raise ValueError("Continuity field is required: delegated_scope")
-        if self.side_effect_status not in _SIDE_EFFECT_STATUSES:
-            raise ValueError(
-                f"Continuity side-effect status is not supported: {self.side_effect_status}"
-            )
         _parse_timestamp(self.approval_expires_at, field="approval_expires_at")
         if not self.summary_sha256.startswith("sha256:"):
             raise ValueError("Continuity summary digest must use sha256")
@@ -171,16 +169,17 @@ class ContinuityState:
                 field,
                 _optional_string(getattr(self, field), field=field),
             )
+        object.__setattr__(
+            self,
+            "side_effect_status",
+            validate_side_effect_status(self.side_effect_status),
+        )
         if self.authorization_mode not in _AUTHORIZATION_MODES:
             raise ValueError(
                 f"Continuity authorization mode is not supported: {self.authorization_mode}"
             )
         if self.approval_status not in _APPROVAL_STATUSES:
             raise ValueError(f"Continuity approval status is not supported: {self.approval_status}")
-        if self.side_effect_status not in _SIDE_EFFECT_STATUSES:
-            raise ValueError(
-                f"Continuity side-effect status is not supported: {self.side_effect_status}"
-            )
 
 
 @dataclass(frozen=True, slots=True)
@@ -223,6 +222,14 @@ def validate_rehydration(
     if summary_sha256(summary) != envelope.summary_sha256:
         return _decision("continuity_validation_failed", "summary_digest_mismatch")
 
+    if current.side_effect_status in {"side_effect_unknown", "partial_side_effect"}:
+        reason = (
+            "unknown_side_effect"
+            if current.side_effect_status == "side_effect_unknown"
+            else "partial_side_effect"
+        )
+        return _decision("blocked_on_reconciliation", reason)
+
     comparisons = (
         ("tenant_id", "tenant_mismatch"),
         ("principal_id", "principal_mismatch"),
@@ -253,7 +260,4 @@ def validate_rehydration(
     )
     if expires_at <= now:
         return _decision("continuity_validation_failed", "approval_expired")
-    if current.side_effect_status == "side_effect_unknown":
-        return _decision("blocked_on_reconciliation", "unknown_side_effect")
-
     return _decision("reauthorization_required", "continuity_validated")

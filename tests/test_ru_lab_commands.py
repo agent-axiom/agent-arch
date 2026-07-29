@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from textwrap import dedent
 
@@ -163,6 +164,127 @@ def test_smoke_executes_only_allowlisted_runtime_commands_in_clean_tmp(
     assert result.returncode == 0
     assert result.cwd != REPO_ROOT
     assert not result.cwd.exists()
+
+
+def test_smoke_replaces_variable_config_dir_with_clean_repo_copy() -> None:
+    markdown = dedent(
+        """
+        ### Лабораторная работа 2. Временная конфигурация
+
+        ```sh
+        LAB_CONFIG=$(mktemp -d)
+        cp -R agent_runtime_ref/configs/. "$LAB_CONFIG/"
+        uv run python -m agent_runtime_ref check-controls \
+          --config-dir "$LAB_CONFIG"
+        ```
+        """
+    )
+
+    report = verifier.verify_text(
+        markdown,
+        repo_root=REPO_ROOT,
+        shells=("sh",),
+        run_smoke=True,
+    )
+
+    assert report.ok, report.format_issues()
+    assert len(report.smoke_results) == 1
+    payload = json.loads(report.smoke_results[0].stdout)
+    assert payload["healthy"] is True
+    assert payload["missing_controls"] == []
+
+
+def test_subshell_scenario_keeps_runtime_command_directly_parseable() -> None:
+    markdown = dedent(
+        r"""
+        ### Лабораторная работа 2. Самодостаточный сценарий
+
+        ```sh
+        (
+        set -eu
+        LAB_PREFIX="${TMPDIR:-/tmp}/agent-arch-lab-02."
+        LAB_CONFIG=
+        cleanup_lab_config() {
+          case "${LAB_CONFIG:-}" in
+            "") ;;
+            "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])
+              rm -rf "${LAB_CONFIG:?}"
+              LAB_CONFIG=
+              ;;
+            *) return 1 ;;
+          esac
+        }
+        trap cleanup_lab_config 0
+        if ! LAB_CONFIG=$(mktemp -d "${LAB_PREFIX}XXXXXX"); then
+          exit 1
+        fi
+        case "$LAB_CONFIG" in
+          "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]) ;;
+          *) exit 1 ;;
+        esac
+        cp -R agent_runtime_ref/configs/. "$LAB_CONFIG/"
+        uv run python -m agent_runtime_ref check-controls \
+          --config-dir "$LAB_CONFIG"
+        )
+        ```
+        """
+    )
+
+    report = verifier.verify_text(
+        markdown,
+        repo_root=REPO_ROOT,
+        shells=("sh",),
+        run_smoke=True,
+    )
+
+    assert report.ok, report.format_issues()
+    assert len(report.runtime_commands) == 1
+    assert report.runtime_commands[0].argv[:2] == (
+        "check-controls",
+        "--config-dir",
+    )
+    assert len(report.smoke_results) == 1
+
+
+def test_variable_config_dirs_receive_independent_full_copies(tmp_path: Path) -> None:
+    first = verifier.RuntimeCommand(
+        lab_number=2,
+        text=('uv run python -m agent_runtime_ref check-controls --config-dir "$LAB_CONFIG"'),
+        argv=("check-controls", "--config-dir", "$LAB_CONFIG"),
+        line=10,
+    )
+    second = verifier.RuntimeCommand(
+        lab_number=2,
+        text=('uv run python -m agent_runtime_ref check-controls --config-dir "${LAB_CONFIG}"'),
+        argv=("check-controls", "--config-dir", "${LAB_CONFIG}"),
+        line=20,
+    )
+
+    first_argv = verifier._prepare_smoke_argv(
+        first,
+        cwd=tmp_path,
+        repo_root=REPO_ROOT,
+    )
+    first_config = Path(first_argv[first_argv.index("--config-dir") + 1])
+    assert first_config != REPO_ROOT / "agent_runtime_ref/configs"
+    assert {path.name for path in first_config.iterdir() if path.is_file()} == {
+        path.name for path in (REPO_ROOT / "agent_runtime_ref/configs").iterdir() if path.is_file()
+    }
+    (first_config / "capabilities.yaml").write_text(
+        "capabilities: {}\n",
+        encoding="utf-8",
+    )
+
+    second_argv = verifier._prepare_smoke_argv(
+        second,
+        cwd=tmp_path,
+        repo_root=REPO_ROOT,
+    )
+    second_config = Path(second_argv[second_argv.index("--config-dir") + 1])
+    assert second_config != first_config
+    assert (second_config / "capabilities.yaml").read_bytes() == (
+        REPO_ROOT / "agent_runtime_ref/configs/capabilities.yaml"
+    ).read_bytes()
 
 
 def test_non_allowlisted_runtime_command_is_rejected_with_context() -> None:

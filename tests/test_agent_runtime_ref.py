@@ -39,9 +39,7 @@ def _runtime_public_doc_paths() -> list[Path]:
 
 
 def _runtime_public_docs_text() -> str:
-    return "\n".join(
-        path.read_text(encoding="utf-8") for path in _runtime_public_doc_paths()
-    )
+    return "\n".join(path.read_text(encoding="utf-8") for path in _runtime_public_doc_paths())
 
 
 def _runtime_source_paths() -> list[Path]:
@@ -104,9 +102,7 @@ def _render_raise_message(message: ast.expr) -> str | None:
             parts.append(value.value)
         elif isinstance(value, ast.FormattedValue):
             expression = ast.unparse(value.value)
-            conversion = {-1: "", 97: "!a", 114: "!r", 115: "!s"}[
-                value.conversion
-            ]
+            conversion = {-1: "", 97: "!a", 114: "!r", 115: "!s"}[value.conversion]
             parts.append("{" + expression + conversion + "}")
     return "".join(parts)
 
@@ -136,17 +132,14 @@ def _dataclass_field_names(tree: ast.Module) -> set[str]:
         is_dataclass = any(
             (isinstance(decorator, ast.Name) and decorator.id == "dataclass")
             or (
-                isinstance(decorator, ast.Call)
-                and getattr(decorator.func, "id", "") == "dataclass"
+                isinstance(decorator, ast.Call) and getattr(decorator.func, "id", "") == "dataclass"
             )
             for decorator in node.decorator_list
         )
         if not is_dataclass:
             continue
         for statement in node.body:
-            if isinstance(statement, ast.AnnAssign) and isinstance(
-                statement.target, ast.Name
-            ):
+            if isinstance(statement, ast.AnnAssign) and isinstance(statement.target, ast.Name):
                 field_names.add(statement.target.id)
     return field_names
 
@@ -268,9 +261,7 @@ def _documented_literal_markers(tree: ast.Module) -> list[str]:
         and all(char.islower() or char.isdigit() or char in "_:" for char in node.value)
     }
     return sorted(
-        marker
-        for marker in literal_markers
-        if "_" in marker or marker.startswith("trace:")
+        marker for marker in literal_markers if "_" in marker or marker.startswith("trace:")
     )
 
 
@@ -417,9 +408,7 @@ class TestRuntimeDocsParity:
         undocumented = {key for key in runtime_keys if key not in runtime_public_docs_text}
         assert undocumented == set()
 
-    def test_runtime_readme_documents_bundled_agent_identity_values(
-        self, config_dir: Path
-    ) -> None:
+    def test_runtime_readme_documents_bundled_agent_identity_values(self, config_dir: Path) -> None:
         """Keep the local runtime README aligned with bundled agent.yaml identity."""
         agent, _ = load_agent_profile(config_dir / "agent.yaml")
         text = Path("agent_runtime_ref/README.md").read_text(encoding="utf-8")
@@ -497,7 +486,6 @@ class TestRuntimeDocsParity:
             assert "capability_session_id" in text
             assert "capability_session_status" in text
             assert "idempotency_key" in text
-
 
     def test_approval_schema_documents_resolve_summary_lineage(self) -> None:
         """Keep approval docs aligned with resolve-approval summary lineage."""
@@ -1358,7 +1346,8 @@ class TestFailurePaths:
         assert tool_event.payload == {
             "session_id": "session-tool-failure-001",
             "capability": "create_ticket",
-            "status": "validation_failure",
+            "outcome": "validation_failure",
+            "side_effect_status": "not_executed",
             "tool_principal": "n/a",
             "authorization_mode": "human_approved",
             "delegated_principal_id": "",
@@ -1368,7 +1357,7 @@ class TestFailurePaths:
         assert run_failed.payload == {
             "session_id": "session-tool-failure-001",
             "capability": "create_ticket",
-            "tool_status": "validation_failure",
+            "tool_outcome": "validation_failure",
             "failure_reason": "missing_idempotency_key",
             "authorization_mode": "human_approved",
             "delegated_principal_id": "",
@@ -1437,22 +1426,16 @@ class TestFailurePaths:
         with pytest.raises(ValueError, match="Trace file does not contain any trace IDs"):
             main(["inspect-trace", "--input", str(output_path)])
 
-    def test_cli_inspect_trace_rejects_invalid_json_event_lines(
-        self, tmp_path: Path
-    ) -> None:
+    def test_cli_inspect_trace_rejects_invalid_json_event_lines(self, tmp_path: Path) -> None:
         output_path = tmp_path / "invalid-json-event.jsonl"
         output_path.write_text("\n{not-json}\n", encoding="utf-8")
 
         from agent_runtime_ref.__main__ import main
 
-        with pytest.raises(
-            ValueError, match="Telemetry event line is not valid JSON: 2"
-        ):
+        with pytest.raises(ValueError, match="Telemetry event line is not valid JSON: 2"):
             main(["inspect-trace", "--input", str(output_path)])
 
-    def test_cli_inspect_trace_rejects_non_mapping_event_records(
-        self, tmp_path: Path
-    ) -> None:
+    def test_cli_inspect_trace_rejects_non_mapping_event_records(self, tmp_path: Path) -> None:
         output_path = tmp_path / "non-mapping-event.jsonl"
         output_path.write_text(json.dumps(["not", "an", "event"]) + "\n", encoding="utf-8")
 
@@ -1793,9 +1776,9 @@ class TestFailurePaths:
             bad_config_dir = tmp_path / section / field / case / "configs"
             shutil.copytree(config_dir, bad_config_dir)
             policy = load_yaml_file(bad_config_dir / "policy.yaml")
-            cast(dict[str, object], cast(dict[str, object], policy["policy"])[section])[
-                field
-            ] = value
+            cast(dict[str, object], cast(dict[str, object], policy["policy"])[section])[field] = (
+                value
+            )
             (bad_config_dir / "policy.yaml").write_text(
                 json.dumps(policy),
                 encoding="utf-8",
@@ -1835,7 +1818,7 @@ class TestFailurePaths:
             (
                 "empty-decision",
                 {"search_docs": {"decision": " "}},
-                "Policy decision is not supported:",
+                "Policy decision must not be empty",
             ),
             (
                 "non-string-approver",
@@ -2025,9 +2008,10 @@ class TestFailurePaths:
             bad_config_dir = tmp_path / case / "configs"
             shutil.copytree(config_dir, bad_config_dir)
             capabilities = load_yaml_file(bad_config_dir / "capabilities.yaml")
-            cast(dict[str, object], cast(dict[str, object], capabilities["capabilities"])[
-                "search_docs"
-            ])["allowed_egress"] = value
+            cast(
+                dict[str, object],
+                cast(dict[str, object], capabilities["capabilities"])["search_docs"],
+            )["allowed_egress"] = value
             (bad_config_dir / "capabilities.yaml").write_text(
                 json.dumps(capabilities),
                 encoding="utf-8",
@@ -2627,9 +2611,7 @@ class TestFailurePaths:
         with pytest.raises(TypeError, match="Trace ID request must be a string"):
             _resolve_trace_id(events, cast(str, 42))
 
-    def test_cli_replay_run_rejects_incomplete_run_start_payload(
-        self, tmp_path: Path
-    ) -> None:
+    def test_cli_replay_run_rejects_incomplete_run_start_payload(self, tmp_path: Path) -> None:
         output_path = tmp_path / "incomplete-run-start.jsonl"
         output_path.write_text(
             json.dumps(
@@ -2653,9 +2635,7 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
-    def test_cli_replay_run_rejects_multiple_run_start_events(
-        self, tmp_path: Path
-    ) -> None:
+    def test_cli_replay_run_rejects_multiple_run_start_events(self, tmp_path: Path) -> None:
         output_path = tmp_path / "multiple-run-start.jsonl"
         run_start_payload = {
             "user_input": "What language preference do you remember?",
@@ -2770,9 +2750,7 @@ class TestFailurePaths:
         ):
             main(["replay-run", "--input", str(output_path)])
 
-    def test_cli_replay_run_rejects_non_string_redacted_fields(
-        self, tmp_path: Path
-    ) -> None:
+    def test_cli_replay_run_rejects_non_string_redacted_fields(self, tmp_path: Path) -> None:
         output_path = tmp_path / "non-string-redacted-fields.jsonl"
         output_path.write_text(
             json.dumps(
@@ -2951,9 +2929,7 @@ class TestFailurePaths:
         assert export_payload["delegated_principal_id"] == "customer-17"
         assert export_payload["delegated_scope"] == "ticket:create"
 
-        inspect_code, inspect_payload = cli_json(
-            ["inspect-trace", "--input", str(output_path)]
-        )
+        inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
         assert inspect_code == 0
         assert inspect_payload["authorization_mode"] == "user_delegated"
         assert inspect_payload["delegated_principal_id"] == "customer-17"
@@ -3148,14 +3124,10 @@ class TestFailurePaths:
             "run_complete",
         ]
         exported_events = [json.loads(line) for line in lines]
-        run_failed = next(
-            event for event in exported_events if event["event_type"] == "run_failed"
-        )
+        run_failed = next(event for event in exported_events if event["event_type"] == "run_failed")
         assert run_failed["payload"]["failure_reason"] == "upstream_unavailable"
 
-        inspect_code, inspect_payload = cli_json(
-            ["inspect-trace", "--input", str(output_path)]
-        )
+        inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
         assert inspect_code == 0
         assert inspect_payload["failure_reason"] == "upstream_unavailable"
 
@@ -3179,9 +3151,7 @@ class TestFailurePaths:
         assert payload["failure_reason"] == "principal_missing"
         assert output_path.exists()
 
-        inspect_code, inspect_payload = cli_json(
-            ["inspect-trace", "--input", str(output_path)]
-        )
+        inspect_code, inspect_payload = cli_json(["inspect-trace", "--input", str(output_path)])
         assert inspect_code == 0
         assert inspect_payload["session_id"] == "session-demo-001"
         assert inspect_payload["tenant_id"] == "tenant-acme"
@@ -3309,9 +3279,7 @@ class TestFailurePaths:
         self, cli_json, tmp_path: Path
     ) -> None:
         padded_trace_id = " trace-cli-normalized-001 "
-        simulate_code, simulate_payload = cli_json(
-            ["simulate-run", "--trace-id", padded_trace_id]
-        )
+        simulate_code, simulate_payload = cli_json(["simulate-run", "--trace-id", padded_trace_id])
         assert simulate_code == 0
         assert simulate_payload["trace_id"] == "trace-cli-normalized-001"
 
@@ -3497,9 +3465,7 @@ class TestFailurePaths:
     def test_cli_unique_values_rejects_malformed_direct_sequence(self) -> None:
         from agent_runtime_ref.__main__ import _read_unique_cli_values
 
-        with pytest.raises(
-            TypeError, match="CLI field entries must be a sequence: scenario"
-        ):
+        with pytest.raises(TypeError, match="CLI field entries must be a sequence: scenario"):
             _read_unique_cli_values(cast(Sequence[str], "support_ticket"), field="scenario")
 
     def test_cli_export_eval_dataset_rejects_unknown_scenarios(self) -> None:
@@ -3527,7 +3493,7 @@ class TestExecutionAndPolicyBranches:
             ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
             PolicyDecision(" deny ", " configured_deny ", " cap_410 "),
         )
-        assert result.status == "denied"
+        assert result.status == "permission_denied"
         assert result.payload["reason"] == "configured_deny"
 
     def test_execute_tool_returns_approval_required_payload(self, config_dir: Path) -> None:
@@ -3576,12 +3542,10 @@ class TestExecutionAndPolicyBranches:
             PolicyDecision("allow", "low_risk_read", "cap_101"),
             test_fault="tool_timeout",
         )
-        assert result.status == "failed"
+        assert result.status == "retryable_failure"
         assert result.payload["reason"] == "tool_timeout"
 
-    def test_execute_tool_can_simulate_upstream_unavailable_failure(
-        self, config_dir: Path
-    ) -> None:
+    def test_execute_tool_can_simulate_upstream_unavailable_failure(self, config_dir: Path) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
         assert capability is not None
         result = execute_tool(
@@ -3593,7 +3557,7 @@ class TestExecutionAndPolicyBranches:
             PolicyDecision("allow", "low_risk_read", "cap_101"),
             test_fault="upstream_unavailable",
         )
-        assert result.status == "failed"
+        assert result.status == "retryable_failure"
         assert result.payload["reason"] == "upstream_unavailable"
 
     def test_execute_tool_success_includes_contract_payload(self, config_dir: Path) -> None:
@@ -3630,8 +3594,8 @@ class TestExecutionAndPolicyBranches:
                 "Tool request capability name must not be empty",
                 ValueError,
             ),
-            ({"status": cast(str, 7)}, "Tool result status must be a string", TypeError),
-            ({"status": " "}, "Tool result status must not be empty", ValueError),
+            ({"status": cast(str, 7)}, "Capability outcome must be a string", TypeError),
+            ({"status": " "}, "Capability outcome must not be empty", ValueError),
             (
                 {"payload": cast(dict[str, str], [])},
                 "Tool result payload must be a mapping",
@@ -3772,13 +3736,18 @@ class TestExecutionAndPolicyBranches:
     ) -> None:
         capability = load_capability_catalog(config_dir / "capabilities.yaml").get("search_docs")
         assert capability is not None
-        with pytest.raises(ValueError, match=f"Policy action is not supported: {action}"):
+        expected = (
+            "Policy decision must not be empty"
+            if action == ""
+            else f"Policy decision is not supported: {action}"
+        )
+        with pytest.raises(ValueError, match=expected):
             execute_tool(
                 capability,
                 ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
                 PolicyDecision(action, "malformed_policy_action", "cap_bad"),
             )
-        with pytest.raises(TypeError, match="Policy action must be a string"):
+        with pytest.raises(TypeError, match="Policy decision must be a string"):
             execute_tool(
                 capability,
                 ToolRequest(capability_name="search_docs", arguments={"query": "policy"}),
@@ -3870,38 +3839,26 @@ class TestExecutionAndPolicyBranches:
         with pytest.raises(TypeError, match="'execution' must be a mapping"):
             PolicyEngine.from_dict({"policy": {"execution": []}})
         with pytest.raises(TypeError, match="'run_precheck.require_tenant' must be a boolean"):
-            PolicyEngine.from_dict(
-                {"policy": {"run_precheck": {"require_tenant": "false"}}}
-            )
+            PolicyEngine.from_dict({"policy": {"run_precheck": {"require_tenant": "false"}}})
         with pytest.raises(
             TypeError,
             match="'run_precheck.deny_if_principal_missing' must be a boolean",
         ):
             PolicyEngine.from_dict(
-                {
-                    "policy": {
-                        "run_precheck": {"deny_if_principal_missing": "true"}
-                    }
-                }
+                {"policy": {"run_precheck": {"deny_if_principal_missing": "true"}}}
             )
         with pytest.raises(ValueError, match="Policy capability name must not be empty"):
             PolicyEngine.from_dict({"policy": {"capabilities": {" ": {"decision": "allow"}}}})
         with pytest.raises(TypeError, match="Policy decision must be a string"):
-            PolicyEngine.from_dict(
-                {"policy": {"capabilities": {"search_docs": {"decision": 7}}}}
-            )
+            PolicyEngine.from_dict({"policy": {"capabilities": {"search_docs": {"decision": 7}}}})
         with pytest.raises(ValueError, match="Policy decision is not supported: escalate"):
             PolicyEngine.from_dict(
                 {"policy": {"capabilities": {"search_docs": {"decision": "escalate"}}}}
             )
-        with pytest.raises(ValueError, match="Policy decision is not supported: "):
-            PolicyEngine.from_dict(
-                {"policy": {"capabilities": {"search_docs": {"decision": " "}}}}
-            )
+        with pytest.raises(ValueError, match="Policy decision must not be empty"):
+            PolicyEngine.from_dict({"policy": {"capabilities": {"search_docs": {"decision": " "}}}})
         with pytest.raises(TypeError, match="Policy capability names must be strings"):
-            PolicyEngine.from_dict(
-                {"policy": {"capabilities": {7: {"decision": "allow"}}}}
-            )
+            PolicyEngine.from_dict({"policy": {"capabilities": {7: {"decision": "allow"}}}})
         with pytest.raises(TypeError, match="Policy approver must be a string"):
             PolicyEngine.from_dict(
                 {
@@ -3915,9 +3872,7 @@ class TestExecutionAndPolicyBranches:
                     }
                 }
             )
-        with pytest.raises(
-            ValueError, match="Policy approver must not be empty: create_ticket"
-        ):
+        with pytest.raises(ValueError, match="Policy approver must not be empty: create_ticket"):
             PolicyEngine.from_dict(
                 {
                     "policy": {
@@ -4029,55 +3984,33 @@ class TestExecutionAndPolicyBranches:
             match="Policy approver must not be empty: create_ticket",
         ):
             PolicyEngine(
-                capability_policies={
-                    "create_ticket": CapabilityPolicy("approval_required", " ")
-                }
+                capability_policies={"create_ticket": CapabilityPolicy("approval_required", " ")}
             )
-        with pytest.raises(
-            TypeError, match="memory_write.allow_kinds entries must be strings"
-        ):
-            PolicyEngine.from_dict(
-                {"policy": {"memory_write": {"allow_kinds": [7]}}}
-            )
+        with pytest.raises(TypeError, match="memory_write.allow_kinds entries must be strings"):
+            PolicyEngine.from_dict({"policy": {"memory_write": {"allow_kinds": [7]}}})
         with pytest.raises(ValueError, match="memory_write.allow_kinds entries must not be empty"):
-            PolicyEngine.from_dict(
-                {"policy": {"memory_write": {"allow_kinds": [" "]}}}
-            )
-        with pytest.raises(
-            ValueError, match="memory_write.allow_kinds entries must be unique"
-        ):
+            PolicyEngine.from_dict({"policy": {"memory_write": {"allow_kinds": [" "]}}})
+        with pytest.raises(ValueError, match="memory_write.allow_kinds entries must be unique"):
             PolicyEngine.from_dict(
                 {
                     "policy": {
-                        "memory_write": {
-                            "allow_kinds": ["validated_fact", " validated_fact "]
-                        }
+                        "memory_write": {"allow_kinds": ["validated_fact", " validated_fact "]}
                     }
                 }
             )
         with pytest.raises(
             TypeError, match="execution.allow_network_access entries must be strings"
         ):
-            PolicyEngine.from_dict(
-                {"policy": {"execution": {"allow_network_access": [7]}}}
-            )
+            PolicyEngine.from_dict({"policy": {"execution": {"allow_network_access": [7]}}})
         with pytest.raises(
             ValueError, match="execution.allow_network_access entries must not be empty"
         ):
-            PolicyEngine.from_dict(
-                {"policy": {"execution": {"allow_network_access": [""]}}}
-            )
+            PolicyEngine.from_dict({"policy": {"execution": {"allow_network_access": [""]}}})
         with pytest.raises(
             ValueError, match="execution.allow_network_access entries must be unique"
         ):
             PolicyEngine.from_dict(
-                {
-                    "policy": {
-                        "execution": {
-                            "allow_network_access": ["restricted", " restricted "]
-                        }
-                    }
-                }
+                {"policy": {"execution": {"allow_network_access": ["restricted", " restricted "]}}}
             )
 
     def test_policy_precheck_denies_missing_tenant_and_agent(self) -> None:
@@ -4368,8 +4301,7 @@ class TestRuntimeCore:
         )
         assert request.action_digest == expected_request_digest
         assert request.payload_summary == (
-            '{"arguments":{"queue":"support","title":"Follow up"},'
-            '"capability":"create_ticket"}'
+            '{"arguments":{"queue":"support","title":"Follow up"},"capability":"create_ticket"}'
         )
         assert request.requested_by == "user-1"
         assert request.reviewer == "manager"
@@ -4516,10 +4448,7 @@ class TestRuntimeCore:
             (
                 AgentRuntime(),
                 RunRequest(
-                    user_input=(
-                        "Please create a ticket. "
-                        "[simulate_failure=tool_timeout]"
-                    ),
+                    user_input=("Please create a ticket. [simulate_failure=tool_timeout]"),
                     tenant_id="tenant-acme",
                     principal_id="user-2",
                     trace_id="trace-untrusted-text-fault-001",
@@ -4532,9 +4461,7 @@ class TestRuntimeCore:
             (
                 ModelArgumentRuntime(
                     policy=PolicyEngine(
-                        capability_policies={
-                            "create_ticket": CapabilityPolicy("allow")
-                        }
+                        capability_policies={"create_ticket": CapabilityPolicy("allow")}
                     )
                 ),
                 RunRequest(
@@ -4560,9 +4487,7 @@ class TestRuntimeCore:
             assert result.status == expected_status
             assert policy_event.payload["action"] == expected_action
             assert policy_event.payload["reason"] == expected_reason
-            assert not any(
-                event.event_type == "run_failed" for event in runtime.telemetry.events
-            )
+            assert not any(event.event_type == "run_failed" for event in runtime.telemetry.events)
 
     def test_trusted_test_fault_reaches_adapter_only_after_policy_allow(self) -> None:
         waiting_runtime = AgentRuntime()
@@ -4579,15 +4504,12 @@ class TestRuntimeCore:
 
         assert waiting_result.status == "waiting_for_approval"
         assert not any(
-            event.event_type == "span"
-            and event.payload["span_name"] == "tool:create_ticket"
+            event.event_type == "span" and event.payload["span_name"] == "tool:create_ticket"
             for event in waiting_runtime.telemetry.events
         )
 
         allowed_runtime = AgentRuntime(
-            policy=PolicyEngine(
-                capability_policies={"create_ticket": CapabilityPolicy("allow")}
-            )
+            policy=PolicyEngine(capability_policies={"create_ticket": CapabilityPolicy("allow")})
         )
         failed_result = allowed_runtime.run(
             RunRequest(
@@ -4613,7 +4535,8 @@ class TestRuntimeCore:
             for event in allowed_runtime.telemetry.events
             if event.event_type == "tool_execution"
         )
-        assert tool_execution.payload["status"] == "failed"
+        assert tool_execution.payload["outcome"] == "retryable_failure"
+        assert tool_execution.payload["side_effect_status"] == "not_executed"
 
     def test_runtime_does_not_persist_raw_user_input(self) -> None:
         raw_input = "Summarize private token S3CR3T-RUNTIME-INPUT-001."
@@ -4639,9 +4562,7 @@ class TestRuntimeCore:
         run = runtime.sessions.runs_for_session("session-redacted-input-001")[0]
         assert run.user_input == "[REDACTED]"
         assert run.input_sha256 == input_sha256
-        run_payload = runtime.sessions._session_payload("session-redacted-input-001")[
-            "runs"
-        ][0]
+        run_payload = runtime.sessions._session_payload("session-redacted-input-001")["runs"][0]
         assert run_payload["user_input"] == "[REDACTED]"
         assert run_payload["input_sha256"] == input_sha256
 
@@ -4655,9 +4576,7 @@ class TestRuntimeCore:
         serialized_runtime_state = json.dumps(
             {
                 "events": runtime.telemetry.as_dicts(),
-                "session": runtime.sessions._session_payload(
-                    "session-redacted-input-001"
-                ),
+                "session": runtime.sessions._session_payload("session-redacted-input-001"),
                 "memory": [
                     {
                         "content": record.content,
@@ -4680,7 +4599,7 @@ class TestRuntimeCore:
             "tool:create_ticket",
             lambda: ToolResult(
                 capability_name="create_ticket",
-                status="failed",
+                status="retryable_failure",
                 payload={"reason": "tool_timeout"},
             ),
         )
@@ -5427,7 +5346,8 @@ class TestRuntimeCore:
         assert execution_event.payload == {
             "session_id": "session-demo-001",
             "capability": "create_ticket",
-            "status": "approval_required",
+            "outcome": "approval_required",
+            "side_effect_status": "not_executed",
             "tool_principal": "pending_review",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
@@ -5499,7 +5419,8 @@ class TestRuntimeCore:
         assert execution_event.payload == {
             "session_id": "session-demo-001",
             "capability": "missing_capability",
-            "status": "denied",
+            "outcome": "permission_denied",
+            "side_effect_status": "not_executed",
             "tool_principal": "n/a",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
@@ -5508,7 +5429,7 @@ class TestRuntimeCore:
         assert run_failed.payload == {
             "session_id": "session-demo-001",
             "capability": "missing_capability",
-            "tool_status": "denied",
+            "tool_outcome": "permission_denied",
             "failure_reason": "capability_unknown",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
@@ -5574,7 +5495,8 @@ class TestRuntimeCore:
         assert tool_event.payload == {
             "session_id": "session-demo-001",
             "capability": "search_docs",
-            "status": "success",
+            "outcome": "success",
+            "side_effect_status": "not_executed",
             "tool_principal": "svc-knowledge-reader",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
@@ -5793,9 +5715,7 @@ class TestRuntimeControlPaths:
         change = load_yaml_file(config_dir / "change.yaml")["change"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         assert change["artifacts"] == [
             "agent.yaml",
@@ -5823,13 +5743,9 @@ class TestRuntimeControlPaths:
             "failed_run_drill_checked",
         ]
         assert change["approval_roles"] == ["platform-owner", "security-reviewer"]
-        assert change["session_control_owner"] == runtime_controls[
-            "capability_session_owner"
-        ]
+        assert change["session_control_owner"] == runtime_controls["capability_session_owner"]
         assert change["session_control_owner"] == "support-ops"
-        assert change["emergency_freeze_owner"] == runtime_controls[
-            "emergency_freeze_owner"
-        ]
+        assert change["emergency_freeze_owner"] == runtime_controls["emergency_freeze_owner"]
         assert change["emergency_freeze_owner"] == "platform-runtime"
 
         assert retirement["required_steps"] == [
@@ -5852,19 +5768,13 @@ class TestRuntimeControlPaths:
             "runtime_control_bundle",
         ]
         assert retirement["system_id"] == agent.agent_id
-        assert retirement["session_control_owner"] == runtime_controls[
-            "capability_session_owner"
-        ]
+        assert retirement["session_control_owner"] == runtime_controls["capability_session_owner"]
         assert retirement["session_control_owner"] == "support-ops"
-        assert retirement["emergency_freeze_owner"] == runtime_controls[
-            "emergency_freeze_owner"
-        ]
+        assert retirement["emergency_freeze_owner"] == runtime_controls["emergency_freeze_owner"]
         assert retirement["emergency_freeze_owner"] == "platform-runtime"
 
         assert bundle["version"] == "2026.04.16"
-        assert bundle["session_control_owner"] == runtime_controls[
-            "capability_session_owner"
-        ]
+        assert bundle["session_control_owner"] == runtime_controls["capability_session_owner"]
         assert bundle["session_control_owner"] == "support-ops"
         assert bundle["artifacts"] == [
             "agent.yaml",
@@ -5899,9 +5809,7 @@ class TestRuntimeControlPaths:
             == f"eval:{duplicate_ticket_gate}"
         )
 
-    def test_release_configs_share_sandbox_profile_review_gate(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_share_sandbox_profile_review_gate(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
@@ -5927,9 +5835,7 @@ class TestRuntimeControlPaths:
         assert "failed_run_handling" in change["affected_surfaces"]
         assert "failed_run_drill_checked" in change["required_signals"]
 
-    def test_release_configs_bind_failed_run_drill_to_eval_artifact(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_failed_run_drill_to_eval_artifact(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
@@ -5950,9 +5856,7 @@ class TestRuntimeControlPaths:
         assert failed_session["latest_failure_reason"] == "tool_timeout"
         assert failed_session["traceable_failed_runs"] == 1
 
-    def test_release_configs_bind_duplicate_guard_to_eval_artifact(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_duplicate_guard_to_eval_artifact(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
@@ -5981,9 +5885,7 @@ class TestRuntimeControlPaths:
         assert duplicate_rule["blocking"] is True
         assert duplicate_rule["expected"]["max_ticket_side_effects"] == 1
 
-    def test_release_configs_bind_sandbox_review_to_eval_artifact(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_sandbox_review_to_eval_artifact(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
@@ -6007,19 +5909,16 @@ class TestRuntimeControlPaths:
         assert "sandbox_profile_review" in support_session["eval"]["labels"]
         assert expected_outcomes["sandbox_profile_reviewed"] is True
         assert sandbox_rule["blocking"] is True
-        assert sandbox_rule["expected"]["permissions_profile"] == sandbox_review[
-            "permissions_profile"
-        ]
-        assert sandbox_rule["expected"]["network_secrets_posture"] == sandbox_review[
-            "network_secrets_posture"
-        ]
-        assert sandbox_rule["expected"]["snapshot_policy"] == sandbox_review[
-            "snapshot_policy"
-        ]
+        assert (
+            sandbox_rule["expected"]["permissions_profile"] == sandbox_review["permissions_profile"]
+        )
+        assert (
+            sandbox_rule["expected"]["network_secrets_posture"]
+            == sandbox_review["network_secrets_posture"]
+        )
+        assert sandbox_rule["expected"]["snapshot_policy"] == sandbox_review["snapshot_policy"]
 
-    def test_release_configs_bind_write_approval_to_eval_artifact(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_write_approval_to_eval_artifact(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
@@ -6034,9 +5933,7 @@ class TestRuntimeControlPaths:
         )
         expected_outcomes = support_session["eval"]["expected_outcomes"]
 
-        assert capabilities["create_ticket"]["approval"] == approvals[
-            "default_reviewer"
-        ]
+        assert capabilities["create_ticket"]["approval"] == approvals["default_reviewer"]
         assert policy["capabilities"]["create_ticket"]["decision"] == "approval_required"
         assert "approval_required" in support_session["eval"]["labels"]
         assert expected_outcomes["approval_wait_runs"] == 1
@@ -6053,9 +5950,7 @@ class TestRuntimeControlPaths:
         eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
 
         profile_seed = next(
-            record
-            for record in memory["seed_records"]
-            if record["kind"] == "language_preference"
+            record for record in memory["seed_records"] if record["kind"] == "language_preference"
         )
         profile_session = next(
             session
@@ -6070,18 +5965,16 @@ class TestRuntimeControlPaths:
         assert {"memory_read", "profile_lookup", "grounded_answer"}.issubset(
             profile_session["eval"]["labels"]
         )
-        assert profile_session["eval"]["expected_outcomes"][
-            "required_output_substrings"
-        ] == ["Retrieved profile hint"]
+        assert profile_session["eval"]["expected_outcomes"]["required_output_substrings"] == [
+            "Retrieved profile hint"
+        ]
 
     def test_release_configs_bind_stateful_session_controls_to_eval_artifact(
         self, config_dir: Path
     ) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
 
         capability_sessions = runtime_controls["capability_sessions"]
@@ -6096,9 +5989,7 @@ class TestRuntimeControlPaths:
         assert capability_sessions["session_mode"] == "stateful"
         assert capability_sessions["track_session_ids"] is True
         assert expected_outcomes["required_run_count"] == len(mixed_runs) == 2
-        assert mixed_session["session"]["traces"] == [
-            run["trace_id"] for run in mixed_runs
-        ]
+        assert mixed_session["session"]["traces"] == [run["trace_id"] for run in mixed_runs]
         assert {"multi_run", "approval_then_memory", "session_evals"}.issubset(
             mixed_session["eval"]["labels"]
         )
@@ -6132,9 +6023,7 @@ class TestRuntimeControlPaths:
         assert eval_dataset["failed_runs"] == len(failed_runs)
         assert eval_dataset["traceable_failed_runs"] == len(failed_runs)
         assert eval_dataset["trace_ids"] == [run["trace_id"] for run in runs]
-        assert eval_dataset["failed_trace_ids"] == [
-            run["trace_id"] for run in failed_runs
-        ]
+        assert eval_dataset["failed_trace_ids"] == [run["trace_id"] for run in failed_runs]
         assert eval_dataset["idempotency_keys"] == idempotency_keys
         assert eval_dataset["approval_ids"] == approval_ids
         assert eval_dataset["pending_approval_ids"] == pending_approval_ids
@@ -6153,11 +6042,7 @@ class TestRuntimeControlPaths:
             run for run in approval_runs if run["capability_session_status"] == "pending"
         ]
         status_counts = {
-            status: sum(
-                1
-                for run in approval_runs
-                if run["capability_session_status"] == status
-            )
+            status: sum(1 for run in approval_runs if run["capability_session_status"] == status)
             for status in {run["capability_session_status"] for run in approval_runs}
         }
 
@@ -6169,14 +6054,9 @@ class TestRuntimeControlPaths:
         )
         assert eval_dataset["approval_status_counts"] == status_counts
         assert set(eval_dataset["approval_capability_names"]).issubset(capabilities)
-        assert all(
-            capabilities[run["capability_name"]]["approval"]
-            for run in approval_runs
-        )
+        assert all(capabilities[run["capability_name"]]["approval"] for run in approval_runs)
 
-    def test_release_configs_bind_eval_session_summaries_to_runs(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_eval_session_summaries_to_runs(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
@@ -6189,27 +6069,19 @@ class TestRuntimeControlPaths:
             summary = session["summary"]
 
             assert summary["total_runs"] == session["total_runs"] == len(runs)
-            assert summary["success_runs"] == sum(
-                1 for run in runs if run["status"] == "success"
-            )
+            assert summary["success_runs"] == sum(1 for run in runs if run["status"] == "success")
             assert summary["failed_runs"] == session["failed_runs"] == len(failed_runs)
-            assert summary["traceable_failed_runs"] == session[
-                "traceable_failed_runs"
-            ] == len(failed_runs)
-            assert summary["trace_ids"] == session["trace_ids"] == [
-                run["trace_id"] for run in runs
-            ]
-            assert summary["latest_trace_id"] == session["latest_trace_id"] == runs[-1][
-                "trace_id"
-            ]
+            assert (
+                summary["traceable_failed_runs"]
+                == session["traceable_failed_runs"]
+                == len(failed_runs)
+            )
+            assert summary["trace_ids"] == session["trace_ids"] == [run["trace_id"] for run in runs]
+            assert summary["latest_trace_id"] == session["latest_trace_id"] == runs[-1]["trace_id"]
             assert summary["latest_status"] == runs[-1]["status"]
-            assert summary["approval_status_counts"] == session[
-                "approval_status_counts"
-            ]
+            assert summary["approval_status_counts"] == session["approval_status_counts"]
 
-    def test_release_configs_bind_eval_session_approvals_to_runs(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_eval_session_approvals_to_runs(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
@@ -6219,50 +6091,49 @@ class TestRuntimeControlPaths:
             runs = session["runs"]
             approval_runs = [run for run in runs if run["approval_id"]]
             pending_approval_runs = [
-                run
-                for run in approval_runs
-                if run["capability_session_status"] == "pending"
+                run for run in approval_runs if run["capability_session_status"] == "pending"
             ]
             status_counts = {
                 status: sum(
-                    1
-                    for run in approval_runs
-                    if run["capability_session_status"] == status
+                    1 for run in approval_runs if run["capability_session_status"] == status
                 )
                 for status in {run["capability_session_status"] for run in approval_runs}
             }
 
-            assert session["summary"]["approval_wait_runs"] == len(
-                pending_approval_runs
+            assert session["summary"]["approval_wait_runs"] == len(pending_approval_runs)
+            assert (
+                session["summary"]["approval_ids"]
+                == session["approval_ids"]
+                == [run["approval_id"] for run in approval_runs]
             )
-            assert session["summary"]["approval_ids"] == session[
-                "approval_ids"
-            ] == [run["approval_id"] for run in approval_runs]
-            assert session["summary"]["approval_capability_names"] == session[
-                "approval_capability_names"
-            ] == sorted({run["capability_name"] for run in approval_runs})
-            assert session["summary"]["pending_approval_ids"] == session[
-                "pending_approval_ids"
-            ] == [run["approval_id"] for run in pending_approval_runs]
-            assert session["summary"]["pending_approval_capability_names"] == session[
-                "pending_approval_capability_names"
-            ] == sorted({run["capability_name"] for run in pending_approval_runs})
-            assert session["summary"]["approval_status_counts"] == session[
-                "approval_status_counts"
-            ] == status_counts
-            assert all(
-                capabilities[run["capability_name"]]["approval"]
-                for run in approval_runs
+            assert (
+                session["summary"]["approval_capability_names"]
+                == session["approval_capability_names"]
+                == sorted({run["capability_name"] for run in approval_runs})
             )
+            assert (
+                session["summary"]["pending_approval_ids"]
+                == session["pending_approval_ids"]
+                == [run["approval_id"] for run in pending_approval_runs]
+            )
+            assert (
+                session["summary"]["pending_approval_capability_names"]
+                == session["pending_approval_capability_names"]
+                == sorted({run["capability_name"] for run in pending_approval_runs})
+            )
+            assert (
+                session["summary"]["approval_status_counts"]
+                == session["approval_status_counts"]
+                == status_counts
+            )
+            assert all(capabilities[run["capability_name"]]["approval"] for run in approval_runs)
 
     def test_release_configs_bind_eval_capability_sessions_to_runtime_controls(
         self, config_dir: Path
     ) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
 
         capability_sessions = runtime_controls["capability_sessions"]
@@ -6289,9 +6160,7 @@ class TestRuntimeControlPaths:
                 assert run["status"] == "failed"
                 assert not run["approval_id"]
 
-    def test_release_configs_bind_eval_session_failure_ids_to_runs(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_eval_session_failure_ids_to_runs(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
@@ -6302,23 +6171,23 @@ class TestRuntimeControlPaths:
         for session in eval_dataset["sessions"]:
             runs = session["runs"]
             failed_runs = [run for run in runs if run["status"] == "failed"]
-            idempotency_keys = [
-                run["idempotency_key"] for run in runs if run["idempotency_key"]
-            ]
+            idempotency_keys = [run["idempotency_key"] for run in runs if run["idempotency_key"]]
             failed_trace_ids = [run["trace_id"] for run in failed_runs]
 
-            assert session["summary"]["failed_trace_ids"] == session[
-                "failed_trace_ids"
-            ] == failed_trace_ids
-            assert session["summary"]["idempotency_keys"] == session[
-                "idempotency_keys"
-            ] == idempotency_keys
+            assert (
+                session["summary"]["failed_trace_ids"]
+                == session["failed_trace_ids"]
+                == failed_trace_ids
+            )
+            assert (
+                session["summary"]["idempotency_keys"]
+                == session["idempotency_keys"]
+                == idempotency_keys
+            )
             for run in runs:
                 if run["idempotency_key"]:
                     assert run["idempotency_key"] == run["trace_id"]
-                    assert capabilities[run["capability_name"]][
-                        "idempotency_key_required"
-                    ] is True
+                    assert capabilities[run["capability_name"]]["idempotency_key_required"] is True
 
     def test_release_configs_bind_eval_identity_fields_to_agent_config(
         self, config_dir: Path
@@ -6350,9 +6219,7 @@ class TestRuntimeControlPaths:
         eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
 
         trace_ids = [
-            run["trace_id"]
-            for session in eval_dataset["sessions"]
-            for run in session["runs"]
+            run["trace_id"] for session in eval_dataset["sessions"] for run in session["runs"]
         ]
 
         assert "policy_traces_present" in controls["require"]
@@ -6370,14 +6237,10 @@ class TestRuntimeControlPaths:
     ) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
 
-        session_ids = [
-            session["session"]["session_id"] for session in eval_dataset["sessions"]
-        ]
+        session_ids = [session["session"]["session_id"] for session in eval_dataset["sessions"]]
 
         assert runtime_controls["capability_sessions"]["track_session_ids"] is True
         assert eval_dataset["session_ids"] == session_ids
@@ -6390,9 +6253,7 @@ class TestRuntimeControlPaths:
 
         eval_dataset = json.loads(Path("artifacts/eval-dataset.json").read_text())
 
-        checked_in_scenarios = [
-            session["eval"]["scenario"] for session in eval_dataset["sessions"]
-        ]
+        checked_in_scenarios = [session["eval"]["scenario"] for session in eval_dataset["sessions"]]
 
         assert checked_in_scenarios == list(EVAL_DATASET_LABELS)
         for session in eval_dataset["sessions"]:
@@ -6406,33 +6267,22 @@ class TestRuntimeControlPaths:
 
         for session in eval_dataset["sessions"]:
             scenario = session["eval"]["scenario"]
-            session_id, inputs, trace_prefix, simulated_failure = EVAL_DATASET_SCENARIOS[
-                scenario
-            ]
+            session_id, inputs, trace_prefix, simulated_failure = EVAL_DATASET_SCENARIOS[scenario]
             expected_input_hashes = [
-                hashlib.sha256(user_input.encode("utf-8")).hexdigest()
-                for user_input in inputs
+                hashlib.sha256(user_input.encode("utf-8")).hexdigest() for user_input in inputs
             ]
 
             assert session["session"]["session_id"] == session_id
-            assert [run["user_input"] for run in session["runs"]] == [
-                "[REDACTED]" for _ in inputs
-            ]
-            assert [run["input_sha256"] for run in session["runs"]] == (
-                expected_input_hashes
-            )
+            assert [run["user_input"] for run in session["runs"]] == ["[REDACTED]" for _ in inputs]
+            assert [run["input_sha256"] for run in session["runs"]] == (expected_input_hashes)
             assert [run["trace_id"] for run in session["runs"]] == [
-                f"{trace_prefix}-{index:03d}"
-                for index in range(1, len(session["runs"]) + 1)
+                f"{trace_prefix}-{index:03d}" for index in range(1, len(session["runs"]) + 1)
             ]
             assert [run["failure_reason"] for run in session["runs"]] == [
-                simulated_failure or ""
-                for _ in session["runs"]
+                simulated_failure or "" for _ in session["runs"]
             ]
 
-    def test_release_configs_bind_eval_artifact_to_cli_defaults(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_eval_artifact_to_cli_defaults(self, config_dir: Path) -> None:
         from agent_runtime_ref.__main__ import build_parser
         from agent_runtime_ref.config import load_yaml_file
 
@@ -6476,15 +6326,9 @@ class TestRuntimeControlPaths:
             expected_outcomes = session["eval"]["expected_outcomes"]
             output_texts = [run["output_text"] for run in session["runs"]]
 
-            assert expected_outcomes["latest_status"] == session["summary"][
-                "latest_status"
-            ]
-            for required_substring in expected_outcomes.get(
-                "required_output_substrings", []
-            ):
-                assert any(
-                    required_substring in output_text for output_text in output_texts
-                )
+            assert expected_outcomes["latest_status"] == session["summary"]["latest_status"]
+            for required_substring in expected_outcomes.get("required_output_substrings", []):
+                assert any(required_substring in output_text for output_text in output_texts)
 
     def test_release_configs_bind_eval_expected_counts_to_session_summaries(
         self, config_dir: Path
@@ -6503,9 +6347,9 @@ class TestRuntimeControlPaths:
                 if count_field in expected_outcomes:
                     assert expected_outcomes[count_field] == summary[count_field]
             if "approval_status_counts" in expected_outcomes:
-                assert expected_outcomes["approval_status_counts"] == summary[
-                    "approval_status_counts"
-                ]
+                assert (
+                    expected_outcomes["approval_status_counts"] == summary["approval_status_counts"]
+                )
             if "required_run_count" in expected_outcomes:
                 assert expected_outcomes["required_run_count"] == len(session["runs"])
                 assert expected_outcomes["required_run_count"] == summary["total_runs"]
@@ -6569,9 +6413,7 @@ class TestRuntimeControlPaths:
         assert eval_dataset["duplicate_ticket_scenarios"] == [
             reconciliation_session["eval"]["scenario"]
         ]
-        assert failed_session["eval"]["expected_outcomes"]["failed_runs"] == len(
-            failed_sessions
-        )
+        assert failed_session["eval"]["expected_outcomes"]["failed_runs"] == len(failed_sessions)
 
     def test_release_configs_bind_session_reinit_gates_to_runtime_controls(
         self, config_dir: Path
@@ -6579,9 +6421,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         capability_sessions = runtime_controls["capability_sessions"]
 
         assert "session_expiry_behavior_checked" in change["required_signals"]
@@ -6591,9 +6431,7 @@ class TestRuntimeControlPaths:
         assert "reinit_policy_reviewed" in change["required_signals"]
         assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
 
-    def test_release_configs_bind_rollback_gate_to_rollout_check(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_rollback_gate_to_rollout_check(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
@@ -6617,9 +6455,7 @@ class TestRuntimeControlPaths:
         assert "design_review_passed" in change["required_signals"]
         assert "policy_diff_reviewed" in change["required_signals"]
 
-    def test_release_configs_bind_capability_owner_gates_to_catalog(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_capability_owner_gates_to_catalog(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
@@ -6644,9 +6480,9 @@ class TestRuntimeControlPaths:
         assert "idempotency_keys_present" in controls["require"]
         assert capabilities["create_ticket"]["mode"] == "write"
         assert capabilities["create_ticket"]["idempotency_key_required"] is True
-        assert bundle["review_evidence"]["duplicate_ticket_guard"][
-            "idempotency_key_required"
-        ] is True
+        assert (
+            bundle["review_evidence"]["duplicate_ticket_guard"]["idempotency_key_required"] is True
+        )
 
     def test_release_configs_bind_memory_provenance_control_to_memory_contract(
         self, config_dir: Path
@@ -6675,17 +6511,13 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
 
         approval_delegation = approvals["delegated_authorization"]
         runtime_delegation = runtime_controls["delegated_authorization"]
 
-        assert {"approvals.yaml", "runtime-controls.yaml"}.issubset(
-            bundle["artifacts"]
-        )
+        assert {"approvals.yaml", "runtime-controls.yaml"}.issubset(bundle["artifacts"])
         assert approval_delegation["require_principal_binding"] is True
         assert (
             runtime_delegation["delegated_principal_policy"]
@@ -6693,15 +6525,12 @@ class TestRuntimeControlPaths:
         )
         assert approval_delegation["require_scope_visibility"] is True
         assert (
-            approval_delegation["on_scope_revoked"]
-            == runtime_delegation["on_authorization_revoke"]
+            approval_delegation["on_scope_revoked"] == runtime_delegation["on_authorization_revoke"]
         )
         assert approval_delegation["subagent_inheritance"] == "explicit_only"
         assert runtime_delegation["subagent_inheritance"] == "denied_by_default"
 
-    def test_release_configs_share_direct_tool_access_blocker(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_share_direct_tool_access_blocker(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
@@ -6724,9 +6553,7 @@ class TestRuntimeControlPaths:
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         change = load_yaml_file(config_dir / "change.yaml")["change"]
         controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         assert "unmanaged_runtime_present" in controls["block_if"]
         assert "runtime_control_schema" in change["affected_surfaces"]
@@ -6809,17 +6636,11 @@ class TestRuntimeControlPaths:
         change = load_yaml_file(config_dir / "change.yaml")["change"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         assert "oncall_owner" in rollout["require"]
-        assert change["emergency_freeze_owner"] == runtime_controls[
-            "emergency_freeze_owner"
-        ]
-        assert retirement["emergency_freeze_owner"] == runtime_controls[
-            "emergency_freeze_owner"
-        ]
+        assert change["emergency_freeze_owner"] == runtime_controls["emergency_freeze_owner"]
+        assert retirement["emergency_freeze_owner"] == runtime_controls["emergency_freeze_owner"]
         assert runtime_controls["emergency_freeze_owner"] == "platform-runtime"
 
     def test_release_configs_bind_registry_review_to_capability_inventory(
@@ -6842,9 +6663,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         assert "expire_paused_runs" in retirement["required_steps"]
         assert runtime_controls["pause_allowed"] is True
@@ -6879,25 +6698,19 @@ class TestRuntimeControlPaths:
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
 
         high_risk_capabilities = [
-            name
-            for name, capability in capabilities.items()
-            if capability["risk_tier"] == "high"
+            name for name, capability in capabilities.items() if capability["risk_tier"] == "high"
         ]
 
         assert "disable_risky_capabilities" in retirement["required_steps"]
         assert change["risk_level"] == "high"
         assert high_risk_capabilities == ["create_ticket"]
 
-    def test_retirement_binds_egress_revocation_to_network_contract(
-        self, config_dir: Path
-    ) -> None:
+    def test_retirement_binds_egress_revocation_to_network_contract(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         write_capability = capabilities["create_ticket"]
 
@@ -6912,9 +6725,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         capability_sessions = runtime_controls["capability_sessions"]
 
         assert "freeze_reinitialization" in retirement["required_steps"]
@@ -6930,31 +6741,21 @@ class TestRuntimeControlPaths:
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
 
         assert "set_retired_status" in retirement["required_steps"]
-        assert {"deprecated_runtime", "replacement_ready"}.issubset(
-            retirement["triggers"]
-        )
+        assert {"deprecated_runtime", "replacement_ready"}.issubset(retirement["triggers"])
         assert retirement["replacement_mode"] == "staged_replacement"
 
-    def test_retirement_binds_audit_archive_step_to_archive_targets(
-        self, config_dir: Path
-    ) -> None:
+    def test_retirement_binds_audit_archive_step_to_archive_targets(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
         archive_targets = retirement["archive_targets"]
 
         assert "archive_audit_state" in retirement["required_steps"]
-        assert {"telemetry_jsonl", "session_exports", "approval_history"}.issubset(
-            archive_targets
-        )
-        assert {"paused_run_state", "capability_session_state"}.issubset(
-            archive_targets
-        )
+        assert {"telemetry_jsonl", "session_exports", "approval_history"}.issubset(archive_targets)
+        assert {"paused_run_state", "capability_session_state"}.issubset(archive_targets)
         assert "runtime_control_bundle" in archive_targets
 
-    def test_retirement_binds_rollout_freeze_to_staged_canary_plan(
-        self, config_dir: Path
-    ) -> None:
+    def test_retirement_binds_rollout_freeze_to_staged_canary_plan(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
@@ -6993,9 +6794,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_profile = runtime_controls["sandbox_profile"]
         sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
@@ -7020,9 +6819,7 @@ class TestRuntimeControlPaths:
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         change = load_yaml_file(config_dir / "change.yaml")["change"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         capability_sessions = runtime_controls["capability_sessions"]
 
         assert "capability_session_contract" in change["affected_surfaces"]
@@ -7041,9 +6838,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         capability_sessions = runtime_controls["capability_sessions"]
 
         assert "session_expiry_behavior_checked" in change["required_signals"]
@@ -7059,19 +6854,14 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         capability_sessions = runtime_controls["capability_sessions"]
         delegated_authorization = runtime_controls["delegated_authorization"]
 
         assert "reinit_policy_reviewed" in change["required_signals"]
         assert capability_sessions["reinit_policy"] == "resume_existing_session_if_valid"
         assert capability_sessions["reinit_requires_approval"] is False
-        assert (
-            delegated_authorization["token_reuse_policy"]
-            == "reuse_within_valid_paused_run_only"
-        )
+        assert delegated_authorization["token_reuse_policy"] == "reuse_within_valid_paused_run_only"
         assert delegated_authorization["on_authorization_revoke"] == "cancel_or_reapprove"
 
     def test_release_configs_bind_unsigned_bundle_to_review_evidence(
@@ -7090,18 +6880,16 @@ class TestRuntimeControlPaths:
             "sandbox_profile_reviewed",
             "duplicate_ticket_guard",
         }
-        assert review_evidence["sandbox_profile_reviewed"]["trace_event"] in change[
-            "required_signals"
-        ]
+        assert (
+            review_evidence["sandbox_profile_reviewed"]["trace_event"] in change["required_signals"]
+        )
         assert (
             review_evidence["duplicate_ticket_guard"]["eval_ref"]
             == "eval:duplicate_ticket_eval_passed"
         )
         assert "duplicate_ticket_eval_passed" in change["required_signals"]
 
-    def test_release_configs_bind_write_approval_to_manager_policy(
-        self, config_dir: Path
-    ) -> None:
+    def test_release_configs_bind_write_approval_to_manager_policy(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
@@ -7185,9 +6973,7 @@ class TestRuntimeControlPaths:
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
         policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         run_precheck = policy["run_precheck"]
         approval_delegation = approvals["delegated_authorization"]
@@ -7297,9 +7083,7 @@ class TestRuntimeControlPaths:
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         capability_timeouts = {
             capability["timeout_seconds"] for capability in capabilities.values()
@@ -7319,9 +7103,7 @@ class TestRuntimeControlPaths:
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_state = runtime_controls["sandbox_profile"]["state"]
         archive_targets = retirement["archive_targets"]
@@ -7330,9 +7112,7 @@ class TestRuntimeControlPaths:
         assert sandbox_state["persist_session_state"] is True
         assert sandbox_state["snapshot"] == "required_on_completion"
         assert sandbox_review["snapshot_policy"] == sandbox_state["snapshot"]
-        assert {"paused_run_state", "capability_session_state"}.issubset(
-            archive_targets
-        )
+        assert {"paused_run_state", "capability_session_state"}.issubset(archive_targets)
         assert "archive_audit_state" in retirement["required_steps"]
 
     def test_release_configs_bind_workspace_review_to_sandbox_entries(
@@ -7341,9 +7121,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         workspace_entries = runtime_controls["sandbox_profile"]["workspace"]["entries"]
         sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
@@ -7358,9 +7136,7 @@ class TestRuntimeControlPaths:
         ]
         assert {entry["path"] for entry in workspace_entries} == {"repo", "task.md"}
         assert all(
-            entry["read_only"]
-            for entry in workspace_entries
-            if entry["source"] == "inline_file"
+            entry["read_only"] for entry in workspace_entries if entry["source"] == "inline_file"
         )
 
     def test_release_configs_bind_sandbox_memory_access_to_memory_contract(
@@ -7371,9 +7147,7 @@ class TestRuntimeControlPaths:
         bundle = load_yaml_file(config_dir / "artifacts.yaml")["bundle"]
         controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
         policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_capabilities = runtime_controls["sandbox_profile"]["capabilities"]
 
@@ -7396,9 +7170,7 @@ class TestRuntimeControlPaths:
         controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
         policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
         rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_capabilities = runtime_controls["sandbox_profile"]["capabilities"]
         sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
@@ -7419,9 +7191,7 @@ class TestRuntimeControlPaths:
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
         policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
         rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_permissions = runtime_controls["sandbox_profile"]["permissions"]
         sandbox_review = bundle["review_evidence"]["sandbox_profile_reviewed"]
@@ -7445,14 +7215,10 @@ class TestRuntimeControlPaths:
 
         agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         run_as = runtime_controls["sandbox_profile"]["permissions"]["run_as"]
-        tool_principals = {
-            capability["tool_principal"] for capability in capabilities.values()
-        }
+        tool_principals = {capability["tool_principal"] for capability in capabilities.values()}
 
         assert run_as == "sandbox_user"
         assert run_as != agent["runtime_principal"]
@@ -7468,9 +7234,7 @@ class TestRuntimeControlPaths:
         agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
         controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_capabilities = runtime_controls["sandbox_profile"]["capabilities"]
 
@@ -7486,9 +7250,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         sandbox_profile = runtime_controls["sandbox_profile"]
         workspace_entries = sandbox_profile["workspace"]["entries"]
@@ -7496,13 +7258,9 @@ class TestRuntimeControlPaths:
 
         assert sandbox_profile["capabilities"]["filesystem"] is True
         assert "sandbox_profile_contract" in change["affected_surfaces"]
-        assert writable_entries == [
-            {"path": "repo", "source": "local_dir", "read_only": False}
-        ]
+        assert writable_entries == [{"path": "repo", "source": "local_dir", "read_only": False}]
         assert all(
-            entry["read_only"]
-            for entry in workspace_entries
-            if entry["source"] != "local_dir"
+            entry["read_only"] for entry in workspace_entries if entry["source"] != "local_dir"
         )
         assert {entry["source"] for entry in workspace_entries} == {
             "inline_file",
@@ -7515,9 +7273,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         capability_sessions = runtime_controls["capability_sessions"]
         sandbox_state = runtime_controls["sandbox_profile"]["state"]
@@ -7538,9 +7294,7 @@ class TestRuntimeControlPaths:
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
         capabilities = load_yaml_file(config_dir / "capabilities.yaml")["capabilities"]
         policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         delegated_review = approvals["delegated_authorization"]
         write_capability = capabilities["create_ticket"]
@@ -7565,9 +7319,7 @@ class TestRuntimeControlPaths:
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
         policy = load_yaml_file(config_dir / "policy.yaml")["policy"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         delegated_review = approvals["delegated_authorization"]
         runtime_delegation = runtime_controls["delegated_authorization"]
@@ -7580,10 +7332,7 @@ class TestRuntimeControlPaths:
             runtime_delegation["delegated_principal_policy"]
             == "explicit_principal_binding_required"
         )
-        assert (
-            runtime_delegation["token_reuse_policy"]
-            == "reuse_within_valid_paused_run_only"
-        )
+        assert runtime_delegation["token_reuse_policy"] == "reuse_within_valid_paused_run_only"
 
     def test_release_configs_bind_delegated_revocation_to_runtime_shutdown(
         self, config_dir: Path
@@ -7592,18 +7341,13 @@ class TestRuntimeControlPaths:
 
         approvals = load_yaml_file(config_dir / "approvals.yaml")["approvals"]
         retirement = load_yaml_file(config_dir / "retirement.yaml")["retirement"]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
 
         delegated_review = approvals["delegated_authorization"]
         runtime_delegation = runtime_controls["delegated_authorization"]
 
         assert delegated_review["on_scope_revoked"] == "cancel_or_reapprove"
-        assert (
-            runtime_delegation["on_authorization_revoke"]
-            == delegated_review["on_scope_revoked"]
-        )
+        assert runtime_delegation["on_authorization_revoke"] == delegated_review["on_scope_revoked"]
         assert runtime_controls["on_expiry"] == "cancel_run"
         assert {"expire_paused_runs", "freeze_reinitialization"}.issubset(
             retirement["required_steps"]
@@ -7658,7 +7402,8 @@ class TestRuntimeControlPaths:
         assert tool_execution.payload == {
             "session_id": session_id,
             "capability": "create_ticket",
-            "status": "approval_required",
+            "outcome": "approval_required",
+            "side_effect_status": "not_executed",
             "tool_principal": "pending_review",
             "authorization_mode": "platform_owned",
             "delegated_principal_id": "",
@@ -7762,9 +7507,7 @@ class TestRuntimeControlPaths:
                     requested_by=requested_by,
                     reviewer=reviewer,
                     reason=reason,
-                    session_id=(
-                        " " if field == "session_id" else "session-approval-required-001"
-                    ),
+                    session_id=(" " if field == "session_id" else "session-approval-required-001"),
                 )
             assert queue.all() == ()
 
@@ -8075,7 +7818,12 @@ class TestRuntimeControlPaths:
         }
         for field, payload in required_fields.items():
             request = {"user_input": "hello", "output_text": "done", **payload}
-            with pytest.raises(ValueError, match=f"Session field is required: {field}"):
+            expected = (
+                "Run status must not be empty"
+                if field == "status"
+                else f"Session field is required: {field}"
+            )
+            with pytest.raises(ValueError, match=expected):
                 store.register_run(**request)
 
         record = store.register_run(
@@ -8199,7 +7947,7 @@ class TestRuntimeControlPaths:
                 output_text="done",
                 failure_reason=cast(str, 7),
             )
-        with pytest.raises(ValueError, match="Session status is not supported: maybe"):
+        with pytest.raises(ValueError, match="Run status is not supported: maybe"):
             RunRecord(
                 trace_id="trace-direct-bad-status-001",
                 session_id="session-direct-bad-status-001",
@@ -8242,7 +7990,12 @@ class TestRuntimeControlPaths:
                 "output_text": "done",
             }
             request.update(override)
-            with pytest.raises(TypeError, match=f"Session field must be a string: {field}"):
+            expected = (
+                "Run status must be a string"
+                if field == "status"
+                else f"Session field must be a string: {field}"
+            )
+            with pytest.raises(TypeError, match=expected):
                 store.register_run(**cast(Any, request))
             assert store.get_session("session-type-001") is None
 
@@ -8259,7 +8012,7 @@ class TestRuntimeControlPaths:
         from agent_runtime_ref.session import SessionStore
 
         store = SessionStore()
-        with pytest.raises(ValueError, match="Session status is not supported: sucess"):
+        with pytest.raises(ValueError, match="Run status is not supported: sucess"):
             store.register_run(
                 session_id="session-bad-status-001",
                 tenant_id="tenant-acme",
@@ -8322,8 +8075,7 @@ class TestRuntimeControlPaths:
         with pytest.raises(
             ValueError,
             match=(
-                "Session principal_id does not match existing session: "
-                "session-principal-stable-001"
+                "Session principal_id does not match existing session: session-principal-stable-001"
             ),
         ):
             store.register_run(
@@ -8609,9 +8361,7 @@ class TestRuntimeControlPaths:
                     ("session-eval-malformed-001",),
                     output_path=output_path,
                     dataset_name="eval-seed",
-                    eval_specs={
-                        "session-eval-malformed-001": cast(dict[str, object], eval_spec)
-                    },
+                    eval_specs={"session-eval-malformed-001": cast(dict[str, object], eval_spec)},
                 )
             assert not output_path.exists()
 
@@ -8716,6 +8466,8 @@ class TestRuntimeControlPaths:
             "ready",
             "required_signals",
             "approval_roles",
+            "required_approval_roles",
+            "missing_approval_roles",
             "missing_signals",
             "failed_run_signals",
             "missing_failed_run_signals",
@@ -8728,6 +8480,11 @@ class TestRuntimeControlPaths:
         assert payload["change_id"] == "chg-2026-04-07-support-runtime"
         assert payload["ready"] is True
         assert payload["missing_signals"] == []
+        assert payload["required_approval_roles"] == [
+            "platform-owner",
+            "security-reviewer",
+        ]
+        assert payload["missing_approval_roles"] == []
         assert payload["failed_run_signals"] == ["failed_run_drill_checked"]
         assert payload["missing_failed_run_signals"] == []
         assert payload["support_duplicate_signals"] == ["duplicate_ticket_eval_passed"]
@@ -8749,9 +8506,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
             MemoryStore.from_dict({"memory": {"seed_records": "x"}})
         with pytest.raises(TypeError, match="Memory record #1 must be a mapping"):
             MemoryStore.from_dict({"memory": {"seed_records": ["x"]}})
-        with pytest.raises(
-            TypeError, match="Memory record #1 field must be a string: tenant_id"
-        ):
+        with pytest.raises(TypeError, match="Memory record #1 field must be a string: tenant_id"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8767,9 +8522,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
-        with pytest.raises(
-            ValueError, match="Memory record #1 field is required: tenant_id"
-        ):
+        with pytest.raises(ValueError, match="Memory record #1 field is required: tenant_id"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8784,9 +8537,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
-        with pytest.raises(
-            ValueError, match="Memory record #1 field is required: content"
-        ):
+        with pytest.raises(ValueError, match="Memory record #1 field is required: content"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8802,9 +8553,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
-        with pytest.raises(
-            TypeError, match="Memory record #1 field must be a string: memory_id"
-        ):
+        with pytest.raises(TypeError, match="Memory record #1 field must be a string: memory_id"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8821,9 +8570,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
-        with pytest.raises(
-            ValueError, match="Memory record #1 field is required: memory_id"
-        ):
+        with pytest.raises(ValueError, match="Memory record #1 field is required: memory_id"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8840,9 +8587,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 }
             )
-        with pytest.raises(
-            TypeError, match="Memory record #1 field must be a string: provenance"
-        ):
+        with pytest.raises(TypeError, match="Memory record #1 field must be a string: provenance"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8878,9 +8623,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         ).all()[0]
         assert record.memory_id == "mem-custom"
         for confidence in ("0.9", True):
-            with pytest.raises(
-                TypeError, match="Memory record #1 confidence must be a number"
-            ):
+            with pytest.raises(TypeError, match="Memory record #1 confidence must be a number"):
                 MemoryStore.from_dict(
                     {
                         "memory": {
@@ -8918,9 +8661,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                     }
                 )
         for revision in ("2", True):
-            with pytest.raises(
-                TypeError, match="Memory record #1 revision must be an integer"
-            ):
+            with pytest.raises(TypeError, match="Memory record #1 revision must be an integer"):
                 MemoryStore.from_dict(
                     {
                         "memory": {
@@ -8937,9 +8678,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                         }
                     }
                 )
-        with pytest.raises(
-            ValueError, match="Memory record #1 revision must be positive"
-        ):
+        with pytest.raises(ValueError, match="Memory record #1 revision must be positive"):
             MemoryStore.from_dict(
                 {
                     "memory": {
@@ -8971,9 +8710,9 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert direct_record.memory_id == "mem-direct"
         assert direct_record.tenant_id == "tenant-acme"
         assert direct_record.provenance == "user_confirmed"
-        assert MemoryStore(records=[direct_record]).retrieve(
-            "concise", " tenant-acme "
-        ) == [direct_record]
+        assert MemoryStore(records=[direct_record]).retrieve("concise", " tenant-acme ") == [
+            direct_record
+        ]
         assert MemoryStore(records=[]).all() == ()
         with pytest.raises(TypeError, match="Memory store records must be MemoryRecord"):
             MemoryStore(records=cast(list[MemoryRecord], [object()]))
@@ -9381,24 +9120,16 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
                 }
             )
         with pytest.raises(TypeError, match="'bundle.signed' must be a boolean"):
-            ArtifactBundle.from_dict(
-                {"bundle": {**valid_bundle, "signed": "false"}}
-            )
+            ArtifactBundle.from_dict({"bundle": {**valid_bundle, "signed": "false"}})
         with pytest.raises(ValueError, match="bundle.session_control_owner is required"):
-            ArtifactBundle.from_dict(
-                {"bundle": {**valid_bundle, "session_control_owner": " "}}
-            )
+            ArtifactBundle.from_dict({"bundle": {**valid_bundle, "session_control_owner": " "}})
         bundle = ArtifactBundle.from_dict({"bundle": {**valid_bundle, "signed": True}})
         assert bundle.provenance_required is True
         assert bundle.signed is True
         with pytest.raises(TypeError, match="artifacts entries must be strings"):
-            ArtifactBundle.from_dict(
-                {"bundle": {**valid_bundle, "artifacts": [7]}}
-            )
+            ArtifactBundle.from_dict({"bundle": {**valid_bundle, "artifacts": [7]}})
         with pytest.raises(ValueError, match="artifacts entries must not be empty"):
-            ArtifactBundle.from_dict(
-                {"bundle": {**valid_bundle, "artifacts": [""]}}
-            )
+            ArtifactBundle.from_dict({"bundle": {**valid_bundle, "artifacts": [""]}})
         valid_retirement = {
             "system_id": "legacy",
             "replacement_mode": "none",
@@ -9684,9 +9415,7 @@ class TestMeaningfulMemoryAndLifecycleCoverage:
         assert not assessment.ready
         assert assessment.missing_signals == ("failed_run_drill_checked",)
 
-    def test_change_gate_can_block_on_missing_duplicate_ticket_eval(
-        self, config_dir: Path
-    ) -> None:
+    def test_change_gate_can_block_on_missing_duplicate_ticket_eval(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_change_record
 
         change = load_change_record(config_dir / "change.yaml")
@@ -9819,9 +9548,7 @@ class TestLowCoverageModuleBranches:
         payload = cast(dict[str, str], {"count": 1})
         bad_payload_key = cast(dict[str, str], {1: "count"})
         with pytest.raises(TypeError, match="Telemetry event payload must be a mapping"):
-            StructuredEvent(
-                event_type="run_start", trace_id="trace-direct", payload=bad_payload
-            )
+            StructuredEvent(event_type="run_start", trace_id="trace-direct", payload=bad_payload)
         with pytest.raises(TypeError, match="Telemetry event redacted_fields must be a tuple"):
             StructuredEvent(
                 event_type="run_start",
@@ -9926,9 +9653,7 @@ class TestLowCoverageModuleBranches:
                 {"event_type": "x", "trace_id": "t", "payload": {}, "redacted_fields": [1]}
             )
         with pytest.raises(ValueError, match="Telemetry event payload key must not be empty"):
-            StructuredEvent.from_dict(
-                {"event_type": "x", "trace_id": "t", "payload": {" ": "1"}}
-            )
+            StructuredEvent.from_dict({"event_type": "x", "trace_id": "t", "payload": {" ": "1"}})
         normalized = StructuredEvent.from_dict(
             {"event_type": "x", "trace_id": "t", "payload": {" count ": "1"}}
         )
@@ -10165,9 +9890,7 @@ class TestLowCoverageModuleBranches:
                 ApprovalPolicy.from_dict(
                     {"approvals": {"escalation_sla_minutes": escalation_sla_minutes}}
                 )
-        with pytest.raises(
-            ValueError, match="approvals.escalation_sla_minutes must be positive"
-        ):
+        with pytest.raises(ValueError, match="approvals.escalation_sla_minutes must be positive"):
             ApprovalPolicy.from_dict({"approvals": {"escalation_sla_minutes": 0}})
         with pytest.raises(
             TypeError,
@@ -10214,10 +9937,13 @@ class TestLowCoverageModuleBranches:
                     {"approvals": {"delegated_authorization": delegated_authorization}}
                 )
 
-        assert ApprovalPolicy(
-            default_reviewer=" manager ",
-            escalation_sla_minutes=30,
-        ).default_reviewer == "manager"
+        assert (
+            ApprovalPolicy(
+                default_reviewer=" manager ",
+                escalation_sla_minutes=30,
+            ).default_reviewer
+            == "manager"
+        )
         policy = ApprovalPolicy(
             default_reviewer="manager",
             escalation_sla_minutes=30,
@@ -10256,9 +9982,7 @@ class TestLowCoverageModuleBranches:
                 delegated_authorization=cast(DelegatedAuthorizationPolicy, object()),
             )
 
-    def test_approval_policy_loads_delegated_authorization_contract(
-        self, config_dir: Path
-    ) -> None:
+    def test_approval_policy_loads_delegated_authorization_contract(self, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_approval_policy
 
         policy = load_approval_policy(config_dir / "approvals.yaml")
@@ -10371,9 +10095,7 @@ class TestLowCoverageModuleBranches:
                     }
                 }
             )
-        with pytest.raises(
-            ValueError, match="capabilities.search_docs.tool_principal is required"
-        ):
+        with pytest.raises(ValueError, match="capabilities.search_docs.tool_principal is required"):
             CapabilityCatalog.from_dict(
                 {
                     "capabilities": {
@@ -10641,17 +10363,11 @@ class TestLowCoverageModuleBranches:
             ApprovedInventory.from_agent_config({"agent": []})
         with pytest.raises(TypeError, match="'approved_capabilities' must be a list"):
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": "x"}})
-        with pytest.raises(
-            TypeError, match="approved_capabilities entries must be strings"
-        ):
+        with pytest.raises(TypeError, match="approved_capabilities entries must be strings"):
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": [7]}})
-        with pytest.raises(
-            ValueError, match="approved_capabilities entries must not be empty"
-        ):
+        with pytest.raises(ValueError, match="approved_capabilities entries must not be empty"):
             ApprovedInventory.from_agent_config({"agent": {"approved_capabilities": [" "]}})
-        with pytest.raises(
-            ValueError, match="approved_capabilities entries must be unique"
-        ):
+        with pytest.raises(ValueError, match="approved_capabilities entries must be unique"):
             ApprovedInventory.from_agent_config(
                 {"agent": {"approved_capabilities": ["search_docs", " search_docs "]}}
             )
@@ -10987,6 +10703,8 @@ class TestPolicyAndControls:
                 "policy_traces_present": True,
                 "duplicate_ticket_eval_passed": True,
                 "idempotency_keys_present": True,
+                "create_ticket_approval_required": True,
+                "create_ticket_idempotency_key_required": True,
                 "direct_tool_access_present": False,
                 " unmanaged_runtime_present ": False,
             },
@@ -11134,7 +10852,8 @@ class TestDelegatedAuthorizationRuntime:
         assert tool_event.payload == {
             "session_id": "session-authz-001",
             "capability": "create_ticket",
-            "status": "approval_required",
+            "outcome": "approval_required",
+            "side_effect_status": "not_executed",
             "tool_principal": "pending_review",
             "authorization_mode": "user_delegated",
             "delegated_principal_id": "user-1",
@@ -12060,9 +11779,7 @@ class TestCli:
         assert inspect_payload["output_preview"] == "[REDACTED]"
         assert inspect_payload["failure_reason"] == "[REDACTED]"
 
-    def test_cli_export_trace_rejects_unknown_redact_fields(
-        self, tmp_path: Path
-    ) -> None:
+    def test_cli_export_trace_rejects_unknown_redact_fields(self, tmp_path: Path) -> None:
         output_path = tmp_path / "trace-unknown-redaction.jsonl"
 
         from agent_runtime_ref.__main__ import main
@@ -12424,12 +12141,8 @@ class TestCli:
         assert replay_payload["source_approval_capability_names"] == ["create_ticket"]
         assert replay_payload["replay_approval_capability_names"] == ["create_ticket"]
         assert replay_payload["pending_approval_capability_names"] == ["create_ticket"]
-        assert replay_payload["source_pending_approval_capability_names"] == [
-            "create_ticket"
-        ]
-        assert replay_payload["replay_pending_approval_capability_names"] == [
-            "create_ticket"
-        ]
+        assert replay_payload["source_pending_approval_capability_names"] == ["create_ticket"]
+        assert replay_payload["replay_pending_approval_capability_names"] == ["create_ticket"]
         assert replay_payload["approval_status_counts"] == {"pending": 2}
         assert replay_payload["source_approval_status_counts"] == {"pending": 1}
         assert replay_payload["replay_approval_status_counts"] == {"pending": 1}
@@ -12517,16 +12230,12 @@ class TestCli:
         assert replay_payload["replay_failure_reason"] == "tool_timeout"
         assert replay_payload["status"] == "failed"
 
-    def test_cli_check_rollout_reports_missing_signal(
-        self, cli_json, config_dir: Path
-    ) -> None:
+    def test_cli_check_rollout_reports_missing_signal(self, cli_json, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
         support_duplicate_required = [
-            signal
-            for signal in ("duplicate_ticket_eval_passed",)
-            if signal in rollout["require"]
+            signal for signal in ("duplicate_ticket_eval_passed",) if signal in rollout["require"]
         ]
         rollout_mode = {key: str(value) for key, value in rollout["rollout_mode"].items()}
         exit_code, payload = cli_json(
@@ -12579,9 +12288,7 @@ class TestCli:
 
         rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
         support_duplicate_required = [
-            signal
-            for signal in ("duplicate_ticket_eval_passed",)
-            if signal in rollout["require"]
+            signal for signal in ("duplicate_ticket_eval_passed",) if signal in rollout["require"]
         ]
         exit_code, payload = cli_json(
             [
@@ -12598,21 +12305,15 @@ class TestCli:
         assert payload["support_duplicate_required_ready"] is False
         assert payload["blocking_signals"] == []
 
-    def test_cli_check_rollout_reports_blocking_signal(
-        self, cli_json, config_dir: Path
-    ) -> None:
+    def test_cli_check_rollout_reports_blocking_signal(self, cli_json, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         rollout = load_yaml_file(config_dir / "rollout.yaml")["rollout"]
         support_duplicate_required = [
-            signal
-            for signal in ("duplicate_ticket_eval_passed",)
-            if signal in rollout["require"]
+            signal for signal in ("duplicate_ticket_eval_passed",) if signal in rollout["require"]
         ]
         blocking_signal = next(
-            signal
-            for signal in rollout["block_if"]
-            if signal == "unknown_side_effect_path_missing"
+            signal for signal in rollout["block_if"] if signal == "unknown_side_effect_path_missing"
         )
         rollout_mode = {key: str(value) for key, value in rollout["rollout_mode"].items()}
         exit_code, payload = cli_json(
@@ -12674,9 +12375,7 @@ class TestCli:
         with pytest.raises(ValueError, match=expected_message):
             main(["check-rollout", "--signal", raw_signal])
 
-    def test_cli_check_controls_reports_control_failure(
-        self, cli_json, config_dir: Path
-    ) -> None:
+    def test_cli_check_controls_reports_control_failure(self, cli_json, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         controls = load_yaml_file(config_dir / "controls.yaml")["controls"]
@@ -12737,9 +12436,7 @@ class TestCli:
         with pytest.raises(ValueError, match=expected_message):
             main(["check-controls", "--signal", raw_signal])
 
-    def test_cli_inspect_lifecycle_returns_all_artifacts(
-        self, cli_json, config_dir: Path
-    ) -> None:
+    def test_cli_inspect_lifecycle_returns_all_artifacts(self, cli_json, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         change = load_yaml_file(config_dir / "change.yaml")["change"]
@@ -12775,13 +12472,9 @@ class TestCli:
                 "runtime_control_bundle",
             }
         ]
-        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")[
-            "runtime_controls"
-        ]
+        runtime_controls = load_yaml_file(config_dir / "runtime-controls.yaml")["runtime_controls"]
         surfaced_runtime_controls = {
-            key: value
-            for key, value in runtime_controls.items()
-            if key != "sandbox_profile"
+            key: value for key, value in runtime_controls.items() if key != "sandbox_profile"
         }
         sandbox_profile = runtime_controls["sandbox_profile"]
         expected_sandbox_profile = {
@@ -12793,9 +12486,7 @@ class TestCli:
         }
         expected_sandbox_profile_summary = {
             "manifest_version": sandbox_profile["manifest_version"],
-            "workspace_paths": [
-                entry["path"] for entry in sandbox_profile["workspace"]["entries"]
-            ],
+            "workspace_paths": [entry["path"] for entry in sandbox_profile["workspace"]["entries"]],
             "shell": sandbox_profile["capabilities"]["shell"],
             "network": sandbox_profile["permissions"]["network"],
             "secrets": sandbox_profile["permissions"]["secrets"],
@@ -12886,32 +12577,19 @@ class TestCli:
         assert payload["change"]["failed_run_signals"] == expected_failed_run_signals
         assert payload["artifact_bundle"]["bundle_name"] == bundle["bundle_name"]
         assert payload["artifact_bundle"]["version"] == bundle["version"]
-        assert payload["artifact_bundle"]["provenance_required"] == bundle[
-            "provenance_required"
-        ]
+        assert payload["artifact_bundle"]["provenance_required"] == bundle["provenance_required"]
         assert payload["artifact_bundle"]["signed"] == bundle["signed"]
-        assert payload["change"]["session_control_owner"] == change[
-            "session_control_owner"
-        ]
-        assert payload["change"]["emergency_freeze_owner"] == change[
-            "emergency_freeze_owner"
-        ]
+        assert payload["change"]["session_control_owner"] == change["session_control_owner"]
+        assert payload["change"]["emergency_freeze_owner"] == change["emergency_freeze_owner"]
         assert payload["change"]["approval_roles"] == change["approval_roles"]
         assert payload["artifact_bundle"]["artifacts"] == bundle["artifacts"]
-        assert payload["artifact_bundle"]["session_control_owner"] == bundle[
-            "session_control_owner"
-        ]
-        assert payload["artifact_bundle"]["review_evidence_keys"] == list(
-            bundle["review_evidence"]
-        )
-        assert payload["artifact_bundle"]["review_evidence"] == bundle[
-            "review_evidence"
-        ]
-        duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
         assert (
-            payload["artifact_bundle"]["duplicate_ticket_guard_evidence"]
-            == duplicate_guard
+            payload["artifact_bundle"]["session_control_owner"] == bundle["session_control_owner"]
         )
+        assert payload["artifact_bundle"]["review_evidence_keys"] == list(bundle["review_evidence"])
+        assert payload["artifact_bundle"]["review_evidence"] == bundle["review_evidence"]
+        duplicate_guard = bundle["review_evidence"]["duplicate_ticket_guard"]
+        assert payload["artifact_bundle"]["duplicate_ticket_guard_evidence"] == duplicate_guard
         sandbox_review = payload["artifact_bundle"]["sandbox_profile_review_evidence"]
         assert (
             payload["artifact_bundle"]["review_evidence"]["sandbox_profile_reviewed"]
@@ -12939,12 +12617,10 @@ class TestCli:
         ]
         assert payload["retirement"]["system_id"] == retirement["system_id"]
         assert payload["retirement"]["replacement_mode"] == retirement["replacement_mode"]
-        assert payload["retirement"]["session_control_owner"] == retirement[
-            "session_control_owner"
-        ]
-        assert payload["retirement"]["emergency_freeze_owner"] == retirement[
-            "emergency_freeze_owner"
-        ]
+        assert payload["retirement"]["session_control_owner"] == retirement["session_control_owner"]
+        assert (
+            payload["retirement"]["emergency_freeze_owner"] == retirement["emergency_freeze_owner"]
+        )
         assert payload["retirement"]["triggers"] == retirement["triggers"]
         assert payload["retirement"]["required_steps"] == retirement["required_steps"]
         assert payload["retirement"]["archive_targets"] == retirement["archive_targets"]
@@ -12976,16 +12652,13 @@ class TestCli:
             "support_duplicate_control_release_binding",
         }
         assert (
-            payload["controls"]["failed_run_control_expectations"]
-            == expected_failed_run_controls
+            payload["controls"]["failed_run_control_expectations"] == expected_failed_run_controls
         )
         assert payload["controls"]["failed_run_control_domains"] == [
             "traceability",
             "memory_provenance",
         ]
-        assert payload["controls"]["failed_run_control_count"] == len(
-            expected_failed_run_controls
-        )
+        assert payload["controls"]["failed_run_control_count"] == len(expected_failed_run_controls)
         assert payload["controls"]["failed_run_control_summary"] == (
             "2 failed-run control expectations across traceability and memory provenance"
         )
@@ -13119,6 +12792,8 @@ class TestCli:
             "ready",
             "required_signals",
             "approval_roles",
+            "required_approval_roles",
+            "missing_approval_roles",
             "missing_signals",
             "failed_run_signals",
             "missing_failed_run_signals",
@@ -13132,6 +12807,11 @@ class TestCli:
         assert not payload["ready"]
         assert payload["required_signals"] == change["required_signals"]
         assert payload["approval_roles"] == change["approval_roles"]
+        assert payload["required_approval_roles"] == [
+            "platform-owner",
+            "security-reviewer",
+        ]
+        assert payload["missing_approval_roles"] == []
         assert payload["missing_signals"] == ["failed_run_drill_checked"]
         assert payload["failed_run_signals"] == failed_run_signals
         assert payload["missing_failed_run_signals"] == ["failed_run_drill_checked"]
@@ -13287,9 +12967,7 @@ class TestCli:
         )
         assert payload["replacement_mode"] == retirement["replacement_mode"]
 
-    def test_cli_inspect_approvals_returns_pending_item(
-        self, cli_json, config_dir: Path
-    ) -> None:
+    def test_cli_inspect_approvals_returns_pending_item(self, cli_json, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
@@ -13334,8 +13012,7 @@ class TestCli:
                     "capability_version": "catalog-v1",
                     "idempotency_key": "trace-approval-001",
                     "action_digest": (
-                        "23f9f79fa99f07d09b9405ca945822581edf7969ff008715d"
-                        "fefb407808c44b4"
+                        "23f9f79fa99f07d09b9405ca945822581edf7969ff008715dfefb407808c44b4"
                     ),
                     "payload_summary": (
                         '{"arguments":{"idempotency_key":"trace-approval-001",'
@@ -13417,8 +13094,7 @@ class TestCli:
                     "capability_version": "catalog-v1",
                     "idempotency_key": "trace-approval-authz-001",
                     "action_digest": (
-                        "d0afdb061303035f8be1cecf9f0a0fe5db1220adf94ddad3d"
-                        "d8dae787ee663d0"
+                        "d0afdb061303035f8be1cecf9f0a0fe5db1220adf94ddad3dd8dae787ee663d0"
                     ),
                     "payload_summary": (
                         '{"arguments":{"idempotency_key":"trace-approval-authz-001",'
@@ -13432,9 +13108,7 @@ class TestCli:
             ],
         }
 
-    def test_cli_approval_commands_normalize_lineage_ids(
-        self, cli_json, config_dir: Path
-    ) -> None:
+    def test_cli_approval_commands_normalize_lineage_ids(self, cli_json, config_dir: Path) -> None:
         from agent_runtime_ref.config import load_yaml_file
 
         agent = load_yaml_file(config_dir / "agent.yaml")["agent"]
@@ -13860,18 +13534,14 @@ class TestCli:
             "--delegated-scope",
             "ticket:create",
         ]
-        inspect_code, inspect_payload = cli_json(
-            ["inspect-session", *delegated_args]
-        )
+        inspect_code, inspect_payload = cli_json(["inspect-session", *delegated_args])
         assert inspect_code == 0
         self._assert_session_run_contract(inspect_payload["runs"][0])
         assert inspect_payload["runs"][0]["authorization_mode"] == "user_delegated"
         assert inspect_payload["runs"][0]["delegated_principal_id"] == "customer-17"
         assert inspect_payload["runs"][0]["delegated_scope"] == "ticket:create"
 
-        eval_code, eval_payload = cli_json(
-            ["session-eval-summary", *delegated_args]
-        )
+        eval_code, eval_payload = cli_json(["session-eval-summary", *delegated_args])
         assert eval_code == 0
         assert eval_payload["approval_ids"] == ["apr-001"]
         assert eval_payload["pending_approval_ids"] == ["apr-001"]
@@ -14388,9 +14058,7 @@ class TestCli:
         assert payload["pending_approval_ids"] == ["apr-001", "apr-002"]
         assert payload["pending_approval_capability_names"] == ["create_ticket"]
         assert payload["approval_status_counts"] == {"pending": 2}
-        assert payload["duplicate_ticket_scenarios"] == [
-            "unknown_effect_reconciliation"
-        ]
+        assert payload["duplicate_ticket_scenarios"] == ["unknown_effect_reconciliation"]
         assert payload["latest_failure_reason"] == "tool_timeout"
         assert payload["sessions"] == [
             "session-eval-support",
@@ -14450,9 +14118,7 @@ class TestCli:
         assert exported["approval_capability_names"] == ["create_ticket"]
         assert exported["approval_status_counts"] == {"pending": 2}
         assert exported["latest_failure_reason"] == "tool_timeout"
-        assert exported["duplicate_ticket_scenarios"] == [
-            "unknown_effect_reconciliation"
-        ]
+        assert exported["duplicate_ticket_scenarios"] == ["unknown_effect_reconciliation"]
         assert [session["session"]["session_id"] for session in exported["sessions"]] == [
             "session-eval-support",
             "session-eval-memory",
@@ -14460,12 +14126,8 @@ class TestCli:
             "session-eval-failed-run",
             "session-eval-unknown-effect",
         ]
-        assert exported["sessions"][0]["idempotency_keys"] == [
-            "trace-eval-support-001"
-        ]
-        assert exported["sessions"][0]["summary"]["idempotency_keys"] == [
-            "trace-eval-support-001"
-        ]
+        assert exported["sessions"][0]["idempotency_keys"] == ["trace-eval-support-001"]
+        assert exported["sessions"][0]["summary"]["idempotency_keys"] == ["trace-eval-support-001"]
         assert exported["sessions"][0]["approval_ids"] == ["apr-001"]
         assert exported["sessions"][0]["approval_capability_names"] == ["create_ticket"]
         assert exported["sessions"][0]["approval_status_counts"] == {"pending": 1}
@@ -14476,9 +14138,9 @@ class TestCli:
         assert exported["sessions"][0]["runs"][0]["approval_id"] == "apr-001"
         assert exported["sessions"][0]["runs"][0]["capability_name"] == "create_ticket"
         assert exported["sessions"][0]["eval"]["labels"]
-        assert exported["sessions"][0]["eval"]["expected_outcomes"][
-            "approval_status_counts"
-        ] == {"pending": 1}
+        assert exported["sessions"][0]["eval"]["expected_outcomes"]["approval_status_counts"] == {
+            "pending": 1
+        }
         assert set(exported["sessions"][0]["eval"]) == {
             "scenario",
             "labels",
@@ -14507,15 +14169,9 @@ class TestCli:
         assert failed_session["idempotency_keys"] == ["trace-eval-failed-run-001"]
         assert failed_session["summary"]["failed_trace_ids"] == ["trace-eval-failed-run-001"]
         reconciliation_session = exported["sessions"][4]
-        assert reconciliation_session["runs"][0]["side_effect_status"] == (
-            "side_effect_unknown"
-        )
-        assert "duplicate_ticket_eval_passed" in reconciliation_session["eval"][
-            "labels"
-        ]
-        assert reconciliation_session["eval"]["expected_outcomes"][
-            "max_ticket_side_effects"
-        ] == 1
+        assert reconciliation_session["runs"][0]["side_effect_status"] == ("side_effect_unknown")
+        assert "duplicate_ticket_eval_passed" in reconciliation_session["eval"]["labels"]
+        assert reconciliation_session["eval"]["expected_outcomes"]["max_ticket_side_effects"] == 1
 
     def test_cli_export_eval_dataset_matches_checked_in_artifact(
         self,
@@ -14549,14 +14205,12 @@ class TestCli:
         assert Path("artifacts/eval-dataset.json").is_file()
 
     def test_coverage_workflow_runs_when_eval_artifact_changes(self) -> None:
-        workflow_text = Path(".github/workflows/coverage.yml").read_text(
-            encoding="utf-8"
-        )
+        workflow_text = Path(".github/workflows/coverage.yml").read_text(encoding="utf-8")
         paths_ignore_block = workflow_text.split("paths-ignore:", 1)[1].split(
             "workflow_dispatch:", 1
         )[0]
 
-        assert "branches: [\"main\"]" in workflow_text
+        assert 'branches: ["main"]' in workflow_text
         assert "permissions:\n  contents: write" in workflow_text
         assert "pages: write" not in workflow_text
         assert "id-token: write" not in workflow_text
@@ -14589,11 +14243,9 @@ class TestCli:
         assert "docs/assets/badges/**" not in paths_ignore_block
 
     def test_deploy_workflow_uses_node24_action_releases(self) -> None:
-        workflow_text = Path(".github/workflows/deploy.yml").read_text(
-            encoding="utf-8"
-        )
+        workflow_text = Path(".github/workflows/deploy.yml").read_text(encoding="utf-8")
 
-        assert "branches: [\"docs-prod\"]" in workflow_text
+        assert 'branches: ["docs-prod"]' in workflow_text
         assert "contents: read" in workflow_text
         assert "pages: write" in workflow_text
         assert "id-token: write" in workflow_text
@@ -14635,9 +14287,7 @@ class TestCli:
 
     def test_workflow_jobs_recheck_expected_branch_at_runtime(self) -> None:
         expected_job_conditions = {
-            ".github/workflows/coverage.yml": {
-                "coverage": "github.ref == 'refs/heads/main'"
-            },
+            ".github/workflows/coverage.yml": {"coverage": "github.ref == 'refs/heads/main'"},
             ".github/workflows/deploy.yml": {
                 "build": "github.ref == 'refs/heads/docs-prod'",
                 "deploy": "github.ref == 'refs/heads/docs-prod'",
@@ -14670,9 +14320,7 @@ class TestCli:
             jobs = load_yaml_file(workflow_path)["jobs"]
             for job_name, job_config in jobs.items():
                 if job_config["runs-on"] != "ubuntu-latest":
-                    unexpected_runners.append(
-                        (str(workflow_path), job_name, job_config["runs-on"])
-                    )
+                    unexpected_runners.append((str(workflow_path), job_name, job_config["runs-on"]))
 
         assert unexpected_runners == []
 
@@ -14741,12 +14389,8 @@ class TestCli:
         }
 
         assert actual_env == {
-            ".github/workflows/coverage.yml": {
-                "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"
-            },
-            ".github/workflows/deploy.yml": {
-                "FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"
-            },
+            ".github/workflows/coverage.yml": {"FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"},
+            ".github/workflows/deploy.yml": {"FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"},
         }
 
     def test_workflow_dependency_setup_contracts_are_explicit(self) -> None:
@@ -14912,13 +14556,13 @@ class TestCli:
                 "name": "Add coverage summary to GitHub job",
                 "run": (
                     "{\n"
-                    "  echo \"## Coverage Summary\"\n"
+                    '  echo "## Coverage Summary"\n'
                     "  echo\n"
                     "  echo '```'\n"
                     "  uv run pytest --cov=agent_runtime_ref "
                     "--cov-report=term-missing -q | tail -n 30\n"
                     "  echo '```'\n"
-                    "} >> \"$GITHUB_STEP_SUMMARY\"\n"
+                    '} >> "$GITHUB_STEP_SUMMARY"\n'
                 ),
             }
         ]
@@ -14926,14 +14570,10 @@ class TestCli:
     def test_deploy_workflow_builds_docs_strictly(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
         build_steps = [
-            step
-            for step in workflow["jobs"]["build"]["steps"]
-            if step.get("name") == "Build docs"
+            step for step in workflow["jobs"]["build"]["steps"] if step.get("name") == "Build docs"
         ]
 
-        assert build_steps == [
-            {"name": "Build docs", "run": "uv run mkdocs build --strict"}
-        ]
+        assert build_steps == [{"name": "Build docs", "run": "uv run mkdocs build --strict"}]
 
     def test_deploy_workflow_uploads_built_site_artifact(self) -> None:
         workflow = load_yaml_file(Path(".github/workflows/deploy.yml"))
