@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъёмной сборки на 2026-07-27. Репозиторий
+Status: актуальная карта полнообъёмной сборки на 2026-08-01. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -22,20 +22,42 @@ Status: актуальная карта полнообъёмной сборки 
 - 25 пронумерованных рисунков, 29 встроенных схем и 2 дополнительные
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
-- 10 нумерованных таблиц в канонической и локальных издательских производных;
-- около 93 242 слов по метрике издательской сборки;
-- 446 страниц в Google-ориентированной производной, 321 страница в производной
-  `Template2000n`, 489 страниц при локальном рендеринге свежего DOCX-экспорта
-  Google Doc и 457 страниц в нативном PDF Google Docs; разница вызвана
-  параметрами страницы и движком вёрстки, а не сокращением содержания; пустых
-  технических страниц нет.
+- 11 нумерованных таблиц в канонической и локальных издательских производных;
+- около 95 759 слов по метрике издательской сборки;
+- 456 страниц в Google-ориентированной производной и 330 страниц в
+  производной `Template2000n`; разница вызвана типографикой и плотностью
+  стилей, а не сокращением содержания; пустых технических страниц нет.
 
 Google Doc:
 
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW36zOf2ZNRM-XL1tdd9LEuHsKy-qYN8botKOL9dlIezh0tQp_2J2mIN70uICM8a0nxtHH5ARYrY2_3iLbsgS8CJUm0ayFLnmCVV1Tlc`.
+  `AIroW35prHNueHFHV7x6PXl80jsvBh8iIQaxj34qE3kzRDNQtyxCDYC-3_kE8gnZ-W_JynXfSDaZNTub8fcjw6hz0RHJcTHP2SH19n-5KTY`.
+
+Контрольная точка редакционного прохода:
+
+- `docs/publisher/ru-editorial-pass-2026-08-01.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-pass-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-pass-2026-08-01.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-pass-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-pass-2026-08-01.pdf`;
+- `docs/publisher/ru-google-doc-editorial-pass-2026-08-01.render-qa.json`;
+- `docs/publisher/ru-template2000n-editorial-pass-2026-08-01.render-qa.json`;
+- `docs/publisher/ru-template2000n-editorial-pass-2026-08-01.visual-audit.json`;
+- `docs/publisher/ru-template2000n-editorial-pass-2026-08-01.font-audit.json`.
+
+Контрольная точка синхронизации с актуальной онлайн-книгой:
+
+- `docs/publisher/ru-online-manuscript-sync-2026-07-29.md`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-29.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-29.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-online-sync-2026-07-29.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-online-sync-2026-07-29.pdf`;
+- `docs/publisher/ru-google-doc-online-sync-2026-07-29.render-qa.json`;
+- `docs/publisher/ru-template2000n-online-sync-2026-07-29.render-qa.json`;
+- `docs/publisher/ru-template2000n-online-sync-2026-07-29.visual-audit.json`;
+- `docs/publisher/ru-template2000n-online-sync-2026-07-29.font-audit.json`.
 
 Контрольная точка редакционной полировки технической книги:
 

@@ -5,6 +5,12 @@ import json
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
+from agent_runtime_ref.states import (
+    validate_capability_outcome,
+    validate_run_status,
+    validate_side_effect_status,
+)
+
 REDACTED_INPUT_DESCRIPTION = "[REDACTED]"
 
 
@@ -36,9 +42,7 @@ def normalize_tool_arguments(value: object) -> dict[str, str]:
         if argument_key in normalized:
             raise ValueError("Tool request argument keys must be unique")
         if not isinstance(argument, str):
-            raise TypeError(
-                f"Tool request argument value must be a string: {argument_key}"
-            )
+            raise TypeError(f"Tool request argument value must be a string: {argument_key}")
         normalized[argument_key] = argument
     return normalized
 
@@ -118,12 +122,7 @@ def compute_action_digest(
 
 
 def normalize_tool_result_status(value: object) -> str:
-    if not isinstance(value, str):
-        raise TypeError("Tool result status must be a string")
-    status = value.strip()
-    if not status:
-        raise ValueError("Tool result status must not be empty")
-    return status
+    return validate_capability_outcome(value)
 
 
 def normalize_tool_result_payload(value: object) -> dict[str, str]:
@@ -188,11 +187,17 @@ class ToolResult:
     capability_name: str
     status: str
     payload: dict[str, str]
+    side_effect_status: str = "not_executed"
 
     def __post_init__(self) -> None:
         self.capability_name = normalize_tool_capability_name(self.capability_name)
         self.status = normalize_tool_result_status(self.status)
         self.payload = normalize_tool_result_payload(self.payload)
+        self.side_effect_status = validate_side_effect_status(self.side_effect_status)
+
+    @property
+    def outcome(self) -> str:
+        return self.status
 
 
 @dataclass(slots=True)
@@ -210,3 +215,7 @@ class RunResult:
     status: str
     task_success: bool | None = None
     side_effect_status: str = "not_executed"
+
+    def __post_init__(self) -> None:
+        self.status = validate_run_status(self.status)
+        self.side_effect_status = validate_side_effect_status(self.side_effect_status)

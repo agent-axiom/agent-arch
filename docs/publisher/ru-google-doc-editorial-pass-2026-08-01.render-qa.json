@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-render-google-doc-2026-08-01-final/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0048678826655175565,
+      "page": 142
+    },
+    {
+      "density": 0.006876618318117995,
+      "page": 206
+    },
+    {
+      "density": 0.0071988900613563145,
+      "page": 78
+    },
+    {
+      "density": 0.008286039473537097,
+      "page": 286
+    },
+    {
+      "density": 0.00930018813208288,
+      "page": 347
+    },
+    {
+      "density": 0.012662795080377499,
+      "page": 324
+    },
+    {
+      "density": 0.014838457611947098,
+      "page": 175
+    },
+    {
+      "density": 0.015015260921949389,
+      "page": 94
+    },
+    {
+      "density": 0.01613679930726206,
+      "page": 258
+    },
+    {
+      "density": 0.016745173530602633,
+      "page": 243
+    }
+  ],
+  "pages": 456,
+  "render_dir": "/private/tmp/agent-arch-render-google-doc-2026-08-01-final"
+}

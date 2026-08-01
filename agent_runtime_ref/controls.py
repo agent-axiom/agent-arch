@@ -7,6 +7,9 @@ from typing import Any, Mapping
 from agent_runtime_ref.catalog import CapabilityCatalog
 from agent_runtime_ref.identity import ApprovedInventory
 
+CREATE_TICKET_APPROVAL_CONTROL = "create_ticket_approval_required"
+CREATE_TICKET_IDEMPOTENCY_CONTROL = "create_ticket_idempotency_key_required"
+
 
 def _read_string_list_items(items: object, *, label: str) -> tuple[str, ...]:
     if not isinstance(items, Sequence) or isinstance(items, str):
@@ -48,6 +51,7 @@ def _read_observed_flags(items: Mapping[str, bool]) -> dict[str, bool]:
 class ControlsPolicy:
     required_controls: tuple[str, ...]
     blocked_findings: tuple[str, ...]
+    required_approval_roles: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -66,6 +70,14 @@ class ControlsPolicy:
                 label="controls.block_if",
             ),
         )
+        object.__setattr__(
+            self,
+            "required_approval_roles",
+            _read_string_list_items(
+                self.required_approval_roles,
+                label="controls.required_approval_roles",
+            ),
+        )
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> "ControlsPolicy":
@@ -76,13 +88,20 @@ class ControlsPolicy:
             raise TypeError("'controls' must be a mapping")
         require = raw_controls.get("require", [])
         block_if = raw_controls.get("block_if", [])
+        required_approval_roles = raw_controls.get("required_approval_roles", [])
         if not isinstance(require, list):
             raise TypeError("'controls.require' must be a list")
         if not isinstance(block_if, list):
             raise TypeError("'controls.block_if' must be a list")
+        if not isinstance(required_approval_roles, list):
+            raise TypeError("'controls.required_approval_roles' must be a list")
         return cls(
             required_controls=_read_string_list_items(require, label="controls.require"),
             blocked_findings=_read_string_list_items(block_if, label="controls.block_if"),
+            required_approval_roles=_read_string_list_items(
+                required_approval_roles,
+                label="controls.required_approval_roles",
+            ),
         )
 
 

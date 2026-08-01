@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "pdf": "/private/tmp/agent-arch-render-template2000n-2026-07-29/agent-arch-ru-template2000n-online-sync-2026-07-29.pdf",
+  "sha256": "cefc76096127c2b679a84796436cf46e601130ea62a2dd4d5efd9ffcfe0e1079",
+  "bytes": 10515161,
+  "pages": 327,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 327
+    }
+  ],
+  "text_characters": 782456,
+  "extracted_words": 99608,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "BAAAAA+LiberationSerif",
+      "character_occurrences": 529517
+    },
+    {
+      "name": "CAAAAA+LiberationSans",
+      "character_occurrences": 33
+    },
+    {
+      "name": "DAAAAA+LiberationSans-Bold",
+      "character_occurrences": 10
+    },
+    {
+      "name": "EAAAAA+LiberationSerif-Bold",
+      "character_occurrences": 20766
+    },
+    {
+      "name": "FAAAAA+LiberationSerif",
+      "character_occurrences": 2479
+    },
+    {
+      "name": "GAAAAA+LiberationMono-Bold",
+      "character_occurrences": 2959
+    },
+    {
+      "name": "HAAAAA+LiberationMono",
+      "character_occurrences": 105875
+    },
+    {
+      "name": "IAAAAA+RobotoMono-Regular",
+      "character_occurrences": 25515
+    },
+    {
+      "name": "JAAAAA+LiberationSerif",
+      "character_occurrences": 15127
+    },
+    {
+      "name": "KAAAAA+LiberationSerif",
+      "character_occurrences": 1919
+    },
+    {
+      "name": "LAAAAA+RobotoMono-Regular",
+      "character_occurrences": 55000
+    },
+    {
+      "name": "MAAAAA+LiberationSerif",
+      "character_occurrences": 439
+    },
+    {
+      "name": "NAAAAA+LiberationSerif-Bold",
+      "character_occurrences": 680
+    },
+    {
+      "name": "OAAAAA+LiberationSerif",
+      "character_occurrences": 6815
+    },
+    {
+      "name": "PAAAAA+LiberationSerif",
+      "character_occurrences": 7499
+    },
+    {
+      "name": "QAAAAA+LiberationSerif",
+      "character_occurrences": 168
+    },
+    {
+      "name": "RAAAAA+RobotoMono-Bold",
+      "character_occurrences": 38
+    },
+    {
+      "name": "SAAAAA+LiberationSerif-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "TAAAAA+LiberationSerif-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "UAAAAA+LinuxLibertineG",
+      "character_occurrences": 2
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

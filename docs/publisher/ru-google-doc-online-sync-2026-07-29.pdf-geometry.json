@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "pdf": "/private/tmp/agent-arch-render-google-doc-2026-07-29/agent-arch-ru-google-doc-online-sync-2026-07-29.pdf",
+  "sha256": "eea5a84eb2646fc1fe7741b4126064d565429afc8eefb32376e4490efff156ef",
+  "bytes": 9267925,
+  "pages": 453,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 453
+    }
+  ],
+  "text_characters": 782881,
+  "extracted_words": 99767,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "BAAAAA+LiberationSans",
+      "character_occurrences": 644528
+    },
+    {
+      "name": "CAAAAA+LiberationSans",
+      "character_occurrences": 33
+    },
+    {
+      "name": "DAAAAA+LiberationSans-Bold",
+      "character_occurrences": 10
+    },
+    {
+      "name": "EAAAAA+LiberationSans-Bold",
+      "character_occurrences": 24397
+    },
+    {
+      "name": "FAAAAA+LiberationSans",
+      "character_occurrences": 2479
+    },
+    {
+      "name": "GAAAAA+RobotoMono-Regular",
+      "character_occurrences": 25512
+    },
+    {
+      "name": "HAAAAA+LiberationSans",
+      "character_occurrences": 15127
+    },
+    {
+      "name": "IAAAAA+RobotoMono-Regular",
+      "character_occurrences": 55000
+    },
+    {
+      "name": "JAAAAA+LiberationSans",
+      "character_occurrences": 439
+    },
+    {
+      "name": "KAAAAA+LiberationSans",
+      "character_occurrences": 7499
+    },
+    {
+      "name": "LAAAAA+Carlito",
+      "character_occurrences": 168
+    },
+    {
+      "name": "MAAAAA+RobotoMono-Bold",
+      "character_occurrences": 38
+    },
+    {
+      "name": "NAAAAA+LiberationSans-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "OAAAAA+LiberationSans-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "PAAAAA+LinuxLibertineG",
+      "character_occurrences": 2
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-07-27.docx",
+  "bookmarks": 108,
+  "code_lines": 1908,
+  "headings": 652,
+  "images": 56,
+  "internal_hyperlinks": 192,
+  "list_items": 3211,
+  "lists": 698,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 9024924,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-online-sync-2026-07-29.docx",
+  "output_sha256": "d53928dcdbd741eb6c5d664290d1e40c20b8c1502610ef754c4cfa0d03ffcc10",
+  "page_breaks": 30,
+  "paragraphs": 8358,
+  "tables": 10
+}

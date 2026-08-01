@@ -22068,11 +22068,20 @@ def test_reference_package_lifecycle_runtime_control_fields_are_documented() -> 
 
 
 def test_aws_agentcore_extended_mcp_support_is_integrated() -> None:
-    chapter_files = (
-        "docs/book/part-iv/chapter-9.md",
-        "docs/book/part-iv/chapter-9.en.md",
-        "docs/book/part-iv/chapter-9.zh.md",
-    )
+    chapter_markers = {
+        "docs/book/part-iv/chapter-9.md": (
+            "Расширенная поддержка MCP в AgentCore Gateway",
+            "зависит от поставщика",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "AgentCore Gateway extended MCP support",
+            "vendor-specific",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "AgentCore Gateway 的扩展 MCP 支持",
+            "供应商特定",
+        ),
+    }
     case_files = (
         "docs/appendix/case-studies.md",
         "docs/appendix/case-studies.en.md",
@@ -22084,18 +22093,17 @@ def test_aws_agentcore_extended_mcp_support_is_integrated() -> None:
         "docs/appendix/sources.zh.md",
     )
 
-    _assert_files_contain_all(
-        chapter_files,
-        (
-            "AgentCore Gateway extended MCP support",
+    for path, localized_markers in chapter_markers.items():
+        text = _read(path)
+        for marker in (
+            *localized_markers,
             "`outputSchema`",
             "`listing_mode`",
             "`tool_annotations`",
-            "`Mcp-Session-Id`",
-            "`retry_original_tool_call`",
-            "mid-stream failure",
-        ),
-    )
+            "2025-11-25",
+            "[^aws-stateful-mcp]",
+        ):
+            assert marker in text, (path, marker)
     _assert_files_contain_all(
         case_files,
         (
@@ -22583,3 +22591,53 @@ def test_markdown_rendering_regression_patterns_are_absent() -> None:
         text = _read(path)
         for pattern in forbidden_patterns:
             assert pattern not in text, (path, pattern)
+
+
+def test_mcp_2026_07_28_stateless_core_is_localized() -> None:
+    chapter_markers = {
+        "docs/book/part-iv/chapter-9.md": (
+            "Ядро MCP 2026-07-28 не хранит сессию",
+            "`Mcp-Method`",
+            "`Mcp-Name`",
+            "`requestState`",
+            "расширение Tasks",
+        ),
+        "docs/book/part-iv/chapter-9.en.md": (
+            "The MCP 2026-07-28 core is stateless",
+            "`Mcp-Method`",
+            "`Mcp-Name`",
+            "`requestState`",
+            "Tasks extension",
+        ),
+        "docs/book/part-iv/chapter-9.zh.md": (
+            "MCP 2026-07-28 核心是无状态的",
+            "`Mcp-Method`",
+            "`Mcp-Name`",
+            "`requestState`",
+            "Tasks 扩展",
+        ),
+    }
+    source_files = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    for path, markers in chapter_markers.items():
+        text = _read(path)
+        for marker in markers:
+            assert marker in text, (path, marker)
+        assert "`Mcp-Session-Id`" not in text, path
+        assert "session_mode: stateful" not in text, path
+
+    assert "stateful MCP-сессию" not in _read("docs/book/part-iv/chapter-9.md")
+    assert "stateful-session protection" not in _read("docs/book/part-iv/chapter-9.en.md")
+    assert "有状态会话保护" not in _read("docs/book/part-iv/chapter-9.zh.md")
+
+    _assert_files_contain_all(
+        source_files,
+        (
+            "https://modelcontextprotocol.io/specification/2026-07-28",
+            "2026-07-28-release-candidate",
+        ),
+    )
