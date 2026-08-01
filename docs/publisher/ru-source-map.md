@@ -23,8 +23,8 @@ Status: актуальная карта полнообъёмной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - 11 нумерованных таблиц в канонической и локальных издательских производных;
-- около 95 759 слов по метрике издательской сборки;
-- 456 страниц в Google-ориентированной производной и 330 страниц в
+- около 96 984 слов по метрике издательской сборки;
+- 481 страница в Google-ориентированной производной и 355 страниц в
   производной `Template2000n`; разница вызвана типографикой и плотностью
   стилей, а не сокращением содержания; пустых технических страниц нет.
 
@@ -33,7 +33,18 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW35prHNueHFHV7x6PXl80jsvBh8iIQaxj34qE3kzRDNQtyxCDYC-3_kE8gnZ-W_JynXfSDaZNTub8fcjw6hz0RHJcTHP2SH19n-5KTY`.
+  `AIroW37DrV8dNIYvUEV4d5pOla46Wwq6WopW3RWy18Hy0wJwUNzmMRpRfxpU-LXjQBCZv9zKOxq82sIury9MhmTP3x55NmDU2pjFkh8ELnk`.
+
+Контрольная точка читательского прохода:
+
+- `docs/publisher/ru-reader-experience-pass-2026-08-01.md`;
+- `docs/publisher/ru-reader-experience-pass-2026-08-01.manifest.json`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.pdf`.
 
 Контрольная точка редакционного прохода:
 

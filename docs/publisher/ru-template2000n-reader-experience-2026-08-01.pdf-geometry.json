@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "pdf": "docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.pdf",
+  "sha256": "64aaada60355aa58cb7e78c92ae1d23f7f3724a0c02518bd1d8b4b839c3d4ffd",
+  "bytes": 12840566,
+  "pages": 355,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 355
+    }
+  ],
+  "text_characters": 799932,
+  "extracted_words": 101737,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "BAAAAA+LiberationSerif",
+      "character_occurrences": 556245
+    },
+    {
+      "name": "CAAAAA+LiberationSans",
+      "character_occurrences": 33
+    },
+    {
+      "name": "DAAAAA+LiberationSans-Bold",
+      "character_occurrences": 10
+    },
+    {
+      "name": "EAAAAA+LiberationSerif-Bold",
+      "character_occurrences": 22356
+    },
+    {
+      "name": "FAAAAA+LiberationSerif",
+      "character_occurrences": 2479
+    },
+    {
+      "name": "GAAAAA+LiberationMono-Bold",
+      "character_occurrences": 2790
+    },
+    {
+      "name": "HAAAAA+LiberationMono",
+      "character_occurrences": 91154
+    },
+    {
+      "name": "IAAAAA+RobotoMono-Regular",
+      "character_occurrences": 26231
+    },
+    {
+      "name": "JAAAAA+LiberationSerif",
+      "character_occurrences": 15353
+    },
+    {
+      "name": "KAAAAA+LiberationSerif",
+      "character_occurrences": 1970
+    },
+    {
+      "name": "LAAAAA+RobotoMono-Regular",
+      "character_occurrences": 56629
+    },
+    {
+      "name": "MAAAAA+LiberationSerif",
+      "character_occurrences": 439
+    },
+    {
+      "name": "NAAAAA+LiberationSerif-Bold",
+      "character_occurrences": 670
+    },
+    {
+      "name": "OAAAAA+LiberationSerif",
+      "character_occurrences": 7910
+    },
+    {
+      "name": "PAAAAA+LiberationSerif",
+      "character_occurrences": 7900
+    },
+    {
+      "name": "QAAAAA+LiberationSerif",
+      "character_occurrences": 168
+    },
+    {
+      "name": "RAAAAA+RobotoMono-Bold",
+      "character_occurrences": 38
+    },
+    {
+      "name": "SAAAAA+LiberationSerif-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "TAAAAA+LiberationSerif-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "UAAAAA+LinuxLibertineG",
+      "character_occurrences": 5
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

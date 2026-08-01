@@ -7,6 +7,11 @@ const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
 const sharp = require("sharp");
 
+const MIN_EFFECTIVE_FONT_PT = 7.8;
+const PRINT_MAX_WIDTH_INCHES = 6.5;
+const PRINT_MAX_HEIGHT_INCHES = 7.6;
+const PNG_DENSITY = 300;
+
 
 function parseArgs(argv) {
   const values = {};
@@ -31,17 +36,67 @@ function escapeXml(value) {
 }
 
 
+function wrapLabel(value, maxCharacters = 24) {
+  const wrappedLines = [];
+  for (const originalLine of value.split("\\n")) {
+    const words = originalLine.trim().split(/\s+/).filter(Boolean);
+    if (words.length === 0) {
+      wrappedLines.push("");
+      continue;
+    }
+    let line = words.shift();
+    for (const word of words) {
+      if (`${line} ${word}`.length <= maxCharacters) {
+        line = `${line} ${word}`;
+      } else {
+        wrappedLines.push(line);
+        line = word;
+      }
+    }
+    wrappedLines.push(line);
+  }
+  return wrappedLines.join("\\n");
+}
+
+
+function wrapMermaidLabels(source) {
+  return source.replaceAll(/"([^"\r\n]*)"/g, (_match, label) => `"${wrapLabel(label)}"`);
+}
+
+
+function calculateEffectiveFontPt(svg, metadata) {
+  const viewBox = svg.match(/viewBox="[^"\s]+\s+[^"\s]+\s+([0-9.]+)\s+([0-9.]+)"/);
+  const fontSizes = [...svg.matchAll(/font-size:\s*([0-9.]+)px/g)]
+    .map((match) => Number(match[1]))
+    .filter((size) => size >= 20);
+  if (!viewBox || fontSizes.length === 0 || !metadata.width) {
+    throw new Error("Cannot calculate effective print font size from rendered diagram");
+  }
+
+  const viewWidth = Number(viewBox[1]);
+  const viewHeight = Number(viewBox[2]);
+  const sourceFontSize = Math.max(...fontSizes);
+  const placedWidthInches = Math.min(
+    PRINT_MAX_WIDTH_INCHES,
+    metadata.width / PNG_DENSITY,
+    PRINT_MAX_HEIGHT_INCHES * viewWidth / viewHeight,
+  );
+  return sourceFontSize * placedWidthInches * 72 / viewWidth;
+}
+
+
 async function renderDiagram(page, diagram, outputDir) {
   const rendered = await page.evaluate(async ({ id, source }) => {
     const result = await window.mermaid.render(id, source);
     return result.svg;
   }, {
     id: path.parse(diagram.filename).name.replaceAll(/[^A-Za-z0-9_-]/g, "-"),
-    source: diagram.mermaid,
+    source: wrapMermaidLabels(diagram.mermaid),
   });
 
   const title = `<title>${escapeXml(diagram.caption)}</title>`;
-  const svg = rendered.replace(/<svg([^>]*)>/, `<svg$1>${title}`);
+  const xmlSafeRendered = rendered.replaceAll(/<br\s*>/g, "<br/>");
+  const svg = xmlSafeRendered.replace(/<svg([^>]*)>/, `<svg$1>${title}`);
   const stem = path.parse(diagram.filename).name;
   const svgPath = path.join(outputDir, `${stem}.svg`);
   const pngPath = path.join(outputDir, diagram.filename);
@@ -68,37 +123,48 @@ async function renderDiagram(page, diagram, outputDir) {
     .toBuffer();
   const resized = await sharp(trimmed)
     .resize({
-      width: 1560,
-      height: 1080,
+      width: 2400,
+      height: 1800,
       fit: "inside",
       withoutEnlargement: false,
     })
     .toBuffer();
   await sharp(resized)
     .extend({
-      top: 32,
-      bottom: 32,
-      left: 32,
-      right: 32,
+      top: 48,
+      bottom: 48,
+      left: 48,
+      right: 48,
       background: "#ffffff",
     })
     .flatten({ background: "#ffffff" })
     .removeAlpha()
     .png({ compressionLevel: 9, adaptiveFiltering: true })
-    .withMetadata({ density: 300 })
+    .withMetadata({ density: PNG_DENSITY })
     .toFile(pngPath);
 
   const metadata = await sharp(pngPath).metadata();
   if (
     !metadata.width
     || !metadata.height
-    || metadata.width > 1624
-    || metadata.height > 1144
+    || metadata.width > 2496
+    || metadata.height > 1896
     || metadata.hasAlpha
   ) {
     throw new Error(`Invalid PNG output for ${diagram.filename}: ${JSON.stringify(metadata)}`);
   }
-  return { number: diagram.number, svg: svgPath, png: pngPath };
+  const effectiveFontPt = calculateEffectiveFontPt(svg, metadata);
+  if (effectiveFontPt < MIN_EFFECTIVE_FONT_PT) {
+    throw new Error(
+      `Unreadable print font for ${diagram.filename}: ${effectiveFontPt.toFixed(2)}pt`,
+    );
+  }
+  return {
+    number: diagram.number,
+    svg: svgPath,
+    png: pngPath,
+    effective_font_pt: Number(effectiveFontPt.toFixed(2)),
+  };
 }
 
 

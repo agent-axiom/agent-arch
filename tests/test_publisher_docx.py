@@ -18,17 +18,18 @@ RAW_EDITORIAL_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-google-doc-final-reader-copyedit-2026-07-23.docx"
+        "agent-arch-ru-google-doc-reader-experience-2026-08-01.docx"
     )
 )
 EDITORIAL_TEMPLATE_DOCX = (
     ROOT
     / (
         "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-final-reader-copyedit-2026-07-23.docx"
+        "agent-arch-ru-template2000n-reader-experience-2026-08-01.docx"
     )
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
+EXPECTED_TABLE_COUNT = 11
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -297,6 +298,16 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
     assert len(hyperlinks) >= 104
 
 
+def test_template2000n_prioritizes_list_style_over_inline_code_font() -> None:
+    builder = ROOT / "docs/publisher/tools/build_template2000n_derivative.py"
+    source = builder.read_text(encoding="utf-8")
+
+    list_branch = source.index('elif paragraph.find("w:pPr/w:numPr", NS) is not None:')
+    program_branch = source.index("elif paragraph_is_monospace(paragraph):")
+
+    assert list_branch < program_branch
+
+
 def test_template2000n_editorial_images_have_no_alpha_channel() -> None:
     alpha_images = []
     with ZipFile(EDITORIAL_TEMPLATE_DOCX) as archive:
@@ -363,7 +374,10 @@ def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
         assert core.findtext(f"{{{DC_NS}}}language") == "ru-RU"
         assert core.findtext(f"{{{DC_NS}}}subject")
         assert core.findtext(f"{{{CP_NS}}}keywords")
-        assert len(re.findall(r"^Таблица \d+\. .+$", document_text, re.MULTILINE)) == 10
+        assert (
+            len(re.findall(r"^Таблица \d+\. .+$", document_text, re.MULTILINE))
+            == EXPECTED_TABLE_COUNT
+        )
 
 
 def test_editorial_heading_styles_define_pdf_outline_levels() -> None:
@@ -425,7 +439,7 @@ def test_template2000n_table_captions_use_caption_style_and_stay_with_tables() -
         if re.fullmatch(r"Таблица \d+\. .+", value):
             captions.append(paragraph)
 
-    assert len(captions) == 10
+    assert len(captions) == EXPECTED_TABLE_COUNT
     for paragraph in captions:
         properties = paragraph.find(f"{{{WORD_NS}}}pPr")
         assert properties is not None
@@ -442,7 +456,7 @@ def test_editorial_table_columns_have_readable_minimum_width() -> None:
             document = ET.fromstring(archive.read("word/document.xml"))
 
         tables = document.findall(f".//{{{WORD_NS}}}tbl")
-        assert len(tables) == 10
+        assert len(tables) == EXPECTED_TABLE_COUNT
         for table_index, table in enumerate(tables, start=1):
             widths = [
                 int(column.attrib[f"{{{WORD_NS}}}w"])

@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/ru-template2000n-reader-experience-render-v2/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0055751414890545655,
+      "page": 2
+    },
+    {
+      "density": 0.006122246386134747,
+      "page": 196
+    },
+    {
+      "density": 0.007054547288016241,
+      "page": 211
+    },
+    {
+      "density": 0.007898754223709545,
+      "page": 103
+    },
+    {
+      "density": 0.008322632916723947,
+      "page": 190
+    },
+    {
+      "density": 0.010711803627884087,
+      "page": 295
+    },
+    {
+      "density": 0.010852166706001452,
+      "page": 112
+    },
+    {
+      "density": 0.011364533156236263,
+      "page": 177
+    },
+    {
+      "density": 0.011576164813930508,
+      "page": 133
+    },
+    {
+      "density": 0.0123624819354695,
+      "page": 25
+    }
+  ],
+  "pages": 355,
+  "render_dir": "/private/tmp/ru-template2000n-reader-experience-render-v2"
+}

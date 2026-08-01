@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "release": "ru-reader-experience-pass-2026-08-01",
+  "canonical": {
+    "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    "sha256": "04660e60893c023c176ce34f8a28e5fa41106c939afe66f7ecdb4968610a8213",
+    "approximate_words": 96984,
+    "repository_ref": "da0f5771bcfb2c6994b41692e1a59cdadc5408a1"
+  },
+  "structure": {
+    "parts": 8,
+    "chapters": 28,
+    "laboratories": 8,
+    "tables": 11,
+    "images": 56,
+    "numbered_figures": 25,
+    "inline_diagrams": 31
+  },
+  "google_doc": {
+    "document_id": "1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4",
+    "tab_id": "t.0",
+    "revision_before": "AIroW35prHNueHFHV7x6PXl80jsvBh8iIQaxj34qE3kzRDNQtyxCDYC-3_kE8gnZ-W_JynXfSDaZNTub8fcjw6hz0RHJcTHP2SH19n-5KTY",
+    "revision_after": "AIroW37DrV8dNIYvUEV4d5pOla46Wwq6WopW3RWy18Hy0wJwUNzmMRpRfxpU-LXjQBCZv9zKOxq82sIury9MhmTP3x55NmDU2pjFkh8ELnk",
+    "changed_fragments": 61,
+    "changed_target_paragraphs": 155,
+    "native_requests": 591,
+    "target_paragraphs_verified": 8935,
+    "target_paragraphs_missing": 0,
+    "inline_objects_verified": 56,
+    "tables_verified": 11
+  },
+  "artifacts": [
+    {
+      "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.docx",
+      "sha256": "22fcc9a727cd28abf86f1bf16c04cd9fa5b4711aea9ff2017d471187a5ec2f3e",
+      "bytes": 16063972,
+      "pages_letter": 481
+    },
+    {
+      "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.pdf",
+      "sha256": "a0e60981249c8af2ea7d99895cb032022e6944b2d81252a49f8a57b4b6a8bf1b",
+      "bytes": 11519840,
+      "pages_letter": 481
+    },
+    {
+      "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.docx",
+      "sha256": "8126b7a974f84a02aa66363dc2f8751b202fa47bead480f1c5dd660e1a2b0f18",
+      "bytes": 16074124,
+      "pages_letter": 355
+    },
+    {
+      "path": "docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.pdf",
+      "sha256": "64aaada60355aa58cb7e78c92ae1d23f7f3724a0c02518bd1d8b4b839c3d4ffd",
+      "bytes": 12840566,
+      "pages_letter": 355
+    },
+    {
+      "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.docx",
+      "sha256": "7ab00139bc4e229f5d2f365efb0bcfeb8b6e5020d86702a4be86b989a75be83e",
+      "bytes": 7084907,
+      "pages_letter": 506
+    },
+    {
+      "path": "docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.pdf",
+      "sha256": "b7f9f4c758f59240a4c21397b25bce4f370a4c0e2394f4266ea47336517382d3",
+      "bytes": 8489876,
+      "pages_letter": 506
+    }
+  ],
+  "verification": {
+    "pytest_passed": 1303,
+    "laboratory_shell_blocks": 23,
+    "laboratory_clean_room_runs": 23,
+    "ruff_changed_python_files": "passed",
+    "mkdocs_locales": ["ru", "en", "zh"],
+    "mkdocs_strict": "passed",
+    "publisher_docx_accessibility": "passed",
+    "publisher_pdf_geometry": "passed",
+    "template_font_audit": "passed",
+    "visual_audit": "passed"
+  },
+  "known_limitations": [
+    "Google Docs and its DOCX export do not currently contain the 56 image alternative descriptions; the local publisher DOCX files do.",
+    "Applying native Google Docs alternative descriptions requires one-time Apps Script authorization.",
+    "Final pagination and index locators remain provisional until publisher copyediting in Microsoft Word."
+  ]
+}
