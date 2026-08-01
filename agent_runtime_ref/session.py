@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import TypedDict, cast
 
 from agent_runtime_ref.models import REDACTED_INPUT_DESCRIPTION, compute_input_sha256
+from agent_runtime_ref.states import validate_run_status, validate_side_effect_status
 
 
 class RunPayload(TypedDict):
@@ -118,7 +119,7 @@ class RunRecord:
     def __post_init__(self) -> None:
         self.trace_id = _read_required_string(self.trace_id, field="trace_id")
         self.session_id = _read_required_string(self.session_id, field="session_id")
-        self.status = _read_required_string(self.status, field="status")
+        self.status = validate_run_status(self.status)
         raw_user_input = _read_required_string(self.user_input, field="user_input")
         self.input_sha256 = _read_input_sha256(
             self.input_sha256,
@@ -131,10 +132,7 @@ class RunRecord:
             field="failure_reason",
         )
         self.task_success = _read_task_success(self.task_success)
-        self.side_effect_status = _read_required_string(
-            self.side_effect_status,
-            field="side_effect_status",
-        )
+        self.side_effect_status = validate_side_effect_status(self.side_effect_status)
         self.request_agent_id = _read_optional_string(
             self.request_agent_id,
             field="request_agent_id",
@@ -205,15 +203,6 @@ class RunRecord:
             field="resumable_stream_id",
         )
         status = self.status
-        if status not in {
-            "success",
-            "denied",
-            "failed",
-            "approval_required",
-            "waiting_for_approval",
-            "blocked_on_reconciliation",
-        }:
-            raise ValueError(f"Session status is not supported: {status}")
         if self.task_success is None and status == "success":
             self.task_success = True
         elif self.task_success is None and status in {"denied", "failed"}:
@@ -329,8 +318,7 @@ def _eval_spec_has_duplicate_ticket_evidence(eval_spec: Mapping[str, object]) ->
         for rule in grading_rules:
             if (
                 isinstance(rule, Mapping)
-                and cast(Mapping[str, object], rule).get("type")
-                == "duplicate_ticket_guard"
+                and cast(Mapping[str, object], rule).get("type") == "duplicate_ticket_guard"
             ):
                 return True
     return False
@@ -406,7 +394,7 @@ class SessionStore:
         resumable_stream_id: str = "",
     ) -> RunRecord:
         session_id = _read_required_string(session_id, field="session_id")
-        status = _read_required_string(status, field="status")
+        status = validate_run_status(status)
         tenant_id = (
             _read_optional_string(tenant_id, field="tenant_id")
             if status == "denied"
@@ -423,10 +411,7 @@ class SessionStore:
         failure_reason = _read_optional_string(failure_reason, field="failure_reason")
         input_sha256 = _read_optional_string(input_sha256, field="input_sha256")
         task_success = _read_task_success(task_success)
-        side_effect_status = _read_required_string(
-            side_effect_status,
-            field="side_effect_status",
-        )
+        side_effect_status = validate_side_effect_status(side_effect_status)
         request_agent_id = _read_optional_string(
             request_agent_id,
             field="request_agent_id",
@@ -478,15 +463,6 @@ class SessionStore:
             resumable_stream_id,
             field="resumable_stream_id",
         )
-        if status not in {
-            "success",
-            "denied",
-            "failed",
-            "approval_required",
-            "waiting_for_approval",
-            "blocked_on_reconciliation",
-        }:
-            raise ValueError(f"Session status is not supported: {status}")
         if status == "failed":
             failure_reason = _read_required_string(failure_reason, field="failure_reason")
         if authorization_mode == "user_delegated":
@@ -579,8 +555,7 @@ class SessionStore:
         if not isinstance(session_ids, Sequence) or isinstance(session_ids, str):
             raise TypeError("Session field entries must be a sequence: session_id")
         normalized_session_ids = tuple(
-            _read_required_string(session_id, field="session_id")
-            for session_id in session_ids
+            _read_required_string(session_id, field="session_id") for session_id in session_ids
         )
         if len(set(normalized_session_ids)) != len(normalized_session_ids):
             raise ValueError("Session field entries must be unique: session_id")
@@ -626,9 +601,7 @@ class SessionStore:
             ),
             "trace_ids": list(
                 dict.fromkeys(
-                    trace_id
-                    for session in sessions
-                    for trace_id in session["summary"]["trace_ids"]
+                    trace_id for session in sessions for trace_id in session["summary"]["trace_ids"]
                 )
             ),
             "failed_trace_ids": list(
@@ -640,9 +613,7 @@ class SessionStore:
             ),
             "idempotency_keys": list(
                 dict.fromkeys(
-                    key
-                    for session in sessions
-                    for key in session["summary"]["idempotency_keys"]
+                    key for session in sessions for key in session["summary"]["idempotency_keys"]
                 )
             ),
             "approval_ids": list(
@@ -679,9 +650,7 @@ class SessionStore:
             "latest_failure_reason": (
                 latest_failed_run.failure_reason if latest_failed_run else ""
             ),
-            "duplicate_ticket_scenarios": _duplicate_ticket_scenarios_from_sessions(
-                sessions
-            ),
+            "duplicate_ticket_scenarios": _duplicate_ticket_scenarios_from_sessions(sessions),
             "sessions": sessions,
         }
         with destination.open("w", encoding="utf-8") as handle:
@@ -837,9 +806,7 @@ def summarize_session(
         if not run.approval_id:
             continue
         approval_status = run.capability_session_status or run.status
-        approval_status_counts[approval_status] = (
-            approval_status_counts.get(approval_status, 0) + 1
-        )
+        approval_status_counts[approval_status] = approval_status_counts.get(approval_status, 0) + 1
     trace_ids = tuple(dict.fromkeys(run.trace_id for run in normalized_runs if run.trace_id))
     failed_trace_ids = tuple(
         run.trace_id
@@ -854,9 +821,7 @@ def summarize_session(
         total_runs=len(normalized_runs),
         success_runs=sum(1 for run in normalized_runs if run.status == "success"),
         approval_wait_runs=sum(
-            1
-            for run in normalized_runs
-            if run.status in {"waiting_for_approval", "approval_required"}
+            1 for run in normalized_runs if run.status == "waiting_for_approval"
         ),
         denied_runs=sum(1 for run in normalized_runs if run.status == "denied"),
         failed_runs=sum(1 for run in normalized_runs if run.status == "failed"),

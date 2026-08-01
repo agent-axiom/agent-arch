@@ -115,7 +115,7 @@ If those answers are missing, MCP does not stop being a risk. It becomes an impl
 
 ### 4.2. MCP Threat Model Matrix
 
-For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. The MCP security and authorization material explicitly calls out token passthrough, scope selection, HTTPS/SSRF limits, and stateful-session protection; that makes the matrix part of the authorization and runtime contract, not decorative security prose.[^mcp-security][^mcp-authorization] A minimal version looks like this:
+For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. The MCP security and authorization material explicitly calls out token passthrough, scope selection, HTTPS/SSRF limits, and protection of application-state handles; that makes the matrix part of the authorization and runtime contract, not decorative security prose.[^mcp-security][^mcp-authorization] A minimal version looks like this:
 
 - **tool poisoning** — a tool description or tool result tries to steer the model; control it by validating tool descriptions, separating tool output from instructions, and allowing only known contracts.
 - **rug pull attack** — a previously approved MCP server changes tools, scopes, or behavior after review; control it with version pinning, re-attestation, diff review, and a fast quarantine path.
@@ -124,7 +124,7 @@ For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not st
 - **over-scoped tokens** — the MCP server receives broader OAuth scopes than the operation needs; control it with short-lived scoped tokens, per-tool scopes, and no broad standing secrets.
 - **data exfiltration through legitimate channels** — data leaves through an allowed tool result, notification, or ticket comment; control it with DLP checks, output classification, tenant boundaries, and review for risky writes.
 - **supply-chain attack** — a compromised server, package, or adapter becomes a trusted capability; control it with provenance, signed artifacts, dependency review, and owner accountability.
-- **replay/tampering** — requests, responses, or stateful sessions are replayed or changed between steps; control it with request signing, nonce/idempotency keys, trace correlation, and session expiry.
+- **replay/tampering** — requests, responses, or application-state handles are replayed or changed between steps; control it with request signing, nonce/idempotency keys, trace correlation, and handle expiry.
 - **sandbox escape** — a tool or adapter crosses the network, filesystem, or process boundary; control it with ephemeral sandboxes, minimal egress rules, secret isolation, and runtime-level containment.
 
 The matrix is not there to forbid MCP. It is there so every MCP endpoint has an explicit answer to three questions: which threat class it adds, which control limits it, and which telemetry will still be available after an incident.
@@ -431,67 +431,35 @@ Why that is usually better:
 
 Persistent workers sometimes win on latency, but they often lose on isolation and explainability. So the default stance for high-risk execution should usually be: **ephemeral first, persistence only by explicit need**.
 
-## 6. Stateful MCP Changes What the Runtime Must Track
+## 6. The MCP 2026-07-28 core is stateless
 
-Another recent AWS signal is useful here: once MCP clients and servers support more stateful interaction patterns, MCP stops being just a stateless tool envelope and starts looking more like a sessioned runtime protocol.[^aws-stateful-mcp]
+The MCP 2026-07-28 specification makes each core protocol request self-contained and negotiates the protocol version per message.[^mcp-2026-07-28][^mcp-2026-07-28-release] The former `initialize`/`initialized` handshake and protocol session header are no longer part of the core. This simplifies horizontal scaling and recovery, but it does not eliminate application state.
 
-That changes the execution contract in several practical ways:
+The architectural point is precise: **a stateless protocol does not imply a stateless application**. A cart, browser, workspace, or long-running task may still outlive one call, but its state must be explicit, bounded, and auditable.
 
-- the runtime may need to keep a `session_id` per MCP interaction, not just per user run;
-- capabilities may emit progress notifications before a final result exists;
-- the server may request elicitation or additional user input mid-flow;
-- expiry and re-initialization become part of the normal lifecycle rather than edge cases;
-- telemetry must explain not only which tool was called, but which MCP session instance carried the work.
+### 6.1. Application State Travels Through Explicit Handles
 
-If the platform keeps treating MCP as fully stateless after those patterns appear, pause/resume logic, approval routing, and trace reconstruction all become much harder than they need to be.
+When a tool must continue work on an existing object, it accepts an ordinary argument such as `basket_id`, `browser_id`, or `workspace_id`. That handle:
 
-### 6.1. Stateless MCP and Stateful MCP Need Different Contracts
+- is bound server-side to the principal, tenant, authority scope, and expiry;
+- is validated again on every request;
+- is not proof of authority by itself;
+- can be revoked, deleted, or replaced without reconstructing a hidden transport session;
+- appears in telemetry as a state reference, not as a secret.
 
-A useful distinction is simple:
+This separation prevents transport continuity from quietly becoming authorization. After a pause or approval, the runtime can repeat the call with the same application handle while re-evaluating policy, authority, and action integrity.
 
-- `stateless MCP`: one request, one response, little or no session continuity;
-- `stateful MCP`: a bounded interaction session with progress, intermediate prompts, and possible resume or re-init semantics.
+### 6.2. Long-Running Work and Additional Input Have Separate Contracts
 
-The second model usually needs more from the platform contract:
+For work that cannot finish in one response, the Tasks extension gives the server a task handle and lets the client explicitly query, retrieve, or cancel the work. Telemetry should connect `task_id`, the original call, tool version, progress, outcome, and cancellation reason; a task handle, like any identifier, does not replace authorization.
 
-- session lifecycle ownership;
-- expiry handling;
-- resumability rules;
-- telemetry for progress and elicitation events;
-- policy fields that describe whether a paused session may resume automatically or requires renewed approval.
+When the server needs more input, it returns `InputRequiredResult` with `requestState` and input requests. After the user responds, the client resubmits the original call with `inputResponses`. For a side-effecting operation, that retry must retain the same idempotency key and action digest, while the runtime repeats policy and approval-freshness checks. A broken connection therefore cannot turn human input into an implicit duplicate write.
 
-That does not make stateless MCP obsolete. It simply means the platform should not pretend both modes are operationally identical.
+### 6.3. A Gateway Routes Messages Instead of Guessing at Hidden Sessions
 
-### 6.2. Progress, Elicitation, and Expiry Are Runtime Events, Not Transport Trivia
+In the HTTP profile, `Mcp-Method` and `Mcp-Name` let a gateway route and observe MCP messages without parsing the whole body. The `ttlMs` and `cacheScope` hints describe permissible caching, while W3C Trace Context links the request to the end-to-end trace. These values remain protocol hints: the server still validates identity, arguments, and authority on every request.
 
-A useful operational lesson from AWS's stateful MCP direction is that the hard part is not merely storing a session handle.[^aws-stateful-mcp] The harder part is deciding how the runtime should react when the capability emits progress, requests more input, or expires before the work is done.
-
-AgentCore Gateway extended MCP support sharpens that into a protocol contract.[^aws-agentcore-extended-mcp] A gateway may aggregate `tools/list`, `prompts/list`, `resources/list`, and resource templates, while carrying `outputSchema` and annotations such as read-only/destructive. But dynamic listing changes what disclosure means: the capability list may be computed live under the calling user's identity rather than served from a static cache. The trace therefore needs to preserve `listing_mode`, `listed_under_principal`, `output_schema_hash`, `tool_annotations`, `Mcp-Session-Id`, and whether authorization was checked again before invoke.
-
-That usually forces the platform to define explicit behavior for at least four cases:
-
-- `progress_update`: the capability is still working and the runtime should expose liveness without treating the call as stuck;
-- `elicitation_requested`: the capability cannot continue until the user or operator supplies more input;
-- `session_expired`: the prior capability session can no longer be resumed safely;
-- `reinitialized_session`: the runtime deliberately opened a fresh capability session and linked it to the same higher-level user run.
-
-Those are not small transport details. They shape how approval, telemetry, and operator response all behave.
-
-There is another sharp edge: with SSE streaming, the HTTP status is fixed by the first event, while a mid-stream failure arrives as a protocol error inside the stream. Elicitation requires streaming and sessions, but if the connection breaks during elicitation, the specific tool call may not resume; the client has to retry the original `tools/call`. The runtime contract should therefore distinguish `resume_existing_session_if_valid`, `retry_original_tool_call`, and `reinitialize_or_cancel`, or human input can quietly become a repeated side effect without a fresh check.
-
-### 6.3. A Good MCP Contract Should Explain What Happens After Interruption
-
-If a stateful capability pauses mid-flow, the platform should not improvise its recovery logic.
-
-It helps to make at least these rules explicit:
-
-- whether the same capability session may resume after human approval;
-- whether expiry cancels the run or triggers re-initialization;
-- whether the next step requires fresh policy evaluation;
-- whether the runtime preserves the same user-visible run while rotating the capability-side session;
-- how telemetry links the old and new capability sessions during investigation.
-
-Without those answers, a team may technically support stateful MCP while still leaving operators unable to explain what happened after an interruption.
+AgentCore Gateway extended MCP support remains a useful example of aggregating `tools/list`, `prompts/list`, `resources/list`, and resource templates, carrying `outputSchema`, dynamic listings, and tool annotations.[^aws-agentcore-extended-mcp] Useful trace fields include `listing_mode`, `listed_under_principal`, `output_schema_hash`, and `tool_annotations`. However, the AWS behavior published on 2025-11-25 is a **vendor-specific** contract for that service version, not the universal model of the current MCP core.[^aws-stateful-mcp] A platform should date that compatibility profile and avoid projecting older session-continuation semantics onto the shared protocol.
 
 ## 7. Not Every Capability Needs the Same Isolation Level
 
@@ -547,10 +515,10 @@ capabilities:
     secrets: service_account_helpdesk
     timeout_seconds: 15
     approval: manager_for_high_priority
-    session_mode: stateful
-    progress_events: true
-    elicitation: manager_or_requester
-    on_session_expiry: reinitialize_or_cancel
+    protocol_profile: mcp-2026-07-28
+    state_handle_argument: ticket_draft_id
+    long_running_mode: tasks_extension
+    additional_input: request_state
   run_shell:
     transport: sandboxed_exec
     mode: high_risk
@@ -730,6 +698,10 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
 [^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), and [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
+
+[^mcp-2026-07-28]: [Model Context Protocol, Specification 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)
+
+[^mcp-2026-07-28-release]: [Model Context Protocol Blog, The 2026-07-28 MCP Specification Release Candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/)
 
 [^mcp-security]: [Model Context Protocol, Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
 

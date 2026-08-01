@@ -13,6 +13,7 @@ from agent_runtime_ref.models import (
     normalize_tool_arguments,
     normalize_tool_capability_name,
 )
+from agent_runtime_ref.states import validate_policy_decision
 
 
 def _read_string_list_items(items: object, *, label: str) -> set[str]:
@@ -53,21 +54,11 @@ def _read_memory_kind(value: str) -> str:
 
 
 def _read_policy_decision(value: object) -> str:
-    if not isinstance(value, str):
-        raise TypeError("Policy decision must be a string")
-    decision = value.strip()
-    if decision not in {"allow", "approval_required", "deny"}:
-        raise ValueError(f"Policy decision is not supported: {decision}")
-    return decision
+    return validate_policy_decision(value)
 
 
 def _read_policy_action(value: object) -> str:
-    if not isinstance(value, str):
-        raise TypeError("Policy action must be a string")
-    action = value.strip()
-    if action not in {"allow", "approval_required", "deny"}:
-        raise ValueError(f"Policy action is not supported: {action}")
-    return action
+    return validate_policy_decision(value)
 
 
 def _read_policy_field(value: object, *, field: str) -> str:
@@ -163,9 +154,7 @@ class PolicyEngine:
         )
         self.approved_inventory = approved_inventory
         network_access = (
-            {"restricted", "brokered"}
-            if allowed_network_access is None
-            else allowed_network_access
+            {"restricted", "brokered"} if allowed_network_access is None else allowed_network_access
         )
         self.allowed_network_access = _read_string_list_items(
             network_access,

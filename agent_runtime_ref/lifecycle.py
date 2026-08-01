@@ -138,9 +138,7 @@ def classify_change_surfaces(
         affected_surfaces,
         key="affected_surfaces",
     )
-    unknown = tuple(
-        surface for surface in normalized if surface not in _CHANGE_SURFACE_RISK
-    )
+    unknown = tuple(surface for surface in normalized if surface not in _CHANGE_SURFACE_RISK)
     if not normalized or unknown:
         return ChangeSurfaceClassification(
             risk_level="review_required",
@@ -243,9 +241,7 @@ class ChangeRecord:
             change_id=_read_required_string(data, "change_id", label="change"),
             change_type=_read_required_string(data, "change_type", label="change"),
             risk_level=_read_required_string(data, "risk_level", label="change"),
-            rollout_strategy=_read_required_string(
-                data, "rollout_strategy", label="change"
-            ),
+            rollout_strategy=_read_required_string(data, "rollout_strategy", label="change"),
             artifacts=_read_string_list(data, "artifacts"),
             affected_surfaces=_read_string_list(data, "affected_surfaces"),
             required_signals=_read_string_list(data, "required_signals"),
@@ -398,9 +394,7 @@ class RetirementPlan:
         data = _require_mapping(root.get("retirement", root), label="retirement")
         return cls(
             system_id=_read_required_string(data, "system_id", label="retirement"),
-            replacement_mode=_read_required_string(
-                data, "replacement_mode", label="retirement"
-            ),
+            replacement_mode=_read_required_string(data, "replacement_mode", label="retirement"),
             triggers=_read_string_list(data, "triggers"),
             required_steps=_read_string_list(data, "required_steps"),
             session_control_owner=_read_required_string(
@@ -417,6 +411,7 @@ class RetirementPlan:
 class ChangeGateAssessment:
     ready: bool
     missing_signals: tuple[str, ...]
+    missing_approval_roles: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -428,14 +423,26 @@ class RetirementAssessment:
 def assess_change_gate(
     change: ChangeRecord,
     observed_signals: dict[str, bool],
+    required_approval_roles: Sequence[str] = (),
 ) -> ChangeGateAssessment:
     if not isinstance(change, ChangeRecord):
         raise TypeError("Lifecycle change must be ChangeRecord")
     observed = _read_observed_flags(observed_signals)
-    missing = tuple(
+    required_roles = _normalize_string_items(
+        required_approval_roles,
+        key="required_approval_roles",
+    )
+    missing_signals = tuple(
         signal for signal in change.required_signals if not observed.get(signal, False)
     )
-    return ChangeGateAssessment(ready=not missing, missing_signals=missing)
+    missing_approval_roles = tuple(
+        role for role in required_roles if role not in change.approval_roles
+    )
+    return ChangeGateAssessment(
+        ready=not missing_signals and not missing_approval_roles,
+        missing_signals=missing_signals,
+        missing_approval_roles=missing_approval_roles,
+    )
 
 
 def assess_retirement(
@@ -445,7 +452,5 @@ def assess_retirement(
     if not isinstance(plan, RetirementPlan):
         raise TypeError("Lifecycle retirement plan must be RetirementPlan")
     observed = _read_observed_flags(observed_steps)
-    missing = tuple(
-        step for step in plan.required_steps if not observed.get(step, False)
-    )
+    missing = tuple(step for step in plan.required_steps if not observed.get(step, False))
     return RetirementAssessment(ready=not missing, missing_steps=missing)

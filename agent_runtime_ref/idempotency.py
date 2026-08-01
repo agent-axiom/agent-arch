@@ -37,6 +37,7 @@ def _clone_result(result: ToolResult) -> ToolResult:
         capability_name=result.capability_name,
         status=result.status,
         payload=dict(result.payload),
+        side_effect_status=result.side_effect_status,
     )
 
 
@@ -158,10 +159,11 @@ def _clone_optional(result: ToolResult | None) -> ToolResult | None:
 
 
 def _state_for_result(result: ToolResult) -> str:
+    unresolved_effects = {"side_effect_unknown", "partial_side_effect"}
+    if result.outcome in unresolved_effects or result.side_effect_status in unresolved_effects:
+        return "side_effect_unknown"
     if result.status == "success":
         return "succeeded"
-    if result.status == "side_effect_unknown":
-        return "side_effect_unknown"
-    if result.payload.get("effect_state") == "not_executed":
+    if result.side_effect_status == "not_executed":
         return "retryable_failure"
     return "side_effect_unknown"
