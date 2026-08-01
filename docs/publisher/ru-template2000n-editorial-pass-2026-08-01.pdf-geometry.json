@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "pdf": "docs/publisher/artifacts/agent-arch-ru-template2000n-editorial-pass-2026-08-01.pdf",
+  "sha256": "3e147f51fa674a941945ae55c406d8ec8cd6df8dc896b89809232451d4fd49ad",
+  "bytes": 10568874,
+  "pages": 330,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 330
+    }
+  ],
+  "text_characters": 782792,
+  "extracted_words": 100480,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "BAAAAA+LiberationSerif",
+      "character_occurrences": 531998
+    },
+    {
+      "name": "HAAAAA+LiberationMono",
+      "character_occurrences": 107821
+    },
+    {
+      "name": "LAAAAA+RobotoMono-Regular",
+      "character_occurrences": 55014
+    },
+    {
+      "name": "IAAAAA+RobotoMono-Regular",
+      "character_occurrences": 26069
+    },
+    {
+      "name": "EAAAAA+LiberationSerif-Bold",
+      "character_occurrences": 20904
+    },
+    {
+      "name": "JAAAAA+LiberationSerif",
+      "character_occurrences": 15195
+    },
+    {
+      "name": "OAAAAA+LiberationSerif",
+      "character_occurrences": 7910
+    },
+    {
+      "name": "PAAAAA+LiberationSerif",
+      "character_occurrences": 7900
+    },
+    {
+      "name": "GAAAAA+LiberationMono-Bold",
+      "character_occurrences": 3109
+    },
+    {
+      "name": "FAAAAA+LiberationSerif",
+      "character_occurrences": 2479
+    },
+    {
+      "name": "KAAAAA+LiberationSerif",
+      "character_occurrences": 1970
+    },
+    {
+      "name": "TAAAAA+LiberationSerif-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "NAAAAA+LiberationSerif-Bold",
+      "character_occurrences": 710
+    },
+    {
+      "name": "MAAAAA+LiberationSerif",
+      "character_occurrences": 439
+    },
+    {
+      "name": "QAAAAA+LiberationSerif",
+      "character_occurrences": 168
+    },
+    {
+      "name": "SAAAAA+LiberationSerif-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "RAAAAA+RobotoMono-Bold",
+      "character_occurrences": 38
+    },
+    {
+      "name": "CAAAAA+LiberationSans",
+      "character_occurrences": 33
+    },
+    {
+      "name": "DAAAAA+LiberationSans-Bold",
+      "character_occurrences": 10
+    },
+    {
+      "name": "UAAAAA+LinuxLibertineG",
+      "character_occurrences": 2
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "pdf": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-pass-2026-08-01.pdf",
+  "sha256": "3e51a9d56b2d748f7f0505f3ba78d1e31bcaf614f1896feeb9cf8689f8c384bb",
+  "bytes": 9310884,
+  "pages": 456,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 456
+    }
+  ],
+  "text_characters": 783190,
+  "extracted_words": 100644,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "BAAAAA+LiberationSans",
+      "character_occurrences": 650105
+    },
+    {
+      "name": "IAAAAA+RobotoMono-Regular",
+      "character_occurrences": 55014
+    },
+    {
+      "name": "GAAAAA+RobotoMono-Regular",
+      "character_occurrences": 26065
+    },
+    {
+      "name": "EAAAAA+LiberationSans-Bold",
+      "character_occurrences": 24719
+    },
+    {
+      "name": "HAAAAA+LiberationSans",
+      "character_occurrences": 15195
+    },
+    {
+      "name": "KAAAAA+LiberationSans",
+      "character_occurrences": 7900
+    },
+    {
+      "name": "FAAAAA+LiberationSans",
+      "character_occurrences": 2479
+    },
+    {
+      "name": "OAAAAA+LiberationSans-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "JAAAAA+LiberationSans",
+      "character_occurrences": 439
+    },
+    {
+      "name": "LAAAAA+Carlito",
+      "character_occurrences": 168
+    },
+    {
+      "name": "NAAAAA+LiberationSans-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "MAAAAA+RobotoMono-Bold",
+      "character_occurrences": 38
+    },
+    {
+      "name": "CAAAAA+LiberationSans",
+      "character_occurrences": 33
+    },
+    {
+      "name": "DAAAAA+LiberationSans-Bold",
+      "character_occurrences": 10
+    },
+    {
+      "name": "PAAAAA+LinuxLibertineG",
+      "character_occurrences": 2
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

@@ -115,7 +115,7 @@ Microsoft 的 MCP tool poisoning 案例把这条边界说得更尖锐：**tool d
 
 ### 4.2. MCP 威胁模型矩阵
 
-对 MCP 来说，[MCP 威胁模型（MCP threat model）](../../appendix/trace-schema.zh.md) 不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。MCP 的安全与授权材料已经明确讨论 token passthrough、scope selection、HTTPS/SSRF 限制和有状态会话保护；因此这张矩阵不是装饰性安全文字，而是授权与运行契约的一部分。[^mcp-security][^mcp-authorization] 一个最小版本可以这样看：
+对 MCP 来说，[MCP 威胁模型（MCP threat model）](../../appendix/trace-schema.zh.md) 不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。MCP 的安全与授权材料已经明确讨论 token passthrough、scope selection、HTTPS/SSRF 限制和应用状态句柄保护；因此这张矩阵不是装饰性安全文字，而是授权与运行契约的一部分。[^mcp-security][^mcp-authorization] 一个最小版本可以这样看：
 
 - **tool poisoning** — 工具描述或工具结果试图引导模型行为；控制方式是验证 tool descriptions，把 tool output 与指令分离，并只允许已知契约。
 - **rug pull attack** — 已获批准的 MCP server 在审查后改变 tools、scopes 或行为；控制方式是 version pinning、重新认证、diff review 和快速隔离路径。
@@ -124,7 +124,7 @@ Microsoft 的 MCP tool poisoning 案例把这条边界说得更尖锐：**tool d
 - **over-scoped tokens** — MCP server 获得了超过当前操作所需的 OAuth scopes；控制方式是短生命周期 scoped tokens、per-tool scopes，并禁止宽泛的长期密钥。
 - **data exfiltration through legitimate channels** — 数据通过被允许的 tool result、notification 或 ticket comment 外流；控制方式是 DLP checks、output classification、tenant boundaries，以及 risky writes review。
 - **supply-chain attack** — 被攻破的 server、package 或 adapter 变成受信任能力；控制方式是 provenance、signed artifacts、dependency review 和 owner accountability。
-- **replay/tampering** — 请求、响应或有状态 session 在步骤之间被重放或篡改；控制方式是 request signing、nonce/idempotency keys、trace correlation 和 session expiry。
+- **replay/tampering** — 请求、响应或应用状态句柄在步骤之间被重放或篡改；控制方式是 request signing、nonce/idempotency keys、trace correlation 和句柄过期策略。
 - **sandbox escape** — tool 或 adapter 越过网络、文件系统或进程边界；控制方式是 ephemeral sandbox、最小 egress rules、secret isolation 和 runtime-level containment。
 
 这张矩阵不是为了禁止 MCP，而是为了让每个 MCP endpoint 都能回答三个问题：它增加了哪类威胁，哪项控制在限制它，事故之后 telemetry 里还能留下什么证据。
@@ -431,67 +431,35 @@ Google 还有一个很有价值的提醒：对高风险能力来说，短生命�
 
 常驻 worker 有时会赢在延迟，但经常输在隔离性和可解释性上。所以面对高风险执行，更合理的默认立场通常是：**短生命周期优先，只有在明确需要时才保留持久环境**。
 
-## 6. Stateful MCP 会改变运行时必须追踪的东西
+## 6. MCP 2026-07-28 核心是无状态的
 
-AWS 最近的另一个信号也很有价值：一旦 MCP client 和 server 开始支持更强的有状态交互模式，MCP 就不再只是一个无状态工具封套，而会更像一种带会话的运行时协议。[^aws-stateful-mcp]
+MCP 2026-07-28 规范要求核心协议中的每个请求都自包含，并按消息协商协议版本。[^mcp-2026-07-28][^mcp-2026-07-28-release] 旧的 `initialize`/`initialized` 握手和协议会话头已经移出核心。这样更容易做水平扩展和故障恢复，但并不等于应用不再需要状态。
 
-这会在几个非常实际的地方改变执行契约：
+架构上的结论必须说清楚：**无状态协议不等于无状态应用**。购物篮、浏览器、工作区或长任务仍然可以跨越一次调用，但状态必须显式、有边界、可审计。
 
-- 运行时需要维护的不只是用户运行，还可能包括每次 MCP 交互的独立 `session_id`；
-- 能力可能在最终结果出现之前先发送进度通知；
-- 服务器可能在流程中途请求补充请求或额外用户输入；
-- 过期与重新初始化会变成正常生命周期的一部分，而不再只是边缘情况；
-- 遥测不仅要说明调用了哪个工具，还要说明是哪一个 MCP 会话实例承载了这段工作。
+### 6.1. 应用状态通过显式句柄传递
 
-如果平台在这些模式已经出现后，仍然把 MCP 当成完全无状态的东西，那么暂停/恢复逻辑、审批路由和追踪重建很快就会变得比本来复杂得多。
+工具需要继续操作既有对象时，应接收普通参数，例如 `basket_id`、`browser_id` 或 `workspace_id`。这种句柄：
 
-### 6.1. Stateless MCP 和 Stateful MCP 需要不同契约
+- 在服务器端绑定主体、租户、权限范围和有效期；
+- 每个请求都重新验证；
+- 本身不是权限证明；
+- 可以撤销、删除或替换，而不必重建隐藏的传输会话；
+- 在遥测中作为状态引用记录，而不是作为密钥。
 
-这里一个很有用的区分是：
+这种分离避免把传输连续性悄悄变成授权。暂停或审批之后，运行时可以携带同一个应用句柄重新调用，但必须重新检查策略、权限和动作完整性。
 
-- `stateless MCP`：一次请求，对应一次响应，几乎没有会话连续性；
-- `stateful MCP`：一个有边界的交互会话，包含进度、中间提示，以及可能的恢复/重新初始化语义。
+### 6.2. 长任务与补充输入使用独立契约
 
-第二种模式通常要求平台提供更多控制：
+对于一次响应无法完成的工作，Tasks 扩展让服务器返回任务句柄，客户端则显式查询、获取结果或取消任务。遥测应关联 `task_id`、原始调用、工具版本、进度、结果和取消原因；任务句柄和其他标识符一样，不能代替授权。
 
-- 会话生命周期负责人；
-- 过期处理；
-- 可恢复规则；
-- 面向进度和补充请求事件的遥测；
-- 能描述暂停后是否可自动恢复、还是必须重新审批的策略字段。
+服务器需要额外输入时，会返回带有 `requestState` 和输入请求的 `InputRequiredResult`。用户回答后，客户端携带 `inputResponses` 重新发送原始调用。若操作会产生副作用，这次重试必须保留相同的幂等键和动作摘要，同时重新执行策略与审批时效检查。这样，连接中断就不会把人工输入变成隐式的重复写入。
 
-这并不意味着 `stateless MCP` 过时了。它只是说明，平台不应该假装这两种模式在运营上完全一样。
+### 6.3. 网关路由消息，而不是猜测隐藏会话
 
-### 6.2. Progress、elicitation 和 expiry 是运行时事件，不是传输细节
+在 HTTP 配置中，`Mcp-Method` 和 `Mcp-Name` 让网关无需解析完整消息体也能路由和观测 MCP 消息。`ttlMs` 与 `cacheScope` 提示允许的缓存方式，W3C Trace Context 则把请求关联到端到端追踪。这些字段仍然只是协议提示：服务器必须在每个请求上验证身份、参数和权限。
 
-AWS 关于有状态 MCP 的方向还有一个很有价值的运营教训：难点不只是保存一个会话句柄。[^aws-stateful-mcp] 更难的是，当能力发出进度、请求更多输入，或在工作完成前先过期时，运行时应该如何响应。
-
-AgentCore Gateway extended MCP support 把这一点进一步收紧成 protocol contract。[^aws-agentcore-extended-mcp] Gateway 可以聚合 `tools/list`、`prompts/list`、`resources/list` 和 resource templates，同时保留 `outputSchema` 以及 read-only/destructive 等 annotations。但 dynamic listing 会改变 disclosure 的含义：capability list 可能在调用用户的 identity 下实时计算，而不是来自静态 cache。因此 trace 需要保留 `listing_mode`、`listed_under_principal`、`output_schema_hash`、`tool_annotations`、`Mcp-Session-Id`，以及 invoke 前是否重新检查 authorization。
-
-这通常会迫使平台至少把下面四类情况定义清楚：
-
-- `progress_update`：能力仍在工作，运行时应该暴露存活状态，而不是把它误判成卡死；
-- `elicitation_requested`：能力不能继续，直到用户或操作员提供更多输入；
-- `session_expired`：原来的能力会话已经不能安全恢复；
-- `reinitialized_session`：运行时有意识地重新打开了一个新的能力会话，但仍把它挂在同一个更高层用户运行下。
-
-这些并不是小小的传输细节。它们会直接塑造审批、遥测和操作员响应的行为。
-
-这里还有一个尖锐边缘：使用 SSE streaming 时，HTTP status 由第一个事件固定；mid-stream failure 只能作为 stream 内的 protocol error 返回。Elicitation 需要 streaming 和 sessions，但如果连接在 elicitation 期间断开，具体 tool call 可能无法 resume；client 必须 retry 原始 `tools/call`。因此 runtime contract 应该区分 `resume_existing_session_if_valid`、`retry_original_tool_call` 和 `reinitialize_or_cancel`，否则 human input 可能悄悄变成没有 fresh check 的重复 side effect。
-
-### 6.3. 好的 MCP 契约必须解释中断之后会发生什么
-
-如果一个有状态能力在中途暂停，平台不应该临时拼凑恢复逻辑。
-
-至少应该把这些规则写清楚：
-
-- 同一个能力会话在人工审批之后是否还能恢复；
-- 过期是取消运行，还是触发重新初始化；
-- 下一步是否需要重新策略评估；
-- 当能力侧会话被轮换时，运行时是否仍然保持同一个用户可见运行；
-- 在排障时，遥测如何把旧能力会话和新能力会话关联起来。
-
-如果这些问题没有答案，团队即使“技术上支持”有状态 MCP，运营上仍然解释不清中断之后到底发生了什么。
+AgentCore Gateway 的扩展 MCP 支持仍是聚合 `tools/list`、`prompts/list`、`resources/list` 与资源模板、携带 `outputSchema`、动态列表和工具注解的有用案例。[^aws-agentcore-extended-mcp] 有价值的追踪字段包括 `listing_mode`、`listed_under_principal`、`output_schema_hash` 和 `tool_annotations`。但 AWS 在 2025-11-25 发布的行为是该服务版本的**供应商特定**契约，并不是当前 MCP 核心的通用模型。[^aws-stateful-mcp] 平台应给兼容配置标明日期，不能把旧的会话延续语义投射到共享协议上。
 
 ## 7. 不是所有能力都需要同等级别的隔离
 
@@ -547,10 +515,10 @@ capabilities:
     secrets: service_account_helpdesk
     timeout_seconds: 15
     approval: manager_for_high_priority
-    session_mode: stateful
-    progress_events: true
-    elicitation: manager_or_requester
-    on_session_expiry: reinitialize_or_cancel
+    protocol_profile: mcp-2026-07-28
+    state_handle_argument: ticket_draft_id
+    long_running_mode: tasks_extension
+    additional_input: request_state
   run_shell:
     transport: sandboxed_exec
     mode: high_risk
@@ -730,6 +698,10 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^google-sandbox]: [Google Cloud, Introducing Agent Sandbox](https://cloud.google.com/blog/products/containers-kubernetes/agentic-ai-on-kubernetes-and-gke/)
 
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
+
+[^mcp-2026-07-28]: [Model Context Protocol, Specification 2026-07-28](https://modelcontextprotocol.io/specification/2026-07-28)
+
+[^mcp-2026-07-28-release]: [Model Context Protocol Blog, The 2026-07-28 MCP Specification Release Candidate](https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/)
 
 [^mcp-security]: [Model Context Protocol, Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
 
