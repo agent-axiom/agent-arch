@@ -94,7 +94,7 @@ def test_reference_package_quickstart_matches_runtime_contract() -> None:
         )
     ]
 
-    assert "git checkout ru-manuscript-editorial-2026-07-29" in appendix
+    assert "git checkout ru-manuscript-editorial-2026-08-01" in appendix
     assert '"status": "waiting_for_approval"' in appendix
     assert '"events": 10' in appendix
     assert '"memory_records": 3' in appendix
@@ -1482,7 +1482,7 @@ def test_submission_readiness_pass_consolidates_chapter_21_provenance_lists() ->
 def test_submission_readiness_uses_the_verified_release_tag() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
-    assert text.count("git checkout ru-manuscript-editorial-2026-07-29") == 2
+    assert text.count("git checkout ru-manuscript-editorial-2026-08-01") == 2
     assert "ru-manuscript-editorial-2026-07-22" not in text
     assert "git checkout ru-manuscript-editorial-2026-07\n" not in text
 
@@ -1553,7 +1553,7 @@ def test_prose_quality_and_quickstart_are_editorially_consistent() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     introduction = text.split("# Часть I.", 1)[0]
 
-    assert "git checkout ru-manuscript-editorial-2026-07-29" in introduction
+    assert "git checkout ru-manuscript-editorial-2026-08-01" in introduction
     assert "uv sync --frozen --group dev" in introduction
     assert re.search(r"семантики «ровно один раз»\s*\(`exactly-once`\)", introduction)
 
@@ -2060,8 +2060,8 @@ def test_multi_agent_review_remediations_are_reflected_in_practice() -> None:
     assert "manifest_integrity_verified=true" in lab_8
     assert "trusted_attestation_verified=false" in lab_8
 
-    assert "ненулевой оценке по каждому из двух критериев-блокеров" in text
-    assert "нуле по любому из двух критериев-блокеров" not in text
+    assert "**Безусловные блокеры.**" in text
+    assert "запрещают принятие проекта независимо от суммы" in text
 
 
 def test_capability_discovery_is_a_governed_runtime_operation() -> None:
@@ -2162,9 +2162,9 @@ def test_every_manuscript_table_has_a_numbered_caption() -> None:
     captions = re.findall(r"^Таблица (\d+)\. .+$", text, re.MULTILINE)
     tables = re.findall(r"^\|.+\|\n\|\s*:?-+", text, re.MULTILINE)
 
-    assert captions == [str(number) for number in range(1, 11)]
-    assert len(tables) == 10
-    for number in range(1, 11):
+    assert captions == [str(number) for number in range(1, 12)]
+    assert len(tables) == 11
+    for number in range(1, 12):
         assert re.search(
             rf"^Таблица {number}\. .+\n\n\|.+\|$",
             text,
@@ -2563,7 +2563,7 @@ def test_source_appendix_separates_cited_sources_from_further_reading() -> None:
 
     assert cited_ids == used_ids
     assert cited_ids.isdisjoint(further_ids)
-    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 116)}
+    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 123)}
 
 
 def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
@@ -2639,15 +2639,13 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
             "удаление",
         ),
         11: (
-            "#### Сессия MCP не равна повтору вызова",
+            "#### Повтор вызова не равен продолжению прикладной работы",
+            "Ядро MCP 2026-07-28 не хранит протокольную сессию",
             "`outputSchema`",
-            "`annotations`",
-            "`Mcp-Session-Id`",
-            "elicitation",
-            "(OBO)",
-            "Существующую сессию можно возобновить",
-            "Исходный вызов инструмента повторяется",
-            "повторно инициализируется",
+            "`requestState`",
+            "расширение Tasks",
+            "OBO-обмен",
+            "свежей авторизации",
             "#### Угрозы сети агентов",
             "Sybil-атаку",
             "предел числа переходов",
@@ -2700,15 +2698,16 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
 
     chapter_eleven = revision_tool.extract_chapter(text, 11)
     closure = chapter_eleven.index("**Что изменилось после этой главы.**")
-    assert chapter_eleven.index("#### Сессия MCP не равна повтору вызова") < closure
+    assert (
+        chapter_eleven.index("#### Повтор вызова не равен продолжению прикладной работы") < closure
+    )
     assert chapter_eleven.index("#### Угрозы сети агентов") < closure
     for marker in (
-        "Глава также различает возобновление сессии, повтор вызова, "
-        "повторную инициализацию и отмену",
+        "Глава также отделяет ядро MCP без состояния",
         "как ограничивать распространение риска в сети агентов",
-        "возобновление сессии, повтор вызова, повторную инициализацию и отмену",
-        "Возобновление сессии, повтор вызова и повторная инициализация — разные переходы",
-        "сеть агентов требует явных пределов распространения риска",
+        "Ядро MCP остается без состояния",
+        "Прикладной дескриптор, задача, повтор вызова и новый запрос ввода",
+        "Сеть агентов требует явных пределов распространения риска",
     ):
         assert marker in chapter_eleven
     outcomes = chapter_eleven.split("**После главы вы сможете:**", 1)[1].split(
@@ -2716,8 +2715,8 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
         1,
     )[0]
     assert (
-        "* различать возобновление сессии, повтор вызова инструмента, "
-        "повторную инициализацию и отмену;" in outcomes
+        "* отделять ядро MCP без состояния от прикладных дескрипторов, "
+        "длительных задач и повторного ввода;" in outcomes
     )
     assert "* ограничивать распространение риска в сети агентов." in outcomes
 
@@ -2758,7 +2757,7 @@ def test_online_sync_repairs_version_grammar_and_preserves_author_placeholders()
     text = EXPECTED.read_text(encoding="utf-8")
     author_block = text.split("## Как использовать примеры безопасно", 1)[0]
 
-    assert text.count("git checkout ru-manuscript-editorial-2026-07-29") == 2
+    assert text.count("git checkout ru-manuscript-editorial-2026-08-01") == 2
     assert "ru-manuscript-editorial-2026-07-22" not in text
     assert "открывать заявка" not in text
     assert "какой агент вызывал точка доступа" not in text
@@ -3226,3 +3225,138 @@ def test_editorial_packet_builder_is_reproducible(tmp_path: Path) -> None:
     assert index_terms.read_bytes() == INDEX_TERMS.read_bytes()
     assert learning_map.read_bytes() == LEARNING_OUTCOME_MAP.read_bytes()
     assert review_packet.read_bytes() == HUMAN_REVIEW_PACKET.read_bytes()
+
+
+def test_august_online_delta_is_integrated_as_reader_sized_contracts() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_ten = revision_tool.extract_chapter(text, 10)
+    chapter_fourteen = revision_tool.extract_chapter(text, 14)
+    chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_seventeen = revision_tool.extract_chapter(text, 17)
+
+    for marker in (
+        "Проверка с ограниченным набором доказательств",
+        "`review_hypothesis`",
+        "`evidence_ref`",
+        "`review_cost`",
+        "`quality_gate`",
+    ):
+        assert marker in chapter_ten
+
+    for marker in (
+        "Платная возможность требует решения до вызова",
+        "`payer_identity`",
+        "`spending_cap`",
+        "`payment_proof_ref`",
+        "`metering_record_id`",
+    ):
+        assert marker in chapter_fourteen
+
+    for marker in (
+        "живая трасса → управляемая выборка → оценка → сигнал → разбор",
+        "`sampling_reason`",
+        "`grader_version`",
+        "дрейф проверяющего",
+        "исправления предметных экспертов",
+        "ожидаемая запись → конфликтующая ревизия → устаревшее извлечение → удаление",
+    ):
+        assert marker in chapter_fifteen
+
+    for marker in (
+        "удержание по типам задач",
+        "нагрузку проверки",
+        "стоимость принятого изменения",
+        "подтвержденную продуктовую ценность",
+    ):
+        assert marker in chapter_seventeen
+
+def test_august_mcp_contract_uses_stateless_core_and_explicit_state() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+
+    for marker in (
+        "Ядро MCP 2026-07-28 не хранит протокольную сессию",
+        "`Mcp-Method`",
+        "`Mcp-Name`",
+        "`requestState`",
+        "прикладной дескриптор",
+        "расширение Tasks",
+        "Расширенная поддержка MCP в AgentCore Gateway",
+        "зависит от поставщика",
+        "**S116.**",
+        "**S117.**",
+    ):
+        assert marker in chapter_eleven
+
+    assert "`Mcp-Session-Id`" not in chapter_eleven
+    assert "session_mode: stateful" not in chapter_eleven
+    assert "сессионный протокол среды исполнения" not in chapter_eleven
+    assert "AgentCore Gateway extended MCP support" not in chapter_eleven
+    assert "vendor-specific" not in chapter_eleven
+
+def test_policy_decision_is_separate_from_control_disposition() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    introduction = text.split("## Часть I", 1)[0]
+    chapter_five = revision_tool.extract_chapter(text, 5)
+
+    assert "**Управляющее действие.**" in introduction
+    assert "`monitor_only`" in introduction
+    assert "`quarantine_session`" in introduction
+    assert "`control_action`" in chapter_five
+    assert "Политика выполнения возвращает не только `allow` или `deny`" not in chapter_five
+
+def test_august_editorial_pass_aligns_examples_and_reference_terms() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_nineteen = revision_tool.extract_chapter(text, 19)
+    chapter_twenty_one = revision_tool.extract_chapter(text, 21)
+    glossary = text.split("## Приложение 1\\. Глоссарий", 1)[1].split("## Приложение 2\\.", 1)[0]
+
+    assert "support-triage-agent" not in text
+    assert "support_triage_ref" not in text
+    assert text.count("support-triage-ref") >= 3
+    assert "risk: medium" not in text
+    assert "Реестр агентов" in chapter_nineteen
+    assert "реестр утвержденных платформенных компонентов" in chapter_twenty_one
+    assert "### Реестр агентов" in glossary
+    assert "### Реестр утвержденных платформенных компонентов" in glossary
+
+def test_capstone_rubric_has_observable_score_anchors() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    capstone = text.split("## Итоговый проект", 1)[1].split("## Послесловие", 1)[0]
+
+    for marker in (
+        "Таблица 11. Аналитическая рубрика итогового проекта",
+        "0 баллов",
+        "2 балла",
+        "4 балла",
+        "Безусловные блокеры",
+        "Оцененный эталон",
+    ):
+        assert marker in capstone
+
+def test_august_sources_are_local_and_bibliographically_complete() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix = text.split("## Приложение 4\\.", 1)[1]
+    expected_urls = {
+        "S116": "https://modelcontextprotocol.io/specification/2026-07-28",
+        "S117": "https://blog.modelcontextprotocol.io/posts/2026-07-28-release-candidate/",
+        "S118": "https://blog.cloudflare.com/monetization-gateway/",
+        "S119": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-agents",
+        "S120": "https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-online",
+        "S121": "https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance",
+        "S122": "https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/",
+    }
+    for source_id, url in expected_urls.items():
+        assert appendix.count(f"**{source_id}.**") == 1
+        assert appendix.count(url) == 1
+
+    local_sources = {
+        10: {"S122"},
+        11: {"S116", "S117"},
+        14: {"S118"},
+        15: {"S119", "S120", "S121"},
+    }
+    for number, expected_ids in local_sources.items():
+        sources = revision_tool.extract_chapter(text, number).split("### Источники главы", 1)[1]
+        source_ids = set(re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE))
+        assert expected_ids <= source_ids
