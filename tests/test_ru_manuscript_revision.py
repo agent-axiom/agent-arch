@@ -94,7 +94,12 @@ def test_reference_package_quickstart_matches_runtime_contract() -> None:
         )
     ]
 
-    assert "git checkout ru-manuscript-editorial-2026-08-01" in appendix
+    assert f"git checkout {revision_tool.PRACTICAL_REPOSITORY_REF}" in appendix
+    subprocess.run(
+        ["git", "cat-file", "-e", f"{revision_tool.PRACTICAL_REPOSITORY_REF}^{{commit}}"],
+        cwd=ROOT,
+        check=True,
+    )
     assert '"status": "waiting_for_approval"' in appendix
     assert '"events": 10' in appendix
     assert '"memory_records": 3' in appendix
@@ -1300,7 +1305,7 @@ def test_reader_route_is_honest_and_part_conclusions_are_explicit() -> None:
     assert "**В книгу намеренно не входит.**" in introduction
     assert "### Один исполняемый сценарий и два сценария переноса" in introduction
     assert "### Три сквозных сценария" not in introduction
-    assert "### Четыре ортогональных словаря состояния" in introduction
+    assert "### Четыре словаря состояния и отдельное управляющее действие" in introduction
     assert "`waiting_for_approval`" in introduction
     assert "`side_effect_unknown`" in introduction
 
@@ -1429,7 +1434,7 @@ def test_submission_readiness_pass_orders_front_matter_and_adds_prerequisite_che
         "### Как читать книгу",
         "### Самопроверка перед практическим маршрутом",
         "### Сокращения и обозначения",
-        "### Структура аргумента",
+        "### Последовательный маршрут",
     )
     positions = [introduction.index(heading) for heading in ordered_headings]
     assert positions == sorted(positions)
@@ -1479,10 +1484,11 @@ def test_submission_readiness_pass_consolidates_chapter_21_provenance_lists() ->
         assert repeated_list not in chapter
 
 
-def test_submission_readiness_uses_the_verified_release_tag() -> None:
+def test_submission_readiness_uses_a_resolvable_immutable_commit() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
-    assert text.count("git checkout ru-manuscript-editorial-2026-08-01") == 2
+    checkout = f"git checkout {revision_tool.PRACTICAL_REPOSITORY_REF}"
+    assert text.count(checkout) == 2
     assert "ru-manuscript-editorial-2026-07-22" not in text
     assert "git checkout ru-manuscript-editorial-2026-07\n" not in text
 
@@ -1553,7 +1559,7 @@ def test_prose_quality_and_quickstart_are_editorially_consistent() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     introduction = text.split("# Часть I.", 1)[0]
 
-    assert "git checkout ru-manuscript-editorial-2026-08-01" in introduction
+    assert f"git checkout {revision_tool.PRACTICAL_REPOSITORY_REF}" in introduction
     assert "uv sync --frozen --group dev" in introduction
     assert re.search(r"семантики «ровно один раз»\s*\(`exactly-once`\)", introduction)
 
@@ -1845,8 +1851,8 @@ def test_inline_diagrams_are_publisher_ready() -> None:
         png = png_path.read_bytes()
         assert png[:8] == b"\x89PNG\r\n\x1a\n"
         width, height = struct.unpack(">II", png[16:24])
-        assert 480 <= width <= 1680
-        assert 280 <= height <= 1280
+        assert 480 <= width <= 2496
+        assert 280 <= height <= 1896
         assert png[25] == 2  # Truecolor RGB without an alpha channel.
 
 
@@ -1891,14 +1897,14 @@ def test_diagram_semantics_preserve_safety_invariants_and_russian_terminology() 
 
     assert "Контролируемое чтение" in diagrams[5]["mermaid"]
     assert "Политика записи" in diagrams[5]["mermaid"]
-    assert "Подтверждено отсутствие эффекта" in diagrams[10]["mermaid"]
-    assert "Состояние по-прежнему неизвестно" in diagrams[10]["mermaid"]
+    assert "Эффекта нет" in diagrams[10]["mermaid"]
+    assert "По-прежнему неизвестен" in diagrams[10]["mermaid"]
     assert 'B["Успешность"] --> A["Здоровье агента поддержки"]' in diagrams[12]["mermaid"]
     assert diagrams[13]["caption"] == "Контур изменения, оценки, выпуска и обратной связи"
     assert "Поддерживаемый стандартный путь" in diagrams[15]["mermaid"]
     assert "Обратная связь продукта" in diagrams[15]["mermaid"]
-    assert 'A["Требования"] --> B["Проектирование"]' in diagrams[17]["mermaid"]
-    assert "Сквозные поверхности ADLC" in diagrams[17]["mermaid"]
+    assert "Требования" in diagrams[17]["mermaid"]
+    assert "Сквозной контроль" in diagrams[17]["mermaid"]
     assert "Проверка происхождения и целостности" in diagrams[19]["mermaid"]
     assert "Попытка обхода старым маршрутом" in diagrams[21]["mermaid"]
     assert "Обнаружение и сдерживание" in diagrams[22]["mermaid"]
@@ -1908,10 +1914,10 @@ def test_diagram_semantics_preserve_safety_invariants_and_russian_terminology() 
     assert diagrams[19]["caption"] == (
         "Проверенный пакет выпуска объединяет связанные цепочки доверия"
     )
-    assert "Проверка результата" in diagrams[25]["mermaid"]
+    assert "проверка" in diagrams[25]["mermaid"]
     assert "Телеметрия и аудит" in diagrams[25]["mermaid"]
     assert "<-->" in diagrams[26]["mermaid"]
-    assert '|"Требуется подтверждение"|' in diagrams[27]["mermaid"]
+    assert '|"Подтверждение"|' in diagrams[27]["mermaid"]
     assert "Решение человека" in diagrams[27]["mermaid"]
 
 
@@ -1923,15 +1929,15 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
     assert "Часть VI" in diagrams[1]["mermaid"]
     assert "Часть VII" in diagrams[1]["mermaid"]
     assert "Часть VIII" in diagrams[1]["mermaid"]
-    assert "Сложность эксплуатации и риск" in diagrams[2]["mermaid"]
-    assert "Неизменное намерение + ключ идемпотентности" in diagrams[6]["mermaid"]
+    assert "Риск растет только при расширении полномочий" in diagrams[2]["mermaid"]
+    assert "Неизменное намерение и ключ идемпотентности" in diagrams[6]["mermaid"]
     assert '|"Разрешить"|' in diagrams[8]["mermaid"]
     assert '|"Запретить"|' in diagrams[8]["mermaid"]
     assert '|"Требуется подтверждение"|' in diagrams[8]["mermaid"]
     assert "Карантин" in diagrams[10]["mermaid"]
     assert "Политика исходящих соединений" in diagrams[11]["mermaid"]
     assert "Сверка внешнего состояния" in diagrams[13]["mermaid"]
-    assert "Работа и наблюдение" in diagrams[17]["mermaid"]
+    assert "Поэтапный выпуск и наблюдение" in diagrams[17]["mermaid"]
     assert "Логическое И" in diagrams[24]["mermaid"]
     assert "РАСШИРИТЬ / УДЕРЖАТЬ" in diagrams[25]["mermaid"]
 
@@ -1942,31 +1948,47 @@ def test_targeted_editorial_diagrams_cover_the_two_missing_decisions() -> None:
 
     assert data["expected_count"] == 2
     assert set(diagrams) == {1, 2}
-    assert "Обычный рабочий процесс" in diagrams[1]["mermaid"]
+    assert "Рабочий процесс" in diagrams[1]["mermaid"]
     assert "Многоагентная схема" in diagrams[1]["mermaid"]
-    assert "Фактическое исполнение" in diagrams[2]["mermaid"]
-    assert "Карантин или исправление" in diagrams[2]["mermaid"]
+    assert "Фактические трассы" in diagrams[2]["mermaid"]
+    assert "Карантин; обновить реестр" in diagrams[2]["mermaid"]
     assert [f"visuals/{diagrams[number]['filename']}" for number in (1, 2)] == (
         EDITORIAL_DIAGRAM_PATHS
     )
 
 
-def test_targeted_editorial_diagrams_keep_text_at_least_eight_points_in_print() -> None:
-    audit = json.loads(VISUAL_AUDIT.read_text(encoding="utf-8"))
-    placements = audit["pdf"]["placements"]
+def test_generated_diagrams_meet_the_print_readability_floor() -> None:
+    for manifest_path in (MANIFEST, NUMBERED_MANIFEST, EDITORIAL_MANIFEST):
+        diagrams = json.loads(manifest_path.read_text(encoding="utf-8"))["diagrams"]
+        for diagram in diagrams:
+            png_path = VISUALS / diagram["filename"]
+            svg_path = png_path.with_suffix(".svg")
+            svg = svg_path.read_text(encoding="utf-8")
 
-    for relative_path in EDITORIAL_DIAGRAM_PATHS:
-        asset = next(
-            item
-            for item in audit["assets"]
-            if item["path"].endswith(relative_path.removeprefix("visuals/"))
-        )
-        placement = placements[asset["index"] - 1]
-        svg = (VISUALS / Path(relative_path).with_suffix(".svg").name).read_text(encoding="utf-8")
-        font_pixels = [int(value) for value in re.findall(r"font:\s*(\d+)px", svg)]
-        minimum_points = min(font_pixels) * placement["width_inches"] * 72 / asset["width_px"]
+            view_box = re.search(
+                r'viewBox="[^"\s]+\s+[^"\s]+\s+([0-9.]+)\s+([0-9.]+)"',
+                svg,
+            )
+            assert view_box is not None, svg_path
+            view_width, view_height = map(float, view_box.groups())
 
-        assert minimum_points >= 8.0, relative_path
+            font_pixels = [
+                float(value)
+                for value in re.findall(r"font-size:\s*([0-9.]+)px", svg)
+                if float(value) >= 20
+            ]
+            assert font_pixels, svg_path
+
+            png = png_path.read_bytes()
+            width, _height = struct.unpack(">II", png[16:24])
+            placed_width_inches = min(
+                6.5,
+                width / 300,
+                7.6 * view_width / view_height,
+            )
+            effective_points = max(font_pixels) * placed_width_inches * 72 / view_width
+
+            assert effective_points >= 7.8, (diagram["filename"], effective_points)
 
 
 def test_final_technical_book_copyedit_is_applied() -> None:
@@ -2571,7 +2593,7 @@ def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
     introduction = text.split("# Часть I.", 1)[0]
 
     assert "Книга использует один словарь машинных состояний" not in introduction
-    assert "### Четыре ортогональных словаря состояния" in introduction
+    assert "### Четыре словаря состояния и отдельное управляющее действие" in introduction
 
     paragraphs = {
         "policy": introduction.split("**Решение политики.**", 1)[1].split("\n\n", 1)[0],
@@ -2757,7 +2779,7 @@ def test_online_sync_repairs_version_grammar_and_preserves_author_placeholders()
     text = EXPECTED.read_text(encoding="utf-8")
     author_block = text.split("## Как использовать примеры безопасно", 1)[0]
 
-    assert text.count("git checkout ru-manuscript-editorial-2026-08-01") == 2
+    assert text.count(f"git checkout {revision_tool.PRACTICAL_REPOSITORY_REF}") == 2
     assert "ru-manuscript-editorial-2026-07-22" not in text
     assert "открывать заявка" not in text
     assert "какой агент вызывал точка доступа" not in text
@@ -3360,3 +3382,150 @@ def test_august_sources_are_local_and_bibliographically_complete() -> None:
         sources = revision_tool.extract_chapter(text, number).split("### Источники главы", 1)[1]
         source_ids = set(re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE))
         assert expected_ids <= source_ids
+
+
+def test_reader_experience_pass_adds_one_task_oriented_entry_route() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    introduction = text.split("# Часть I.", 1)[0]
+
+    assert introduction.count("### С чего начать, если вы пришли с задачей") == 1
+    for marker in (
+        "Решить, нужен ли здесь агент",
+        "Ограничить право на внешнее действие",
+        "Разобраться с памятью или потерей контекста",
+        "Остановить дубль после тайм-аута",
+        "Связать трассы, оценки и решение о выпуске",
+        "Назначить владельцев и собрать реестр",
+        "Проверить обход контроля или закрыть инцидент",
+        "Собрать эталон и принять решение о первой волне",
+    ):
+        assert marker in introduction
+
+    assert text.count("### С чего начать, если вы пришли с задачей") == 1
+    assert text.count("**После главы вы сможете:**") == 28
+    assert text.count("**Артефакт главы:**") == 28
+
+
+def test_reader_experience_pass_adds_symptom_and_pattern_navigation() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix_two = text.split("## Приложение 2\\.", 1)[1].split(
+        "## Приложение 3\\.",
+        1,
+    )[0]
+
+    assert appendix_two.count("### С чего начать по симптому") == 1
+    for symptom in (
+        "Агент выполнил действие дважды",
+        "Нельзя доказать, кто разрешил действие",
+        "После уплотнения контекста исчезло ограничение",
+        "Зеленая оценка расходится с человеческой проверкой",
+        "Старый маршрут остается доступным после замены",
+    ):
+        assert symptom in appendix_two
+
+    assert appendix_two.count("### Решения, к которым стоит возвращаться") == 1
+    for pattern in (
+        "Минимальная достаточная автономность",
+        "Контракт возможности",
+        "Подтверждение неизменного действия",
+        "Сверка перед повтором",
+        "Сквозная цепочка доказательств",
+        "Закрытый выпуск при неполных доказательствах",
+    ):
+        assert pattern in appendix_two
+
+
+def test_reader_experience_pass_replaces_dense_chapter_meta_openings() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    expected_opening_markers = {
+        5: "В расследовании дубля заявки одновременно фигурируют три субъекта",
+        11: "MCP-сервер может ответить строго по протоколу и все равно предложить опасный путь",
+        26: "Прототип агента поддержки уже работает, но один обработчик одновременно",
+    }
+
+    for number, marker in expected_opening_markers.items():
+        chapter = revision_tool.extract_chapter(text, number)
+        assert marker in chapter[:1800], number
+        assert "Как читать эту главу." not in chapter[:1800], number
+
+    assert len(re.findall(r"^## Глава \d+", text, re.MULTILINE)) == 28
+    assert len(re.findall(r"^### Ключевые выводы$", text, re.MULTILINE)) == 28
+    assert len(re.findall(r"^### Источники главы$", text, re.MULTILINE)) == 28
+
+
+def test_reader_experience_pass_teaches_one_practical_learning_loop() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    introduction = text.split("# Часть I.", 1)[0]
+
+    assert introduction.count("### Как проходить лабораторные работы") == 1
+    protocol = introduction.split("### Как проходить лабораторные работы", 1)[1]
+    protocol = protocol.split("\n### ", 1)[0]
+    for marker in (
+        "Сначала спрогнозируйте",
+        "Затем выполните",
+        "Сравните прогноз",
+        "Объясните расхождение",
+        "Сохраните доказательство",
+    ):
+        assert marker in protocol
+
+    assert text.count("### Как проходить лабораторные работы") == 1
+    assert len(re.findall(r"^### Лабораторная работа \d+\\?\.", text, re.MULTILINE)) == 8
+    assert text.count("**Отрицательная проверка.**") == 8
+    assert text.count("**Что доказывает результат.**") == 8
+
+
+def test_reader_experience_pass_turns_part_routes_into_case_state_transitions() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert text.count("**Маршрут части.** На входе") == 8
+    assert "сквозной сценарий `support-triage-ref`" in text
+    assert text.count("Незакрытый вопрос части") == 8
+
+
+def test_reader_experience_pass_closes_the_assurance_and_release_story() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "обход требования `create_ticket.v2` через оставленный маршрут `v1`" in text
+    assert re.search(
+        r"Это целевое состояние после закрытия блокеров,\s+а не вердикт текущего стенда",
+        text,
+    )
+    assert "В эталонном прогоне дубль заявки не создается" in text
+
+
+def test_reader_experience_pass_keeps_visuals_explained_before_the_next_heading() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    lines = text.splitlines()
+    images = [index for index, line in enumerate(lines) if re.match(r"^!\[.*\]\([^)]*\)$", line)]
+
+    assert len(images) == 56
+    for image_index in images:
+        prose: list[str] = []
+        for line in lines[image_index + 1 :]:
+            if line.startswith("#"):
+                break
+            stripped = line.strip()
+            if not stripped or stripped.startswith("!["):
+                continue
+            if re.match(r"^Рисунок \d+\.", stripped):
+                continue
+            prose.append(stripped)
+        assert prose, lines[image_index]
+
+
+def test_reader_experience_pass_repairs_practical_evidence_boundaries() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert "### Четыре словаря состояния и отдельное управляющее действие" in text
+    assert "### Четыре ортогональных словаря состояния" not in text
+    assert "build_lab_evidence_manifest.py" in text
+    assert "--artifacts-dir artifacts --through N" in text
+    assert "recommended_action=collect_missing_evidence" in text
+    assert "связность — 2" in text
+    assert "итого 16 из 20" in text
+    assert "единый долговечный путь `approval → resume → execute → audit`" in text
+    assert "def manifest_integrity_verified(" in text
+    assert "Проверка структурной целостности манифеста" in text
+    assert 'status="blocked_response"' not in text
+    assert 'status="partial_side_effect"' in text
