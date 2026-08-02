@@ -2185,3 +2185,19 @@ raw- и Template2000n-производные пересобраны и пров�
 - `docs/publisher/ru-visual-build-2026-08-02.json`;
 - `docs/publisher/ru-template2000n-unified-visuals-2026-08-02.visual-audit.json`;
 - `docs/publisher/ru-template2000n-unified-visuals-2026-08-02.render-qa.json`.
+
+Синхронизация Google Docs:
+
+- перед изменением создана отдельная резервная копия рукописи;
+- контрольная замена одного рисунка проверена на копии;
+- в основной документ одним атомарным пакетом из 112 операций перенесены все
+  56 Mermaid-рендеров с рассчитанными размерами;
+- итоговый readback подтвердил 56 объектов, их прежние позиции, ожидаемые
+  размеры и источники из коммита
+  `8d2d014e0174297b56195182b14451545902f430`; расхождений нет;
+- итоговая ревизия Google Doc:
+  `AIroW35cq93T87bpUoVL__T_XZAJQfiSGUuxDMb_28OJF6wXPcHaEZ7WgouPngoO4FrAiUjpsV2F6x7t51j6rDsA8cxaMg7b8g0eIesKNZc`.
+
+Отчёт:
+
+- `docs/publisher/ru-google-doc-mermaid-sync-2026-08-02.md`.
