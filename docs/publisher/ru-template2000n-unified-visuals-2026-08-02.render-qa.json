@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": ".tmp/ru-template2000n-unified-visuals-final-overview.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0024142150610837634,
+      "page": 197
+    },
+    {
+      "density": 0.003712996130958791,
+      "page": 191
+    },
+    {
+      "density": 0.005219046768155099,
+      "page": 46
+    },
+    {
+      "density": 0.0055751414890545655,
+      "page": 2
+    },
+    {
+      "density": 0.007058661201404272,
+      "page": 212
+    },
+    {
+      "density": 0.0107157098829786,
+      "page": 296
+    },
+    {
+      "density": 0.010749665812595961,
+      "page": 129
+    },
+    {
+      "density": 0.011033047209327677,
+      "page": 103
+    },
+    {
+      "density": 0.011576164813930508,
+      "page": 133
+    },
+    {
+      "density": 0.0123624819354695,
+      "page": 25
+    }
+  ],
+  "pages": 358,
+  "render_dir": ".tmp/ru-template2000n-unified-visuals-final-render"
+}

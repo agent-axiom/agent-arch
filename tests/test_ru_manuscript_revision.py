@@ -71,7 +71,8 @@ EDITORIAL_DIAGRAM_PATHS = [
 
 
 def join_shell_continuations(text: str) -> str:
-    return re.sub(r" \\\n\s*", " ", text)
+    text = re.sub(r" \\\n\s*", " ", text)
+    return text.replace("\\\n", "")
 
 
 def test_revision_is_reproducible(tmp_path: Path) -> None:
@@ -1925,7 +1926,8 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
     data = json.loads(NUMBERED_MANIFEST.read_text(encoding="utf-8"))
     diagrams = {item["number"]: item for item in data["diagrams"]}
 
-    assert set(diagrams) == {1, 2, 6, 7, 8, 10, 11, 12, 13, 14, 17, 21, 22, 24, 25}
+    assert data["expected_count"] == 25
+    assert set(diagrams) == set(range(1, 26))
     assert "Часть VI" in diagrams[1]["mermaid"]
     assert "Часть VII" in diagrams[1]["mermaid"]
     assert "Часть VIII" in diagrams[1]["mermaid"]
@@ -1939,7 +1941,33 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
     assert "Сверка внешнего состояния" in diagrams[13]["mermaid"]
     assert "Поэтапный выпуск и наблюдение" in diagrams[17]["mermaid"]
     assert "Логическое И" in diagrams[24]["mermaid"]
-    assert "РАСШИРИТЬ / УДЕРЖАТЬ" in diagrams[25]["mermaid"]
+    assert "РАСШИРИТЬ" in diagrams[25]["mermaid"]
+    assert "УДЕРЖАТЬ" in diagrams[25]["mermaid"]
+
+
+def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
+    source_diagrams = [
+        item
+        for path in (MANIFEST, NUMBERED_MANIFEST, EDITORIAL_MANIFEST)
+        for item in json.loads(path.read_text(encoding="utf-8"))["diagrams"]
+    ]
+    source_filenames = [item["filename"] for item in source_diagrams]
+    manuscript_filenames = [
+        Path(path).name
+        for path in re.findall(
+            r"^!\[[^\]]+\]\((visuals/[^)]+)\)$",
+            EXPECTED.read_text(encoding="utf-8"),
+            re.MULTILINE,
+        )
+    ]
+
+    assert len(source_diagrams) == 56
+    assert len(set(source_filenames)) == 56
+    assert set(source_filenames) == set(manuscript_filenames)
+
+    for filename in source_filenames:
+        svg = ET.fromstring((VISUALS / filename).with_suffix(".svg").read_bytes())
+        assert svg.attrib["data-visual-style"] == "agent-arch-book-v1"
 
 
 def test_targeted_editorial_diagrams_cover_the_two_missing_decisions() -> None:
@@ -1951,7 +1979,7 @@ def test_targeted_editorial_diagrams_cover_the_two_missing_decisions() -> None:
     assert "Рабочий процесс" in diagrams[1]["mermaid"]
     assert "Многоагентная схема" in diagrams[1]["mermaid"]
     assert "Фактические трассы" in diagrams[2]["mermaid"]
-    assert "Карантин; обновить реестр" in diagrams[2]["mermaid"]
+    assert "Карантин; обновить политику и реестр" in diagrams[2]["mermaid"]
     assert [f"visuals/{diagrams[number]['filename']}" for number in (1, 2)] == (
         EDITORIAL_DIAGRAM_PATHS
     )
@@ -1988,7 +2016,7 @@ def test_generated_diagrams_meet_the_print_readability_floor() -> None:
             )
             effective_points = max(font_pixels) * placed_width_inches * 72 / view_width
 
-            assert effective_points >= 7.8, (diagram["filename"], effective_points)
+            assert effective_points >= 8.5, (diagram["filename"], effective_points)
 
 
 def test_final_technical_book_copyedit_is_applied() -> None:
@@ -2090,7 +2118,7 @@ def test_capability_discovery_is_a_governed_runtime_operation() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     chapter = revision_tool.extract_chapter(text, 11)
 
-    assert "#### Обнаружение возможности не выдает полномочие" in chapter
+    assert "**Обнаружение возможности не выдает полномочие.**" in chapter
     for field in (
         "capability_search_query",
         "registry_scope",
@@ -2693,7 +2721,7 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
             "перемещение внутри исследовательской среды",
         ),
         24: (
-            "#### Поиск критического шага, а не удобного объяснения",
+            "**Ищите критический шаг, а не удобное объяснение.**",
             "AgentRx",
             "#### Воронка подтверждения уязвимости",
             "воспроизвести наблюдаемый эффект",
@@ -2704,10 +2732,11 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
             "шлюзом выпуска",
         ),
         26: (
-            "#### Усечение не должно уничтожать доказательства",
+            "#### Доказательства и параллельные сессии",
+            "**Усечение не должно уничтожать доказательства.**",
             "`truncated=true`",
             "контрольную сумму",
-            "#### Параллельные сессии инструментов",
+            "**Параллельные сессии инструментов.**",
             "`tool_session_id`",
             "`branch_id`",
             "`join_status`",
@@ -2736,11 +2765,15 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
         "**Артефакт главы:**",
         1,
     )[0]
-    assert (
-        "* отделять ядро MCP без состояния от прикладных дескрипторов, "
-        "длительных задач и повторного ввода;" in outcomes
-    )
-    assert "* ограничивать распространение риска в сети агентов." in outcomes
+    for marker in (
+        "* проектировать MCP-вызов как границу доверия",
+        "* задавать профиль песочницы, исходящего доступа",
+        (
+            "* отделять ядро MCP без состояния от прикладной работы, Tasks и "
+            "делегирования A2A."
+        ),
+    ):
+        assert marker in outcomes
 
 
 def test_online_sync_sources_are_complete_and_locally_attributed() -> None:
@@ -3529,3 +3562,81 @@ def test_reader_experience_pass_repairs_practical_evidence_boundaries() -> None:
     assert "Проверка структурной целостности манифеста" in text
     assert 'status="blocked_response"' not in text
     assert 'status="partial_side_effect"' in text
+
+
+def test_technical_book_polish_repairs_facts_and_positional_references() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    for residue in (
+        "Тег фиксирует согласованную версию",
+        "Тег ниже фиксирует согласованную версию",
+        "полезен тем, что проводят различие",
+        "Таблица выше задает",
+        "Схема выбора ниже",
+        "Ниже схема полезна",
+        "Каталог ниже нужно читать",
+        "полный учебный контракт приведен ниже",
+    ):
+        assert residue not in text
+
+    assert "SHA-идентификатор коммита фиксирует согласованную версию" in text
+    assert "Коммит фиксирует согласованную версию печатного издания" in text
+
+
+def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_five = revision_tool.extract_chapter(text, 5)
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_twenty_four = revision_tool.extract_chapter(text, 24)
+    chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+
+    outcomes = chapter_eleven.split("**После главы вы сможете:**", 1)[1].split(
+        "**Артефакт главы:**",
+        1,
+    )[0]
+    assert len(re.findall(r"^\* ", outcomes, re.MULTILINE)) == 3
+
+    for microheading in (
+        "#### Обнаружение возможности не выдает полномочие",
+        "#### Прикладной дескриптор не является полномочием",
+        "#### Длительная работа и повторный ввод имеют отдельные контракты",
+        "#### Шлюз маршрутизирует сообщение, а не угадывает состояние",
+    ):
+        assert microheading not in chapter_eleven
+    assert (
+        "#### MCP-шлюз, приватная достижимость и браузер как поверхность действия"
+        in chapter_eleven
+    )
+    assert "#### Явное прикладное состояние поверх ядра без состояния" in chapter_eleven
+    assert len(re.findall(r"^#### ", chapter_five, re.MULTILINE)) <= 13
+    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 17
+
+    assert chapter_fifteen.count("рядом с `verifier_outputs` полезен `eval_audit_record`") == 0
+    assert chapter_fifteen.count("рядом с `verifier_outputs` нужен `eval_audit_record`") == 1
+
+    assert "**Контур заверения как рабочий цикл.**" in chapter_twenty_four
+    assert "**Ищите критический шаг, а не удобное объяснение.**" in chapter_twenty_four
+    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 16
+
+    assert "#### Усечение не должно уничтожать доказательства" not in chapter_twenty_six
+    assert "#### Параллельные сессии инструментов" not in chapter_twenty_six
+    assert "#### Доказательства и параллельные сессии" in chapter_twenty_six
+    chapter_twenty_six_lower = chapter_twenty_six.lower()
+    assert "устойчивый архитектурный контракт" in chapter_twenty_six_lower
+    assert "пример реализации, а не универсальный контракт" in chapter_twenty_six_lower
+
+
+def test_technical_book_polish_keeps_code_within_print_width() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    in_fence = False
+    oversized: list[tuple[int, int, str]] = []
+
+    for number, line in enumerate(text.splitlines(), start=1):
+        if line.startswith("```"):
+            in_fence = not in_fence
+            continue
+        if in_fence and len(line) > 81:
+            oversized.append((number, len(line), line))
+
+    assert not oversized

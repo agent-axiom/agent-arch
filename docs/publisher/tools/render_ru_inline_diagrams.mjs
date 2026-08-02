@@ -7,16 +7,66 @@ const require = createRequire(import.meta.url);
 const { chromium } = require("playwright");
 const sharp = require("sharp");
 
-const MIN_EFFECTIVE_FONT_PT = 7.8;
+const VISUAL_STYLE_ID = "agent-arch-book-v1";
+const MIN_EFFECTIVE_FONT_PT = 8.5;
+const MIN_VIEWBOX_ASPECT_RATIO = 0.72;
 const PRINT_MAX_WIDTH_INCHES = 6.5;
-const PRINT_MAX_HEIGHT_INCHES = 7.6;
+const PRINT_MAX_HEIGHT_INCHES = 6.3;
 const PNG_DENSITY = 300;
+
+const UNIFIED_SVG_STYLE = `
+  <style data-visual-style="${VISUAL_STYLE_ID}">
+    svg { background: #ffffff; }
+    .node rect, .node circle, .node ellipse, .node polygon, .node path {
+      stroke-width: 2.2px !important;
+    }
+    .node rect { rx: 10px; ry: 10px; }
+    .node polygon {
+      fill: #fff4cc !important;
+      stroke: #9b7a14 !important;
+    }
+    .nodeLabel, .label text {
+      fill: #1f2a3d !important;
+      font-weight: 600 !important;
+    }
+    .edgeLabel, .edgeLabel text {
+      color: #36465d !important;
+      fill: #36465d !important;
+      font-size: 26px !important;
+    }
+    .edgeLabel rect, .labelBkg { fill: #ffffff !important; opacity: 0.96 !important; }
+    .flowchart-link, .edgePath path {
+      stroke: #5e6b7d !important;
+      stroke-width: 2.2px !important;
+    }
+    marker path { fill: #5e6b7d !important; stroke: #5e6b7d !important; }
+    .cluster rect {
+      fill: #f7f9fc !important;
+      stroke: #b7c4d6 !important;
+      stroke-width: 1.6px !important;
+      rx: 12px;
+      ry: 12px;
+    }
+    .cluster-label text, .cluster-label span {
+      color: #26364d !important;
+      fill: #26364d !important;
+      font-size: 26px !important;
+      font-weight: 700 !important;
+    }
+  </style>`;
 
 
 function parseArgs(argv) {
   const values = {};
   for (let index = 2; index < argv.length; index += 2) {
-    values[argv[index]] = argv[index + 1];
+    const key = argv[index];
+    const value = argv[index + 1];
+    if (key === "--manifest") {
+      values[key] ??= [];
+      values[key].push(value);
+    } else {
+      values[key] = value;
+    }
   }
   const required = ["--manifest", "--mermaid-js", "--output-dir"];
   for (const key of required) {
@@ -36,7 +86,7 @@ function escapeXml(value) {
 }
 
 
-function wrapLabel(value, maxCharacters = 24) {
+function wrapLabel(value, maxCharacters = 22) {
   const wrappedLines = [];
   for (const originalLine of value.split("\\n")) {
     const words = originalLine.trim().split(/\s+/).filter(Boolean);
@@ -64,18 +114,20 @@ function wrapMermaidLabels(source) {
 }
 
 
-function calculateEffectiveFontPt(svg, metadata) {
+function normalizeMermaidSource(source) {
+  const withoutLocalTheme = source.replace(/^\s*%%\{init:.*?\}%%\s*/s, "");
+  return wrapMermaidLabels(withoutLocalTheme.trim());
+}
+
+
+function calculateEffectiveFontPt(svg, metadata, sourceFontSize) {
   const viewBox = svg.match(/viewBox="[^"\s]+\s+[^"\s]+\s+([0-9.]+)\s+([0-9.]+)"/);
-  const fontSizes = [...svg.matchAll(/font-size:\s*([0-9.]+)px/g)]
-    .map((match) => Number(match[1]))
-    .filter((size) => size >= 20);
-  if (!viewBox || fontSizes.length === 0 || !metadata.width) {
+  if (!viewBox || !Number.isFinite(sourceFontSize) || !metadata.width) {
     throw new Error("Cannot calculate effective print font size from rendered diagram");
   }
 
   const viewWidth = Number(viewBox[1]);
   const viewHeight = Number(viewBox[2]);
-  const sourceFontSize = Math.max(...fontSizes);
   const placedWidthInches = Math.min(
     PRINT_MAX_WIDTH_INCHES,
     metadata.width / PNG_DENSITY,
@@ -91,12 +143,15 @@ async function renderDiagram(page, diagram, outputDir) {
     return result.svg;
   }, {
     id: path.parse(diagram.filename).name.replaceAll(/[^A-Za-z0-9_-]/g, "-"),
-    source: wrapMermaidLabels(diagram.mermaid),
+    source: normalizeMermaidSource(diagram.mermaid),
   });
 
   const title = `<title>${escapeXml(diagram.caption)}</title>`;
   const xmlSafeRendered = rendered.replaceAll(/<br\s*>/g, "<br/>");
-  const svg = xmlSafeRendered.replace(/<svg([^>]*)>/, `<svg$1>${title}`);
+  const svg = xmlSafeRendered.replace(
+    /<svg([^>]*)>/,
+    `<svg$1 data-visual-style="${VISUAL_STYLE_ID}">${title}${UNIFIED_SVG_STYLE}`,
+  );
   const stem = path.parse(diagram.filename).name;
   const svgPath = path.join(outputDir, `${stem}.svg`);
   const pngPath = path.join(outputDir, diagram.filename);
@@ -111,6 +166,13 @@ async function renderDiagram(page, diagram, outputDir) {
     element.style.display = "block";
     element.style.maxWidth = "none";
   }, svg);
+  const sourceFontSize = await page.locator("#diagram > svg").evaluate((element) => {
+    const sizes = [...element.querySelectorAll("text, foreignObject span")]
+      .filter((node) => (node.textContent ?? "").trim())
+      .map((node) => Number.parseFloat(getComputedStyle(node).fontSize))
+      .filter((size) => Number.isFinite(size) && size > 0);
+    return Math.min(...sizes);
+  });
   const screenshot = await page.locator("#diagram > svg").screenshot({
     animations: "disabled",
     omitBackground: false,
@@ -153,30 +215,56 @@ async function renderDiagram(page, diagram, outputDir) {
   ) {
     throw new Error(`Invalid PNG output for ${diagram.filename}: ${JSON.stringify(metadata)}`);
   }
-  const effectiveFontPt = calculateEffectiveFontPt(svg, metadata);
+  const effectiveFontPt = calculateEffectiveFontPt(svg, metadata, sourceFontSize);
+  const violations = [];
   if (effectiveFontPt < MIN_EFFECTIVE_FONT_PT) {
-    throw new Error(
-      `Unreadable print font for ${diagram.filename}: ${effectiveFontPt.toFixed(2)}pt`,
+    violations.push(
+      `effective font ${effectiveFontPt.toFixed(2)}pt is below ${MIN_EFFECTIVE_FONT_PT}pt`,
+    );
+  }
+  const viewBox = svg.match(/viewBox="[^"\s]+\s+[^"\s]+\s+([0-9.]+)\s+([0-9.]+)"/);
+  if (!viewBox) throw new Error(`Missing viewBox for ${diagram.filename}`);
+  const aspectRatio = Number(viewBox[1]) / Number(viewBox[2]);
+  if (aspectRatio < MIN_VIEWBOX_ASPECT_RATIO) {
+    violations.push(
+      `viewBox aspect ${aspectRatio.toFixed(3)} is below ${MIN_VIEWBOX_ASPECT_RATIO}`,
     );
   }
   return {
     number: diagram.number,
+    filename: diagram.filename,
     svg: svgPath,
     png: pngPath,
     effective_font_pt: Number(effectiveFontPt.toFixed(2)),
+    viewbox_aspect_ratio: Number(aspectRatio.toFixed(3)),
+    violations,
   };
 }
 
 
 async function main() {
   const args = parseArgs(process.argv);
-  const manifest = JSON.parse(await fs.readFile(args["--manifest"], "utf8"));
   const outputDir = path.resolve(args["--output-dir"]);
   await fs.mkdir(outputDir, { recursive: true });
 
-  const expectedCount = manifest.expected_count ?? 29;
-  if (!Array.isArray(manifest.diagrams) || manifest.diagrams.length !== expectedCount) {
-    throw new Error(`The diagram manifest must contain exactly ${expectedCount} diagrams`);
+  const diagrams = [];
+  for (const manifestPath of args["--manifest"]) {
+    const manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
+    const expectedCount = manifest.expected_count ?? manifest.diagrams?.length;
+    if (!Array.isArray(manifest.diagrams) || manifest.diagrams.length !== expectedCount) {
+      throw new Error(
+        `${manifestPath} must contain exactly ${expectedCount} diagrams`,
+      );
+    }
+    diagrams.push(...manifest.diagrams);
+  }
+  const expectedTotal = Number(args["--expected-count"] ?? diagrams.length);
+  if (diagrams.length !== expectedTotal) {
+    throw new Error(`Expected ${expectedTotal} diagrams, found ${diagrams.length}`);
+  }
+  const filenames = diagrams.map((diagram) => diagram.filename);
+  if (new Set(filenames).size !== filenames.length) {
+    throw new Error("Diagram filenames must be unique across manifests");
   }
 
   const browser = await chromium.launch({
@@ -204,25 +292,49 @@ async function main() {
           background: "#ffffff",
           fontFamily: "Arial, sans-serif",
           fontSize: "26px",
-          primaryColor: "#edf7f1",
-          primaryTextColor: "#17201b",
-          primaryBorderColor: "#2f6f4e",
-          secondaryColor: "#f3f5f4",
-          secondaryTextColor: "#17201b",
-          secondaryBorderColor: "#66736c",
+          primaryColor: "#eef4fa",
+          primaryTextColor: "#1f2a3d",
+          primaryBorderColor: "#355a7a",
+          secondaryColor: "#edf8f3",
+          secondaryTextColor: "#1f2a3d",
+          secondaryBorderColor: "#3d7257",
           tertiaryColor: "#ffffff",
-          lineColor: "#3f4b45",
-          textColor: "#17201b",
+          tertiaryBorderColor: "#9b7a14",
+          lineColor: "#5e6b7d",
+          textColor: "#1f2a3d",
+          clusterBkg: "#f7f9fc",
+          clusterBorder: "#b7c4d6",
           edgeLabelBackground: "#ffffff",
         },
       });
     });
 
     const results = [];
-    for (const diagram of manifest.diagrams) {
+    for (const diagram of diagrams) {
       results.push(await renderDiagram(page, diagram, outputDir));
     }
-    process.stdout.write(`${JSON.stringify({ rendered: results.length, results }, null, 2)}\n`);
+    const report = {
+      visual_style: VISUAL_STYLE_ID,
+      rendered: results.length,
+      minimum_effective_font_pt: Math.min(...results.map((item) => item.effective_font_pt)),
+      minimum_viewbox_aspect_ratio: Math.min(
+        ...results.map((item) => item.viewbox_aspect_ratio),
+      ),
+      violations: results.flatMap((item) =>
+        item.violations.map((violation) => `${item.filename}: ${violation}`),
+      ),
+      results,
+    };
+    const payload = `${JSON.stringify(report, null, 2)}\n`;
+    if (args["--report-json"]) {
+      await fs.writeFile(args["--report-json"], payload, "utf8");
+    }
+    process.stdout.write(payload);
+    if (report.violations.length > 0) {
+      throw new Error(
+        `${report.violations.length} print-readability violations; see ${args["--report-json"] ?? "stdout"}`,
+      );
+    }
   } finally {
     await browser.close();
   }

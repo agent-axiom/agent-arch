@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъёмной сборки на 2026-08-01. Репозиторий
+Status: актуальная карта полнообъёмной сборки на 2026-08-02. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -23,8 +23,8 @@ Status: актуальная карта полнообъёмной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - 11 нумерованных таблиц в канонической и локальных издательских производных;
-- около 96 984 слов по метрике издательской сборки;
-- 481 страница в Google-ориентированной производной и 355 страниц в
+- около 96 603 слов по метрике издательской сборки;
+- 482 страницы в Google-ориентированной производной и 356 страниц в
   производной `Template2000n`; разница вызвана типографикой и плотностью
   стилей, а не сокращением содержания; пустых технических страниц нет.
 
@@ -33,7 +33,18 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW37DrV8dNIYvUEV4d5pOla46Wwq6WopW3RWy18Hy0wJwUNzmMRpRfxpU-LXjQBCZv9zKOxq82sIury9MhmTP3x55NmDU2pjFkh8ELnk`.
+  `AIroW37ly0XavWwYVe43xKRMJkhCxJCCXoFPpWp6IsMcEr6yBZlEc-9mWtQgQXyQQm1-Gmv00Jd_8vku18WRcVLAH0Av4TmNMOUgF4Fhar8`.
+
+Контрольная точка повторной редакционной полировки:
+
+- `docs/publisher/ru-technical-book-polish-pass-2026-08-02.md`;
+- `docs/publisher/ru-technical-book-polish-pass-2026-08-02.manifest.json`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-08-02.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-08-02.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-02.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-02.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-02.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-02.pdf`.
 
 Контрольная точка читательского прохода:
 
@@ -707,3 +718,21 @@ Google Doc:
 
 - полный каталог источников может остаться в онлайн-приложении; в печати нужен
   отобранный список источников.
+
+## Визуальная система рукописи
+
+Источники Mermaid:
+
+- `docs/publisher/ru-inline-diagrams-2026-07-13.json`;
+- `docs/publisher/ru-numbered-diagrams-2026-07-15.json`;
+- `docs/publisher/ru-editorial-diagrams-2026-07-16.json`.
+
+Правила и сборка:
+
+- `docs/publisher/ru-visual-style-guide-2026-08-02.md`;
+- `docs/publisher/tools/render_ru_inline_diagrams.mjs`;
+- `docs/publisher/tools/revise_ru_manuscript.py`.
+
+Производные SVG и PNG находятся в `docs/publisher/visuals/`. Они не являются
+ручными источниками: при изменении смысла сначала исправляется Mermaid, затем
+полностью повторяется сборка и контроль размещения в DOCX/PDF.
