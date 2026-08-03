@@ -14,22 +14,14 @@ from docs.publisher.tools import sync_ru_docx_visuals
 
 ROOT = Path(__file__).resolve().parents[1]
 EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
-RAW_EDITORIAL_DOCX = (
-    ROOT
-    / (
-        "docs/publisher/artifacts/"
-        "agent-arch-ru-google-doc-unified-visuals-2026-08-02.docx"
-    )
+RAW_EDITORIAL_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-google-doc-final-quality-2026-08-03.docx"
 )
-EDITORIAL_TEMPLATE_DOCX = (
-    ROOT
-    / (
-        "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-unified-visuals-2026-08-02.docx"
-    )
+EDITORIAL_TEMPLATE_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-template2000n-final-quality-2026-08-03.docx"
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
-EXPECTED_TABLE_COUNT = 11
+EXPECTED_TABLE_COUNT = 12
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -134,9 +126,7 @@ document.save(sys.argv[2])
     assert set(anchors) <= set(names)
 
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
-        value = "".join(
-            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-        )
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
         if re.match(r"^(?:Рисунок 3|Таблица 4|Листинг 12)\.", value):
             assert paragraph.find(f"{{{WORD_NS}}}hyperlink") is None
 
@@ -191,9 +181,7 @@ document.save(sys.argv[2])
 
     source_paragraphs = []
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
-        value = "".join(
-            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-        )
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
         if re.match(r"^S\d{3}\.", value):
             source_paragraphs.append(paragraph)
 
@@ -331,12 +319,9 @@ def test_editorial_tables_repeat_headers_and_keep_rows_together() -> None:
         assert tables
         for table in tables:
             rows = table.findall(f"{{{WORD_NS}}}tr")
-            assert rows[0].find(
-                f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader"
-            ) is not None
+            assert rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader") is not None
             assert all(
-                row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None
-                for row in rows
+                row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None for row in rows
             )
 
 
@@ -348,22 +333,18 @@ def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
             styles = ET.fromstring(archive.read("word/styles.xml"))
             core = ET.fromstring(archive.read("docProps/core.xml"))
             footer_names = [
-                name
-                for name in archive.namelist()
-                if re.fullmatch(r"word/footer\d+\.xml", name)
+                name for name in archive.namelist() if re.fullmatch(r"word/footer\d+\.xml", name)
             ]
             footer_xml = b"\n".join(archive.read(name) for name in footer_names)
 
         instructions = " ".join(
-            node.text or ""
-            for node in document.findall(f".//{{{WORD_NS}}}instrText")
+            node.text or "" for node in document.findall(f".//{{{WORD_NS}}}instrText")
         )
         document_text = "\n".join(
             node.text or "" for node in document.findall(f".//{{{WORD_NS}}}t")
         )
         style_languages = {
-            node.attrib.get(f"{{{WORD_NS}}}val")
-            for node in styles.findall(f".//{{{WORD_NS}}}lang")
+            node.attrib.get(f"{{{WORD_NS}}}val") for node in styles.findall(f".//{{{WORD_NS}}}lang")
         }
 
         assert 'TOC \\o "1-2"' in instructions
@@ -386,14 +367,9 @@ def test_editorial_heading_styles_define_pdf_outline_levels() -> None:
             styles = ET.fromstring(archive.read("word/styles.xml"))
 
         for level in range(1, 5):
-            style = styles.find(
-                f".//{{{WORD_NS}}}style"
-                f"[@{{{WORD_NS}}}styleId='Heading{level}']"
-            )
+            style = styles.find(f".//{{{WORD_NS}}}style[@{{{WORD_NS}}}styleId='Heading{level}']")
             assert style is not None
-            outline_level = style.find(
-                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}outlineLvl"
-            )
+            outline_level = style.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}outlineLvl")
             assert outline_level is not None
             assert outline_level.attrib.get(f"{{{WORD_NS}}}val") == str(level - 1)
 
@@ -413,10 +389,7 @@ def test_editorial_toc_has_a_readable_static_result_before_word_updates_it() -> 
             index
             for index, (paragraph, value) in enumerate(zip(paragraphs, paragraph_texts))
             if value == "Об авторе"
-            and (
-                style := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")
-            )
-            is not None
+            and (style := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")) is not None
             and style.attrib.get(f"{{{WORD_NS}}}val") == "Heading2"
         )
         toc_text = "\n".join(paragraph_texts[:first_body_heading])
@@ -433,9 +406,7 @@ def test_template2000n_table_captions_use_caption_style_and_stay_with_tables() -
 
     captions = []
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
-        value = "".join(
-            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-        ).strip()
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")).strip()
         if re.fullmatch(r"Таблица \d+\. .+", value):
             captions.append(paragraph)
 
@@ -460,9 +431,7 @@ def test_editorial_table_columns_have_readable_minimum_width() -> None:
         for table_index, table in enumerate(tables, start=1):
             widths = [
                 int(column.attrib[f"{{{WORD_NS}}}w"])
-                for column in table.findall(
-                    f"{{{WORD_NS}}}tblGrid/{{{WORD_NS}}}gridCol"
-                )
+                for column in table.findall(f"{{{WORD_NS}}}tblGrid/{{{WORD_NS}}}gridCol")
             ]
             total_width = sum(widths)
             assert min(widths) / total_width >= 0.14, (
@@ -485,8 +454,7 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
             int(match.group(1))
             for paragraph, paragraph_node in zip(paragraphs, paragraph_nodes)
             if (
-                (style := paragraph_node.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle"))
-                is not None
+                (style := paragraph_node.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")) is not None
                 and style.attrib.get(f"{{{WORD_NS}}}val") == "Heading2"
                 and (match := re.fullmatch(r"Глава (\d+)\. .+", paragraph.strip()))
             )
@@ -497,7 +465,9 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
         assert "create_support_ticket" not in text
         assert "Покрытие обязательным подтверждением и трассировкой" in text
         assert "except GatewayTimeout" in text
-        assert len(re.findall(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)) == 25
+        figure_leads = re.findall(r"^На рисунке \d+ .+$", text, re.MULTILINE)
+        assert len(figure_leads) == 25
+        assert all("представлена схема" not in lead for lead in figure_leads)
         assert "дата доступа зафиксированы 15 июля 2026 года" in text
         assert "дата доступа зафиксированы 14 июля 2026 года" not in text
         assert text.count("После главы вы сможете:") == 28
@@ -521,9 +491,7 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
             text = "".join(
                 node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
             ).strip()
-            page_break = paragraph.find(
-                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pageBreakBefore"
-            )
+            page_break = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pageBreakBefore")
             if page_break is not None:
                 value = page_break.attrib.get(f"{{{WORD_NS}}}val", "true")
                 if value not in {"false", "0", "off"}:
@@ -539,9 +507,7 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
 
 def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
     manuscript = EDITORIAL_MANUSCRIPT.read_text(encoding="utf-8")
-    relative_paths = re.findall(
-        r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.MULTILINE
-    )
+    relative_paths = re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.MULTILINE)
     expected_hashes = [
         hashlib.sha256((EDITORIAL_MANUSCRIPT.parent / path).read_bytes()).hexdigest()
         for path in relative_paths
@@ -568,8 +534,7 @@ def test_numbered_figure_captions_follow_images_and_stay_with_them() -> None:
                 candidate
                 for candidate in paragraphs[index + 1 :]
                 if "".join(
-                    node.text or ""
-                    for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                    node.text or "" for node in candidate.findall(f".//{{{WORD_NS}}}t")
                 ).strip()
             ),
             None,

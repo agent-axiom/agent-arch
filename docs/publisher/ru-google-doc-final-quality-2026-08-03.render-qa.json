@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/tmp/agent-arch-ru-google-doc-final-quality-2026-08-03-pinned-overview.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.003413264176030821,
+      "page": 263
+    },
+    {
+      "density": 0.005198421488014249,
+      "page": 326
+    },
+    {
+      "density": 0.005379057612982858,
+      "page": 110
+    },
+    {
+      "density": 0.007207176133751289,
+      "page": 84
+    },
+    {
+      "density": 0.00982228793172175,
+      "page": 151
+    },
+    {
+      "density": 0.010250160248259036,
+      "page": 11
+    },
+    {
+      "density": 0.012040734402801402,
+      "page": 218
+    },
+    {
+      "density": 0.014860791008173037,
+      "page": 125
+    },
+    {
+      "density": 0.015220693219856687,
+      "page": 363
+    },
+    {
+      "density": 0.016502973052651748,
+      "page": 139
+    }
+  ],
+  "pages": 478,
+  "render_dir": "/tmp/agent-arch-ru-google-doc-final-quality-2026-08-03-pinned-render"
+}
