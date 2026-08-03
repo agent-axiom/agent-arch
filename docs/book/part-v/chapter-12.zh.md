@@ -289,11 +289,17 @@ class RunHealth:
     latency_ms: int
     policy_violated: bool
     cost_usd: float
+    external_effect_known: bool
+    required_controls_passed: bool
 
 
 def classify_run_health(run: RunHealth) -> str:
     if run.policy_violated:
         return "safety_failure"
+    if not run.required_controls_passed:
+        return "control_failure"
+    if not run.external_effect_known:
+        return "unknown_external_effect"
     if not run.successful:
         return "task_failure"
     if run.latency_ms > 12_000:
