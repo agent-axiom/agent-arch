@@ -458,16 +458,27 @@ def start_run(request: RunRequest) -> RunHandle:
     return RunHandle(run_id=run_id, status="queued")
 
 
-def continue_run(run_id: str):
-    run = load_run(run_id)
-    if run.status in {"canceled", "completed", "failed"}:
-        return run
+def continue_run(run_id: str, worker_id: str):
+    run = claim_run(
+        run_id,
+        worker_id=worker_id,
+        eligible_statuses={"queued", "waiting"},
+        lease_seconds=30,
+    )
+    if run is None:
+        return load_run(run_id)
 
-    update_status(run_id, "in_progress")
-    result = execute_run_steps(run)
-    update_status(run_id, result.status)
-    return result
+    result = execute_run_steps(run, idempotency_scope=run.run_id)
+    return complete_run(
+        run_id,
+        result=result,
+        expected_version=run.version,
+    )
 ```
+
+`claim_run` 必须原子地获取租约并推进记录版本，每个外部步骤也必须
+使用该运行的幂等范围。这样两个 worker 不会并发恢复同一个运行，
+`expected_version` 也会拒绝陈旧的完成请求。
 
 重点不在复杂，而在显式。长生命周期工作必须清楚到操作员能观察、客户端能轮询、运行时能恢复或取消，而不是靠猜。
 

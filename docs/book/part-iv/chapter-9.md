@@ -628,10 +628,16 @@ class CapabilitySpec:
 
 
 def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
+    if spec.mode == "high_risk":
+        return {"status": "approval_required", "capability": spec.name}
     if spec.transport == "mcp":
         return {"status": "success", "transport": "mcp", "capability": spec.name}
-    if spec.transport == "sandboxed_exec" and spec.mode == "high_risk":
-        return {"status": "approval_required", "capability": spec.name}
+    if spec.transport == "sandboxed_exec":
+        return {
+            "status": "success",
+            "transport": "sandboxed_exec",
+            "capability": spec.name,
+        }
     return {"status": "validation_failure", "reason": "unsupported capability profile"}
 ```
 
