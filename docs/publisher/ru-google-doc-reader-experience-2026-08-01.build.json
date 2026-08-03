@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-editorial-pass-2026-08-01.docx",
+  "bookmarks": 109,
+  "code_lines": 1955,
+  "headings": 665,
+  "images": 56,
+  "internal_hyperlinks": 193,
+  "list_items": 3232,
+  "lists": 700,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 16063972,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.docx",
+  "output_sha256": "22fcc9a727cd28abf86f1bf16c04cd9fa5b4711aea9ff2017d471187a5ec2f3e",
+  "page_breaks": 30,
+  "paragraphs": 8461,
+  "tables": 11
+}

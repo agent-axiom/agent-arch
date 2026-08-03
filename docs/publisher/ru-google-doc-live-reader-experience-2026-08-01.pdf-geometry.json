@@ -1,0 +1,133 @@
+{
+  "schema_version": 1,
+  "pdf": "docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.pdf",
+  "sha256": "b7f9f4c758f59240a4c21397b25bce4f370a4c0e2394f4266ea47336517382d3",
+  "bytes": 8489876,
+  "pages": 506,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 506
+    }
+  ],
+  "text_characters": 798078,
+  "extracted_words": 101330,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "ABAAAA+LiberationSans-Bold",
+      "character_occurrences": 49
+    },
+    {
+      "name": "BAAAAA+Carlito",
+      "character_occurrences": 33
+    },
+    {
+      "name": "BBAAAA+RobotoMono-Regular",
+      "character_occurrences": 1
+    },
+    {
+      "name": "CAAAAA+LiberationSans-Bold",
+      "character_occurrences": 23517
+    },
+    {
+      "name": "DAAAAA+LiberationSans",
+      "character_occurrences": 663474
+    },
+    {
+      "name": "EAAAAA+LiberationSans",
+      "character_occurrences": 2435
+    },
+    {
+      "name": "FAAAAA+LiberationSans",
+      "character_occurrences": 15330
+    },
+    {
+      "name": "GAAAAA+RobotoMono-Regular",
+      "character_occurrences": 29406
+    },
+    {
+      "name": "HAAAAA+RobotoMono-Regular",
+      "character_occurrences": 10461
+    },
+    {
+      "name": "IAAAAA+LiberationSans",
+      "character_occurrences": 390
+    },
+    {
+      "name": "JAAAAA+LinuxLibertineG",
+      "character_occurrences": 2033
+    },
+    {
+      "name": "KAAAAA+LiberationSans-Bold",
+      "character_occurrences": 434
+    },
+    {
+      "name": "LAAAAA+LiberationSans",
+      "character_occurrences": 6529
+    },
+    {
+      "name": "MAAAAA+LiberationSans-Bold",
+      "character_occurrences": 70
+    },
+    {
+      "name": "NAAAAA+LiberationMono",
+      "character_occurrences": 22151
+    },
+    {
+      "name": "OAAAAA+RobotoMono-Regular",
+      "character_occurrences": 48
+    },
+    {
+      "name": "PAAAAA+LiberationSans",
+      "character_occurrences": 2615
+    },
+    {
+      "name": "QAAAAA+LiberationSans-Italic",
+      "character_occurrences": 5102
+    },
+    {
+      "name": "RAAAAA+Carlito",
+      "character_occurrences": 168
+    },
+    {
+      "name": "SAAAAA+LinuxLibertineG",
+      "character_occurrences": 2208
+    },
+    {
+      "name": "TAAAAA+FrankRuhlHofshi-Bold",
+      "character_occurrences": 25
+    },
+    {
+      "name": "UAAAAA+LinuxLibertineGB",
+      "character_occurrences": 157
+    },
+    {
+      "name": "VAAAAA+RobotoMono-Bold",
+      "character_occurrences": 39
+    },
+    {
+      "name": "WAAAAA+LiberationSans-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "XAAAAA+LiberationSans-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "YAAAAA+LiberationSans-Bold",
+      "character_occurrences": 179
+    },
+    {
+      "name": "ZAAAAA+NovaMono",
+      "character_occurrences": 35
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

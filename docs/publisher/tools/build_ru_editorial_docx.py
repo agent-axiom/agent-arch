@@ -10,6 +10,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from docx import Document
+from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT, WD_TABLE_ALIGNMENT
 from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_BREAK
 from docx.opc.constants import RELATIONSHIP_TYPE
 from docx.oxml import OxmlElement
@@ -760,6 +761,7 @@ class DocxRenderer:
         column_count = max(len(row.xpath("./th | ./td")) for row in rows)
         table = self.document.add_table(rows=len(rows), cols=column_count)
         table.autofit = False
+        table.alignment = WD_TABLE_ALIGNMENT.LEFT
         header_properties = table.rows[0]._tr.get_or_add_trPr()
         repeat_header = OxmlElement("w:tblHeader")
         repeat_header.set(qn("w:val"), "true")
@@ -773,6 +775,7 @@ class DocxRenderer:
             cells = row.xpath("./th | ./td")
             for column_index, cell in enumerate(cells):
                 target = table.cell(row_index, column_index)
+                target.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
                 paragraph = target.paragraphs[0]
                 render_inline(
                     paragraph,
@@ -780,6 +783,23 @@ class DocxRenderer:
                     InlineStyle(bold=row_index == 0 or cell.tag.lower() == "th"),
                     self.available_anchors,
                 )
+                paragraph.alignment = (
+                    WD_ALIGN_PARAGRAPH.CENTER
+                    if row_index == 0
+                    else WD_ALIGN_PARAGRAPH.LEFT
+                )
+                paragraph.paragraph_format.space_before = Pt(0)
+                paragraph.paragraph_format.space_after = Pt(0)
+                paragraph.paragraph_format.line_spacing = 1.0
+                if row_index in {0, 1, max(0, len(rows) - 2)}:
+                    set_keep_next(paragraph)
+                for run in paragraph.runs:
+                    fonts = run._r.get_or_add_rPr().rFonts
+                    if fonts is not None and any(
+                        "mono" in value.lower() or "courier" in value.lower()
+                        for value in fonts.attrib.values()
+                    ):
+                        run.font.size = Pt(8)
                 text_lengths[column_index] = max(text_lengths[column_index], len(paragraph.text))
                 if row_index == 0:
                     shading = OxmlElement("w:shd")
@@ -789,8 +809,24 @@ class DocxRenderer:
         total_weight = sum(weights)
         minimum_share = min(0.15, 0.8 / column_count)
         proportional_share = 1 - minimum_share * column_count
-        for column_index, weight in enumerate(weights):
-            share = minimum_share + proportional_share * weight / total_weight
+        shares = [
+            minimum_share + proportional_share * weight / total_weight
+            for weight in weights
+        ]
+        first_column_values = [
+            "".join(rows[row_index].xpath("./th | ./td")[0].itertext())
+            for row_index in range(len(rows))
+            if rows[row_index].xpath("./th | ./td")
+        ]
+        if column_count >= 3 and any(
+            re.search(r"\b[a-z][a-z0-9]*(?:_[a-z0-9]+){2,}\b", value)
+            for value in first_column_values
+        ):
+            requested = max(shares[0], 0.32)
+            remainder = 1 - requested
+            other_total = sum(shares[1:])
+            shares = [requested, *[share * remainder / other_total for share in shares[1:]]]
+        for column_index, share in enumerate(shares):
             width = int(self.usable_width * share)
             table.columns[column_index].width = width
             for cell in table.columns[column_index].cells:

@@ -1,6 +1,6 @@
 # Source map русской издательской рукописи
 
-Status: актуальная карта полнообъёмной сборки на 2026-08-01. Репозиторий
+Status: актуальная карта полнообъёмной сборки на 2026-08-02. Репозиторий
 остается источником правды, Google Doc является издательским представлением
 рукописи.
 
@@ -23,8 +23,8 @@ Status: актуальная карта полнообъёмной сборки 
   редакционные схемы, всего 56 изображений;
 - 8 лабораторных работ и итоговый проект;
 - 11 нумерованных таблиц в канонической и локальных издательских производных;
-- около 95 759 слов по метрике издательской сборки;
-- 456 страниц в Google-ориентированной производной и 330 страниц в
+- около 96 603 слов по метрике издательской сборки;
+- 482 страницы в Google-ориентированной производной и 358 страниц в
   производной `Template2000n`; разница вызвана типографикой и плотностью
   стилей, а не сокращением содержания; пустых технических страниц нет.
 
@@ -33,7 +33,41 @@ Google Doc:
 - `Архитектура безопасных ИИ-агентов`
 - <https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4>
 - финальная проверенная ревизия:
-  `AIroW35prHNueHFHV7x6PXl80jsvBh8iIQaxj34qE3kzRDNQtyxCDYC-3_kE8gnZ-W_JynXfSDaZNTub8fcjw6hz0RHJcTHP2SH19n-5KTY`.
+  `AIroW35cq93T87bpUoVL__T_XZAJQfiSGUuxDMb_28OJF6wXPcHaEZ7WgouPngoO4FrAiUjpsV2F6x7t51j6rDsA8cxaMg7b8g0eIesKNZc`.
+
+Контрольная точка Mermaid-синхронизации:
+
+- 56 из 56 изображений пересозданы в существующем Google Doc без изменения
+  порядка и текстовых индексов;
+- размеры изображений перенесены из проверенной Google-ориентированной
+  DOCX-производной без принудительной обрезки;
+- неизменяемый источник изображений: коммит
+  `8d2d014e0174297b56195182b14451545902f430`;
+- резервная копия перед синхронизацией:
+  <https://docs.google.com/document/d/1mBlWXweSzfQ8BhVgOSddPckFpL7M1q-gsLmROuMj8xA>;
+- отчёт: `docs/publisher/ru-google-doc-mermaid-sync-2026-08-02.md`.
+
+Контрольная точка повторной редакционной полировки:
+
+- `docs/publisher/ru-technical-book-polish-pass-2026-08-02.md`;
+- `docs/publisher/ru-technical-book-polish-pass-2026-08-02.manifest.json`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-08-02.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-technical-book-polish-2026-08-02.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-02.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-02.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-02.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-02.pdf`.
+
+Контрольная точка читательского прохода:
+
+- `docs/publisher/ru-reader-experience-pass-2026-08-01.md`;
+- `docs/publisher/ru-reader-experience-pass-2026-08-01.manifest.json`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-live-reader-experience-2026-08-01.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.pdf`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.docx`;
+- `docs/publisher/artifacts/agent-arch-ru-template2000n-reader-experience-2026-08-01.pdf`.
 
 Контрольная точка редакционного прохода:
 
@@ -696,3 +730,21 @@ Google Doc:
 
 - полный каталог источников может остаться в онлайн-приложении; в печати нужен
   отобранный список источников.
+
+## Визуальная система рукописи
+
+Источники Mermaid:
+
+- `docs/publisher/ru-inline-diagrams-2026-07-13.json`;
+- `docs/publisher/ru-numbered-diagrams-2026-07-15.json`;
+- `docs/publisher/ru-editorial-diagrams-2026-07-16.json`.
+
+Правила и сборка:
+
+- `docs/publisher/ru-visual-style-guide-2026-08-02.md`;
+- `docs/publisher/tools/render_ru_inline_diagrams.mjs`;
+- `docs/publisher/tools/revise_ru_manuscript.py`.
+
+Производные SVG и PNG находятся в `docs/publisher/visuals/`. Они не являются
+ручными источниками: при изменении смысла сначала исправляется Mermaid, затем
+полностью повторяется сборка и контроль размещения в DOCX/PDF.

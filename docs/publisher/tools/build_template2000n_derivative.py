@@ -291,12 +291,12 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
             target_style = "Style17"
             set_paragraph_flag(paragraph, "keepLines")
             mappings["figure_caption"] += 1
-        elif paragraph_is_monospace(paragraph):
-            target_style = "Style16"
-            mappings["program"] += 1
         elif paragraph.find("w:pPr/w:numPr", NS) is not None:
             target_style = "Style18"
             mappings["list"] += 1
+        elif paragraph_is_monospace(paragraph):
+            target_style = "Style16"
+            mappings["program"] += 1
         else:
             target_style = "BodyText"
             mappings["body_text"] += 1

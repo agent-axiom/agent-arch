@@ -486,18 +486,30 @@ def start_run(request: RunRequest) -> RunHandle:
     return RunHandle(run_id=run_id, status="queued")
 
 
-def continue_run(run_id: str):
-    run = load_run(run_id)
-    if run.status in {"canceled", "completed", "failed"}:
-        return run
+def continue_run(run_id: str, worker_id: str):
+    run = claim_run(
+        run_id,
+        worker_id=worker_id,
+        eligible_statuses={"queued", "waiting"},
+        lease_seconds=30,
+    )
+    if run is None:
+        return load_run(run_id)
 
-    update_status(run_id, "in_progress")
-    result = execute_run_steps(run)
-    update_status(run_id, result.status)
-    return result
+    result = execute_run_steps(run, idempotency_scope=run.run_id)
+    return complete_run(
+        run_id,
+        result=result,
+        expected_version=run.version,
+    )
 ```
 
-Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а рантайм мог ее продолжать или отменять без догадок.
+`claim_run` должен атомарно захватывать аренду и менять версию записи, а каждый
+внешний шаг обязан использовать область идемпотентности запуска. Тогда два
+исполнителя не продолжат один и тот же запуск одновременно, а устаревшее
+завершение будет отклонено проверкой `expected_version`.
+
+Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а среда исполнения могла ее продолжать или отменять без догадок.
 
 ## 12. Что можно не усложнять в первой эталонной версии
 

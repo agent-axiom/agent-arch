@@ -1,0 +1,513 @@
+{
+  "visual_style": "agent-arch-book-v1",
+  "rendered": 56,
+  "minimum_effective_font_pt": 8.56,
+  "minimum_viewbox_aspect_ratio": 0.742,
+  "violations": [],
+  "results": [
+    {
+      "number": 1,
+      "filename": "ru-inline-diagram-01.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-01.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-01.png",
+      "effective_font_pt": 10.23,
+      "viewbox_aspect_ratio": 2.812,
+      "violations": []
+    },
+    {
+      "number": 2,
+      "filename": "ru-inline-diagram-02.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-02.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-02.png",
+      "effective_font_pt": 9.24,
+      "viewbox_aspect_ratio": 1.599,
+      "violations": []
+    },
+    {
+      "number": 3,
+      "filename": "ru-inline-diagram-03.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-03.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-03.png",
+      "effective_font_pt": 12.3,
+      "viewbox_aspect_ratio": 1.343,
+      "violations": []
+    },
+    {
+      "number": 4,
+      "filename": "ru-inline-diagram-04.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-04.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-04.png",
+      "effective_font_pt": 12.95,
+      "viewbox_aspect_ratio": 0.951,
+      "violations": []
+    },
+    {
+      "number": 5,
+      "filename": "ru-inline-diagram-05.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-05.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-05.png",
+      "effective_font_pt": 10.1,
+      "viewbox_aspect_ratio": 0.955,
+      "violations": []
+    },
+    {
+      "number": 6,
+      "filename": "ru-inline-diagram-06.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-06.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-06.png",
+      "effective_font_pt": 13.84,
+      "viewbox_aspect_ratio": 0.845,
+      "violations": []
+    },
+    {
+      "number": 7,
+      "filename": "ru-inline-diagram-07.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-07.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-07.png",
+      "effective_font_pt": 10,
+      "viewbox_aspect_ratio": 2.428,
+      "violations": []
+    },
+    {
+      "number": 8,
+      "filename": "ru-inline-diagram-08.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-08.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-08.png",
+      "effective_font_pt": 9.57,
+      "viewbox_aspect_ratio": 2.578,
+      "violations": []
+    },
+    {
+      "number": 9,
+      "filename": "ru-inline-diagram-09.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-09.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-09.png",
+      "effective_font_pt": 10.87,
+      "viewbox_aspect_ratio": 1.553,
+      "violations": []
+    },
+    {
+      "number": 10,
+      "filename": "ru-inline-diagram-10.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-10.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-10.png",
+      "effective_font_pt": 9.32,
+      "viewbox_aspect_ratio": 1.012,
+      "violations": []
+    },
+    {
+      "number": 11,
+      "filename": "ru-inline-diagram-11.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-11.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-11.png",
+      "effective_font_pt": 12.96,
+      "viewbox_aspect_ratio": 0.742,
+      "violations": []
+    },
+    {
+      "number": 12,
+      "filename": "ru-inline-diagram-12.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-12.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-12.png",
+      "effective_font_pt": 13.95,
+      "viewbox_aspect_ratio": 1.633,
+      "violations": []
+    },
+    {
+      "number": 13,
+      "filename": "ru-inline-diagram-13.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-13.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-13.png",
+      "effective_font_pt": 9.19,
+      "viewbox_aspect_ratio": 2.643,
+      "violations": []
+    },
+    {
+      "number": 14,
+      "filename": "ru-inline-diagram-14.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-14.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-14.png",
+      "effective_font_pt": 15.62,
+      "viewbox_aspect_ratio": 0.933,
+      "violations": []
+    },
+    {
+      "number": 15,
+      "filename": "ru-inline-diagram-15.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-15.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-15.png",
+      "effective_font_pt": 11.52,
+      "viewbox_aspect_ratio": 1.249,
+      "violations": []
+    },
+    {
+      "number": 16,
+      "filename": "ru-inline-diagram-16.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-16.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-16.png",
+      "effective_font_pt": 13.46,
+      "viewbox_aspect_ratio": 2.226,
+      "violations": []
+    },
+    {
+      "number": 17,
+      "filename": "ru-inline-diagram-17.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-17.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-17.png",
+      "effective_font_pt": 10.38,
+      "viewbox_aspect_ratio": 1.308,
+      "violations": []
+    },
+    {
+      "number": 18,
+      "filename": "ru-inline-diagram-18.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-18.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-18.png",
+      "effective_font_pt": 10,
+      "viewbox_aspect_ratio": 2.165,
+      "violations": []
+    },
+    {
+      "number": 19,
+      "filename": "ru-inline-diagram-19.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-19.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-19.png",
+      "effective_font_pt": 12.24,
+      "viewbox_aspect_ratio": 1.102,
+      "violations": []
+    },
+    {
+      "number": 20,
+      "filename": "ru-inline-diagram-20.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-20.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-20.png",
+      "effective_font_pt": 13.2,
+      "viewbox_aspect_ratio": 1.57,
+      "violations": []
+    },
+    {
+      "number": 21,
+      "filename": "ru-inline-diagram-21.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-21.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-21.png",
+      "effective_font_pt": 9.22,
+      "viewbox_aspect_ratio": 1.234,
+      "violations": []
+    },
+    {
+      "number": 22,
+      "filename": "ru-inline-diagram-22.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-22.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-22.png",
+      "effective_font_pt": 9.56,
+      "viewbox_aspect_ratio": 2.357,
+      "violations": []
+    },
+    {
+      "number": 23,
+      "filename": "ru-inline-diagram-23.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-23.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-23.png",
+      "effective_font_pt": 9.25,
+      "viewbox_aspect_ratio": 1.688,
+      "violations": []
+    },
+    {
+      "number": 24,
+      "filename": "ru-inline-diagram-24.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-24.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-24.png",
+      "effective_font_pt": 12.28,
+      "viewbox_aspect_ratio": 1.712,
+      "violations": []
+    },
+    {
+      "number": 25,
+      "filename": "ru-inline-diagram-25.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-25.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-25.png",
+      "effective_font_pt": 11.06,
+      "viewbox_aspect_ratio": 0.964,
+      "violations": []
+    },
+    {
+      "number": 26,
+      "filename": "ru-inline-diagram-26.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-26.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-26.png",
+      "effective_font_pt": 9.94,
+      "viewbox_aspect_ratio": 2.342,
+      "violations": []
+    },
+    {
+      "number": 27,
+      "filename": "ru-inline-diagram-27.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-27.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-27.png",
+      "effective_font_pt": 9.6,
+      "viewbox_aspect_ratio": 1.089,
+      "violations": []
+    },
+    {
+      "number": 28,
+      "filename": "ru-inline-diagram-28.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-28.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-28.png",
+      "effective_font_pt": 14.01,
+      "viewbox_aspect_ratio": 1.697,
+      "violations": []
+    },
+    {
+      "number": 29,
+      "filename": "ru-inline-diagram-29.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-29.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-inline-diagram-29.png",
+      "effective_font_pt": 11.99,
+      "viewbox_aspect_ratio": 1.163,
+      "violations": []
+    },
+    {
+      "number": 1,
+      "filename": "ru-figure-01-book-map.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-01-book-map.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-01-book-map.png",
+      "effective_font_pt": 9.15,
+      "viewbox_aspect_ratio": 2.297,
+      "violations": []
+    },
+    {
+      "number": 2,
+      "filename": "ru-figure-13-autonomy-ladder.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-13-autonomy-ladder.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-13-autonomy-ladder.png",
+      "effective_font_pt": 10.66,
+      "viewbox_aspect_ratio": 0.965,
+      "violations": []
+    },
+    {
+      "number": 6,
+      "filename": "ru-figure-04-capability-contract-path.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-04-capability-contract-path.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-04-capability-contract-path.png",
+      "effective_font_pt": 9.66,
+      "viewbox_aspect_ratio": 0.843,
+      "violations": []
+    },
+    {
+      "number": 7,
+      "filename": "ru-figure-16-capability-endpoint-contract.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-16-capability-endpoint-contract.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-16-capability-endpoint-contract.png",
+      "effective_font_pt": 9.68,
+      "viewbox_aspect_ratio": 2.053,
+      "violations": []
+    },
+    {
+      "number": 8,
+      "filename": "ru-figure-06-approval-gateway.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-06-approval-gateway.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-06-approval-gateway.png",
+      "effective_font_pt": 9.58,
+      "viewbox_aspect_ratio": 1.044,
+      "violations": []
+    },
+    {
+      "number": 10,
+      "filename": "ru-figure-05-memory-retrieval.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-05-memory-retrieval.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-05-memory-retrieval.png",
+      "effective_font_pt": 9.56,
+      "viewbox_aspect_ratio": 1.505,
+      "violations": []
+    },
+    {
+      "number": 11,
+      "filename": "ru-figure-07-sandbox-mcp.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-07-sandbox-mcp.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-07-sandbox-mcp.png",
+      "effective_font_pt": 9.48,
+      "viewbox_aspect_ratio": 1.572,
+      "violations": []
+    },
+    {
+      "number": 12,
+      "filename": "ru-figure-21-mcp-gateway.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-21-mcp-gateway.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-21-mcp-gateway.png",
+      "effective_font_pt": 10.09,
+      "viewbox_aspect_ratio": 1.225,
+      "violations": []
+    },
+    {
+      "number": 13,
+      "filename": "ru-figure-08-idempotency-recovery.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-08-idempotency-recovery.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-08-idempotency-recovery.png",
+      "effective_font_pt": 8.56,
+      "viewbox_aspect_ratio": 0.751,
+      "violations": []
+    },
+    {
+      "number": 14,
+      "filename": "ru-figure-20-eval-integrity.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-20-eval-integrity.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-20-eval-integrity.png",
+      "effective_font_pt": 10.66,
+      "viewbox_aspect_ratio": 0.905,
+      "violations": []
+    },
+    {
+      "number": 17,
+      "filename": "ru-figure-10-adlc-lifecycle.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-10-adlc-lifecycle.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-10-adlc-lifecycle.png",
+      "effective_font_pt": 8.9,
+      "viewbox_aspect_ratio": 1.072,
+      "violations": []
+    },
+    {
+      "number": 21,
+      "filename": "ru-figure-22-durable-workflow-fiber.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-22-durable-workflow-fiber.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-22-durable-workflow-fiber.png",
+      "effective_font_pt": 8.88,
+      "viewbox_aspect_ratio": 0.8,
+      "violations": []
+    },
+    {
+      "number": 22,
+      "filename": "ru-figure-14-brain-hands-session.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-14-brain-hands-session.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-14-brain-hands-session.png",
+      "effective_font_pt": 9.27,
+      "viewbox_aspect_ratio": 1.748,
+      "violations": []
+    },
+    {
+      "number": 24,
+      "filename": "ru-figure-12-launch-readiness.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-12-launch-readiness.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-12-launch-readiness.png",
+      "effective_font_pt": 12.25,
+      "viewbox_aspect_ratio": 1.095,
+      "violations": []
+    },
+    {
+      "number": 25,
+      "filename": "ru-figure-24-capstone-evidence-package.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-24-capstone-evidence-package.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-24-capstone-evidence-package.png",
+      "effective_font_pt": 11.69,
+      "viewbox_aspect_ratio": 1.08,
+      "violations": []
+    },
+    {
+      "number": 3,
+      "filename": "ru-figure-03-reference-architecture.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-03-reference-architecture.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-03-reference-architecture.png",
+      "effective_font_pt": 9.63,
+      "viewbox_aspect_ratio": 2.142,
+      "violations": []
+    },
+    {
+      "number": 4,
+      "filename": "ru-figure-02-trust-boundaries.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-02-trust-boundaries.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-02-trust-boundaries.png",
+      "effective_font_pt": 11.68,
+      "viewbox_aspect_ratio": 1.377,
+      "violations": []
+    },
+    {
+      "number": 5,
+      "filename": "ru-figure-19-localhost-control-plane.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-19-localhost-control-plane.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-19-localhost-control-plane.png",
+      "effective_font_pt": 9.34,
+      "viewbox_aspect_ratio": 1.501,
+      "violations": []
+    },
+    {
+      "number": 9,
+      "filename": "ru-figure-25-memory-write-lifecycle.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-25-memory-write-lifecycle.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-25-memory-write-lifecycle.png",
+      "effective_font_pt": 9.34,
+      "viewbox_aspect_ratio": 1.601,
+      "violations": []
+    },
+    {
+      "number": 15,
+      "filename": "ru-figure-15-eval-audit-record-flow.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-15-eval-audit-record-flow.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-15-eval-audit-record-flow.png",
+      "effective_font_pt": 9.65,
+      "viewbox_aspect_ratio": 1.73,
+      "violations": []
+    },
+    {
+      "number": 16,
+      "filename": "ru-figure-09-evidence-chain.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-09-evidence-chain.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-09-evidence-chain.png",
+      "effective_font_pt": 9.13,
+      "viewbox_aspect_ratio": 2.496,
+      "violations": []
+    },
+    {
+      "number": 18,
+      "filename": "ru-figure-11-assurance-incident-registry.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-11-assurance-incident-registry.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-11-assurance-incident-registry.png",
+      "effective_font_pt": 9.18,
+      "viewbox_aspect_ratio": 1.984,
+      "violations": []
+    },
+    {
+      "number": 19,
+      "filename": "ru-figure-23-incident-response-state.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-23-incident-response-state.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-23-incident-response-state.png",
+      "effective_font_pt": 12.28,
+      "viewbox_aspect_ratio": 1.12,
+      "violations": []
+    },
+    {
+      "number": 20,
+      "filename": "ru-figure-18-runtime-stack.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-18-runtime-stack.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-18-runtime-stack.png",
+      "effective_font_pt": 10.23,
+      "viewbox_aspect_ratio": 1.956,
+      "violations": []
+    },
+    {
+      "number": 23,
+      "filename": "ru-figure-17-rollout-simulation-fidelity.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-17-rollout-simulation-fidelity.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-figure-17-rollout-simulation-fidelity.png",
+      "effective_font_pt": 11.24,
+      "viewbox_aspect_ratio": 0.945,
+      "violations": []
+    },
+    {
+      "number": 1,
+      "filename": "ru-editorial-diagram-01-execution-form-decision.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-editorial-diagram-01-execution-form-decision.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-editorial-diagram-01-execution-form-decision.png",
+      "effective_font_pt": 8.69,
+      "viewbox_aspect_ratio": 0.99,
+      "violations": []
+    },
+    {
+      "number": 2,
+      "filename": "ru-editorial-diagram-02-registry-reconciliation.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-editorial-diagram-02-registry-reconciliation.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/docs/publisher/visuals/ru-editorial-diagram-02-registry-reconciliation.png",
+      "effective_font_pt": 8.89,
+      "viewbox_aspect_ratio": 1.066,
+      "violations": []
+    }
+  ]
+}

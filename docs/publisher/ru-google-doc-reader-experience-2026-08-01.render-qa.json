@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/ru-google-doc-reader-experience-render/contact-sheet.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.003411058439766756,
+      "page": 264
+    },
+    {
+      "density": 0.005201238803276904,
+      "page": 328
+    },
+    {
+      "density": 0.006869803580705136,
+      "page": 218
+    },
+    {
+      "density": 0.008254708395398156,
+      "page": 138
+    },
+    {
+      "density": 0.010156454443309457,
+      "page": 481
+    },
+    {
+      "density": 0.01266281787214142,
+      "page": 342
+    },
+    {
+      "density": 0.013054408232932132,
+      "page": 84
+    },
+    {
+      "density": 0.013201577184998608,
+      "page": 150
+    },
+    {
+      "density": 0.014000146145855109,
+      "page": 88
+    },
+    {
+      "density": 0.01505825885079849,
+      "page": 433
+    }
+  ],
+  "pages": 481,
+  "render_dir": "/private/tmp/ru-google-doc-reader-experience-render"
+}

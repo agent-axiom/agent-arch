@@ -7,7 +7,7 @@ import argparse
 import re
 from pathlib import Path
 
-PUBLICATION_DATE = "2026-08-01"
+PUBLICATION_DATE = "2026-08-03"
 
 INDEX_ENTRIES = (
     (
@@ -481,6 +481,26 @@ def build_learning_map(chapters: list[dict[str, object]]) -> str:
             lines.append(
                 f"- Независимая проверка: лабораторная работа «{'; '.join(chapter['labs'])}»."
             )
+        if chapter["labs"]:
+            coverage = "артефакт, объяснение и независимая лабораторная проверка"
+        elif chapter["listings"] and chapter["tables"]:
+            coverage = "артефакт, исполняемый или проверяемый листинг и структурированное сравнение"
+        elif chapter["listings"]:
+            coverage = "артефакт и исполняемый или проверяемый листинг"
+        elif chapter["tables"]:
+            coverage = "артефакт и структурированное сравнение"
+        else:
+            coverage = "артефакт и действие переноса в практическом шаге"
+        lines.extend(
+            [
+                "",
+                f"**Статус покрытия:** {coverage}.",
+                "",
+                "**Критерий приемки:** читатель создал заявленный артефакт, "
+                "воспроизвел практический шаг и может связать наблюдаемый "
+                "результат с каждым обещанием главы.",
+            ]
+        )
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 

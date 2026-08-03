@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/ru-google-doc-live-reader-experience-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0028637357547202026,
+      "page": 278
+    },
+    {
+      "density": 0.007083843568120537,
+      "page": 109
+    },
+    {
+      "density": 0.007713191279106333,
+      "page": 222
+    },
+    {
+      "density": 0.008851796896969718,
+      "page": 51
+    },
+    {
+      "density": 0.010826712104327223,
+      "page": 347
+    },
+    {
+      "density": 0.01113389063501235,
+      "page": 358
+    },
+    {
+      "density": 0.012132645989446628,
+      "page": 258
+    },
+    {
+      "density": 0.0126259509277875,
+      "page": 11
+    },
+    {
+      "density": 0.012819989876151707,
+      "page": 419
+    },
+    {
+      "density": 0.013331331963219107,
+      "page": 106
+    }
+  ],
+  "pages": 506,
+  "render_dir": "/private/tmp/ru-google-doc-live-reader-experience-render"
+}

@@ -337,22 +337,31 @@ class AssuranceSignal:
     contract_drift_detected: bool = False
 
 
-def emergency_action(signal: AssuranceSignal) -> str:
+@dataclass(frozen=True)
+class EmergencyDecision:
+    action: str
+    owner: str
+    evidence_event: str
+
+
+def emergency_action(signal: AssuranceSignal) -> EmergencyDecision:
+    owner = "runtime-assurance-on-call"
+    event = "assurance_response_decision"
     if signal.unsafe_egress_detected:
-        return "restrict_egress"
+        return EmergencyDecision("restrict_egress", owner, event)
     if signal.approval_bypass_detected:
-        return "require_approval"
+        return EmergencyDecision("require_approval", owner, event)
     if signal.capability_session_expiry_regression or signal.reinit_control_drift:
-        return "freeze_reinitialization"
+        return EmergencyDecision("freeze_reinitialization", owner, event)
     if signal.paused_approval_saturation:
-        return "expire_paused_runs"
+        return EmergencyDecision("expire_paused_runs", owner, event)
     if signal.stale_background_runs:
-        return "suspend_background_route"
+        return EmergencyDecision("suspend_background_route", owner, event)
     if signal.contract_drift_detected:
-        return "disable_capability"
+        return EmergencyDecision("disable_capability", owner, event)
     if signal.memory_poisoning_suspected:
-        return "disable_memory_write"
-    return "observe"
+        return EmergencyDecision("disable_memory_write", owner, event)
+    return EmergencyDecision("observe", owner, event)
 ```
 
 重点在于：响应决策不应该完全依赖临场发挥，而应该属于预先设计好的运营表面。

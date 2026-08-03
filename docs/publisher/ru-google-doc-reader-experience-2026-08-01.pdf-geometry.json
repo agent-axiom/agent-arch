@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "pdf": "docs/publisher/artifacts/agent-arch-ru-google-doc-reader-experience-2026-08-01.pdf",
+  "sha256": "a0e60981249c8af2ea7d99895cb032022e6944b2d81252a49f8a57b4b6a8bf1b",
+  "bytes": 11519840,
+  "pages": 481,
+  "page_sizes_points": [
+    {
+      "width": 612.0,
+      "height": 792.0,
+      "pages": 481
+    }
+  ],
+  "text_characters": 800476,
+  "extracted_words": 101917,
+  "image_instances": 56,
+  "font_names": [
+    {
+      "name": "BAAAAA+LiberationSans",
+      "character_occurrences": 657687
+    },
+    {
+      "name": "CAAAAA+LiberationSans",
+      "character_occurrences": 33
+    },
+    {
+      "name": "DAAAAA+LiberationSans-Bold",
+      "character_occurrences": 10
+    },
+    {
+      "name": "EAAAAA+LiberationSans-Bold",
+      "character_occurrences": 25915
+    },
+    {
+      "name": "FAAAAA+LiberationSans",
+      "character_occurrences": 2479
+    },
+    {
+      "name": "GAAAAA+RobotoMono-Regular",
+      "character_occurrences": 26225
+    },
+    {
+      "name": "HAAAAA+LiberationSans",
+      "character_occurrences": 15353
+    },
+    {
+      "name": "IAAAAA+RobotoMono-Regular",
+      "character_occurrences": 56629
+    },
+    {
+      "name": "JAAAAA+LiberationSans",
+      "character_occurrences": 439
+    },
+    {
+      "name": "KAAAAA+LiberationSans",
+      "character_occurrences": 7900
+    },
+    {
+      "name": "LAAAAA+Carlito",
+      "character_occurrences": 168
+    },
+    {
+      "name": "MAAAAA+RobotoMono-Bold",
+      "character_occurrences": 38
+    },
+    {
+      "name": "NAAAAA+LiberationSans-BoldItalic",
+      "character_occurrences": 160
+    },
+    {
+      "name": "OAAAAA+LiberationSans-Italic",
+      "character_occurrences": 863
+    },
+    {
+      "name": "PAAAAA+LinuxLibertineG",
+      "character_occurrences": 5
+    }
+  ],
+  "empty_pages": [],
+  "replacement_character_pages": [],
+  "text_outside_page": [],
+  "images_outside_page": [],
+  "tolerance_points": 1.0,
+  "passed": true
+}

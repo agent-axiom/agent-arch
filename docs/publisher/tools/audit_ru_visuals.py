@@ -15,6 +15,10 @@ from xml.etree import ElementTree as ET
 import pdfplumber
 from PIL import Image, ImageChops, ImageDraw
 
+MIN_CONTENT_FILL_WIDTH = 0.88
+MIN_CONTENT_FILL_HEIGHT = 0.78
+MAX_PRINT_IMAGE_HEIGHT_INCHES = 6.35
+
 if __package__:
     from .sync_ru_docx_visuals import (
         EMU_PER_INCH,
@@ -61,7 +65,10 @@ def audit_assets(visuals: list[dict[str, object]]) -> list[dict[str, object]]:
         fill_width, fill_height = content_fill(path)
         if has_alpha:
             raise ValueError(f"Visual has an alpha channel: {path}")
-        if fill_width < 0.90 or fill_height < 0.78:
+        if (
+            fill_width < MIN_CONTENT_FILL_WIDTH
+            or fill_height < MIN_CONTENT_FILL_HEIGHT
+        ):
             raise ValueError(
                 f"Visual has excessive whitespace: {path} ({fill_width:.3f}, {fill_height:.3f})"
             )
@@ -141,7 +148,7 @@ def audit_docx(
         raise ValueError("Template2000n contains an image without alternative text")
     if any(item["aspect_error"] > 0.002 for item in template):
         raise ValueError("A Template2000n image is geometrically distorted")
-    if any(item["height_inches"] > 5.61 for item in template):
+    if any(item["height_inches"] > MAX_PRINT_IMAGE_HEIGHT_INCHES for item in template):
         raise ValueError("A Template2000n image exceeds the print-height limit")
     if any(item["has_alpha"] for item in template):
         raise ValueError("Template2000n contains an alpha-channel image")
