@@ -5,6 +5,9 @@ from docs.publisher.tools.plan_google_doc_developmental_sync import (
     TargetParagraph,
     build_alignment,
     normalize,
+    replacement_delete_end,
+    replacement_text,
+    selected_opcodes,
     style_requests,
 )
 
@@ -49,23 +52,51 @@ def test_style_requests_reset_inherited_page_breaks() -> None:
 
     requests = style_requests(paragraphs, start=100, tab_id="t.0")
     updates = [
-        request["updateParagraphStyle"]
-        for request in requests
-        if "updateParagraphStyle" in request
+        request["updateParagraphStyle"] for request in requests if "updateParagraphStyle" in request
     ]
 
     assert [update["paragraphStyle"]["pageBreakBefore"] for update in updates] == [False, True]
     assert all(update["fields"] == "namedStyleType,pageBreakBefore" for update in updates)
 
 
+def test_protected_opcode_is_left_for_manual_structured_sync() -> None:
+    opcodes = [
+        ("replace", 1, 2, 1, 3),
+        ("insert", 4, 4, 5, 6),
+        ("delete", 7, 8, 9, 9),
+    ]
+
+    selected, skipped = selected_opcodes(opcodes, [2, 99])
+
+    assert selected == [(1, opcodes[0]), (3, opcodes[2])]
+    assert skipped == [2]
+
+
+def test_table_adjacent_replacement_preserves_existing_paragraph_break() -> None:
+    paragraph = TargetParagraph(
+        text="Подпись перед таблицей",
+        normalized="Подпись перед таблицей",
+        named_style="NORMAL_TEXT",
+        page_break_before=False,
+        list_kind=None,
+        nesting_level=0,
+        runs=(),
+    )
+
+    assert replacement_delete_end(240, preserve_trailing_break=True) == 239
+    assert replacement_text([paragraph], preserve_trailing_break=True) == paragraph.text
+    assert replacement_delete_end(240, preserve_trailing_break=False) == 240
+    assert replacement_text([paragraph], preserve_trailing_break=False) == (paragraph.text + "\n")
+
+
 def test_google_doc_alt_text_script_matches_manuscript_images() -> None:
     root = Path(__file__).parents[1]
-    manuscript = (
-        root / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
-    ).read_text(encoding="utf-8")
-    script = (
-        root / "docs/publisher/tools/set_google_doc_image_alt_text.gs"
-    ).read_text(encoding="utf-8")
+    manuscript = (root / "docs/publisher/ru-manuscript-editorial-2026-07-13.md").read_text(
+        encoding="utf-8"
+    )
+    script = (root / "docs/publisher/tools/set_google_doc_image_alt_text.gs").read_text(
+        encoding="utf-8"
+    )
 
     expected = re.findall(r"^!\[([^]]+)]\([^)]+\)$", manuscript, flags=re.MULTILINE)
     array_body = script.split("const ALT_DESCRIPTIONS = [", 1)[1].split("];", 1)[0]
