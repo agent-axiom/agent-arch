@@ -17,6 +17,7 @@ LAB_ARTIFACTS: Final[tuple[tuple[int, str, str], ...]] = (
     (5, "lab-05", "lab-05/evidence.yaml"),
     (6, "lab-06", "lab-06/ownership-registry-change.yaml"),
     (7, "lab-07", "lab-07/assurance-drill.yaml"),
+    (8, "lab-08", "lab-08/release-decision.json"),
 )
 
 
@@ -35,8 +36,8 @@ def build_manifest(
     subject: str,
     measured_at: str,
 ) -> dict[str, object]:
-    if not 1 <= through <= 7:
-        raise ValueError("through must be between 1 and 7")
+    if not 1 <= through <= 8:
+        raise ValueError("through must be between 1 and 8")
 
     artifacts: list[dict[str, str]] = []
     signals: dict[str, dict[str, object]] = {}
@@ -68,10 +69,10 @@ def build_manifest(
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Build the cumulative evidence manifest for laboratories 1-7."
+        description="Build the cumulative evidence manifest for laboratories 1-8."
     )
     parser.add_argument("--artifacts-dir", type=Path, default=Path("artifacts"))
-    parser.add_argument("--through", type=int, default=7)
+    parser.add_argument("--through", type=int, default=8)
     parser.add_argument("--subject", default="support-triage-ref@reader-lab")
     parser.add_argument(
         "--measured-at",

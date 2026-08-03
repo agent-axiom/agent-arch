@@ -458,16 +458,28 @@ def start_run(request: RunRequest) -> RunHandle:
     return RunHandle(run_id=run_id, status="queued")
 
 
-def continue_run(run_id: str):
-    run = load_run(run_id)
-    if run.status in {"canceled", "completed", "failed"}:
-        return run
+def continue_run(run_id: str, worker_id: str):
+    run = claim_run(
+        run_id,
+        worker_id=worker_id,
+        eligible_statuses={"queued", "waiting"},
+        lease_seconds=30,
+    )
+    if run is None:
+        return load_run(run_id)
 
-    update_status(run_id, "in_progress")
-    result = execute_run_steps(run)
-    update_status(run_id, result.status)
-    return result
+    result = execute_run_steps(run, idempotency_scope=run.run_id)
+    return complete_run(
+        run_id,
+        result=result,
+        expected_version=run.version,
+    )
 ```
+
+`claim_run` must atomically acquire a lease and advance the record version, and
+every external step must use the run idempotency scope. Two workers then cannot
+resume the same run concurrently, and `expected_version` rejects stale
+completion attempts.
 
 The point is not complexity. The point is to make long-lived work explicit enough that operators can observe it, clients can poll it, and the runtime can resume or cancel it without guesswork.
 
