@@ -15,13 +15,14 @@ from docs.publisher.tools import sync_ru_docx_visuals
 ROOT = Path(__file__).resolve().parents[1]
 EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
 RAW_EDITORIAL_DOCX = ROOT / (
-    "docs/publisher/artifacts/agent-arch-ru-google-doc-final-quality-2026-08-03.docx"
+    "docs/publisher/artifacts/agent-arch-ru-google-doc-publication-readiness-2026-08-14.docx"
 )
 EDITORIAL_TEMPLATE_DOCX = ROOT / (
-    "docs/publisher/artifacts/agent-arch-ru-template2000n-final-quality-2026-08-03.docx"
+    "docs/publisher/artifacts/agent-arch-ru-template2000n-publication-readiness-2026-08-14.docx"
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
 EXPECTED_TABLE_COUNT = 12
+EXPECTED_IMAGE_COUNT = 57
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -33,16 +34,19 @@ CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties
 
 
 def test_visual_audit_accepts_every_current_manuscript_image() -> None:
-    assert len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT)) == 56
+    assert (
+        len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT))
+        == EXPECTED_IMAGE_COUNT
+    )
 
 
 def test_visual_audit_uses_the_parsed_manuscript_count_for_docx_validation() -> None:
     validate = getattr(sync_ru_docx_visuals, "validate_docx_image_counts", None)
 
     assert validate is not None
-    validate(56, 56, 56)
-    with pytest.raises(ValueError, match="raw=55, template=56, expected=56"):
-        validate(55, 56, 56)
+    validate(EXPECTED_IMAGE_COUNT, EXPECTED_IMAGE_COUNT, EXPECTED_IMAGE_COUNT)
+    with pytest.raises(ValueError, match="raw=56, template=57, expected=57"):
+        validate(56, 57, 57)
 
 
 def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
@@ -194,6 +198,69 @@ document.save(sys.argv[2])
         assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
 
 
+def test_editorial_renderer_keeps_multiline_code_blocks_together(tmp_path: Path) -> None:
+    runtime_python = Path(
+        os.environ.get(
+            "CODEX_DOCUMENT_PYTHON",
+            Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        )
+    )
+    if not runtime_python.is_file():
+        pytest.skip("bundled document runtime is unavailable")
+
+    output = tmp_path / "code-block.docx"
+    script = r"""
+import sys
+from pathlib import Path
+from docx import Document
+from lxml import html
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import build_ru_editorial_docx
+
+document = Document()
+root = html.fragment_fromstring(
+    "<h2>Глава 1. Тест</h2>"
+    "<p><strong>Команда.</strong> Запустите сценарий:</p>"
+    "<pre><code>first line\nsecond line\nlast line</code></pre>",
+    create_parent="div",
+)
+renderer = build_ru_editorial_docx.DocxRenderer(
+    document,
+    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+)
+renderer.render(root)
+document.save(sys.argv[2])
+"""
+    subprocess.run(
+        [str(runtime_python), "-c", script, str(ROOT), str(output)],
+        cwd=ROOT,
+        check=True,
+    )
+
+    with ZipFile(output) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    intro_paragraph = None
+    code_paragraphs = []
+    for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+        if value == "Команда. Запустите сценарий:":
+            intro_paragraph = paragraph
+        elif value in {"first line", "second line", "last line"}:
+            code_paragraphs.append(paragraph)
+
+    assert intro_paragraph is not None
+    assert intro_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert len(code_paragraphs) == 3
+    for paragraph in code_paragraphs:
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
+    for paragraph in code_paragraphs[:-1]:
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert code_paragraphs[-1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+
+
 def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
     with ZipFile(path) as archive:
         document = ET.fromstring(archive.read("word/document.xml"))
@@ -274,7 +341,7 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
     assert unstyled_non_empty == []
 
     image_properties = document.findall(f".//{{{DRAWING_NS}}}docPr")
-    assert len(image_properties) == 56
+    assert len(image_properties) == EXPECTED_IMAGE_COUNT
     assert all(node.attrib.get("descr", "").strip() for node in image_properties)
 
     hyperlinks = [
@@ -515,7 +582,7 @@ def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
     raw_targets, raw_hashes = ordered_embedded_images(RAW_EDITORIAL_DOCX)
     template_targets, _ = ordered_embedded_images(EDITORIAL_TEMPLATE_DOCX)
 
-    assert len(relative_paths) == 56
+    assert len(relative_paths) == EXPECTED_IMAGE_COUNT
     assert raw_hashes == expected_hashes
     assert template_targets == raw_targets
 
