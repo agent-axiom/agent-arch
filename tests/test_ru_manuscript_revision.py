@@ -115,6 +115,28 @@ def test_reference_package_quickstart_matches_runtime_contract() -> None:
         assert stale_value not in appendix
 
 
+def test_pinned_practical_revision_contains_closed_failure_scenarios() -> None:
+    result = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{revision_tool.PRACTICAL_REPOSITORY_REF}:"
+            "docs/companion/examples/run_lab_negative_scenario.py",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    for scenario in (
+        "high-risk-safe-transport",
+        "stale-run-completion",
+        "assurance-owner-missing",
+    ):
+        assert scenario in result.stdout
+
+
 def test_revision_has_clean_reader_facing_structure() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -186,7 +208,7 @@ def test_revision_has_clean_reader_facing_structure() -> None:
 def test_memory_examples_filter_before_ranking_without_isolation_overclaim() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     routing = text[
-        text.index("**Листинг 10.") : text.index("**Частые ошибки**", text.index("**Листинг 10."))
+        text.index("**Листинг 10.") : text.index("**Частые ошибки.**", text.index("**Листинг 10."))
     ]
     ranking = text[
         text.index("**Листинг 11.") : text.index(
@@ -436,16 +458,12 @@ def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_section
     for heading in (
         "### MCP как граница безопасности",
         "### Матрица угроз MCP",
-        "### Сокращенная поверхность инструментов для больших API",
         "### Управляемая MCP-поверхность платформы",
         "### Корпоративный контур управления MCP",
         "### Теневые серверы и фактическая поверхность доступа",
         "### Симуляция пользователя и среды",
         "### От оценки к выпускному действию",
         "### Проверяемые условия завершения запуска",
-        "### Что сохраняется из классического SDLC",
-        "### Где классический процесс становится недостаточным",
-        "### ADLC как расширение инженерного цикла",
         "### Заверение безопасности и цепочка поставки",
         "### От событий к причинной гипотезе",
         "### Три сквозных сценария инцидентов",
@@ -456,6 +474,14 @@ def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_section
         "### Агент и рабочий процесс как разные границы",
     ):
         assert heading in text
+
+    for run_in in (
+        "**Сокращенная поверхность инструментов для больших API.**",
+        "**Что сохраняется из классического SDLC.**",
+        "**Где классический процесс становится недостаточным.**",
+        "**ADLC как расширение инженерного цикла.**",
+    ):
+        assert run_in in text
 
     dense_headings = (
         "MCP как граница безопасности",
@@ -920,8 +946,8 @@ def test_parts_and_dense_chapters_have_editorial_navigation() -> None:
     assert text.count("**Маршрут части.**") == 8
     for marker in (
         "**Полномочия и идентичность.**",
-        "#### Контракт сервера и граница доверия",
-        "#### Два взаимодополняющих контура",
+        "**Контракт сервера и граница доверия.**",
+        "### Офлайн- и онлайн-оценки образуют один выпускной контур",
         "### Долговечное состояние запуска",
         "### От событий к причинной гипотезе",
     ):
@@ -1850,8 +1876,8 @@ def test_revision_uses_explicit_unique_visual_assets_and_caption_order() -> None
     text = EXPECTED.read_text(encoding="utf-8")
     image_paths = re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", text, re.MULTILINE)
 
-    assert len(image_paths) == 56
-    assert len(set(image_paths)) == 56
+    assert len(image_paths) == 57
+    assert len(set(image_paths)) == 57
     assert [path for path in image_paths if "/ru-figure-" in path] == NUMBERED_FIGURE_PATHS
     assert [path for path in image_paths if "/ru-inline-diagram-" in path] == [
         f"visuals/ru-inline-diagram-{number:02d}.png" for number in range(1, 30)
@@ -1952,7 +1978,7 @@ def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
 
     assert len(source_diagrams) == 56
     assert len(set(source_filenames)) == 56
-    assert set(source_filenames) == set(manuscript_filenames)
+    assert set(source_filenames) == set(manuscript_filenames) - {"ru-online-companion-qr.png"}
 
     for filename in source_filenames:
         svg = ET.fromstring((VISUALS / filename).with_suffix(".svg").read_bytes())
@@ -2016,12 +2042,13 @@ def test_final_technical_book_copyedit_is_applied() -> None:
         "трассы можно обогащать метаданными из реестра;",
         "не сверяется с реальным покрытием телеметрии;",
         "показать, какой набор политик и какой режим подтверждения относятся к данному агенту;",
-        "кто действовал;",
         "среда исполнения или модель устарели;",
         "что архивировать;",
         "устаревшая среда исполнения;",
     ):
         assert f"* {item}" in text
+
+    assert "не только «что упало», но и кто действовал" in prose
 
     assert "наблюдаемость одновременно поддерживает отладку среды исполнения" in text
     assert "активный принципал и соединитель все еще дают доступ" in text
@@ -3037,7 +3064,7 @@ def test_reader_rhythm_and_fast_moving_callouts_are_consistent() -> None:
         "\\> Я уже третий день жду активации доступа. Проверьте статус и создайте "
         "срочную заявку, если заявка застряла."
     )
-    assert text.count(repeated_request) == 2
+    assert text.count(repeated_request) == 1
 
     snapshots = re.findall(
         r"^> \*\*Срез практики\. (?:Июнь|Июль) 2026 года\.\*\* .+$",
@@ -3384,7 +3411,7 @@ def test_reader_experience_pass_keeps_visuals_explained_before_the_next_heading(
     lines = text.splitlines()
     images = [index for index, line in enumerate(lines) if re.match(r"^!\[.*\]\([^)]*\)$", line)]
 
-    assert len(images) == 56
+    assert len(images) == 57
     for image_index in images:
         prose: list[str] = []
         for line in lines[image_index + 1 :]:
@@ -3440,8 +3467,10 @@ def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
     chapter_five = revision_tool.extract_chapter(text, 5)
     chapter_eleven = revision_tool.extract_chapter(text, 11)
     chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_twenty = revision_tool.extract_chapter(text, 20)
     chapter_twenty_four = revision_tool.extract_chapter(text, 24)
     chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+    chapter_twenty_eight = revision_tool.extract_chapter(text, 28)
 
     outcomes = chapter_eleven.split("**После главы вы сможете:**", 1)[1].split(
         "**Артефакт главы:**",
@@ -3460,15 +3489,16 @@ def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
         "#### MCP-шлюз, приватная достижимость и браузер как поверхность действия" in chapter_eleven
     )
     assert "#### Явное прикладное состояние поверх ядра без состояния" in chapter_eleven
-    assert len(re.findall(r"^#### ", chapter_five, re.MULTILINE)) <= 14
-    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 17
+    assert len(re.findall(r"^#### ", chapter_five, re.MULTILINE)) <= 10
+    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 12
+    assert len(re.findall(r"^#### ", chapter_twenty, re.MULTILINE)) <= 14
 
     assert chapter_fifteen.count("рядом с `verifier_outputs` полезен `eval_audit_record`") == 0
     assert chapter_fifteen.count("рядом с `verifier_outputs` нужен `eval_audit_record`") == 1
 
     assert "**Контур заверения как рабочий цикл.**" in chapter_twenty_four
     assert "**Ищите критический шаг, а не удобное объяснение.**" in chapter_twenty_four
-    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 16
+    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 10
 
     assert "#### Усечение не должно уничтожать доказательства" not in chapter_twenty_six
     assert "#### Параллельные сессии инструментов" not in chapter_twenty_six
@@ -3476,6 +3506,7 @@ def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
     chapter_twenty_six_lower = chapter_twenty_six.lower()
     assert "устойчивый архитектурный контракт" in chapter_twenty_six_lower
     assert "пример реализации, а не универсальный контракт" in chapter_twenty_six_lower
+    assert len(re.findall(r"^### ", chapter_twenty_eight, re.MULTILINE)) <= 10
 
 
 def test_technical_book_polish_keeps_code_within_print_width() -> None:
@@ -3512,6 +3543,74 @@ def test_final_quality_pass_keeps_approval_and_transport_examples_fail_closed() 
     )
 
 
+def test_editorial_structure_pass_assigns_each_dense_concept_one_home() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_five = revision_tool.extract_chapter(text, 5)
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_eighteen = revision_tool.extract_chapter(text, 18)
+    chapter_twenty_four = revision_tool.extract_chapter(text, 24)
+    chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+
+    assert chapter_five.count("контракт проверяющего") <= 2
+    assert "Минимальный контракт проверяющего должен включать" in chapter_fifteen
+    assert "Читайте главу через одно выпускное решение" not in chapter_fifteen
+    assert "### Лучшая связка" not in chapter_fifteen
+    assert "#### Два взаимодополняющих контура" not in chapter_fifteen
+    assert "### Практические правила для контура оценки" not in chapter_fifteen
+
+    assert "**Как это выглядит в зрелой архитектуре.**" not in chapter_eleven
+    assert "**Когда A2A лучше не использовать.**" not in chapter_eleven
+    assert "#### Когда действительно нужен A2A" in chapter_eleven
+    assert "#### Угрозы сети агентов" in chapter_eleven
+
+    chapter_eighteen_headings = re.findall(r"^### ", chapter_eighteen, re.MULTILINE)
+    assert len(chapter_eighteen_headings) <= 8
+    assert "### Общие шлюзы хороши не только" not in chapter_eighteen
+    assert "### Общий шлюз ИИ как контур управления" in chapter_eighteen
+
+    assert chapter_twenty_four.count("Контур заверения непрерывно связывает") == 1
+    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 13
+
+    assert "Вот тут и нужна эталонная схема среды исполнения" not in chapter_twenty_six
+    assert len(re.findall(r"^#### ", chapter_twenty_six, re.MULTILINE)) <= 12
+
+
+def test_editorial_structure_pass_uses_run_in_heads_and_scannable_sources() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapters = text.split("## Глава 1\\.", 1)[1].split("## Итоговый проект", 1)[0]
+
+    standalone_bold_leads = re.findall(
+        r"^\*\*[^*\n]{2,140}\*\*$",
+        chapters,
+        flags=re.MULTILINE,
+    )
+    assert len(standalone_bold_leads) <= 130
+    assert not re.search(
+        r"^\*\*S\d{3}\.\*\*.*\n(?=\*\*S\d{3}\.\*\*)",
+        text,
+        flags=re.MULTILINE,
+    )
+
+
+def test_editorial_structure_pass_separates_prose_commands_and_expected_results() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    for residue in (
+        "Практика в репозитории. Экспортируйте полный набор командой `uv run",
+        "Практика в репозитории. Последовательно выполните четыре команды:",
+        "Начните с `agent_runtime_ref/configs/capabilities.yaml`",
+    ):
+        assert residue not in text
+
+    for command in (
+        "uv run python -m agent_runtime_ref export-eval-dataset",
+        "uv run python -m agent_runtime_ref simulate-run",
+        "uv run python -m agent_runtime_ref inspect-agent",
+    ):
+        assert command in text
+
+
 def test_final_quality_pass_materializes_every_claim_made_by_key_listings() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -3530,6 +3629,26 @@ def test_final_quality_pass_materializes_every_claim_made_by_key_listings() -> N
     listing_thirty_one = text.split("**Листинг 31.", 1)[1].split("#### ", 1)[0]
     for marker in ("claim_run", "expected_version", "idempotency_scope"):
         assert marker in listing_thirty_one
+
+
+def test_online_delta_contracts_have_executable_negative_proofs() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_eleven = text.split("## Глава 11\\.", 1)[1].split("## Глава 12\\.", 1)[0]
+    chapter_twenty_four = text.split("## Глава 24\\.", 1)[1].split(
+        "## Глава 25\\.",
+        1,
+    )[0]
+    chapter_twenty_six = text.split("## Глава 26\\.", 1)[1].split(
+        "## Глава 27\\.",
+        1,
+    )[0]
+
+    assert "high-risk-safe-transport" in chapter_eleven
+    assert '"execution_started": false' in chapter_eleven
+    assert "assurance-owner-missing" in chapter_twenty_four
+    assert '"assurance_decision_owner_missing"' in chapter_twenty_four
+    assert "stale-run-completion" in chapter_twenty_six
+    assert '"expected_version_mismatch"' in chapter_twenty_six
 
 
 def test_final_quality_pass_documents_an_executable_reader_path() -> None:
@@ -3582,3 +3701,33 @@ def test_final_quality_pass_normalizes_reader_facing_terminology_and_navigation(
     assert "долговременная память" in text
     assert "сжатие активного контекста" in text.lower()
     assert "фоновое уплотнение памяти" in text.lower()
+
+
+def test_publication_pass_exposes_the_online_companion_to_print_readers() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    companion_url = "https://agent-axiom.github.io/agent-arch/companion/"
+
+    assert text.count(companion_url) >= 2
+    assert "visuals/ru-online-companion-qr.png" in text
+    qr_path = VISUALS / "ru-online-companion-qr.png"
+    assert qr_path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+
+    for route in (
+        "runtime-reference/configs/",
+        "runtime-reference/cli/",
+        "runtime-reference/eval-datasets/",
+        "runtime-reference/traces-and-events/",
+    ):
+        assert companion_url + route in text
+
+
+def test_publication_pass_marks_the_recurring_support_case_as_a_callback() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    prompt = (
+        "Я уже третий день жду активации доступа. Проверьте статус и создайте "
+        "срочную заявку, если заявка застряла."
+    )
+    chapter_thirteen = revision_tool.extract_chapter(text, 13)
+
+    assert text.count(prompt) == 1
+    assert "Вернемся к запросу об активации доступа из главы 10" in chapter_thirteen

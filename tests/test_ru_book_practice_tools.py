@@ -42,6 +42,51 @@ def test_negative_scenarios_materialize_the_claimed_closed_failures(
     assert json.loads(owner_output.read_text(encoding="utf-8")) == owner
 
 
+def test_high_risk_capability_requires_approval_before_safe_transport() -> None:
+    payload = run_scenario("high-risk-safe-transport", config_dir=CONFIG_DIR)
+
+    assert payload == {
+        "scenario": "high-risk-safe-transport",
+        "decision": "approval_required",
+        "reason": "critical_risk_tier",
+        "status": "approval_required",
+        "transport": "sandboxed_exec",
+        "execution_started": False,
+        "effect_state": "not_executed",
+    }
+
+
+def test_stale_worker_cannot_complete_a_reclaimed_run() -> None:
+    payload = run_scenario("stale-run-completion", config_dir=CONFIG_DIR)
+
+    assert payload == {
+        "scenario": "stale-run-completion",
+        "accepted": False,
+        "reason": "expected_version_mismatch",
+        "run_id": "run-lease-demo",
+        "stale_worker": "worker-a",
+        "lease_owner": "worker-b",
+        "expected_version": 2,
+        "current_version": 3,
+        "idempotency_scope": "run-lease-demo",
+        "effect_state": "not_executed",
+    }
+
+
+def test_assurance_decision_without_owner_fails_closed() -> None:
+    payload = run_scenario("assurance-owner-missing", config_dir=CONFIG_DIR)
+
+    assert payload == {
+        "scenario": "assurance-owner-missing",
+        "ready": False,
+        "action": "freeze_reinitialization",
+        "owner": "",
+        "evidence_event": "assurance_response_decision",
+        "missing_fields": ["owner"],
+        "blocking_findings": ["assurance_decision_owner_missing"],
+    }
+
+
 def test_negative_scenario_is_executable_by_the_documented_command() -> None:
     completed = subprocess.run(
         [
@@ -61,6 +106,29 @@ def test_negative_scenario_is_executable_by_the_documented_command() -> None:
         "create_ticket_approval_required",
         "create_ticket_idempotency_key_required",
     ]
+
+
+def test_new_negative_scenarios_are_executable_by_documented_commands() -> None:
+    expected = {
+        "high-risk-safe-transport": ("status", "approval_required"),
+        "stale-run-completion": ("reason", "expected_version_mismatch"),
+        "assurance-owner-missing": ("ready", False),
+    }
+    for scenario, (field, value) in expected.items():
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "docs/companion/examples/run_lab_negative_scenario.py",
+                scenario,
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+
+        payload = json.loads(completed.stdout)
+        assert payload[field] == value
 
 
 def test_capstone_builder_creates_a_verifiable_hold_package(tmp_path: Path) -> None:
