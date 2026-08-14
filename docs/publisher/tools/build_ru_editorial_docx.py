@@ -474,9 +474,7 @@ class DocxRenderer:
 
     def render(self, root) -> None:
         self.available_anchors = {
-            anchor
-            for element in root
-            if (anchor := self._bookmark_anchor(element)) is not None
+            anchor for element in root if (anchor := self._bookmark_anchor(element)) is not None
         }
         self.toc_entries = [
             (int(element.tag[1]), normalized_prose("".join(element.itertext())).strip())
@@ -713,7 +711,11 @@ class DocxRenderer:
     def render_code_block(self, element) -> None:
         code = element.find("code")
         value = "".join(code.itertext()) if code is not None else "".join(element.itertext())
-        for line in value.rstrip("\n").split("\n"):
+        lines = value.rstrip("\n").split("\n")
+        keep_block_together = len(lines) <= 12
+        if keep_block_together and self.document.paragraphs:
+            set_keep_next(self.document.paragraphs[-1])
+        for index, line in enumerate(lines):
             paragraph = self.add_paragraph()
             paragraph.paragraph_format.left_indent = Inches(0.22)
             paragraph.paragraph_format.right_indent = Inches(0.12)
@@ -721,6 +723,8 @@ class DocxRenderer:
             paragraph.paragraph_format.space_after = Pt(0)
             paragraph.paragraph_format.line_spacing = 1.0
             set_keep_lines(paragraph)
+            if keep_block_together and index < len(lines) - 1:
+                set_keep_next(paragraph)
             shading = OxmlElement("w:shd")
             shading.set(qn("w:fill"), "F5F5F5")
             paragraph._p.get_or_add_pPr().append(shading)
@@ -784,9 +788,7 @@ class DocxRenderer:
                     self.available_anchors,
                 )
                 paragraph.alignment = (
-                    WD_ALIGN_PARAGRAPH.CENTER
-                    if row_index == 0
-                    else WD_ALIGN_PARAGRAPH.LEFT
+                    WD_ALIGN_PARAGRAPH.CENTER if row_index == 0 else WD_ALIGN_PARAGRAPH.LEFT
                 )
                 paragraph.paragraph_format.space_before = Pt(0)
                 paragraph.paragraph_format.space_after = Pt(0)
@@ -809,10 +811,7 @@ class DocxRenderer:
         total_weight = sum(weights)
         minimum_share = min(0.15, 0.8 / column_count)
         proportional_share = 1 - minimum_share * column_count
-        shares = [
-            minimum_share + proportional_share * weight / total_weight
-            for weight in weights
-        ]
+        shares = [minimum_share + proportional_share * weight / total_weight for weight in weights]
         first_column_values = [
             "".join(rows[row_index].xpath("./th | ./td")[0].itertext())
             for row_index in range(len(rows))

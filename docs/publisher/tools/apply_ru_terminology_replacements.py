@@ -7,12 +7,12 @@ import argparse
 import json
 from pathlib import Path
 
-
 REPLACEMENTS = [
     ("companion-материалов", "сопроводительных материалов"),
     (
         "Companion: [публичный URL / версия v1.0-book / errata route - заполнить].",
-        "Сопроводительные материалы: [публичный URL / версия v1.0-book / маршрут исправлений - заполнить].",
+        "Сопроводительные материалы: [публичный URL / версия v1.0-book / "
+        "маршрут исправлений - заполнить].",
     ),
     ("в online companion", "в онлайн-сопровождении"),
     ("online companion", "онлайн-сопровождение"),
@@ -30,8 +30,14 @@ REPLACEMENTS = [
     ("rollout-план", "план поэтапного выпуска"),
     ("rollout-плана", "плана поэтапного выпуска"),
     ("остановить rollout", "остановить поэтапный выпуск"),
-    ("rollout, assurance loop, incident response", "поэтапный выпуск, контур заверения, реагирование на инциденты"),
-    ("до ADLC, rollout, incident response", "до ADLC, поэтапного выпуска, реагирования на инциденты"),
+    (
+        "rollout, assurance loop, incident response",
+        "поэтапный выпуск, контур заверения, реагирование на инциденты",
+    ),
+    (
+        "до ADLC, rollout, incident response",
+        "до ADLC, поэтапного выпуска, реагирования на инциденты",
+    ),
     ("incident response", "реагирование на инциденты"),
     ("production checklist", "производственный чеклист"),
     ("incident checklist", "инцидентный чеклист"),

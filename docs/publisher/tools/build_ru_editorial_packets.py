@@ -8,6 +8,7 @@ import re
 from pathlib import Path
 
 PUBLICATION_DATE = "2026-08-03"
+HUMAN_REVIEW_DATE = "2026-08-14"
 
 INDEX_ENTRIES = (
     (
@@ -508,7 +509,7 @@ def build_learning_map(chapters: list[dict[str, object]]) -> str:
 def build_human_review_packet() -> str:
     return f"""# Пакет человеческой проверки русской рукописи
 
-Дата подготовки: {PUBLICATION_DATE}.
+Дата подготовки: {HUMAN_REVIEW_DATE}.
 
 **Статус человеческой проверки: не выполнена.**
 
@@ -521,8 +522,15 @@ def build_human_review_packet() -> str:
 
 - каноническая рукопись:
   `docs/publisher/ru-manuscript-editorial-2026-07-13.md`;
-- издательская DOCX-производная и PDF текущей контрольной точки;
+- Google-ориентированная издательская пара:
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-publication-readiness-2026-08-14.docx`
+  и одноименный PDF;
+- издательская пара `Template2000n`:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-publication-readiness-2026-08-14.docx`
+  и одноименный PDF;
 - репозиторий с примерами, схемами, тестами и воспроизводимыми сборщиками;
+- читательская точка входа:
+  <https://agent-axiom.github.io/agent-arch/companion/>;
 - карта результатов обучения:
   `docs/publisher/ru-learning-outcome-map-2026-07-27.md`;
 - рабочий словник предметного указателя:
@@ -606,6 +614,11 @@ def build_human_review_packet() -> str:
   авторских подсказок, сверить наблюдаемый отказ с указанным предикатом и
   подтвердить, что снятие обязательного контроля не маскируется параметром
   командной строки или успешным завершением соседнего шага.
+- **Три новые закрытые ветви.** Отдельно воспроизвести
+  `high-risk-safe-transport`, `assurance-owner-missing` и
+  `stale-run-completion`. Подтвердить соответственно, что безопасный транспорт
+  не понижает риск, решение без владельца не готово к исполнению, а устаревший
+  исполнитель не может завершить перехваченный запуск.
 
 Результат каждого сценария: `[пройден / не пройден / неприменим с обоснованием]`
 

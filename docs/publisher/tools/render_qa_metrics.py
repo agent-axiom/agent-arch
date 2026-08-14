@@ -10,7 +10,6 @@ from pathlib import Path
 
 from PIL import Image, ImageChops, ImageStat
 
-
 PAGE_RE = re.compile(r"page-(\d+)\.png$")
 
 
@@ -69,9 +68,7 @@ def collect(render_dir: Path, contact_sheet: Path | None) -> dict[str, object]:
         "render_dir": str(render_dir),
         "pages": len(pages),
         "blank_like_pages": blank_like,
-        "lowest_density_pages": [
-            {"page": page, "density": score} for page, score, _ in lowest
-        ],
+        "lowest_density_pages": [{"page": page, "density": score} for page, score, _ in lowest],
         "contact_sheet": str(contact_sheet) if contact_sheet is not None else None,
     }
 

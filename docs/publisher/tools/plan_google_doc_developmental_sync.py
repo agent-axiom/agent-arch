@@ -74,6 +74,8 @@ class TargetRun:
     bold: bool | None
     italic: bool | None
     font_name: str | None
+    link_url: str | None = None
+    link_fragment: str | None = None
 
 
 @dataclass(frozen=True)
@@ -150,22 +152,31 @@ def load_docx_paragraphs(path: Path) -> list[TargetParagraph]:
 
         run_offset = 0
         runs: list[TargetRun] = []
-        for run in paragraph.runs:
-            run_text = run.text
-            if not run_text:
-                continue
-            start = run_offset
-            end = start + utf16_length(run_text)
-            runs.append(
-                TargetRun(
-                    start=start,
-                    end=end,
-                    bold=run.bold,
-                    italic=run.italic,
-                    font_name=run.font.name,
+        for item in paragraph.iter_inner_content():
+            item_runs = item.runs if type(item).__name__ == "Hyperlink" else (item,)
+            link_url = getattr(item, "url", None) or None
+            link_fragment = getattr(item, "fragment", None) or None
+            for run in item_runs:
+                run_text = run.text
+                if not run_text:
+                    continue
+                start = run_offset
+                end = start + utf16_length(run_text)
+                runs.append(
+                    TargetRun(
+                        start=start,
+                        end=end,
+                        bold=run.bold,
+                        italic=run.italic,
+                        font_name=run.font.name,
+                        link_url=link_url,
+                        link_fragment=link_fragment,
+                    )
                 )
-            )
-            run_offset = end
+                run_offset = end
+
+        if run_offset != utf16_length(paragraph.text):
+            raise ValueError(f"Run offsets do not cover paragraph text: {paragraph.text[:120]!r}")
 
         result.append(
             TargetParagraph(
@@ -366,6 +377,9 @@ def style_requests(
             if run.font_name:
                 text_style["weightedFontFamily"] = {"fontFamily": run.font_name}
                 fields.append("weightedFontFamily")
+            if run.link_url:
+                text_style["link"] = {"url": run.link_url}
+                fields.append("link")
             if fields and run.end > run.start:
                 requests.append(
                     {

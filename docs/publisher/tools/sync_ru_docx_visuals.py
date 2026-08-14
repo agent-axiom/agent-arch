@@ -24,6 +24,7 @@ NS = {
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 EMU_PER_INCH = 914_400
 MAX_FIGURE_HEIGHT = int(5.6 * EMU_PER_INCH)
+EXPECTED_MANUSCRIPT_VISUALS = 57
 
 for prefix, uri in NS.items():
     ET.register_namespace(prefix, uri)
@@ -85,8 +86,10 @@ def parse_manuscript_visuals(manuscript: Path) -> list[dict[str, object]]:
             }
         )
 
-    if len(visuals) != 56:
-        raise ValueError(f"Expected 56 manuscript visuals, found {len(visuals)}")
+    if len(visuals) != EXPECTED_MANUSCRIPT_VISUALS:
+        raise ValueError(
+            f"Expected {EXPECTED_MANUSCRIPT_VISUALS} manuscript visuals, found {len(visuals)}"
+        )
     numbered = [item["figure_number"] for item in visuals if item["figure_number"]]
     if numbered != list(range(1, 26)):
         raise ValueError(f"Unexpected numbered figures: {numbered}")

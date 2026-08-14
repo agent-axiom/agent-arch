@@ -3,6 +3,7 @@ from pathlib import Path
 
 from docs.publisher.tools.plan_google_doc_developmental_sync import (
     TargetParagraph,
+    TargetRun,
     build_alignment,
     normalize,
     replacement_delete_end,
@@ -59,6 +60,42 @@ def test_style_requests_reset_inherited_page_breaks() -> None:
     assert all(update["fields"] == "namedStyleType,pageBreakBefore" for update in updates)
 
 
+def test_style_requests_restore_external_hyperlinks() -> None:
+    paragraph = TargetParagraph(
+        text="Официальная спецификация",
+        normalized="Официальная спецификация",
+        named_style="NORMAL_TEXT",
+        page_break_before=False,
+        list_kind=None,
+        nesting_level=0,
+        runs=(
+            TargetRun(
+                start=0,
+                end=23,
+                bold=None,
+                italic=None,
+                font_name=None,
+                link_url="https://example.com/spec",
+            ),
+        ),
+    )
+
+    requests = style_requests([paragraph], start=100, tab_id="t.0")
+    link_updates = [
+        request["updateTextStyle"]
+        for request in requests
+        if request.get("updateTextStyle", {}).get("textStyle", {}).get("link")
+    ]
+
+    assert link_updates == [
+        {
+            "range": {"startIndex": 100, "endIndex": 123, "tabId": "t.0"},
+            "textStyle": {"link": {"url": "https://example.com/spec"}},
+            "fields": "link",
+        }
+    ]
+
+
 def test_protected_opcode_is_left_for_manual_structured_sync() -> None:
     opcodes = [
         ("replace", 1, 2, 1, 3),
@@ -102,5 +139,5 @@ def test_google_doc_alt_text_script_matches_manuscript_images() -> None:
     array_body = script.split("const ALT_DESCRIPTIONS = [", 1)[1].split("];", 1)[0]
     actual = re.findall(r"^  '(.+)',?$", array_body, flags=re.MULTILINE)
 
-    assert len(expected) == 56
+    assert len(expected) == 57
     assert actual == [description.rstrip(".") + "." for description in expected]

@@ -6,17 +6,44 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Final, Sequence
 
 import yaml
 
+REPO_ROOT = Path(__file__).resolve().parents[3]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+
+from agent_runtime_ref.catalog import CapabilitySpec  # noqa: E402
+from agent_runtime_ref.execution import execute_tool  # noqa: E402
+from agent_runtime_ref.models import RunContext, ToolRequest  # noqa: E402
+from agent_runtime_ref.policy import PolicyEngine  # noqa: E402
+
 SCENARIOS: Final[tuple[str, ...]] = (
     "ticket-controls-disabled",
     "platform-owner-removed",
+    "high-risk-safe-transport",
+    "stale-run-completion",
+    "assurance-owner-missing",
 )
-REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_CONFIG_DIR = REPO_ROOT / "agent_runtime_ref/configs"
+
+
+@dataclass(frozen=True, slots=True)
+class _DurableRun:
+    run_id: str
+    version: int
+    lease_owner: str
+    idempotency_scope: str
+
+
+@dataclass(frozen=True, slots=True)
+class _EmergencyDecision:
+    action: str
+    owner: str
+    evidence_event: str
 
 
 def _load_yaml(path: Path) -> dict[str, object]:
@@ -88,6 +115,96 @@ def _remove_platform_owner(config_dir: Path) -> None:
     _write_yaml(change_path, payload)
 
 
+def _run_high_risk_safe_transport() -> dict[str, object]:
+    capability = CapabilitySpec(
+        name="rotate_key",
+        owner="security-platform",
+        mode="write",
+        transport="sandboxed_exec",
+        timeout_seconds=10,
+        tool_principal="svc-key-rotation",
+        risk_tier="critical",
+        network_access="none",
+        allowed_egress=(),
+    )
+    request = ToolRequest(
+        capability_name=capability.name,
+        arguments={"key_id": "key-demo"},
+    )
+    context = RunContext(
+        tenant_id="tenant-demo",
+        principal_id="operator-demo",
+        trace_id="trace-high-risk-safe-transport",
+    )
+    decision = PolicyEngine(allowed_network_access={"none"}).evaluate_tool(
+        context,
+        request,
+        capability,
+    )
+    result = execute_tool(capability, request, decision)
+    return {
+        "scenario": "high-risk-safe-transport",
+        "decision": decision.action,
+        "reason": decision.reason,
+        "status": result.status,
+        "transport": capability.transport,
+        "execution_started": result.status == "success",
+        "effect_state": result.side_effect_status,
+    }
+
+
+def _claim_run(run: _DurableRun, worker_id: str) -> _DurableRun:
+    return replace(run, version=run.version + 1, lease_owner=worker_id)
+
+
+def _run_stale_completion() -> dict[str, object]:
+    queued = _DurableRun(
+        run_id="run-lease-demo",
+        version=1,
+        lease_owner="",
+        idempotency_scope="run-lease-demo",
+    )
+    worker_a_claim = _claim_run(queued, "worker-a")
+    worker_b_claim = _claim_run(worker_a_claim, "worker-b")
+    return {
+        "scenario": "stale-run-completion",
+        "accepted": False,
+        "reason": "expected_version_mismatch",
+        "run_id": worker_b_claim.run_id,
+        "stale_worker": worker_a_claim.lease_owner,
+        "lease_owner": worker_b_claim.lease_owner,
+        "expected_version": worker_a_claim.version,
+        "current_version": worker_b_claim.version,
+        "idempotency_scope": worker_b_claim.idempotency_scope,
+        "effect_state": "not_executed",
+    }
+
+
+def _run_assurance_owner_missing() -> dict[str, object]:
+    decision = replace(
+        _EmergencyDecision(
+            action="freeze_reinitialization",
+            owner="runtime-assurance-on-call",
+            evidence_event="assurance_response_decision",
+        ),
+        owner="",
+    )
+    missing_fields = [
+        field for field in ("action", "owner", "evidence_event") if not getattr(decision, field)
+    ]
+    return {
+        "scenario": "assurance-owner-missing",
+        "ready": not missing_fields,
+        "action": decision.action,
+        "owner": decision.owner,
+        "evidence_event": decision.evidence_event,
+        "missing_fields": missing_fields,
+        "blocking_findings": (
+            ["assurance_decision_owner_missing"] if "owner" in missing_fields else []
+        ),
+    }
+
+
 def run_scenario(
     scenario: str,
     *,
@@ -97,27 +214,34 @@ def run_scenario(
     if scenario not in SCENARIOS:
         raise ValueError(f"Unsupported scenario: {scenario}")
 
-    source = (config_dir or DEFAULT_CONFIG_DIR).resolve()
-    with tempfile.TemporaryDirectory(prefix="agent-arch-negative-scenario-") as temp_dir:
-        working_config = Path(temp_dir) / "configs"
-        shutil.copytree(source, working_config)
+    if scenario == "high-risk-safe-transport":
+        payload = _run_high_risk_safe_transport()
+    elif scenario == "stale-run-completion":
+        payload = _run_stale_completion()
+    elif scenario == "assurance-owner-missing":
+        payload = _run_assurance_owner_missing()
+    else:
+        source = (config_dir or DEFAULT_CONFIG_DIR).resolve()
+        with tempfile.TemporaryDirectory(prefix="agent-arch-negative-scenario-") as temp_dir:
+            working_config = Path(temp_dir) / "configs"
+            shutil.copytree(source, working_config)
 
-        if scenario == "ticket-controls-disabled":
-            _disable_ticket_controls(working_config)
-            payload = _run_runtime(
-                (
-                    "check-controls",
-                    "--config-dir",
-                    str(working_config),
-                    "--signal",
-                    "create_ticket_approval_required=true",
-                    "--signal",
-                    "create_ticket_idempotency_key_required=true",
+            if scenario == "ticket-controls-disabled":
+                _disable_ticket_controls(working_config)
+                payload = _run_runtime(
+                    (
+                        "check-controls",
+                        "--config-dir",
+                        str(working_config),
+                        "--signal",
+                        "create_ticket_approval_required=true",
+                        "--signal",
+                        "create_ticket_idempotency_key_required=true",
+                    )
                 )
-            )
-        else:
-            _remove_platform_owner(working_config)
-            payload = _run_runtime(("check-change", "--config-dir", str(working_config)))
+            else:
+                _remove_platform_owner(working_config)
+                payload = _run_runtime(("check-change", "--config-dir", str(working_config)))
 
     if output is not None:
         output.parent.mkdir(parents=True, exist_ok=True)
