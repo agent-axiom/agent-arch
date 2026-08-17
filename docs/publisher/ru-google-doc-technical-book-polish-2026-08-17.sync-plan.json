@@ -1,0 +1,1934 @@
+{
+  "revisionId": "AIroW34bwyJcxIARZcLNTlYvMm8m2v70FpG6aA-cyJlxHLxA1r1QPtVLf022orIET3BzYCup93kq87fFR2oGM8cDHVJWh7VD6duLxK54QE8",
+  "tabId": "t.0",
+  "summary": {
+    "oldParagraphs": 8755,
+    "newParagraphs": 8760,
+    "liveParagraphs": 8812,
+    "changedOpcodes": 13,
+    "mappedChangedOldParagraphs": 14,
+    "changedOldParagraphs": 14,
+    "changedNewParagraphs": 19,
+    "requests": 124,
+    "inlineObjectsProtected": 57,
+    "inlineObjectsExplicitlyRelocated": [],
+    "tableParagraphRangesProtected": 216,
+    "skippedOpcodes": []
+  },
+  "audit": [
+    {
+      "number": 13,
+      "tag": "replace",
+      "old_range": [
+        7369,
+        7370
+      ],
+      "new_range": [
+        7374,
+        7375
+      ],
+      "startIndex": 665538,
+      "endIndex": 665611,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Для агентной платформы обычно есть как минимум семь обязательных блоков:",
+        "last": "Для агентной платформы обычно есть как минимум семь обязательных блоков:",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        0,
+        5
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Для агентной платформы обычно есть как минимум восемь обязательных блоков:"
+    },
+    {
+      "number": 12,
+      "tag": "replace",
+      "old_range": [
+        7311,
+        7312
+      ],
+      "new_range": [
+        7316,
+        7317
+      ],
+      "startIndex": 656420,
+      "endIndex": 656607,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Нужны артефакты поэтапного выпуска? Если вам нужен проверяемый слой поверх текста главы, смотрите схему проверки изменений и шлюза поэтапного выпуска и схему артефактов жизненного цикла.",
+        "last": "Нужны артефакты поэтапного выпуска? Если вам нужен проверяемый слой поверх текста главы, смотрите схему проверки изменений и шлюза поэтапного выпуска и схему артефактов жизненного цикла.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        5,
+        10
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Проверяемый слой над текстом главы дают схема проверки изменений, шлюз поэтапного выпуска и схема артефактов жизненного цикла."
+    },
+    {
+      "number": 11,
+      "tag": "replace",
+      "old_range": [
+        7246,
+        7247
+      ],
+      "new_range": [
+        7249,
+        7252
+      ],
+      "startIndex": 648398,
+      "endIndex": 648610,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "При изменении значимого поля требуется новое решение. Это защищает не только от атаки, но и от обычной гонки состояний, когда оператор подтверждал одну заявку, а среда исполнения уже собирается отправить другую.",
+        "last": "При изменении значимого поля требуется новое решение. Это защищает не только от атаки, но и от обычной гонки состояний, когда оператор подтверждал одну заявку, а среда исполнения уже собирается отправить другую.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        10,
+        28
+      ],
+      "insertedParagraphs": 3,
+      "insertedTextPreview": "Ожидаемый результат листинга 34. Одинаковое каноническое действие дает тот же отпечаток в пределах срока решения; изменение любого значимого поля дает новый отп"
+    },
+    {
+      "number": 10,
+      "tag": "replace",
+      "old_range": [
+        7224,
+        7225
+      ],
+      "new_range": [
+        7225,
+        7228
+      ],
+      "startIndex": 646593,
+      "endIndex": 646947,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Каждая ветка обязана вернуть результат в агентный цикл. Если перехватчик запроса не смог проверить токен, политика отказала, инструмент завершился по тайм-ауту или перехватчик ответа заблокировал утечку, модель получает типизированное наблюдение с безопасной причиной. Это сохраняет причинность и не подталкивает модель угадывать, был ли вызов выполнен.",
+        "last": "Каждая ветка обязана вернуть результат в агентный цикл. Если перехватчик запроса не смог проверить токен, политика отказала, инструмент завершился по тайм-ауту или перехватчик ответа заблокировал утечку, модель получает типизированное наблюдение с безопасной причиной. Это сохраняет причинность и не подталкивает модель угадывать, был ли вызов выполнен.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        28,
+        50
+      ],
+      "insertedParagraphs": 3,
+      "insertedTextPreview": "Ожидаемый результат листинга 33. Каждая ветка обязана вернуть в агентный цикл типизированный исход с безопасной причиной и известным состоянием внешнего эффекта"
+    },
+    {
+      "number": 9,
+      "tag": "replace",
+      "old_range": [
+        7148,
+        7149
+      ],
+      "new_range": [
+        7147,
+        7150
+      ],
+      "startIndex": 641624,
+      "endIndex": 641963,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "У этого фрагмента есть важная граница. Возврат approval_required означает паузу, а не успех задачи. Производственная среда должна сохранить состояние, дождаться решения, повторно проверить полномочия и продолжить тот же запуск. Учебная реализация показывает контракт запроса и решения, но не является долговечным механизмом возобновления.",
+        "last": "У этого фрагмента есть важная граница. Возврат approval_required означает паузу, а не успех задачи. Производственная среда должна сохранить состояние, дождаться решения, повторно проверить полномочия и продолжить тот же запуск. Учебная реализация показывает контракт запроса и решения, но не является долговечным механизмом возобновления.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        50,
+        80
+      ],
+      "insertedParagraphs": 3,
+      "insertedTextPreview": "Ожидаемый результат листинга 32. Решение deny завершает путь до адаптера, а approval_required создает запрос подтверждения и ставит тот же запуск на паузу. Толь"
+    },
+    {
+      "number": 8,
+      "tag": "replace",
+      "old_range": [
+        6829,
+        6830
+      ],
+      "new_range": [
+        6828,
+        6829
+      ],
+      "startIndex": 612797,
+      "endIndex": 612976,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Идея здесь очень простая: даже базовая среда исполнения уже должна явно показывать проверки политик, извлечение, исполнение инструментов и фоновые обновления как отдельные этапы.",
+        "last": "Идея здесь очень простая: даже базовая среда исполнения уже должна явно показывать проверки политик, извлечение, исполнение инструментов и фоновые обновления как отдельные этапы.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        80,
+        85
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Листинг делает четыре контрольные точки наблюдаемыми: проверку политики, извлечение контекста, исполнение инструмента и постановку фонового обновления."
+    },
+    {
+      "number": 7,
+      "tag": "replace",
+      "old_range": [
+        6139,
+        6140
+      ],
+      "new_range": [
+        6138,
+        6139
+      ],
+      "startIndex": 550908,
+      "endIndex": 550927,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Это слабый подход.",
+        "last": "Это слабый подход.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        85,
+        90
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Разовая демонстрация не проверяет устойчивость контроля."
+    },
+    {
+      "number": 6,
+      "tag": "delete",
+      "old_range": [
+        6130,
+        6131
+      ],
+      "new_range": [
+        6130,
+        6130
+      ],
+      "startIndex": 548799,
+      "endIndex": 548889,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "После выпуска сигнал должен получить владельца, статус, доказательства и срок устранения.",
+        "last": "После выпуска сигнал должен получить владельца, статус, доказательства и срок устранения.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        90,
+        91
+      ],
+      "insertedParagraphs": 0,
+      "insertedTextPreview": ""
+    },
+    {
+      "number": 5,
+      "tag": "replace",
+      "old_range": [
+        4094,
+        4095
+      ],
+      "new_range": [
+        4094,
+        4095
+      ],
+      "startIndex": 342242,
+      "endIndex": 342431,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Вот здесь и начинается контур оценки. В этой книге его нужно читать узко и предметно: как оценочный слой, который решает, заслуживает ли изменение доверия до расширения поэтапного выпуска.",
+        "last": "Вот здесь и начинается контур оценки. В этой книге его нужно читать узко и предметно: как оценочный слой, который решает, заслуживает ли изменение доверия до расширения поэтапного выпуска.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        91,
+        96
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Контур оценки отвечает на этот вопрос выпускным решением: заслуживает ли изменение доверия до расширения поэтапного выпуска. В этой главе нас интересует именно "
+    },
+    {
+      "number": 4,
+      "tag": "replace",
+      "old_range": [
+        2843,
+        2844
+      ],
+      "new_range": [
+        2843,
+        2844
+      ],
+      "startIndex": 237962,
+      "endIndex": 238028,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Это не только безопасность. Это еще и контроль радиуса поражения.",
+        "last": "Это не только безопасность. Это еще и контроль радиуса поражения.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        96,
+        101
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Песочница одновременно защищает границу исполнения и ограничивает радиус ущерба."
+    },
+    {
+      "number": 3,
+      "tag": "replace",
+      "old_range": [
+        1064,
+        1066
+      ],
+      "new_range": [
+        1064,
+        1066
+      ],
+      "startIndex": 104825,
+      "endIndex": 105248,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Видимая поверхность инструментов не равна управляемой поверхности возможностей. Материал OpenAI по инструментам (см. источник S058) полезен тем, что проводит различие, которое на практике размывают многие команды: модель может видеть инструменты, серверы MCP, размещенные возможности или локальные функции, но среда исполнения все равно должна решать, к какой поверхности управления все это относится.",
+        "last": "Это различие важно.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        101,
+        111
+      ],
+      "insertedParagraphs": 2,
+      "insertedTextPreview": "Видимая поверхность инструментов не равна управляемой поверхности возможностей. Материал OpenAI по инструментам (см. источник S058) проводит различие, которое н"
+    },
+    {
+      "number": 2,
+      "tag": "replace",
+      "old_range": [
+        869,
+        870
+      ],
+      "new_range": [
+        869,
+        870
+      ],
+      "startIndex": 82105,
+      "endIndex": 82506,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "Шлюз модели не завершает границу доверия. За ним находится отдельный model_provider или собственный контур размещения модели. Для каждого маршрута фиксируйте допустимые классы данных, регион, хранение, использование данных для обучения и мониторинга злоупотреблений, изоляцию арендаторов, версию модели, аутентификацию и условия резервного маршрута; резервный маршрут не должен расширять эти условия.",
+        "last": "Шлюз модели не завершает границу доверия. За ним находится отдельный model_provider или собственный контур размещения модели. Для каждого маршрута фиксируйте допустимые классы данных, регион, хранение, использование данных для обучения и мониторинга злоупотреблений, изоляцию арендаторов, версию модели, аутентификацию и условия резервного маршрута; резервный маршрут не должен расширять эти условия.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        111,
+        118
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "Шлюз модели не завершает границу доверия. За ним находится отдельный model_provider или собственный контур размещения модели. Для каждого маршрута фиксируйте до"
+    },
+    {
+      "number": 1,
+      "tag": "replace",
+      "old_range": [
+        847,
+        848
+      ],
+      "new_range": [
+        847,
+        848
+      ],
+      "startIndex": 80139,
+      "endIndex": 80157,
+      "preserveTrailingParagraphBreak": false,
+      "anchors": {
+        "first": "есть логирование.",
+        "last": "есть логирование.",
+        "unmapped_old": 0
+      },
+      "requestRange": [
+        118,
+        124
+      ],
+      "insertedParagraphs": 1,
+      "insertedTextPreview": "есть ведение журналов."
+    }
+  ],
+  "requests": [
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 665538,
+          "endIndex": 665611,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 665538,
+          "tabId": "t.0"
+        },
+        "text": "Для агентной платформы обычно есть как минимум восемь обязательных блоков:\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 665538,
+          "endIndex": 665613,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 665538,
+          "endIndex": 665613,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 665538,
+          "endIndex": 665612,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 656420,
+          "endIndex": 656607,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 656420,
+          "tabId": "t.0"
+        },
+        "text": "Проверяемый слой над текстом главы дают схема проверки изменений, шлюз поэтапного выпуска и схема артефактов жизненного цикла.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 656420,
+          "endIndex": 656547,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 656420,
+          "endIndex": 656547,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 656420,
+          "endIndex": 656546,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 648398,
+          "endIndex": 648610,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 648398,
+          "tabId": "t.0"
+        },
+        "text": "Ожидаемый результат листинга 34. Одинаковое каноническое действие дает тот же отпечаток в пределах срока решения; изменение любого значимого поля дает новый отпечаток и требует нового подтверждения.\nПризнак ошибки в листинге 34. Если измененные аргументы, субъект, область делегирования, версия политики, срок или одноразовое значение сохраняют прежний отпечаток, подтверждение можно применить к другому действию.\nАрхитектурный смысл листинга 34. Отпечаток связывает человеческое решение с неизменным намерением и закрывает как намеренную подмену, так и обычную гонку состояний.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 648398,
+          "endIndex": 648977,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 648398,
+          "endIndex": 648597,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648398,
+          "endIndex": 648418,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648418,
+          "endIndex": 648429,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648429,
+          "endIndex": 648430,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648430,
+          "endIndex": 648596,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 648597,
+          "endIndex": 648812,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648597,
+          "endIndex": 648614,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648614,
+          "endIndex": 648625,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648625,
+          "endIndex": 648626,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648626,
+          "endIndex": 648811,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 648812,
+          "endIndex": 648977,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648812,
+          "endIndex": 648832,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648832,
+          "endIndex": 648843,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648843,
+          "endIndex": 648844,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 648844,
+          "endIndex": 648976,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 646593,
+          "endIndex": 646947,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 646593,
+          "tabId": "t.0"
+        },
+        "text": "Ожидаемый результат листинга 33. Каждая ветка обязана вернуть в агентный цикл типизированный исход с безопасной причиной и известным состоянием внешнего эффекта либо явным требованием сверки.\nПризнак ошибки в листинге 33. Вызов шлюза до allow, необработанный ответ как резерв после сбоя перехватчика или потеря side_effect_status разрывают причинность и заставляют модель угадывать, был ли вызов выполнен.\nАрхитектурный смысл листинга 33. Симметричные перехватчики защищают обе стороны побочного эффекта: запрос получает доверенный контекст до авторизации, а ответ проходит санитарную обработку до возврата модели.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 646593,
+          "endIndex": 647208,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 646593,
+          "endIndex": 646785,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646593,
+          "endIndex": 646613,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646613,
+          "endIndex": 646624,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646624,
+          "endIndex": 646625,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646625,
+          "endIndex": 646784,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 646785,
+          "endIndex": 646999,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646785,
+          "endIndex": 646802,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646802,
+          "endIndex": 646813,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646813,
+          "endIndex": 646814,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646814,
+          "endIndex": 646830,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646830,
+          "endIndex": 646835,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646835,
+          "endIndex": 646904,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646904,
+          "endIndex": 646922,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646922,
+          "endIndex": 646998,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 646999,
+          "endIndex": 647208,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 646999,
+          "endIndex": 647019,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 647019,
+          "endIndex": 647030,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 647030,
+          "endIndex": 647031,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 647031,
+          "endIndex": 647207,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 641624,
+          "endIndex": 641963,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 641624,
+          "tabId": "t.0"
+        },
+        "text": "Ожидаемый результат листинга 32. Решение deny завершает путь до адаптера, а approval_required создает запрос подтверждения и ставит тот же запуск на паузу. Только allow достигает execute_tool.\nПризнак ошибки в листинге 32. Прямой переход к execute_tool, успешный статус для approval_required или продолжение без повторной проверки полномочий означают обход точки принудительного контроля.\nАрхитектурный смысл листинга 32. Политика управляет переходом состояния, а не комментирует уже выполненное действие. Учебная реализация показывает контракт запроса и решения, но не является долговечным механизмом возобновления.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 641624,
+          "endIndex": 642241,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 641624,
+          "endIndex": 641817,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641624,
+          "endIndex": 641644,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641644,
+          "endIndex": 641655,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641655,
+          "endIndex": 641656,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641656,
+          "endIndex": 641665,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641665,
+          "endIndex": 641669,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641669,
+          "endIndex": 641700,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641700,
+          "endIndex": 641717,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641717,
+          "endIndex": 641787,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641787,
+          "endIndex": 641792,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641792,
+          "endIndex": 641803,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641803,
+          "endIndex": 641815,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641815,
+          "endIndex": 641816,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 641817,
+          "endIndex": 642013,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641817,
+          "endIndex": 641834,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641834,
+          "endIndex": 641845,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641845,
+          "endIndex": 641846,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641846,
+          "endIndex": 641864,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641864,
+          "endIndex": 641876,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641876,
+          "endIndex": 641898,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641898,
+          "endIndex": 641915,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 641915,
+          "endIndex": 642012,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 642013,
+          "endIndex": 642241,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 642013,
+          "endIndex": 642033,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 642033,
+          "endIndex": 642044,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 642044,
+          "endIndex": 642045,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 642045,
+          "endIndex": 642240,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 612797,
+          "endIndex": 612976,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 612797,
+          "tabId": "t.0"
+        },
+        "text": "Листинг делает четыре контрольные точки наблюдаемыми: проверку политики, извлечение контекста, исполнение инструмента и постановку фонового обновления.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 612797,
+          "endIndex": 612949,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 612797,
+          "endIndex": 612949,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 612797,
+          "endIndex": 612948,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 550908,
+          "endIndex": 550927,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 550908,
+          "tabId": "t.0"
+        },
+        "text": "Разовая демонстрация не проверяет устойчивость контроля.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 550908,
+          "endIndex": 550965,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 550908,
+          "endIndex": 550965,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 550908,
+          "endIndex": 550964,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 548799,
+          "endIndex": 548889,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 342242,
+          "endIndex": 342431,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 342242,
+          "tabId": "t.0"
+        },
+        "text": "Контур оценки отвечает на этот вопрос выпускным решением: заслуживает ли изменение доверия до расширения поэтапного выпуска. В этой главе нас интересует именно эта инженерная роль, а не каталог инструментов оценки.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 342242,
+          "endIndex": 342457,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 342242,
+          "endIndex": 342457,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 342242,
+          "endIndex": 342456,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 237962,
+          "endIndex": 238028,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 237962,
+          "tabId": "t.0"
+        },
+        "text": "Песочница одновременно защищает границу исполнения и ограничивает радиус ущерба.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 237962,
+          "endIndex": 238043,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 237962,
+          "endIndex": 238043,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 237962,
+          "endIndex": 238042,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 104825,
+          "endIndex": 105248,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 104825,
+          "tabId": "t.0"
+        },
+        "text": "Видимая поверхность инструментов не равна управляемой поверхности возможностей. Материал OpenAI по инструментам (см. источник S058) проводит различие, которое на практике размывают многие команды: модель может видеть инструменты, серверы MCP, размещенные возможности или локальные функции, но среда исполнения все равно решает, к какой поверхности управления все это относится.\nОт этого различия зависит точка принудительного контроля: видимость помогает модели выбрать действие, а право на исполнение выдает только слой политик.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 104825,
+          "endIndex": 105355,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 104825,
+          "endIndex": 105203,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 104825,
+          "endIndex": 104904,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 104904,
+          "endIndex": 104951,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 104951,
+          "endIndex": 104955,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": true,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 104955,
+          "endIndex": 105202,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 105203,
+          "endIndex": 105355,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 105203,
+          "endIndex": 105354,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 82105,
+          "endIndex": 82506,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 82105,
+          "tabId": "t.0"
+        },
+        "text": "Шлюз модели не завершает границу доверия. За ним находится отдельный model_provider или собственный контур размещения модели. Для каждого маршрута фиксируйте допустимые классы данных, регион, хранение, использование данных для обучения и мониторинга злоупотреблений, изоляцию арендаторов, версию модели и аутентификацию. Условия резервного маршрута проверяются отдельно. Он не должен расширять ограничения основного пути.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 82105,
+          "endIndex": 82527,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 82105,
+          "endIndex": 82527,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 82105,
+          "endIndex": 82174,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 82174,
+          "endIndex": 82188,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false,
+          "weightedFontFamily": {
+            "fontFamily": "Roboto Mono"
+          }
+        },
+        "fields": "bold,italic,weightedFontFamily"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 82188,
+          "endIndex": 82526,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "deleteContentRange": {
+        "range": {
+          "startIndex": 80139,
+          "endIndex": 80157,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "insertText": {
+        "location": {
+          "index": 80139,
+          "tabId": "t.0"
+        },
+        "text": "есть ведение журналов.\n"
+      }
+    },
+    {
+      "deleteParagraphBullets": {
+        "range": {
+          "startIndex": 80139,
+          "endIndex": 80162,
+          "tabId": "t.0"
+        }
+      }
+    },
+    {
+      "updateParagraphStyle": {
+        "range": {
+          "startIndex": 80139,
+          "endIndex": 80162,
+          "tabId": "t.0"
+        },
+        "paragraphStyle": {
+          "namedStyleType": "NORMAL_TEXT",
+          "pageBreakBefore": false
+        },
+        "fields": "namedStyleType,pageBreakBefore"
+      }
+    },
+    {
+      "updateTextStyle": {
+        "range": {
+          "startIndex": 80139,
+          "endIndex": 80161,
+          "tabId": "t.0"
+        },
+        "textStyle": {
+          "bold": false,
+          "italic": false
+        },
+        "fields": "bold,italic"
+      }
+    },
+    {
+      "createParagraphBullets": {
+        "range": {
+          "startIndex": 80139,
+          "endIndex": 80162,
+          "tabId": "t.0"
+        },
+        "bulletPreset": "BULLET_DISC_CIRCLE_SQUARE"
+      }
+    }
+  ]
+}

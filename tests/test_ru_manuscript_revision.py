@@ -3731,3 +3731,61 @@ def test_publication_pass_marks_the_recurring_support_case_as_a_callback() -> No
 
     assert text.count(prompt) == 1
     assert "Вернемся к запросу об активации доступа из главы 10" in chapter_thirteen
+
+
+def test_technical_book_polish_2026_08_17_repairs_remaining_prose_and_logic() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_four = revision_tool.extract_chapter(text, 4)
+    chapter_five = revision_tool.extract_chapter(text, 5)
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_twenty_four = revision_tool.extract_chapter(text, 24)
+    chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+    chapter_twenty_eight = revision_tool.extract_chapter(text, 28)
+
+    assert "* есть ведение журналов." in chapter_four
+    assert "* есть логирование." not in chapter_four
+    assert "Условия резервного маршрута проверяются отдельно." in chapter_four
+    assert "Это различие важно." not in chapter_five
+    assert "От этого различия зависит точка принудительного контроля" in chapter_five
+    assert "Песочница одновременно защищает границу исполнения" in chapter_eleven
+    assert "Контур оценки отвечает на этот вопрос выпускным решением" in chapter_fifteen
+    assert "Это слабый подход." not in chapter_twenty_four
+    assert "Разовая демонстрация не проверяет устойчивость контроля." in chapter_twenty_four
+    assert "Идея здесь очень простая" not in chapter_twenty_six
+    assert "Листинг делает четыре контрольные точки наблюдаемыми" in chapter_twenty_six
+    assert "как минимум восемь обязательных блоков" in chapter_twenty_eight
+    assert "как минимум семь обязательных блоков" not in chapter_twenty_eight
+
+
+def test_technical_book_polish_2026_08_17_explains_chapter_27_listings() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter = revision_tool.extract_chapter(text, 27)
+    listing_thirty_three = chapter.split("**Листинг 33.", 1)[1].split(
+        "### Подтверждение",
+        1,
+    )[0]
+
+    assert listing_thirty_three.count("credential_ref=request.scoped_credential_ref") == 1
+    for marker in (
+        "**Ожидаемый результат листинга 32.**",
+        "**Признак ошибки в листинге 32.**",
+        "**Архитектурный смысл листинга 32.**",
+        "**Ожидаемый результат листинга 33.**",
+        "**Признак ошибки в листинге 33.**",
+        "**Архитектурный смысл листинга 33.**",
+        "**Ожидаемый результат листинга 34.**",
+        "**Признак ошибки в листинге 34.**",
+        "**Архитектурный смысл листинга 34.**",
+    ):
+        assert marker in chapter
+
+
+def test_technical_book_polish_2026_08_17_refreshes_editorial_packets() -> None:
+    for packet in (INDEX_TERMS, LEARNING_OUTCOME_MAP):
+        assert "Дата сборки: 2026-08-17." in packet.read_text(encoding="utf-8")
+
+    review_packet = HUMAN_REVIEW_PACKET.read_text(encoding="utf-8")
+    assert "Дата подготовки: 2026-08-17." in review_packet
+    assert "agent-arch-ru-google-doc-technical-book-polish-2026-08-17.docx" in review_packet
+    assert "agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx" in review_packet

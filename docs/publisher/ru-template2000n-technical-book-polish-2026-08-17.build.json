@@ -1,0 +1,52 @@
+{
+  "alpha_images_flattened": 0,
+  "approximate_words": 95028,
+  "bodytext_mapped": 2799,
+  "document_text_equality": true,
+  "document_text_nodes": 13795,
+  "embedded_font_registrations_preserved": 6,
+  "media_byte_equality": true,
+  "media_equality": true,
+  "media_files": 57,
+  "non_empty_paragraphs": 8760,
+  "numbering_font_attributes_normalized": 4,
+  "output_bytes": 22406443,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx",
+  "output_sha256": "fbded56af99a96687129108b871ecad8d5818d865fd4839390ef616708e2e9b1",
+  "output_style_counts": {
+    "<none>": 114,
+    "Body Text": 2799,
+    "Heading 1": 10,
+    "Heading 2": 57,
+    "Heading 3": 397,
+    "Heading 4": 148,
+    "Программа": 2255,
+    "Рис_подпись": 37,
+    "Рисунок": 57,
+    "список": 3057
+  },
+  "paragraphs": 8931,
+  "raw_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-17.docx",
+  "raw_style_counts": {
+    "Heading 1": 10,
+    "Heading 2": 57,
+    "Heading 3": 397,
+    "Heading 4": 148,
+    "normal": 8319
+  },
+  "semantic_style_mappings": {
+    "body_text": 2799,
+    "figure_caption": 25,
+    "image_alt_text": 57,
+    "list": 3057,
+    "picture": 57,
+    "picture_kept_with_caption": 25,
+    "program": 2255,
+    "table_body": 179,
+    "table_caption": 12,
+    "table_header": 37
+  },
+  "template_docx": "docs/publisher/artifacts/agent-arch-ru-template2000n-unified-visuals-2026-08-02.docx",
+  "text_equality": true,
+  "title_styles_preserved": 0
+}
