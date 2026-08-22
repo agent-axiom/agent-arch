@@ -136,7 +136,7 @@ repos:
     rev: v0.4.0
     hooks:
       - id: check-ruff-suppressions
-        args: [--protect=C901,PLR0912]
+        args: ["--protect=C901,PLR0912"]
 ```
 
 - [ ] **Step 4: Lock dependencies and validate configuration**
