@@ -17,6 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+
 def _strip_markdown_link_targets(value: str) -> str:
     parts: list[str] = []
     cursor = 0

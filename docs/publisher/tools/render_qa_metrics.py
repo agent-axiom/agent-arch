@@ -10,7 +10,6 @@ from pathlib import Path
 
 from PIL import Image, ImageChops, ImageStat
 
-
 PAGE_RE = re.compile(r"page-(\d+)\.png$")
 
 
