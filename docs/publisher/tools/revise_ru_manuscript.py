@@ -10536,8 +10536,68 @@ def apply_final_publisher_copyedit_2026_07_22(text: str) -> str:
     return text
 
 
-def apply_post_audit_consistency_pass_2026_07_23(text: str) -> str:
-    """Align executable contracts and reader claims after the final audit."""
+def _replace_legacy_or_validate_current(
+    text: str,
+    old: str,
+    current: str,
+    label: str,
+    *,
+    old_label: str | None = None,
+) -> str:
+    if old in text:
+        return _replace_editorial_anchor(text, old, current, old_label or label)
+    if text.count(current) != 1:
+        raise ValueError(f"Current {label} must occur exactly once")
+    return text
+
+
+def _replace_three_state_editorial_anchor(
+    text: str,
+    oldest: str,
+    intermediate: str,
+    current: str,
+    label: str,
+    *,
+    oldest_label: str | None = None,
+    intermediate_label: str | None = None,
+    current_error: str | None = None,
+) -> str:
+    if oldest in text:
+        return _replace_editorial_anchor(text, oldest, current, oldest_label or label)
+    if intermediate in text:
+        return _replace_editorial_anchor(
+            text,
+            intermediate,
+            current,
+            intermediate_label or label,
+        )
+    if text.count(current) != 1:
+        raise ValueError(current_error or f"Current {label} must occur exactly once")
+    return text
+
+
+def _insert_once_unless_marker(
+    text: str,
+    anchor: str,
+    replacement: str,
+    marker: str,
+    label: str,
+    *,
+    anchor_label: str | None = None,
+) -> str:
+    if marker not in text:
+        return _replace_editorial_anchor(
+            text,
+            anchor,
+            replacement,
+            anchor_label or label,
+        )
+    if text.count(marker) != 1:
+        raise ValueError(f"Current {label} must occur once")
+    return text
+
+
+def _apply_post_audit_memory_contracts(text: str) -> str:
 
     listing_ten_old = """```python
 from dataclasses import dataclass
@@ -10731,6 +10791,11 @@ def select_for_prompt(
     for old, new in replacements:
         text = _replace_editorial_anchor(text, old, new, "memory lab claim")
 
+    return text
+
+
+def _apply_post_audit_trace_contracts(text: str) -> str:
+
     tracing_listing_old = """```python
 from dataclasses import dataclass
 from time import monotonic
@@ -10790,15 +10855,13 @@ def emit_span(*, name: str, status: str, duration_ms: int) -> None:
         }
     )
 ```"""
-    if tracing_listing_old in text:
-        text = _replace_editorial_anchor(
-            text,
-            tracing_listing_old,
-            tracing_listing_new,
-            "tool result tracing semantics",
-        )
-    elif text.count(tracing_listing_new) != 1:
-        raise ValueError("Current tool-result tracing listing must occur exactly once")
+    text = _replace_legacy_or_validate_current(
+        text,
+        tracing_listing_old,
+        tracing_listing_new,
+        "tool-result tracing listing",
+        old_label="tool result tracing semantics",
+    )
 
     trace_intro_old = """В `agent_runtime_ref` сейчас используется намеренно простая оболочка. Сырой
 пользовательский ввод в общую телеметрию не включается; вместо него сохраняются
@@ -10855,6 +10918,11 @@ def emit_span(*, name: str, status: str, duration_ms: int) -> None:
         trace_envelope_new,
         "runtime trace envelope",
     )
+
+    return text
+
+
+def _apply_post_audit_evidence_contracts(text: str) -> str:
 
     change_classifier_old = """```python
 from dataclasses import dataclass
@@ -10950,22 +11018,16 @@ def manifest_integrity_verified(
         "def manifest_integrity_verified(",
         "def artifact_ready(",
     )
-    if artifact_listing_old in text:
-        text = _replace_editorial_anchor(
-            text,
-            artifact_listing_old,
-            artifact_listing_new,
-            "verified artifact manifest listing",
-        )
-    elif artifact_listing_current in text:
-        text = _replace_editorial_anchor(
-            text,
-            artifact_listing_current,
-            artifact_listing_new,
-            "precise artifact manifest naming",
-        )
-    elif text.count(artifact_listing_new) != 1:
-        raise ValueError("Current artifact-manifest verifier must occur once")
+    text = _replace_three_state_editorial_anchor(
+        text,
+        artifact_listing_old,
+        artifact_listing_current,
+        artifact_listing_new,
+        "artifact-manifest verifier",
+        oldest_label="verified artifact manifest listing",
+        intermediate_label="precise artifact manifest naming",
+        current_error="Current artifact-manifest verifier must occur once",
+    )
     text = _replace_editorial_anchor(
         text,
         "Идея здесь простая: доверенный артефакт полезно определять не по интуиции, "
@@ -11025,12 +11087,7 @@ slo:
       action: freeze_and_reconcile
 ```"""
     if slo_old in text:
-        text = _replace_editorial_anchor(
-            text,
-            slo_old,
-            slo_new,
-            "complete SLO card",
-        )
+        text = _replace_editorial_anchor(text, slo_old, slo_new, "complete SLO card")
     elif text.count(slo_new) != 1:
         raise ValueError("Current complete SLO card must occur once")
     text = _replace_editorial_anchor(
@@ -11044,6 +11101,11 @@ slo:
         "жестким блокером и не компенсируется хорошим средним показателем.",
         "SLO artifact reference",
     )
+
+    return text
+
+
+def _apply_post_audit_release_contracts(text: str) -> str:
 
     adlc_anchor = """8. Вывод из эксплуатации или замена
 
@@ -11077,15 +11139,13 @@ decided_at: "2026-07-23T09:30:00Z"
 обязательное доказательство должно быть проверено и принято владельцем.
 
 ADLC полезно мыслить как непрерывный контур, а не как путь до первого выпуска."""
-    if "transition_id: adlc-support-ticket-baseline-to-canary-001" not in text:
-        text = _replace_editorial_anchor(
-            text,
-            adlc_anchor,
-            adlc_addition,
-            "ADLC transition record",
-        )
-    elif text.count("transition_id: adlc-support-ticket-baseline-to-canary-001") != 1:
-        raise ValueError("Current ADLC transition record must occur once")
+    text = _insert_once_unless_marker(
+        text,
+        adlc_anchor,
+        adlc_addition,
+        "transition_id: adlc-support-ticket-baseline-to-canary-001",
+        "ADLC transition record",
+    )
 
     rollout_yaml_old = """```yaml
 rollout:
@@ -11214,15 +11274,14 @@ def ready_for_rollout(
 `docs/companion/examples/readiness-rubric-support-ticket.yaml`.
 
 **Что изменилось после этой главы.**"""
-    if "docs/companion/examples/readiness-rubric-support-ticket.yaml" not in text:
-        text = _replace_editorial_anchor(
-            text,
-            rubric_anchor,
-            rubric_addition,
-            "release readiness rubric",
-        )
-    elif text.count("docs/companion/examples/readiness-rubric-support-ticket.yaml") != 1:
-        raise ValueError("Current release-readiness rubric reference must occur once")
+    text = _insert_once_unless_marker(
+        text,
+        rubric_anchor,
+        rubric_addition,
+        "docs/companion/examples/readiness-rubric-support-ticket.yaml",
+        "release-readiness rubric reference",
+        anchor_label="release readiness rubric",
+    )
 
     text = text.replace(
         "Проверяемый артефакт этого разбора — `context-manifest.yaml`.",
@@ -11243,12 +11302,32 @@ def ready_for_rollout(
         1,
     )
 
+    return text
+
+
+def apply_post_audit_consistency_pass_2026_07_23(text: str) -> str:
+    """Align executable contracts and reader claims after the final audit."""
+    text = _apply_post_audit_memory_contracts(text)
+    text = _apply_post_audit_trace_contracts(text)
+    text = _apply_post_audit_evidence_contracts(text)
+    text = _apply_post_audit_release_contracts(text)
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
-def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
-    """Apply structural and source-discipline fixes required for print."""
+def _replace_all_required(
+    text: str,
+    replacements: tuple[tuple[str, str], ...],
+    *,
+    missing_prefix: str,
+) -> str:
+    for old, new in replacements:
+        if old not in text:
+            raise ValueError(f"{missing_prefix}: {old}")
+        text = text.replace(old, new)
+    return text
 
+
+def _apply_required_world_class_replacements(text: str) -> str:
     exact_replacements = (
         ("весь среда исполнения", "всю среду исполнения"),
         ("среда исполнения решил", "среда исполнения решила"),
@@ -11298,11 +11377,14 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
             "утверждает, маршрутизирует и аудирует MCP-точки доступа в масштабе».",
         ),
     )
-    for old, new in exact_replacements:
-        if old not in text:
-            raise ValueError(f"World-class copyedit anchor missing: {old}")
-        text = text.replace(old, new)
+    return _replace_all_required(
+        text,
+        exact_replacements,
+        missing_prefix="World-class copyedit anchor missing",
+    )
 
+
+def _normalize_create_ticket_risk(text: str) -> str:
     text = text.replace(
         "  create_ticket:\n    risk: medium\n",
         "  create_ticket:\n    risk: high\n",
@@ -11310,6 +11392,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
     if re.search(r"create_ticket:\n\s+risk: medium", text):
         raise ValueError("create_ticket risk classification still drifts")
 
+    return text
+
+
+def _strengthen_approval_chain(text: str) -> str:
     digest = "1b517f3d6f03284c09fb9f3822c346f987f9410dc23127eb22a494027f19abbd"
     text = _replace_editorial_anchor(
         text,
@@ -11353,6 +11439,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         "approval audit digest",
     )
 
+    return text
+
+
+def _extend_case_and_chapter_sources(text: str) -> str:
     text = _replace_editorial_anchor(
         text,
         "* **S021.** OpenAI, A Practical Guide to Building Agents.\n* **S009.** NIST, AI RMF 1.0.",
@@ -11399,7 +11489,14 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         "primary case source",
     )
 
-    stacked_heading_bridges = (
+    return text
+
+
+def _insert_stacked_heading_bridges(
+    text: str,
+    bridges: tuple[tuple[str, str, str], ...] | None = None,
+) -> str:
+    stacked_heading_bridges = bridges if bridges is not None else (
         (
             "## Практическое упражнение части I",
             "### Лабораторная работа 1\\. Выбор формы исполнения",
@@ -11589,6 +11686,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
             f"stacked headings: {parent}",
         )
 
+    return text
+
+
+def _label_heading_adjacent_fences(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
     inside_fence = False
@@ -11617,6 +11718,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         index += 1
     text = "\n".join(output).rstrip() + "\n"
 
+    return text
+
+
+def _repair_world_class_listing_layout(text: str) -> str:
     text = text.replace(
         '        return ToolResult(status="validation_failure", payload={"reason": "missing idempotency key"})',
         "        return ToolResult(\n"
@@ -11630,8 +11735,12 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         "**Тип фрагмента:** команда для воспроизведения.\n\n```console",
     )
 
+    return text
+
+
+def _wrap_world_class_shell_lines(text: str) -> str:
     lines = text.splitlines()
-    output = []
+    output: list[str] = []
     fence_language = ""
     for line in lines:
         if line.startswith("```"):
@@ -11655,7 +11764,20 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         else:
             output.append(line)
 
-    return re.sub(r"\n{4,}", "\n\n", "\n".join(output)).rstrip() + "\n"
+    return "\n".join(output).rstrip() + "\n"
+
+
+def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
+    """Apply structural and source-discipline fixes required for print."""
+    text = _apply_required_world_class_replacements(text)
+    text = _normalize_create_ticket_risk(text)
+    text = _strengthen_approval_chain(text)
+    text = _extend_case_and_chapter_sources(text)
+    text = _insert_stacked_heading_bridges(text)
+    text = _label_heading_adjacent_fences(text)
+    text = _repair_world_class_listing_layout(text)
+    text = _wrap_world_class_shell_lines(text)
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
 def apply_final_reader_copyedit_2026_07_23(text: str) -> str:
