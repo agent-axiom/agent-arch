@@ -44,12 +44,16 @@ def summary_sha256(summary: str) -> str:
     return f"sha256:{digest}"
 
 
-def _validate_delegated_fields(mode: str, principal_id: str, scope: str) -> None:
+def _validate_delegated_fields(
+    mode: str,
+    delegated_principal_id: str,
+    delegated_scope: str,
+) -> None:
     if mode != "user_delegated":
         return
-    if not principal_id:
+    if not delegated_principal_id:
         raise ValueError("Continuity field is required: delegated_principal_id")
-    if not scope:
+    if not delegated_scope:
         raise ValueError("Continuity field is required: delegated_scope")
 
 
