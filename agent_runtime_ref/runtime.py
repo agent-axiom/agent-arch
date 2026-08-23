@@ -96,6 +96,47 @@ def _runtime_component(
     return component
 
 
+def _runtime_sandbox_profile(
+    value: dict[str, object] | None,
+) -> dict[str, object]:
+    if value is None:
+        value = {}
+    if not isinstance(value, dict):
+        raise TypeError("Sandbox profile config must be a mapping")
+    return value
+
+
+def _runtime_agent_identity(value: AgentIdentity | None) -> AgentIdentity:
+    if value is None:
+        value = AgentIdentity(
+            agent_id="agent-runtime-ref",
+            display_name="Reference Runtime",
+            owner_team="agent_platform",
+            runtime_principal="svc-agent-runtime-ref",
+        )
+    if not isinstance(value, AgentIdentity):
+        raise TypeError("Runtime agent must be AgentIdentity")
+    return value
+
+
+def _runtime_background_worker(
+    value: BackgroundWorker | None,
+    *,
+    memory_store: MemoryStore,
+    policy: PolicyEngine,
+    telemetry: TelemetryEmitter,
+) -> BackgroundWorker:
+    if value is None:
+        value = BackgroundWorker(
+            memory_store=memory_store,
+            policy=policy,
+            telemetry=telemetry,
+        )
+    if not isinstance(value, BackgroundWorker):
+        raise TypeError("Runtime background must be BackgroundWorker")
+    return value
+
+
 def _normalize_run_request(request: RunRequest) -> RunRequest:
     if not isinstance(request, RunRequest):
         raise TypeError("Runtime request must be RunRequest")
@@ -197,30 +238,14 @@ class AgentRuntime:
         self.idempotency = _runtime_component(
             idempotency, IdempotencyStore, IdempotencyStore, "idempotency"
         )
-        if sandbox_profile is None:
-            sandbox_profile = {}
-        if not isinstance(sandbox_profile, dict):
-            raise TypeError("Sandbox profile config must be a mapping")
-        self.sandbox_profile = sandbox_profile
-        if agent is None:
-            agent = AgentIdentity(
-                agent_id="agent-runtime-ref",
-                display_name="Reference Runtime",
-                owner_team="agent_platform",
-                runtime_principal="svc-agent-runtime-ref",
-            )
-        if not isinstance(agent, AgentIdentity):
-            raise TypeError("Runtime agent must be AgentIdentity")
-        self.agent = agent
-        if background is None:
-            background = BackgroundWorker(
-                memory_store=self.memory,
-                policy=self.policy,
-                telemetry=self.telemetry,
-            )
-        if not isinstance(background, BackgroundWorker):
-            raise TypeError("Runtime background must be BackgroundWorker")
-        self.background = background
+        self.sandbox_profile = _runtime_sandbox_profile(sandbox_profile)
+        self.agent = _runtime_agent_identity(agent)
+        self.background = _runtime_background_worker(
+            background,
+            memory_store=self.memory,
+            policy=self.policy,
+            telemetry=self.telemetry,
+        )
 
     def run(self, request: RunRequest) -> RunResult:
         request = _normalize_run_request(request)
