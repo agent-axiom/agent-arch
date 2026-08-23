@@ -81,7 +81,7 @@ npx skills add agent-axiom/agent-arch --skill safe-agent-architecture --agent co
 
 ```bash
 uv run ruff check .
-uv run ty check
+uv run ty check agent_runtime_ref
 uv run pre-commit run --all-files
 uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
@@ -148,7 +148,7 @@ branches:
 
 ```bash
 .venv/bin/ruff check .
-.venv/bin/ty check
+.venv/bin/ty check agent_runtime_ref
 .venv/bin/pre-commit run --all-files
 .venv/bin/pytest --cov=agent_runtime_ref --cov-report=term-missing
 .venv/bin/mkdocs build --strict
@@ -192,7 +192,7 @@ If the `github-pages` environment has deployment branch restrictions, make sure 
 
 - `uv` for environment and dependency management
 - `ruff` for linting
-- `ty` for type checking
+- `ty` for type checking the supported `agent_runtime_ref` package
 - `MkDocs + Material for MkDocs` for publishing
 - `Mermaid` and `Observable Plot` for visual content
 

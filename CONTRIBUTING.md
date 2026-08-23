@@ -77,7 +77,7 @@ Before opening a PR, run:
 
 ```bash
 uv run ruff check .
-uv run ty check
+uv run ty check agent_runtime_ref
 uv run pre-commit run --all-files
 uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
@@ -89,7 +89,8 @@ those protected selectors. Deliberate `per-file-ignores` remain explicit configu
 Separately, the policy contract tests keep the default complexity limit of 10 and branch limit
 of 12.
 
-If `uv run ty check` is not relevant because the change is documentation-only, mention that clearly in your PR.
+The supported `ty` target is the `agent_runtime_ref` package. If that check is not relevant
+because the change is documentation-only, mention that clearly in your PR.
 
 ## Content conventions
 

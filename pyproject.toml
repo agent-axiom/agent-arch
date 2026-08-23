@@ -54,9 +54,6 @@ select = [
 quote-style = "double"
 indent-style = "space"
 
-[tool.ty.src]
-include = ["agent_runtime_ref"]
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
