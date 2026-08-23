@@ -4958,20 +4958,21 @@ class TestRuntimeCore:
             with pytest.raises(TypeError, match=message):
                 BackgroundWorker(**cast(dict[str, Any], background_kwargs))
 
-        malformed_dependencies: tuple[tuple[dict[str, object], str], ...] = (
-            ({"catalog": object()}, "Runtime catalog must be CapabilityCatalog"),
-            ({"policy": object()}, "Runtime policy must be PolicyEngine"),
-            ({"telemetry": object()}, "Runtime telemetry must be TelemetryEmitter"),
-            ({"memory": object()}, "Runtime memory must be MemoryStore"),
-            ({"approvals": object()}, "Runtime approvals must be ApprovalQueue"),
-            ({"sessions": object()}, "Runtime sessions must be SessionStore"),
-            ({"sandbox_profile": []}, "Sandbox profile config must be a mapping"),
-            ({"agent": object()}, "Runtime agent must be AgentIdentity"),
-            ({"background": object()}, "Runtime background must be BackgroundWorker"),
+        malformed_dependencies: tuple[tuple[str, object, str], ...] = (
+            ("catalog", object(), "Runtime catalog must be CapabilityCatalog"),
+            ("policy", object(), "Runtime policy must be PolicyEngine"),
+            ("telemetry", object(), "Runtime telemetry must be TelemetryEmitter"),
+            ("memory", object(), "Runtime memory must be MemoryStore"),
+            ("approvals", object(), "Runtime approvals must be ApprovalQueue"),
+            ("sessions", object(), "Runtime sessions must be SessionStore"),
+            ("idempotency", object(), "Runtime idempotency must be IdempotencyStore"),
+            ("sandbox_profile", [], "Sandbox profile config must be a mapping"),
+            ("agent", object(), "Runtime agent must be AgentIdentity"),
+            ("background", object(), "Runtime background must be BackgroundWorker"),
         )
-        for kwargs, message in malformed_dependencies:
+        for dependency, value, message in malformed_dependencies:
             with pytest.raises(TypeError, match=message):
-                AgentRuntime(**cast(dict[str, Any], kwargs))
+                AgentRuntime(**cast(dict[str, Any], {dependency: value}))
 
         runtime = AgentRuntime(
             catalog=CapabilityCatalog(),
