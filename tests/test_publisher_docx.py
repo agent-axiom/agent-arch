@@ -136,6 +136,90 @@ def paragraph_text(paragraph: ET.Element) -> str:
     )
 
 
+def map_template_semantic_styles_in_runtime(
+    document_xml: bytes,
+) -> tuple[ET.Element, list[tuple[str, int]]]:
+    script = r'''
+import base64
+import json
+import sys
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools.build_template2000n_derivative import map_semantic_styles
+
+document_xml, mappings = map_semantic_styles(sys.stdin.buffer.read())
+sys.stdout.write(
+    json.dumps(
+        {
+            "document_xml": base64.b64encode(document_xml).decode("ascii"),
+            "mappings": list(mappings.items()),
+        },
+        ensure_ascii=False,
+    )
+)
+'''
+    completed = subprocess.run(
+        [str(document_runtime_python()), "-c", script, str(ROOT)],
+        input=document_xml,
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+    )
+    payload = json.loads(completed.stdout)
+    mappings = [(key, count) for key, count in payload["mappings"]]
+    return ET.fromstring(base64.b64decode(payload["document_xml"])), mappings
+
+
+def template_semantic_style_fixture_xml() -> bytes:
+    return f'''<?xml version="1.0" encoding="utf-8"?>
+<w:document xmlns:w="{WORD_NS}" xmlns:wp="{DRAWING_NS}">
+  <w:body>
+    <w:p><w:r><w:t>Вводный текст</w:t></w:r></w:p>
+    <w:tbl>
+      <w:tr><w:tc><w:p><w:r><w:t>Заголовок таблицы</w:t></w:r></w:p></w:tc></w:tr>
+      <w:tr><w:tc><w:p><w:r><w:t>Ячейка таблицы</w:t></w:r></w:p></w:tc></w:tr>
+    </w:tbl>
+    <w:p><w:r><w:t>Практическая проверка.</w:t></w:r></w:p>
+    <w:p/>
+    <w:p><w:r><w:t>Тело после пустого абзаца</w:t></w:r></w:p>
+    <w:p><w:r><w:t>Таблица 4. Проверочная таблица</w:t></w:r></w:p>
+    <w:p>
+      <w:pPr><w:numPr/></w:pPr>
+      <w:r><w:rPr><w:rFonts w:ascii="Roboto Mono"/></w:rPr><w:t>Элемент списка</w:t></w:r>
+    </w:p>
+    <w:p>
+      <w:r><w:rPr><w:rFonts w:ascii="Courier New"/></w:rPr><w:t>print('ok')</w:t></w:r>
+    </w:p>
+    <w:p>
+      <w:pPr><w:pStyle w:val="Heading1"/></w:pPr>
+      <w:r><w:t>Сохраненный заголовок</w:t></w:r>
+    </w:p>
+    <w:p><w:r><w:t>Частые ошибки.</w:t></w:r></w:p>
+    <w:p>
+      <w:pPr><w:pStyle w:val="Heading2"/></w:pPr>
+      <w:r><w:t>Заголовок сбрасывает выноску</w:t></w:r>
+    </w:p>
+    <w:p><w:r><w:t>Текст после заголовка</w:t></w:r></w:p>
+    <w:p><w:r><w:t>Граница доказательств.</w:t></w:r></w:p>
+    <w:p><w:r><w:drawing><wp:inline>
+      <wp:docPr id="1" name="Reset image" descr=""/>
+    </wp:inline></w:drawing></w:r></w:p>
+    <w:p><w:r><w:t>Рисунок 8. Подпись после изображения</w:t></w:r></w:p>
+    <w:p><w:r><w:t>Текст после изображения</w:t></w:r></w:p>
+    <w:p><w:r><w:t>Опорный текст</w:t></w:r></w:p>
+    <w:p>
+      <w:r><w:t>Текст внутри изображения</w:t><w:drawing><wp:inline>
+        <wp:docPr id="2" name="Existing alt" descr="Готовое описание"/>
+      </wp:inline></w:drawing></w:r>
+    </w:p>
+    <w:p><w:r><w:drawing><wp:inline>
+      <wp:docPr id="3" name="Fallback image" descr=""/>
+    </wp:inline></w:drawing></w:r></w:p>
+  </w:body>
+</w:document>
+'''.encode()
+
+
 def test_document_runtime_python_defaults_to_current_interpreter(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
@@ -939,14 +1023,90 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
     assert len(hyperlinks) >= 104
 
 
-def test_template2000n_prioritizes_list_style_over_inline_code_font() -> None:
-    builder = ROOT / "docs/publisher/tools/build_template2000n_derivative.py"
-    source = builder.read_text(encoding="utf-8")
+def test_template2000n_semantic_style_mapping_characterization() -> None:
+    document, mappings = map_template_semantic_styles_in_runtime(
+        template_semantic_style_fixture_xml()
+    )
 
-    list_branch = source.index('elif paragraph.find("w:pPr/w:numPr", NS) is not None:')
-    program_branch = source.index("elif paragraph_is_monospace(paragraph):")
+    assert mappings == [
+        ("body_text", 4),
+        ("table_header", 1),
+        ("table_body", 1),
+        ("callout_heading", 3),
+        ("callout_body", 1),
+        ("table_caption", 1),
+        ("list", 1),
+        ("program", 1),
+        ("picture", 3),
+        ("picture_kept_with_caption", 1),
+        ("image_alt_text", 3),
+        ("figure_caption", 1),
+    ]
 
-    assert list_branch < program_branch
+    style_attribute = f"{{{WORD_NS}}}val"
+    paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+    by_text = {paragraph_text(paragraph): paragraph for paragraph in paragraphs}
+    expected_styles = {
+        "Вводный текст": "BodyText",
+        "Заголовок таблицы": "Style20",
+        "Ячейка таблицы": "Style21",
+        "Практическая проверка.": "Style24",
+        "Тело после пустого абзаца": "Style23",
+        "Таблица 4. Проверочная таблица": "Style17",
+        "Элемент списка": "Style18",
+        "print('ok')": "Style16",
+        "Сохраненный заголовок": "Heading1",
+        "Частые ошибки.": "Style24",
+        "Заголовок сбрасывает выноску": "Heading2",
+        "Текст после заголовка": "BodyText",
+        "Граница доказательств.": "Style24",
+        "Рисунок 8. Подпись после изображения": "Style17",
+        "Текст после изображения": "BodyText",
+        "Опорный текст": "BodyText",
+    }
+    assert {
+        text: by_text[text].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle").attrib[
+            style_attribute
+        ]
+        for text in expected_styles
+    } == expected_styles
+
+    blank_paragraph = next(paragraph for paragraph in paragraphs if len(paragraph) == 0)
+    assert blank_paragraph.find(f"{{{WORD_NS}}}pPr") is None
+
+    table_caption = by_text["Таблица 4. Проверочная таблица"]
+    assert table_caption.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert table_caption.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
+
+    figure_caption = by_text["Рисунок 8. Подпись после изображения"]
+    assert figure_caption.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
+
+    images = [
+        paragraph
+        for paragraph in paragraphs
+        if paragraph.find(f".//{{{WORD_NS}}}drawing") is not None
+    ]
+    assert [
+        paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle").attrib[
+            style_attribute
+        ]
+        for paragraph in images
+    ] == ["Style28", "Style28", "Style28"]
+    assert images[0].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert images[1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+    assert images[2].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+
+    image_properties = document.findall(f".//{{{DRAWING_NS}}}docPr")
+    assert [properties.attrib["title"] for properties in image_properties] == [
+        "Иллюстрация к рукописи",
+        "Иллюстрация к рукописи",
+        "Иллюстрация к рукописи",
+    ]
+    assert [properties.attrib["descr"] for properties in image_properties] == [
+        "Рисунок 8. Подпись после изображения",
+        "Готовое описание",
+        "Опорный текст",
+    ]
 
 
 def test_template2000n_editorial_images_have_no_alpha_channel() -> None:

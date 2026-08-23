@@ -46,6 +46,28 @@ FONT_ATTRIBUTES = {
     f"{{{NS['w']}}}cs",
 }
 
+CALLOUT_HEADING_LABELS = frozenset(
+    {
+        "Практическая проверка.",
+        "Практическая проверка в репозитории.",
+        "Связь со следующей главой.",
+        "Сопутствующие материалы.",
+        "Частые ошибки.",
+        "Граница доказательств.",
+    }
+)
+
+PRESERVED_PARAGRAPH_STYLE_IDS = frozenset(
+    {
+        "Heading1",
+        "Heading2",
+        "Heading3",
+        "Heading4",
+        "Heading5",
+        "Title",
+    }
+)
+
 
 def sha256(path: Path) -> str:
     h = hashlib.sha256()
@@ -201,25 +223,95 @@ def paragraph_is_monospace(paragraph: ET.Element) -> bool:
     return styled_characters > 0 and monospace_characters / styled_characters >= 0.8
 
 
-def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
-    root = ET.fromstring(document_xml)
-    paragraphs = root.findall(".//w:p", NS)
-    mappings: Counter[str] = Counter()
-    table_styles: dict[ET.Element, str] = {}
+def _table_paragraph_styles(root: ET.Element) -> dict[ET.Element, str]:
+    styles: dict[ET.Element, str] = {}
     for table in root.findall(".//w:tbl", NS):
         for row_index, row in enumerate(table.findall("w:tr", NS)):
             style_id = "Style20" if row_index == 0 else "Style21"
             for paragraph in row.findall(".//w:p", NS):
-                table_styles[paragraph] = style_id
+                styles[paragraph] = style_id
+    return styles
 
-    labels = {
-        "Практическая проверка.",
-        "Практическая проверка в репозитории.",
-        "Связь со следующей главой.",
-        "Сопутствующие материалы.",
-        "Частые ошибки.",
-        "Граница доказательств.",
-    }
+
+def _next_nonempty_paragraph_text(
+    paragraphs: list[ET.Element],
+    index: int,
+) -> str:
+    return next(
+        (
+            candidate_text
+            for candidate in paragraphs[index + 1 :]
+            if (candidate_text := paragraph_text(candidate))
+        ),
+        "",
+    )
+
+
+def _style_image_paragraph(
+    paragraph: ET.Element,
+    paragraphs: list[ET.Element],
+    index: int,
+    last_text: str,
+    mappings: Counter[str],
+) -> None:
+    set_paragraph_style(paragraph, "Style28")
+    mappings["picture"] += 1
+    following_text = _next_nonempty_paragraph_text(paragraphs, index)
+    if re.match(r"^Рисунок \d+\.", following_text):
+        set_paragraph_flag(paragraph, "keepNext")
+        mappings["picture_kept_with_caption"] += 1
+    fallback_description = (following_text or last_text)[:250]
+    for properties in paragraph.findall(".//wp:docPr", NS):
+        properties.set("title", "Иллюстрация к рукописи")
+        if not properties.get("descr", "").strip():
+            properties.set("descr", fallback_description)
+        mappings["image_alt_text"] += 1
+
+
+def _semantic_paragraph_style(
+    paragraph: ET.Element,
+    text: str,
+    table_styles: dict[ET.Element, str],
+    pending_callout_body: bool,
+    mappings: Counter[str],
+) -> tuple[str, bool]:
+    if paragraph in table_styles:
+        target_style = table_styles[paragraph]
+        mappings["table_header" if target_style == "Style20" else "table_body"] += 1
+    elif text in CALLOUT_HEADING_LABELS:
+        target_style = "Style24"
+        mappings["callout_heading"] += 1
+        pending_callout_body = True
+    elif pending_callout_body:
+        target_style = "Style23"
+        mappings["callout_body"] += 1
+        pending_callout_body = False
+    elif re.match(r"^Таблица \d+\.", text):
+        target_style = "Style17"
+        set_paragraph_flag(paragraph, "keepNext")
+        set_paragraph_flag(paragraph, "keepLines")
+        mappings["table_caption"] += 1
+    elif re.match(r"^Рисунок \d+\.", text):
+        target_style = "Style17"
+        set_paragraph_flag(paragraph, "keepLines")
+        mappings["figure_caption"] += 1
+    elif paragraph.find("w:pPr/w:numPr", NS) is not None:
+        target_style = "Style18"
+        mappings["list"] += 1
+    elif paragraph_is_monospace(paragraph):
+        target_style = "Style16"
+        mappings["program"] += 1
+    else:
+        target_style = "BodyText"
+        mappings["body_text"] += 1
+    return target_style, pending_callout_body
+
+
+def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
+    root = ET.fromstring(document_xml)
+    paragraphs = root.findall(".//w:p", NS)
+    mappings: Counter[str] = Counter()
+    table_styles = _table_paragraph_styles(root)
     pending_callout_body = False
     last_text = "Схема архитектуры безопасного ИИ-агента"
     style_attribute = f"{{{NS['w']}}}val"
@@ -234,72 +326,24 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
         )
 
         if has_image:
-            set_paragraph_style(paragraph, "Style28")
-            mappings["picture"] += 1
-            following_text = next(
-                (
-                    candidate_text
-                    for candidate in paragraphs[index + 1 :]
-                    if (candidate_text := paragraph_text(candidate))
-                ),
-                "",
-            )
-            if re.match(r"^Рисунок \d+\.", following_text):
-                set_paragraph_flag(paragraph, "keepNext")
-                mappings["picture_kept_with_caption"] += 1
-            fallback_description = (following_text or last_text)[:250]
-            for properties in paragraph.findall(".//wp:docPr", NS):
-                properties.set("title", "Иллюстрация к рукописи")
-                if not properties.get("descr", "").strip():
-                    properties.set("descr", fallback_description)
-                mappings["image_alt_text"] += 1
+            _style_image_paragraph(paragraph, paragraphs, index, last_text, mappings)
             pending_callout_body = False
             continue
 
         if not text:
             continue
-        if current_style_id in {
-            "Heading1",
-            "Heading2",
-            "Heading3",
-            "Heading4",
-            "Heading5",
-            "Title",
-        }:
+        if current_style_id in PRESERVED_PARAGRAPH_STYLE_IDS:
             pending_callout_body = False
             last_text = text
             continue
 
-        target_style: str
-        if paragraph in table_styles:
-            target_style = table_styles[paragraph]
-            mappings["table_header" if target_style == "Style20" else "table_body"] += 1
-        elif text in labels:
-            target_style = "Style24"
-            mappings["callout_heading"] += 1
-            pending_callout_body = True
-        elif pending_callout_body:
-            target_style = "Style23"
-            mappings["callout_body"] += 1
-            pending_callout_body = False
-        elif re.match(r"^Таблица \d+\.", text):
-            target_style = "Style17"
-            set_paragraph_flag(paragraph, "keepNext")
-            set_paragraph_flag(paragraph, "keepLines")
-            mappings["table_caption"] += 1
-        elif re.match(r"^Рисунок \d+\.", text):
-            target_style = "Style17"
-            set_paragraph_flag(paragraph, "keepLines")
-            mappings["figure_caption"] += 1
-        elif paragraph.find("w:pPr/w:numPr", NS) is not None:
-            target_style = "Style18"
-            mappings["list"] += 1
-        elif paragraph_is_monospace(paragraph):
-            target_style = "Style16"
-            mappings["program"] += 1
-        else:
-            target_style = "BodyText"
-            mappings["body_text"] += 1
+        target_style, pending_callout_body = _semantic_paragraph_style(
+            paragraph,
+            text,
+            table_styles,
+            pending_callout_body,
+            mappings,
+        )
 
         set_paragraph_style(paragraph, target_style)
         last_text = text
