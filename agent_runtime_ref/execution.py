@@ -10,29 +10,12 @@ from agent_runtime_ref.models import (
 from agent_runtime_ref.policy import PolicyDecision
 
 
-def execute_tool(
+def _policy_or_validation_result(
     capability: CapabilitySpec,
-    tool_request: ToolRequest,
+    capability_name: str,
+    arguments: dict[str, str],
     decision: PolicyDecision,
-    *,
-    test_fault: str = "",
-) -> ToolResult:
-    if not isinstance(capability, CapabilitySpec):
-        raise TypeError("Tool capability must be CapabilitySpec")
-    if not isinstance(tool_request, ToolRequest):
-        raise TypeError("Tool request must be ToolRequest")
-    if not isinstance(decision, PolicyDecision):
-        raise TypeError("Tool policy decision must be PolicyDecision")
-    if not isinstance(test_fault, str):
-        raise TypeError("Tool test_fault must be a string")
-    test_fault = test_fault.strip()
-    capability_name = normalize_tool_capability_name(tool_request.capability_name)
-    arguments = normalize_tool_arguments(tool_request.arguments)
-    if capability_name != capability.name:
-        raise ValueError(
-            "Tool request capability does not match catalog entry: "
-            f"{capability_name} != {capability.name}"
-        )
+) -> ToolResult | None:
     action = decision.action
     if action == "deny":
         return ToolResult(
@@ -52,6 +35,10 @@ def execute_tool(
             status="validation_failure",
             payload={"reason": "missing_idempotency_key"},
         )
+    return None
+
+
+def _fault_result(capability_name: str, test_fault: str) -> ToolResult | None:
     if test_fault == "tool_timeout":
         return ToolResult(
             capability_name=capability_name,
@@ -81,6 +68,43 @@ def execute_tool(
                 "effect_state": "not_executed",
             },
         )
+    return None
+
+
+def execute_tool(
+    capability: CapabilitySpec,
+    tool_request: ToolRequest,
+    decision: PolicyDecision,
+    *,
+    test_fault: str = "",
+) -> ToolResult:
+    if not isinstance(capability, CapabilitySpec):
+        raise TypeError("Tool capability must be CapabilitySpec")
+    if not isinstance(tool_request, ToolRequest):
+        raise TypeError("Tool request must be ToolRequest")
+    if not isinstance(decision, PolicyDecision):
+        raise TypeError("Tool policy decision must be PolicyDecision")
+    if not isinstance(test_fault, str):
+        raise TypeError("Tool test_fault must be a string")
+    test_fault = test_fault.strip()
+    capability_name = normalize_tool_capability_name(tool_request.capability_name)
+    arguments = normalize_tool_arguments(tool_request.arguments)
+    if capability_name != capability.name:
+        raise ValueError(
+            "Tool request capability does not match catalog entry: "
+            f"{capability_name} != {capability.name}"
+        )
+    policy_or_validation_result = _policy_or_validation_result(
+        capability,
+        capability_name,
+        arguments,
+        decision,
+    )
+    if policy_or_validation_result is not None:
+        return policy_or_validation_result
+    fault_result = _fault_result(capability_name, test_fault)
+    if fault_result is not None:
+        return fault_result
     payload = {
         "transport": capability.transport,
         "mode": capability.mode,
