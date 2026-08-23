@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
+from typing import cast
 
 import pytest
 
@@ -127,6 +128,55 @@ def test_valid_rehydration_still_requires_a_new_authorization_decision() -> None
     assert decision.authorized is False
     assert decision.requires_reauthorization is True
     assert decision.reason == "continuity_validated"
+
+
+@pytest.mark.parametrize(
+    ("now", "error_type", "message"),
+    [
+        (
+            cast(datetime, "2026-07-21T17:00:00Z"),
+            TypeError,
+            "Continuity validation time must be a datetime",
+        ),
+        (
+            datetime(2026, 7, 21, 17, 0),
+            ValueError,
+            "Continuity validation time must include a timezone",
+        ),
+    ],
+)
+def test_rehydration_time_rejects_invalid_values(
+    now: datetime,
+    error_type: type[Exception],
+    message: str,
+) -> None:
+    with pytest.raises(error_type) as error:
+        validate_rehydration(
+            _envelope(),
+            _state(),
+            SUMMARY,
+            now=now,
+        )
+
+    assert str(error.value) == message
+
+
+def test_rehydration_time_normalizes_non_utc_offset_without_changing_instant() -> None:
+    utc_decision = validate_rehydration(
+        _envelope(),
+        _state(),
+        SUMMARY,
+        now=datetime(2026, 7, 21, 18, 0, tzinfo=UTC),
+    )
+    offset_decision = validate_rehydration(
+        _envelope(),
+        _state(),
+        SUMMARY,
+        now=datetime.fromisoformat("2026-07-21T21:00:00+03:00"),
+    )
+
+    assert offset_decision == utc_decision
+    assert offset_decision.reason == "approval_expired"
 
 
 def test_tampered_summary_fails_closed() -> None:
