@@ -83,7 +83,7 @@ def test_resolve_live_range_places_gapped_insert_after_previous_paragraph() -> N
     )
 
 
-def test_resolve_live_range_accepts_unique_fuzzy_paragraph() -> None:
+def test_resolve_live_range_accepts_one_unambiguous_fuzzy_paragraph() -> None:
     live = [
         _live_paragraph("Before", 10, 20),
         _live_paragraph("Target paragraph", 20, 30),
@@ -91,21 +91,21 @@ def test_resolve_live_range_accepts_unique_fuzzy_paragraph() -> None:
         _live_paragraph("After", 40, 50),
     ]
 
-    assert resolve_live_range(
+    start, end, metadata = resolve_live_range(
         ("replace", 1, 2, 1, 2),
         {0: 0, 2: 3},
         live,
         ["Before", "Target paragraph", "After"],
-    ) == (
-        20,
-        30,
-        {
-            "first": "Target paragraph",
-            "last": "Target paragraph",
-            "unmapped_old": 1,
-            "fuzzy_ratio": 1.0,
-        },
     )
+
+    assert (start, end) == (20, 30)
+    assert metadata == {
+        "first": "Target paragraph",
+        "last": "Target paragraph",
+        "unmapped_old": 1,
+        "fuzzy_ratio": 1.0,
+    }
+    assert metadata["fuzzy_ratio"] >= 0.85
 
 
 @pytest.mark.parametrize(
@@ -214,10 +214,15 @@ def test_style_requests_reset_inherited_page_breaks() -> None:
     assert all(update["fields"] == "namedStyleType,pageBreakBefore" for update in updates)
 
 
-def test_style_requests_use_utf16_run_offsets_and_preserve_field_order() -> None:
+def test_style_requests_uses_utf16_offsets_for_astral_text() -> None:
     paragraphs = [
-        _target_paragraph(
-            "A😀B",
+        TargetParagraph(
+            text="A😀B",
+            normalized="A😀B",
+            named_style="NORMAL_TEXT",
+            page_break_before=False,
+            list_kind=None,
+            nesting_level=0,
             runs=(
                 TargetRun(0, 0, bold=True, italic=True, font_name="Ignored"),
                 TargetRun(0, 1, bold=None, italic=None, font_name=None),
@@ -227,13 +232,13 @@ def test_style_requests_use_utf16_run_offsets_and_preserve_field_order() -> None
         )
     ]
 
-    requests = style_requests(paragraphs, start=100, tab_id="t.0")
+    requests = style_requests(paragraphs, start=10, tab_id="t.0")
 
     assert requests == [
-        {"deleteParagraphBullets": {"range": {"startIndex": 100, "endIndex": 105, "tabId": "t.0"}}},
+        {"deleteParagraphBullets": {"range": {"startIndex": 10, "endIndex": 15, "tabId": "t.0"}}},
         {
             "updateParagraphStyle": {
-                "range": {"startIndex": 100, "endIndex": 105, "tabId": "t.0"},
+                "range": {"startIndex": 10, "endIndex": 15, "tabId": "t.0"},
                 "paragraphStyle": {
                     "namedStyleType": "NORMAL_TEXT",
                     "pageBreakBefore": False,
@@ -243,7 +248,7 @@ def test_style_requests_use_utf16_run_offsets_and_preserve_field_order() -> None
         },
         {
             "updateTextStyle": {
-                "range": {"startIndex": 101, "endIndex": 103, "tabId": "t.0"},
+                "range": {"startIndex": 11, "endIndex": 13, "tabId": "t.0"},
                 "textStyle": {
                     "bold": False,
                     "italic": True,
@@ -254,12 +259,13 @@ def test_style_requests_use_utf16_run_offsets_and_preserve_field_order() -> None
         },
         {
             "updateTextStyle": {
-                "range": {"startIndex": 103, "endIndex": 104, "tabId": "t.0"},
+                "range": {"startIndex": 13, "endIndex": 14, "tabId": "t.0"},
                 "textStyle": {"bold": True},
                 "fields": "bold",
             }
         },
     ]
+    assert requests[1]["updateParagraphStyle"]["range"]["endIndex"] == 15
     assert list(requests[2]["updateTextStyle"]["textStyle"]) == [
         "bold",
         "italic",
