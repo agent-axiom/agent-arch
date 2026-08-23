@@ -473,9 +473,7 @@ def _normalize_signal_entries(
 ) -> list[tuple[Any, Any, str]]:
     entries: list[tuple[Any, Any, str]] = []
     if isinstance(raw, Mapping):
-        entries = [
-            (signal_id, signal, f"signals.{signal_id}") for signal_id, signal in raw.items()
-        ]
+        entries = [(signal_id, signal, f"signals.{signal_id}") for signal_id, signal in raw.items()]
     elif isinstance(raw, list):
         for index, signal in enumerate(raw):
             location = f"signals[{index}]"
