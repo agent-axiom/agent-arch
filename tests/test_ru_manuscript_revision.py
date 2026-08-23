@@ -134,6 +134,188 @@ def test_pseudo_tables_reject_malformed_rows() -> None:
         revision_tool.convert_pseudo_tables_to_lists(malformed)
 
 
+def _synthetic_command_and_json_fragments() -> str:
+    groups = [
+        "uv run first_command\n\nruff check first.py",
+        *(f"git status group-{number}" for number in range(2, 16)),
+    ]
+    return "\n\nПояснение.\n\n".join(groups) + '\n\n{"result\\_status": "ready"}\n'
+
+
+def test_command_restoration_keeps_blank_separated_commands_in_one_group() -> None:
+    revised = revision_tool.fence_remaining_commands_and_json(
+        _synthetic_command_and_json_fragments()
+    )
+
+    assert revised.count("```console") == 15
+    assert "```console\nuv run first_command\nruff check first.py\n```" in revised
+
+
+def test_command_restoration_fences_single_line_json() -> None:
+    revised = revision_tool.fence_remaining_commands_and_json(
+        _synthetic_command_and_json_fragments()
+    )
+
+    assert '```json\n{"result_status": "ready"}\n```' in revised
+
+
+def test_single_line_json_detection_uses_exact_stripped_length_and_braces() -> None:
+    assert not revision_tool._is_single_line_json("  {" + "x" * 17 + "}  ")
+    assert revision_tool._is_single_line_json("  {" + "x" * 18 + "}  ")
+    assert not revision_tool._is_single_line_json("x" * 19 + "}")
+    assert not revision_tool._is_single_line_json("{" + "x" * 19)
+
+
+def test_command_restoration_rejects_unclosed_fence() -> None:
+    with pytest.raises(
+        ValueError,
+        match="^Unclosed fenced block while restoring commands$",
+    ):
+        revision_tool.fence_remaining_commands_and_json("```console\nuv run test\n")
+
+
+def _long_fenced_block(language: str, marker: str) -> str:
+    body = "\n".join(f"{marker}-{number}" for number in range(21))
+    return f"```{language}\n{body}\n```"
+
+
+def test_technical_block_label_uses_intro_window_and_nearest_h3() -> None:
+    introduced = "\n".join(
+        (
+            "### Защищенный контракт",
+            "**Листинг. Уже представлен.**",
+            "Контекст один.",
+            "Контекст два.",
+            "Контекст три.",
+            _long_fenced_block("python", "introduced"),
+        )
+    )
+    unlabeled_blocks = []
+    languages = ("yaml", "json", "python", "pseudocode", "console", "text", "toml")
+    for number, language in enumerate(languages, start=1):
+        unlabeled_blocks.append(
+            "\n".join(
+                (
+                    f"### Ближайший раздел {number}",
+                    "**Пример. Слишком далеко.**",
+                    "Контекст один.",
+                    "Контекст два.",
+                    "Контекст три.",
+                    "Контекст четыре.",
+                    _long_fenced_block(language, f"block-{number}"),
+                )
+            )
+        )
+    synthetic = "\n\n".join((introduced, *unlabeled_blocks)) + "\n"
+
+    revised = revision_tool.label_long_technical_blocks(synthetic)
+
+    assert "**Листинг. Защищенный контракт.**" not in revised
+    assert revised.count("**Листинг. Ближайший раздел ") == 7
+    assert (
+        "**Листинг. Ближайший раздел 1.** Тип: декларативная конфигурация; "
+        "полный учебный контракт приведен ниже."
+    ) in revised
+    assert "**Листинг. Ближайший раздел 2.** Тип: структурированный результат;" in revised
+    assert "**Листинг. Ближайший раздел 3.** Тип: учебный пример Python;" in revised
+    assert "**Листинг. Ближайший раздел 4.** Тип: псевдокод;" in revised
+    assert "**Листинг. Ближайший раздел 5.** Тип: технический пример;" in revised
+
+
+def test_technical_block_intro_must_be_within_eight_physical_lines() -> None:
+    intro_within_window = "\n".join(
+        (
+            "### Вступление в окне",
+            "**Листинг. Уже представлен.**",
+            "",
+            "Контекст один.",
+            "",
+            "Контекст два.",
+            "",
+            "Контекст три.",
+            "",
+            _long_fenced_block("python", "within-window"),
+        )
+    )
+    intro_outside_window = "\n".join(
+        (
+            "### Вступление вне окна",
+            "**Листинг. Формально среди последних четырех непустых строк.**",
+            "",
+            "Контекст один.",
+            "",
+            "Контекст два.",
+            "",
+            "Контекст три.",
+            "",
+            "",
+            _long_fenced_block("python", "outside-window"),
+        )
+    )
+    unlabeled = [
+        "\n".join(
+            (
+                f"### Дополнительный раздел {number}",
+                "Контекст один.",
+                "Контекст два.",
+                "Контекст три.",
+                "Контекст четыре.",
+                _long_fenced_block("text", f"extra-{number}"),
+            )
+        )
+        for number in range(6)
+    ]
+    synthetic = "\n\n".join((intro_within_window, intro_outside_window, *unlabeled)) + "\n"
+
+    revised = revision_tool.label_long_technical_blocks(synthetic)
+
+    assert "**Листинг. Вступление в окне.**" not in revised
+    assert "**Листинг. Вступление вне окна.**" in revised
+    assert revised.count("**Листинг. Дополнительный раздел ") == 6
+
+
+def test_technical_block_label_rejects_unclosed_fence() -> None:
+    with pytest.raises(
+        ValueError,
+        match="^Unclosed fenced block while labeling long examples$",
+    ):
+        revision_tool.label_long_technical_blocks("```python\nprint('open')\n")
+
+
+def _synthetic_micro_heading_document() -> str:
+    fourth_level = "\n\n".join(f"#### Микрораздел {number}" for number in range(100))
+    short_sections = "\n\n".join(
+        f"### Короткий раздел {number}\n\nслово" for number in range(80)
+    )
+    words_69 = " ".join(f"слово{number}" for number in range(69))
+    words_70 = " ".join(f"слово{number}" for number in range(70))
+    fenced_words = " ".join(f"код{number}" for number in range(20))
+    return (
+        f"{fourth_level}\n\n"
+        "## Глава 1. Порог\n\n"
+        f"{short_sections}\n\n"
+        f"### Раздел из 69 слов\n\n{words_69}\n\n```text\n{fenced_words}\n```\n\n"
+        f"### Раздел из 70 слов\n\n{words_70}\n\n"
+        "### Ключевые выводы\n\nслово\n\n"
+        "### Источники главы\n\nслово\n\n"
+        "### От наблюдаемого отклонения к внутреннему риску\n\nслово\n\n"
+        "## Приложение\n\n"
+        "### Заголовок вне главы\n\nслово\n"
+    )
+
+
+def test_micro_heading_demotion_respects_protection_context_and_word_threshold() -> None:
+    revised = revision_tool.demote_micro_headings(_synthetic_micro_heading_document())
+
+    assert "**Раздел из 69 слов.**" in revised
+    assert "### Раздел из 70 слов" in revised
+    assert "### Ключевые выводы" in revised
+    assert "### Источники главы" in revised
+    assert "### От наблюдаемого отклонения к внутреннему риску" in revised
+    assert "### Заголовок вне главы" in revised
+    assert "#### Микрораздел" not in revised
+
+
 def _configure_synthetic_listing(
     monkeypatch: pytest.MonkeyPatch,
     tmp_path: Path,
