@@ -4395,6 +4395,40 @@ audit:
     return text
 
 
+def _unescape_technical_line(value: str) -> str:
+    value = value.strip()
+    return re.sub(r"\\([_=\-\[\]{}*<>])", r"\1", value)
+
+
+def _is_command_line(value: str) -> bool:
+    return bool(re.match(r"^\s*(?:uv |git |cd |mkdir |python |pytest |ruff |ty |curl )", value))
+
+
+def _consume_command_group(lines: list[str], start: int) -> tuple[list[str], int]:
+    commands: list[str] = []
+    cursor = start
+    while cursor < len(lines):
+        candidate = lines[cursor]
+        if _is_command_line(candidate):
+            commands.append(_unescape_technical_line(candidate))
+            cursor += 1
+            continue
+        if (
+            not candidate.strip()
+            and cursor + 1 < len(lines)
+            and _is_command_line(lines[cursor + 1])
+        ):
+            cursor += 1
+            continue
+        break
+    return commands, cursor
+
+
+def _is_single_line_json(value: str) -> bool:
+    stripped = value.strip()
+    return len(stripped) >= 20 and stripped.startswith("{") and stripped.endswith("}")
+
+
 def fence_remaining_commands_and_json(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
@@ -4402,13 +4436,6 @@ def fence_remaining_commands_and_json(text: str) -> str:
     inside_fence = False
     restored_commands = 0
     restored_json = 0
-
-    def unescape(value: str) -> str:
-        value = value.strip()
-        return re.sub(r"\\([_=\-\[\]{}*<>])", r"\1", value)
-
-    def is_command(value: str) -> bool:
-        return bool(re.match(r"^\s*(?:uv |git |cd |mkdir |python |pytest |ruff |ty |curl )", value))
 
     while index < len(lines):
         line = lines[index]
@@ -4422,31 +4449,16 @@ def fence_remaining_commands_and_json(text: str) -> str:
             index += 1
             continue
 
-        if is_command(line):
-            commands: list[str] = []
-            cursor = index
-            while cursor < len(lines):
-                candidate = lines[cursor]
-                if is_command(candidate):
-                    commands.append(unescape(candidate))
-                    cursor += 1
-                    continue
-                if (
-                    not candidate.strip()
-                    and cursor + 1 < len(lines)
-                    and is_command(lines[cursor + 1])
-                ):
-                    cursor += 1
-                    continue
-                break
+        if _is_command_line(line):
+            commands, cursor = _consume_command_group(lines, index)
             output.extend(["```console", *commands, "```"])
             restored_commands += 1
             index = cursor
             continue
 
         stripped = line.strip()
-        if len(stripped) >= 20 and stripped.startswith("{") and stripped.endswith("}"):
-            output.extend(["```json", unescape(stripped), "```"])
+        if _is_single_line_json(stripped):
+            output.extend(["```json", _unescape_technical_line(stripped), "```"])
             restored_json += 1
             index += 1
             continue
@@ -4464,14 +4476,12 @@ def fence_remaining_commands_and_json(text: str) -> str:
     return "\n".join(output).rstrip() + "\n"
 
 
-def label_long_technical_blocks(text: str) -> str:
-    lines = text.splitlines()
-    insertions: dict[int, str] = {}
+def _iter_fenced_blocks(lines: list[str]) -> list[tuple[int, str, list[str]]]:
+    blocks: list[tuple[int, str, list[str]]] = []
     inside = False
     start = 0
     language = ""
     block: list[str] = []
-
     for index, line in enumerate(lines):
         if not line.startswith("```"):
             if inside:
@@ -4483,35 +4493,50 @@ def label_long_technical_blocks(text: str) -> str:
             language = line[3:].strip() or "text"
             block = []
             continue
-
-        if len(block) > 20:
-            nearby = [value.strip() for value in lines[max(0, start - 8) : start] if value.strip()]
-            introduced = any(
-                re.search(r"(?:Листинг|Пример|Конфигурация)", value, re.IGNORECASE)
-                for value in nearby[-4:]
-            )
-            if not introduced:
-                heading = next(
-                    (
-                        clean_inline_markup(value.lstrip("# ").strip())
-                        for value in reversed(lines[:start])
-                        if value.startswith("### ")
-                    ),
-                    "Технический контракт",
-                )
-                kind = {
-                    "yaml": "декларативная конфигурация",
-                    "json": "структурированный результат",
-                    "python": "учебный пример Python",
-                    "pseudocode": "псевдокод",
-                }.get(language, "технический пример")
-                insertions[start] = (
-                    f"**Листинг. {heading}.** Тип: {kind}; полный учебный контракт приведен ниже."
-                )
+        blocks.append((start, language, block))
         inside = False
-
     if inside:
         raise ValueError("Unclosed fenced block while labeling long examples")
+    return blocks
+
+
+def _has_nearby_listing_intro(lines: list[str], start: int) -> bool:
+    nearby = [value.strip() for value in lines[max(0, start - 8) : start] if value.strip()]
+    return any(
+        re.search(r"(?:Листинг|Пример|Конфигурация)", value, re.IGNORECASE)
+        for value in nearby[-4:]
+    )
+
+
+def _nearest_h3_title(lines: list[str], start: int) -> str:
+    return next(
+        (
+            clean_inline_markup(value.lstrip("# ").strip())
+            for value in reversed(lines[:start])
+            if value.startswith("### ")
+        ),
+        "Технический контракт",
+    )
+
+
+def _technical_block_label(heading: str, language: str) -> str:
+    kind = {
+        "yaml": "декларативная конфигурация",
+        "json": "структурированный результат",
+        "python": "учебный пример Python",
+        "pseudocode": "псевдокод",
+    }.get(language, "технический пример")
+    return f"**Листинг. {heading}.** Тип: {kind}; полный учебный контракт приведен ниже."
+
+
+def label_long_technical_blocks(text: str) -> str:
+    lines = text.splitlines()
+    insertions: dict[int, str] = {}
+    for start, language, block in _iter_fenced_blocks(lines):
+        if len(block) > 20 and not _has_nearby_listing_intro(lines, start):
+            heading = _nearest_h3_title(lines, start)
+            insertions[start] = _technical_block_label(heading, language)
+
     if len(insertions) != 7:
         raise ValueError(
             f"Expected seven previously unlabeled long examples, found {len(insertions)}"
@@ -5335,10 +5360,10 @@ def normalize_editorial_prose(text: str) -> str:
     return "\n".join(output).rstrip() + "\n"
 
 
-def demote_micro_headings(text: str) -> str:
+def _demote_h4_lines(lines: list[str]) -> tuple[list[str], int]:
     output: list[str] = []
     demoted = 0
-    for line in text.splitlines():
+    for line in lines:
         match = re.fullmatch(r"####\s+(.+)", line)
         if match is None:
             output.append(line)
@@ -5346,10 +5371,40 @@ def demote_micro_headings(text: str) -> str:
         title = clean_inline_markup(match.group(1)).rstrip(".:")
         output.append(f"**{title}.**")
         demoted += 1
+    return output, demoted
+
+
+def _short_h3_section_bounds(lines: list[str], index: int) -> tuple[int, int]:
+    end = index + 1
+    while end < len(lines) and re.match(r"^#{1,3}\s+", lines[end]) is None:
+        end += 1
+    return index + 1, end
+
+
+def _is_demotable_short_h3(lines: list[str], index: int, in_chapter: bool) -> bool:
+    match = re.fullmatch(r"###\s+(.+)", lines[index])
+    if match is None or not in_chapter:
+        return False
+    title = clean_inline_markup(match.group(1)).rstrip(".:")
+    protected = {
+        "Ключевые выводы",
+        "Источники главы",
+        "От наблюдаемого отклонения к внутреннему риску",
+    }
+    if title in protected:
+        return False
+    start, end = _short_h3_section_bounds(lines, index)
+    section = "\n".join(lines[start:end])
+    section = re.sub(r"```.*?```", "", section, flags=re.DOTALL)
+    word_count = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", section))
+    return word_count < 70
+
+
+def demote_micro_headings(text: str) -> str:
+    lines, demoted = _demote_h4_lines(text.splitlines())
     if demoted < 100:
         raise ValueError(f"Expected to demote at least 100 micro-headings, found {demoted}")
 
-    lines = output
     in_chapter = False
     chapter_context: list[bool] = []
     for line in lines:
@@ -5357,27 +5412,13 @@ def demote_micro_headings(text: str) -> str:
             in_chapter = re.match(r"^## Глава \d+", line) is not None
         chapter_context.append(in_chapter)
 
-    protected = {
-        "Ключевые выводы",
-        "Источники главы",
-        "От наблюдаемого отклонения к внутреннему риску",
-    }
     demoted_third_level = 0
     for index, line in enumerate(lines):
+        if not _is_demotable_short_h3(lines, index, chapter_context[index]):
+            continue
         match = re.fullmatch(r"###\s+(.+)", line)
-        if match is None or not chapter_context[index]:
-            continue
+        assert match is not None
         title = clean_inline_markup(match.group(1)).rstrip(".:")
-        if title in protected:
-            continue
-        end = index + 1
-        while end < len(lines) and re.match(r"^#{1,3}\s+", lines[end]) is None:
-            end += 1
-        section = "\n".join(lines[index + 1 : end])
-        section = re.sub(r"```.*?```", "", section, flags=re.DOTALL)
-        word_count = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", section))
-        if word_count >= 70:
-            continue
         lines[index] = f"**{title}.**"
         demoted_third_level += 1
 
