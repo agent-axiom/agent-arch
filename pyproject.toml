@@ -18,9 +18,13 @@ docs = [
   "pymdown-extensions>=10.21,<11",
 ]
 dev = [
+  "lxml>=6.1.1,<7",
+  "pdfplumber>=0.11.10,<1",
+  "pillow>=12.3,<13",
   "pre-commit>=4.3,<5",
   "pytest>=8.4,<9",
   "pytest-cov>=7,<8",
+  "python-docx>=1.2,<2",
   "ruff>=0.15.8,<0.16",
   "ty>=0.0.26,<0.1",
 ]
