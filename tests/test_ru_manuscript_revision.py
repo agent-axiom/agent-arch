@@ -87,6 +87,194 @@ def test_revision_is_reproducible(tmp_path: Path) -> None:
     assert [item["number"] for item in data["diagrams"]] == list(range(1, 30))
 
 
+def _synthetic_pseudo_tables() -> str:
+    tables = (
+        """| Ситуация | Выбор |
+| --- | --- |
+
+| Первый случай | Первый ответ |
+
+| Второй случай | Второй ответ |""",
+        """| Угроза | Контроль |
+| --- | --- |
+| Подмена | Проверка |""",
+        """| Поле каталога | Значение |
+| --- | --- |
+| owner | Команда |""",
+        """| Вопрос | Ответ |
+| --- | --- |
+| Где? | Здесь |""",
+        r"""| Event type | Когда появляется | Зачем нужен |
+| --- | --- | --- |
+| run\_start | Сразу | Открывает запуск |""",
+    )
+    return "\n\nГраница таблиц.\n\n".join(tables) + "\n"
+
+
+def test_pseudo_tables_keep_blank_separated_rows_in_one_table() -> None:
+    revised = revision_tool.convert_pseudo_tables_to_lists(_synthetic_pseudo_tables())
+
+    assert "| Ситуация | Выбор |" not in revised
+    assert "* **Первый случай** — выбор: Первый ответ." in revised
+    assert "* **Второй случай** — выбор: Второй ответ." in revised
+    assert "* `run_start` — когда: Сразу; назначение: Открывает запуск." in revised
+    assert revised.count("Граница таблиц.") == 4
+
+
+def test_pseudo_tables_reject_malformed_rows() -> None:
+    malformed = _synthetic_pseudo_tables().replace(
+        "| Первый случай | Первый ответ |",
+        "| Первый случай | Первый ответ | Лишняя ячейка |",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Malformed pseudo-table row: \| Первый случай .* Лишняя ячейка \|$",
+    ):
+        revision_tool.convert_pseudo_tables_to_lists(malformed)
+
+
+def _configure_synthetic_listing(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> str:
+    source = """def rebuild_record(value: int) -> int:
+    normalized = value + 1
+    validated = max(normalized, 0)
+    return validated"""
+    source_path = tmp_path / "source.md"
+    source_path.write_text(f"```python\n{source}\n```\n", encoding="utf-8")
+    synthetic_tool_path = tmp_path / "package/publisher/tools/revise.py"
+    monkeypatch.setattr(revision_tool, "__file__", str(synthetic_tool_path))
+    monkeypatch.setattr(
+        revision_tool,
+        "LISTING_SPECS",
+        (("def rebuild_record", "source.md", "Восстановление записи"),),
+    )
+    monkeypatch.setattr(revision_tool, "LEGACY_LISTING_MATCH_SOURCES", {})
+    return source
+
+
+def test_verified_listing_restoration_respects_fragment_bounds(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    source = _configure_synthetic_listing(monkeypatch, tmp_path)
+    degraded = r"""Текст до листинга.
+
+def rebuild\_record(value: int) -\> int:
+    normalized = value + 1
+    return validated
+
+Текст после листинга.
+"""
+
+    revised = revision_tool.restore_verified_python_listings(degraded)
+
+    expected_listing = (
+        "**Листинг 1. Восстановление записи.** Тип: синтаксически проверяемый "
+        "учебный пример; источник: `source.md`.\n\n"
+        f"```python\n{source}\n```"
+    )
+    assert revised == f"Текст до листинга.\n\n{expected_listing}\n\nТекст после листинга.\n"
+
+
+def test_verified_listing_restoration_rejects_low_key_coverage(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    _configure_synthetic_listing(monkeypatch, tmp_path)
+    degraded = """def rebuild_record(value: int) -> int:
+    return validated
+"""
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Listing 'def rebuild_record' matched only 50% of its verified source$",
+    ):
+        revision_tool.restore_verified_python_listings(degraded)
+
+
+def _configure_synthetic_structured_book(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    count: int,
+    *,
+    duplicate_first_source: bool = False,
+) -> list[str]:
+    blocks = [
+        "\n".join(
+            (
+                f"policy_{index}_identifier: policy-value-{index}",
+                f"policy_{index}_owner: owner-{index}",
+                f"policy_{index}_mode: strict-{index}",
+            )
+        )
+        for index in range(count)
+    ]
+    book_root = tmp_path / "docs/book"
+    book_root.mkdir(parents=True)
+    (book_root / "a-source.md").write_text(
+        "\n\n".join(f"```yaml\n{block}\n```" for block in blocks) + "\n",
+        encoding="utf-8",
+    )
+    if duplicate_first_source:
+        (book_root / "z-duplicate.md").write_text(
+            f"```json\n{blocks[0]}\n```\n",
+            encoding="utf-8",
+        )
+    synthetic_tool_path = tmp_path / "package/publisher/tools/revise.py"
+    monkeypatch.setattr(revision_tool, "__file__", str(synthetic_tool_path))
+    monkeypatch.setattr(revision_tool, "LEGACY_STRUCTURED_MATCH_SOURCES", {})
+    return blocks
+
+
+def test_structured_restoration_skips_duplicate_anchors(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    blocks = _configure_synthetic_structured_book(monkeypatch, tmp_path, 26)
+    degraded = "\n\n".join((blocks[0], blocks[0], *blocks[1:])) + "\n"
+
+    revised = revision_tool.restore_structured_book_blocks(degraded)
+
+    assert revised.count(f"```yaml\n{blocks[0]}\n```") == 0
+    assert revised.count(blocks[0]) == 2
+    assert revised.count("```yaml") == 25
+
+
+def test_structured_restoration_deduplicates_sources_by_first_seen_block(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    blocks = _configure_synthetic_structured_book(
+        monkeypatch,
+        tmp_path,
+        25,
+        duplicate_first_source=True,
+    )
+
+    revised = revision_tool.restore_structured_book_blocks("\n\n".join(blocks) + "\n")
+
+    assert f"```yaml\n{blocks[0]}\n```" in revised
+    assert f"```json\n{blocks[0]}\n```" not in revised
+    assert revised.count(blocks[0]) == 1
+    assert revised.count("```yaml") == 25
+
+
+def test_structured_restoration_enforces_minimum_count(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    blocks = _configure_synthetic_structured_book(monkeypatch, tmp_path, 24)
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Expected to restore at least 25 structured blocks, found 24$",
+    ):
+        revision_tool.restore_structured_book_blocks("\n\n".join(blocks) + "\n")
+
+
 def test_reference_package_quickstart_matches_runtime_contract() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     appendix = text[
