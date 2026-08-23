@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from typing import TypeVar, cast
+from typing import Never, TypeVar, cast
 
 from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.background import BackgroundWorker
@@ -88,12 +88,29 @@ def _runtime_component(
     value: _RuntimeComponentT | None,
     expected_type: type[_RuntimeComponentT],
     factory: Callable[[], _RuntimeComponentT],
-    label: str,
 ) -> _RuntimeComponentT:
     component = factory() if value is None else value
     if not isinstance(component, expected_type):
-        raise TypeError(f"Runtime {label} must be {expected_type.__name__}")
+        _raise_runtime_component_type_error(expected_type)
     return component
+
+
+def _raise_runtime_component_type_error(expected_type: type[object]) -> Never:
+    if expected_type is CapabilityCatalog:
+        raise TypeError("Runtime catalog must be CapabilityCatalog")
+    if expected_type is PolicyEngine:
+        raise TypeError("Runtime policy must be PolicyEngine")
+    if expected_type is TelemetryEmitter:
+        raise TypeError("Runtime telemetry must be TelemetryEmitter")
+    if expected_type is MemoryStore:
+        raise TypeError("Runtime memory must be MemoryStore")
+    if expected_type is ApprovalQueue:
+        raise TypeError("Runtime approvals must be ApprovalQueue")
+    if expected_type is SessionStore:
+        raise TypeError("Runtime sessions must be SessionStore")
+    if expected_type is IdempotencyStore:
+        raise TypeError("Runtime idempotency must be IdempotencyStore")
+    raise AssertionError("Unsupported runtime component type")
 
 
 def _runtime_sandbox_profile(
@@ -223,20 +240,16 @@ class AgentRuntime:
         idempotency: IdempotencyStore | None = None,
         sandbox_profile: dict[str, object] | None = None,
     ) -> None:
-        self.catalog = _runtime_component(
-            catalog, CapabilityCatalog, CapabilityCatalog, "catalog"
-        )
-        self.policy = _runtime_component(policy, PolicyEngine, PolicyEngine, "policy")
+        self.catalog = _runtime_component(catalog, CapabilityCatalog, CapabilityCatalog)
+        self.policy = _runtime_component(policy, PolicyEngine, PolicyEngine)
         self.telemetry = _runtime_component(
-            telemetry, TelemetryEmitter, TelemetryEmitter, "telemetry"
+            telemetry, TelemetryEmitter, TelemetryEmitter
         )
-        self.memory = _runtime_component(memory, MemoryStore, MemoryStore, "memory")
-        self.approvals = _runtime_component(
-            approvals, ApprovalQueue, ApprovalQueue, "approvals"
-        )
-        self.sessions = _runtime_component(sessions, SessionStore, SessionStore, "sessions")
+        self.memory = _runtime_component(memory, MemoryStore, MemoryStore)
+        self.approvals = _runtime_component(approvals, ApprovalQueue, ApprovalQueue)
+        self.sessions = _runtime_component(sessions, SessionStore, SessionStore)
         self.idempotency = _runtime_component(
-            idempotency, IdempotencyStore, IdempotencyStore, "idempotency"
+            idempotency, IdempotencyStore, IdempotencyStore
         )
         self.sandbox_profile = _runtime_sandbox_profile(sandbox_profile)
         self.agent = _runtime_agent_identity(agent)
