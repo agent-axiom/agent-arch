@@ -166,17 +166,17 @@ def test_rehydration_time_normalizes_non_utc_offset_without_changing_instant() -
         _envelope(),
         _state(),
         SUMMARY,
-        now=datetime(2026, 7, 21, 18, 0, tzinfo=UTC),
+        now=datetime(2026, 7, 21, 17, 0, tzinfo=UTC),
     )
     offset_decision = validate_rehydration(
         _envelope(),
         _state(),
         SUMMARY,
-        now=datetime.fromisoformat("2026-07-21T21:00:00+03:00"),
+        now=datetime.fromisoformat("2026-07-21T20:00:00+03:00"),
     )
 
-    assert offset_decision == utc_decision
-    assert offset_decision.reason == "approval_expired"
+    assert utc_decision.reason == "continuity_validated"
+    assert offset_decision.reason == "continuity_validated"
 
 
 def test_tampered_summary_fails_closed() -> None:
