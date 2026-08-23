@@ -14315,6 +14315,7 @@ class TestCli:
         assert actual_names == {
             ".github/workflows/coverage.yml": "coverage",
             ".github/workflows/deploy.yml": "deploy-docs",
+            ".github/workflows/quality.yml": "quality",
         }
 
     def test_workflow_jobs_recheck_expected_branch_at_runtime(self) -> None:
@@ -14323,6 +14324,13 @@ class TestCli:
             ".github/workflows/deploy.yml": {
                 "build": "github.ref == 'refs/heads/docs-prod'",
                 "deploy": "github.ref == 'refs/heads/docs-prod'",
+            },
+            ".github/workflows/quality.yml": {
+                "quality": (
+                    "github.event_name == 'pull_request' || "
+                    "github.event_name == 'workflow_dispatch' || "
+                    "github.ref == 'refs/heads/main'"
+                )
             },
         }
 
@@ -14385,6 +14393,19 @@ class TestCli:
                 ],
                 "deploy": ["Deploy to GitHub Pages"],
             },
+            ".github/workflows/quality.yml": {
+                "quality": [
+                    "Checkout",
+                    "Setup uv",
+                    "Setup Python",
+                    "Sync dependencies",
+                    "Run workflow contract tests",
+                    "Run quality policy tests",
+                    "Run Ruff",
+                    "Run ty",
+                    "Run pre-commit",
+                ]
+            },
         }
 
         actual_step_names = {
@@ -14412,6 +14433,10 @@ class TestCli:
                 "group": "pages",
                 "cancel-in-progress": True,
             },
+            ".github/workflows/quality.yml": {
+                "group": "quality-${{ github.ref }}",
+                "cancel-in-progress": True,
+            },
         }
 
     def test_workflows_force_node24_javascript_actions(self) -> None:
@@ -14423,6 +14448,7 @@ class TestCli:
         assert actual_env == {
             ".github/workflows/coverage.yml": {"FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"},
             ".github/workflows/deploy.yml": {"FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"},
+            ".github/workflows/quality.yml": {"FORCE_JAVASCRIPT_ACTIONS_TO_NODE24": "true"},
         }
 
     def test_workflow_dependency_setup_contracts_are_explicit(self) -> None:
@@ -14436,6 +14462,14 @@ class TestCli:
                 {"name": "Setup uv", "uses": "astral-sh/setup-uv@v8.1.0"},
                 {"name": "Setup Python", "run": "uv python install 3.12"},
                 {"name": "Sync dependencies", "run": "uv sync --group docs"},
+            ],
+            ".github/workflows/quality.yml": [
+                {"name": "Setup uv", "uses": "astral-sh/setup-uv@v8.1.0"},
+                {"name": "Setup Python", "run": "uv python install 3.12"},
+                {
+                    "name": "Sync dependencies",
+                    "run": "uv sync --locked --group dev",
+                },
             ],
         }
 
@@ -14465,6 +14499,12 @@ class TestCli:
                     "name": "Checkout",
                     "uses": "actions/checkout@v6.0.2",
                     "with": {"persist-credentials": False},
+                }
+            ],
+            ".github/workflows/quality.yml": [
+                {
+                    "name": "Checkout",
+                    "uses": "actions/checkout@v6.0.2",
                 }
             ],
         }
@@ -14684,6 +14724,7 @@ class TestCli:
                 "pages": "write",
                 "id-token": "write",
             },
+            ".github/workflows/quality.yml": {"contents": "read"},
         }
 
         actual_permissions = {
@@ -14721,6 +14762,11 @@ class TestCli:
             },
             ".github/workflows/deploy.yml": {
                 "push": {"branches": ["docs-prod"]},
+                "workflow_dispatch": None,
+            },
+            ".github/workflows/quality.yml": {
+                "pull_request": None,
+                "push": {"branches": ["main"]},
                 "workflow_dispatch": None,
             },
         }
