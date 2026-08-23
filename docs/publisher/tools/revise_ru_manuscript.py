@@ -2987,6 +2987,29 @@ def label_technical_examples(text: str) -> str:
     return text
 
 
+def _pseudo_table_cells(line: str) -> list[str]:
+    return [value.strip() for value in line.strip().strip("|").split("|")]
+
+
+def _consume_pseudo_table(lines: list[str], start_index: int) -> tuple[list[str], int]:
+    table = [lines[start_index]]
+    index = start_index + 1
+    while index < len(lines):
+        if not lines[index].strip():
+            lookahead = index + 1
+            while lookahead < len(lines) and not lines[lookahead].strip():
+                lookahead += 1
+            if lookahead < len(lines) and lines[lookahead].strip().startswith("|"):
+                index = lookahead
+                continue
+            break
+        if not lines[index].strip().startswith("|"):
+            break
+        table.append(lines[index])
+        index += 1
+    return table, index
+
+
 def convert_pseudo_tables_to_lists(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
@@ -2994,33 +3017,19 @@ def convert_pseudo_tables_to_lists(text: str) -> str:
     index = 0
     target_headers = {"Ситуация", "Угроза", "Поле каталога", "Вопрос", "Event type"}
 
-    def cells(line: str) -> list[str]:
-        return [value.strip() for value in line.strip().strip("|").split("|")]
-
     while index < len(lines):
-        if not lines[index].strip().startswith("|") or cells(lines[index])[0] not in target_headers:
+        if (
+            not lines[index].strip().startswith("|")
+            or _pseudo_table_cells(lines[index])[0] not in target_headers
+        ):
             output.append(lines[index])
             index += 1
             continue
 
-        table: list[str] = [lines[index]]
-        index += 1
-        while index < len(lines):
-            if not lines[index].strip():
-                lookahead = index + 1
-                while lookahead < len(lines) and not lines[lookahead].strip():
-                    lookahead += 1
-                if lookahead < len(lines) and lines[lookahead].strip().startswith("|"):
-                    index = lookahead
-                    continue
-                break
-            if not lines[index].strip().startswith("|"):
-                break
-            table.append(lines[index])
-            index += 1
+        table, index = _consume_pseudo_table(lines, index)
 
-        headers = cells(table[0])
-        separator = cells(table[1])
+        headers = _pseudo_table_cells(table[0])
+        separator = _pseudo_table_cells(table[1])
         if (
             len(headers) < 2
             or len(separator) != len(headers)
@@ -3038,7 +3047,9 @@ def convert_pseudo_tables_to_lists(text: str) -> str:
         }
         headers = [labels.get(header, header) for header in headers]
         for row in table[2:]:
-            values = [value.replace(r"\_", "_").replace(r"\-", "-") for value in cells(row)]
+            values = [
+                value.replace(r"\_", "_").replace(r"\-", "-") for value in _pseudo_table_cells(row)
+            ]
             if len(values) != len(headers):
                 raise ValueError(f"Malformed pseudo-table row: {row}")
             lead = f"`{values[0]}`" if event_table else f"**{values[0].rstrip('.')}**"
@@ -3104,6 +3115,39 @@ def _source_listing(source_path: Path, key: str) -> str:
     return matches[0]
 
 
+def _degraded_fragment_bounds(
+    lines: list[str],
+    key_index: int,
+    verified_keys: set[str],
+) -> tuple[int, int]:
+    start = key_index
+    while start > 0:
+        previous = lines[start - 1]
+        if not previous.strip() or _code_line_key(previous) in verified_keys:
+            start -= 1
+            continue
+        break
+    while start < key_index and not lines[start].strip():
+        start += 1
+
+    end = key_index
+    cursor = key_index + 1
+    while cursor < len(lines):
+        candidate = lines[cursor]
+        if not candidate.strip() or _code_line_key(candidate) in verified_keys:
+            if candidate.strip():
+                end = cursor
+            cursor += 1
+            continue
+        break
+    return start, end
+
+
+def _fragment_key_coverage(fragment: list[str], verified_keys: set[str]) -> float:
+    restored_keys = {_code_line_key(line) for line in fragment if line.strip()}
+    return len(restored_keys & verified_keys) / max(1, len(verified_keys))
+
+
 def restore_verified_python_listings(text: str) -> str:
     repo_root = Path(__file__).resolve().parents[3]
     listing_number = 0
@@ -3130,29 +3174,8 @@ def restore_verified_python_listings(text: str) -> str:
             )
 
         key_index = candidates[0]
-        start = key_index
-        while start > 0:
-            previous = lines[start - 1]
-            if not previous.strip() or _code_line_key(previous) in code_keys:
-                start -= 1
-                continue
-            break
-        while start < key_index and not lines[start].strip():
-            start += 1
-
-        end = key_index
-        cursor = key_index + 1
-        while cursor < len(lines):
-            candidate = lines[cursor]
-            if not candidate.strip() or _code_line_key(candidate) in code_keys:
-                if candidate.strip():
-                    end = cursor
-                cursor += 1
-                continue
-            break
-
-        restored_keys = {_code_line_key(line) for line in lines[start : end + 1] if line.strip()}
-        coverage = len(restored_keys & code_keys) / max(1, len(code_keys))
+        start, end = _degraded_fragment_bounds(lines, key_index, code_keys)
+        coverage = _fragment_key_coverage(lines[start : end + 1], code_keys)
         if coverage < 0.7:
             raise ValueError(f"Listing {key!r} matched only {coverage:.0%} of its verified source")
 
@@ -3204,9 +3227,7 @@ def _structured_fence_language(raw_language: str, block: str) -> str | None:
     return None
 
 
-def restore_structured_book_blocks(text: str) -> str:
-    repo_root = Path(__file__).resolve().parents[3]
-    book_root = repo_root / "docs/book"
+def _collect_structured_source_blocks(book_root: Path) -> list[tuple[str, str]]:
     source_blocks: list[tuple[str, str]] = []
     seen_blocks: set[str] = set()
     for source_path in sorted(book_root.rglob("*.md")):
@@ -3222,70 +3243,67 @@ def restore_structured_book_blocks(text: str) -> str:
             source_blocks.append((language, block))
 
     source_blocks.sort(key=lambda item: len(item[1]), reverse=True)
+    return source_blocks
+
+
+def _index_unfenced_lines_by_key(lines: list[str]) -> dict[str, list[int]]:
+    inside_fence = False
+    outside_by_key: dict[str, list[int]] = {}
+    for index, line in enumerate(lines):
+        if line.startswith("```"):
+            inside_fence = not inside_fence
+            continue
+        if inside_fence or not line.strip():
+            continue
+        outside_by_key.setdefault(_code_line_key(line), []).append(index)
+    return outside_by_key
+
+
+def _select_unique_structured_anchor(
+    unique_keys: set[str],
+    outside_by_key: dict[str, list[int]],
+) -> int | None:
+    for key in sorted(unique_keys, key=len, reverse=True):
+        candidates = outside_by_key.get(key, [])
+        if len(key) >= 12 and len(candidates) == 1:
+            return candidates[0]
+    return None
+
+
+def _restore_structured_block(text: str, language: str, block: str) -> tuple[str, bool]:
+    match_block = next(
+        (legacy for marker, legacy in LEGACY_STRUCTURED_MATCH_SOURCES.items() if marker in block),
+        block,
+    )
+    block_keys = [_code_line_key(line) for line in match_block.splitlines() if line.strip()]
+    unique_keys = set(block_keys)
+    if len(unique_keys) < 2:
+        return text, False
+
+    lines = text.splitlines()
+    outside_by_key = _index_unfenced_lines_by_key(lines)
+    anchor_index = _select_unique_structured_anchor(unique_keys, outside_by_key)
+    if anchor_index is None:
+        return text, False
+
+    start, end = _degraded_fragment_bounds(lines, anchor_index, unique_keys)
+    coverage = _fragment_key_coverage(lines[start : end + 1], unique_keys)
+    if coverage < 0.7:
+        return text, False
+
+    lines[start : end + 1] = [f"```{language}", *block.splitlines(), "```"]
+    return "\n".join(lines).rstrip() + "\n", True
+
+
+def restore_structured_book_blocks(text: str) -> str:
+    repo_root = Path(__file__).resolve().parents[3]
+    book_root = repo_root / "docs/book"
+    source_blocks = _collect_structured_source_blocks(book_root)
     restored = 0
     for language, block in source_blocks:
-        match_block = next(
-            (
-                legacy
-                for marker, legacy in LEGACY_STRUCTURED_MATCH_SOURCES.items()
-                if marker in block
-            ),
-            block,
-        )
-        block_keys = [_code_line_key(line) for line in match_block.splitlines() if line.strip()]
-        unique_keys = set(block_keys)
-        if len(unique_keys) < 2:
-            continue
-
-        lines = text.splitlines()
-        inside_fence = False
-        outside_by_key: dict[str, list[int]] = {}
-        for index, line in enumerate(lines):
-            if line.startswith("```"):
-                inside_fence = not inside_fence
-                continue
-            if inside_fence or not line.strip():
-                continue
-            outside_by_key.setdefault(_code_line_key(line), []).append(index)
-
-        anchor_index = None
-        for key in sorted(unique_keys, key=len, reverse=True):
-            candidates = outside_by_key.get(key, [])
-            if len(key) >= 12 and len(candidates) == 1:
-                anchor_index = candidates[0]
-                break
-        if anchor_index is None:
-            continue
-
-        start = anchor_index
-        while start > 0:
-            previous = lines[start - 1]
-            if not previous.strip() or _code_line_key(previous) in unique_keys:
-                start -= 1
-                continue
-            break
-        while start < anchor_index and not lines[start].strip():
-            start += 1
-
-        end = anchor_index
-        cursor = anchor_index + 1
-        while cursor < len(lines):
-            candidate = lines[cursor]
-            if not candidate.strip() or _code_line_key(candidate) in unique_keys:
-                if candidate.strip():
-                    end = cursor
-                cursor += 1
-                continue
-            break
-
-        matched_keys = {_code_line_key(line) for line in lines[start : end + 1] if line.strip()}
-        coverage = len(matched_keys & unique_keys) / len(unique_keys)
-        if coverage < 0.7:
-            continue
-
-        lines[start : end + 1] = [f"```{language}", *block.splitlines(), "```"]
-        text = "\n".join(lines).rstrip() + "\n"
-        restored += 1
+        text, block_restored = _restore_structured_block(text, language, block)
+        if block_restored:
+            restored += 1
 
     if restored < 25:
         raise ValueError(f"Expected to restore at least 25 structured blocks, found {restored}")
