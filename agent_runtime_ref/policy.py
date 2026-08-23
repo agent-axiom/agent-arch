@@ -104,6 +104,32 @@ class CapabilityPolicy:
         object.__setattr__(self, "approver", _read_policy_approver(self.approver))
 
 
+def _read_capability_policies(raw: object) -> dict[str, CapabilityPolicy]:
+    if not isinstance(raw, Mapping):
+        raise TypeError("'capabilities' must be a mapping")
+
+    capability_policies: dict[str, CapabilityPolicy] = {}
+    for name, raw_entry in raw.items():
+        if not isinstance(name, str):
+            raise TypeError("Policy capability names must be strings")
+        capability_name = name.strip()
+        if not capability_name:
+            raise ValueError("Policy capability name must not be empty")
+        if not isinstance(raw_entry, Mapping):
+            raise TypeError(f"Policy for capability {name!r} must be a mapping")
+        decision = _read_policy_decision(raw_entry.get("decision", "deny"))
+        approver = _read_policy_approver(raw_entry.get("approver"))
+        if decision == "approval_required" and approver == "":
+            raise ValueError(f"Policy approver must not be empty: {capability_name}")
+        if capability_name in capability_policies:
+            raise ValueError("Policy capability names must be unique")
+        capability_policies[capability_name] = CapabilityPolicy(
+            decision=decision,
+            approver=approver,
+        )
+    return capability_policies
+
+
 class PolicyEngine:
     """Reference policy engine with explicit structured decisions."""
 
@@ -173,29 +199,9 @@ class PolicyEngine:
         if not isinstance(raw_precheck, Mapping):
             raise TypeError("'run_precheck' must be a mapping")
 
-        raw_capabilities = raw_policy.get("capabilities", {})
-        if not isinstance(raw_capabilities, Mapping):
-            raise TypeError("'capabilities' must be a mapping")
-
-        capability_policies: dict[str, CapabilityPolicy] = {}
-        for name, raw_entry in raw_capabilities.items():
-            if not isinstance(name, str):
-                raise TypeError("Policy capability names must be strings")
-            capability_name = name.strip()
-            if not capability_name:
-                raise ValueError("Policy capability name must not be empty")
-            if not isinstance(raw_entry, Mapping):
-                raise TypeError(f"Policy for capability {name!r} must be a mapping")
-            decision = _read_policy_decision(raw_entry.get("decision", "deny"))
-            approver = _read_policy_approver(raw_entry.get("approver"))
-            if decision == "approval_required" and approver == "":
-                raise ValueError(f"Policy approver must not be empty: {capability_name}")
-            if capability_name in capability_policies:
-                raise ValueError("Policy capability names must be unique")
-            capability_policies[capability_name] = CapabilityPolicy(
-                decision=decision,
-                approver=approver,
-            )
+        capability_policies = _read_capability_policies(
+            raw_policy.get("capabilities", {}),
+        )
 
         raw_memory = raw_policy.get("memory_write", {})
         if not isinstance(raw_memory, Mapping):
@@ -267,6 +273,31 @@ class PolicyEngine:
             raise TypeError("Policy capability must be CapabilitySpec")
         capability_name = normalize_tool_capability_name(tool_request.capability_name)
         tool_arguments = normalize_tool_arguments(tool_request.arguments)
+
+        guard_decision = self._tool_guard_decision(
+            context,
+            capability_name,
+            tool_arguments,
+            capability,
+        )
+        if guard_decision is not None:
+            return guard_decision
+        if capability_name == "create_ticket":
+            if tool_arguments.get("idempotency_key") in {None, ""}:
+                return PolicyDecision("allow", "validation_drill_execution", "cap_121")
+
+        configured_decision = self._configured_capability_decision(capability_name)
+        if configured_decision is not None:
+            return configured_decision
+        return self._default_capability_decision(capability)
+
+    def _tool_guard_decision(
+        self,
+        context: RunContext,
+        capability_name: str,
+        tool_arguments: Mapping[str, str],
+        capability: CapabilitySpec | None,
+    ) -> PolicyDecision | None:
         if not context.tenant_id:
             return PolicyDecision("deny", "tenant_missing", "cap_401")
         if not context.principal_id:
@@ -288,18 +319,26 @@ class PolicyEngine:
                 return PolicyDecision("deny", "network_access_not_allowed", "cap_405")
             if capability.network_access != "none" and not capability.allowed_egress:
                 return PolicyDecision("deny", "egress_policy_missing", "cap_406")
-        if capability_name == "create_ticket":
-            if tool_arguments.get("idempotency_key") in {None, ""}:
-                return PolicyDecision("allow", "validation_drill_execution", "cap_121")
+        return None
 
+    def _configured_capability_decision(
+        self,
+        capability_name: str,
+    ) -> PolicyDecision | None:
         configured = self.capability_policies.get(capability_name)
-        if configured is not None:
-            if configured.decision == "allow":
-                return PolicyDecision("allow", "configured_allow", "cap_110")
-            if configured.decision == "approval_required":
-                approver = configured.approver or "policy"
-                return PolicyDecision("approval_required", f"approver:{approver}", "cap_210")
-            return PolicyDecision("deny", "configured_deny", "cap_410")
+        if configured is None:
+            return None
+        if configured.decision == "allow":
+            return PolicyDecision("allow", "configured_allow", "cap_110")
+        if configured.decision == "approval_required":
+            approver = configured.approver or "policy"
+            return PolicyDecision("approval_required", f"approver:{approver}", "cap_210")
+        return PolicyDecision("deny", "configured_deny", "cap_410")
+
+    @staticmethod
+    def _default_capability_decision(
+        capability: CapabilitySpec | None,
+    ) -> PolicyDecision:
         if capability is None:
             return PolicyDecision("deny", "capability_unknown", "cap_404")
         if capability.risk_tier == "critical":
