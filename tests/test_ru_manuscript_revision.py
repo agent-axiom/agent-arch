@@ -75,6 +75,225 @@ def join_shell_continuations(text: str) -> str:
     return text.replace("\\\n", "")
 
 
+def test_post_audit_conditional_anchor_preserves_legacy_current_precedence() -> None:
+    replace = revision_tool._replace_legacy_or_validate_current
+
+    assert replace("old + current", "old", "current", "trace") == "current + current"
+    assert replace("current", "old", "current", "trace") == "current"
+    with pytest.raises(
+        ValueError,
+        match=r"^Current trace must occur exactly once$",
+    ):
+        replace("current + current", "old", "current", "trace")
+
+
+def test_post_audit_three_state_anchor_prefers_oldest_then_intermediate() -> None:
+    replace = revision_tool._replace_three_state_editorial_anchor
+
+    assert replace("old / middle / final", "old", "middle", "final", "artifact") == (
+        "final / middle / final"
+    )
+    assert replace("middle", "old", "middle", "final", "artifact") == "final"
+    assert replace("final", "old", "middle", "final", "artifact") == "final"
+    with pytest.raises(
+        ValueError,
+        match=r"^Current artifact must occur exactly once$",
+    ):
+        replace("final / final", "old", "middle", "final", "artifact")
+
+
+def test_post_audit_artifact_three_state_preserves_production_error_text() -> None:
+    with pytest.raises(
+        ValueError,
+        match=r"^Current artifact-manifest verifier must occur once$",
+    ):
+        revision_tool._replace_three_state_editorial_anchor(
+            "missing",
+            "old artifact",
+            "intermediate artifact",
+            "current artifact",
+            "artifact-manifest verifier",
+            current_error="Current artifact-manifest verifier must occur once",
+        )
+
+
+def test_post_audit_marker_coexistence_and_duplicates_keep_current_semantics() -> None:
+    insert = revision_tool._insert_once_unless_marker
+
+    assert insert("legacy + marker", "legacy", "replacement", "marker", "ADLC") == (
+        "legacy + marker"
+    )
+    assert insert("legacy", "legacy", "replacement marker", "marker", "ADLC") == (
+        "replacement marker"
+    )
+    with pytest.raises(ValueError, match=r"^Current ADLC must occur once$"):
+        insert("marker + marker", "legacy", "replacement", "marker", "ADLC")
+
+
+def test_post_audit_driver_preserves_stage_order(monkeypatch: pytest.MonkeyPatch) -> None:
+    observed: list[str] = []
+    stages = (
+        "_apply_post_audit_memory_contracts",
+        "_apply_post_audit_trace_contracts",
+        "_apply_post_audit_evidence_contracts",
+        "_apply_post_audit_release_contracts",
+    )
+    for stage in stages:
+        monkeypatch.setattr(
+            revision_tool,
+            stage,
+            lambda text, stage=stage: observed.append(stage) or f"{text}\n\n{stage}",
+        )
+
+    revised = revision_tool.apply_post_audit_consistency_pass_2026_07_23("start")
+
+    assert observed == list(stages)
+    assert revised.endswith("_apply_post_audit_release_contracts\n")
+    assert "\n\n\n" not in revised
+
+
+def test_stacked_heading_bridge_is_exact_and_rejects_already_bridged_input() -> None:
+    bridges = (("## Parent", "### Child", "Bridge."),)
+
+    assert revision_tool._insert_stacked_heading_bridges(
+        "## Parent\n\n### Child\n", bridges
+    ) == "## Parent\n\nBridge.\n\n### Child\n"
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Editorial readiness anchor 'stacked headings: ## Parent' "
+            r"must occur once; found 0$"
+        ),
+    ):
+        revision_tool._insert_stacked_heading_bridges(
+            "## Parent\n\nBridge.\n\n### Child\n", bridges
+        )
+
+
+def test_stacked_heading_bridge_rejects_duplicate_parent_child_pair() -> None:
+    bridges = (("## Parent", "### Child", "Bridge."),)
+    duplicate = "## Parent\n\n### Child\n\n## Parent\n\n### Child\n"
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Editorial readiness anchor 'stacked headings: ## Parent' "
+            r"must occur once; found 2$"
+        ),
+    ):
+        revision_tool._insert_stacked_heading_bridges(duplicate, bridges)
+
+
+def test_heading_adjacent_fence_labels_only_column_zero_atx_headings() -> None:
+    source = """#### Шаг 2. Проверка
+
+```console
+run
+```
+### Контракт
+
+```yaml
+key: value
+```
+> ### Цитата
+
+```text
+quoted
+```
+  ### Отступ
+
+```text
+indented
+```
+"""
+
+    revised = revision_tool._label_heading_adjacent_fences(source)
+
+    assert "#### Шаг 2. Проверка\n\nВыполните команду и сохраните результат:" in revised
+    assert "### Контракт\n\n**Тип фрагмента:** минимальный контракт." in revised
+    assert "> ### Цитата\n\n```text" in revised
+    assert "  ### Отступ\n\n```text" in revised
+
+
+def test_world_class_shell_wrap_keeps_quoted_tokens_and_language_boundaries() -> None:
+    quoted = '"' + ("quoted value " * 7).strip() + '"'
+    long_command = f"uv run command --message {quoted} --final-token boundary"
+    mixed_case_command = "uv run command " + "argument " * 14 + "boundary"
+    untouched_yaml = "key: " + "value " * 18 + "boundary"
+    source = (
+        f"```console\n{long_command}\n```\n"
+        f"```Console\n{mixed_case_command}\n```\n"
+        f"```yaml\n{untouched_yaml}\n```\n"
+    )
+
+    revised = revision_tool._wrap_world_class_shell_lines(source)
+
+    assert quoted in revised
+    assert " \\\n  --final-token boundary" in revised
+    assert mixed_case_command not in revised
+    assert mixed_case_command in join_shell_continuations(revised)
+    assert f"```yaml\n{untouched_yaml}\n```" in revised
+
+
+def test_required_world_class_replacements_replace_all_and_reject_current_only() -> None:
+    replacements = (("legacy", "current"),)
+
+    assert revision_tool._replace_all_required(
+        "legacy + legacy",
+        replacements,
+        missing_prefix="World-class copyedit anchor missing",
+    ) == "current + current"
+    with pytest.raises(
+        ValueError,
+        match=r"^World-class copyedit anchor missing: legacy$",
+    ):
+        revision_tool._replace_all_required(
+            "current",
+            replacements,
+            missing_prefix="World-class copyedit anchor missing",
+        )
+
+
+def test_create_ticket_risk_normalization_is_global_and_fail_closed() -> None:
+    medium = "  create_ticket:\n    risk: medium\n"
+    assert revision_tool._normalize_create_ticket_risk(medium * 2).count(
+        "risk: high"
+    ) == 2
+    with pytest.raises(
+        ValueError,
+        match=r"^create_ticket risk classification still drifts$",
+    ):
+        revision_tool._normalize_create_ticket_risk(
+            "create_ticket:\n      risk: medium\n"
+        )
+
+
+def test_world_class_driver_preserves_stage_order(monkeypatch: pytest.MonkeyPatch) -> None:
+    observed: list[str] = []
+    stages = (
+        "_apply_required_world_class_replacements",
+        "_normalize_create_ticket_risk",
+        "_strengthen_approval_chain",
+        "_extend_case_and_chapter_sources",
+        "_insert_stacked_heading_bridges",
+        "_label_heading_adjacent_fences",
+        "_repair_world_class_listing_layout",
+        "_wrap_world_class_shell_lines",
+    )
+    for stage in stages:
+        monkeypatch.setattr(
+            revision_tool,
+            stage,
+            lambda text, stage=stage: observed.append(stage) or f"{text}\n\n{stage}",
+        )
+
+    revised = revision_tool.apply_world_class_technical_edit_2026_07_23("start")
+
+    assert observed == list(stages)
+    assert revised.endswith("_wrap_world_class_shell_lines\n")
+    assert "\n\n\n" not in revised
+
+
 def test_revision_is_reproducible(tmp_path: Path) -> None:
     output = tmp_path / "manuscript.md"
     manifest = tmp_path / "diagrams.json"
