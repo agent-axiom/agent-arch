@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from collections.abc import Sequence
 from pathlib import Path
 
 PRACTICAL_REPOSITORY_REF = "da0f5771bcfb2c6994b41692e1a59cdadc5408a1"
@@ -13752,81 +13753,99 @@ uv run python -m agent_runtime_ref check-retirement \\
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
+def _replace_once_in_chapter(
+    current: str,
+    number: int,
+    old: str,
+    new: str,
+    label: str,
+) -> str:
+    chapter = extract_chapter(current, number)
+    if chapter.count(old) != 1:
+        raise ValueError(
+            f"Chapter {number} anchor {label!r} must occur once; found {chapter.count(old)}"
+        )
+    revised = chapter.replace(old, new, 1)
+    return _replace_editorial_anchor(
+        current,
+        chapter,
+        revised,
+        f"chapter {number}: {label}",
+    )
+
+
+def _replace_pattern_once_in_chapter(
+    current: str,
+    number: int,
+    pattern: str,
+    replacement: str,
+    label: str,
+) -> str:
+    chapter = extract_chapter(current, number)
+    revised, count = re.subn(pattern, replacement, chapter, flags=re.DOTALL)
+    if count != 1:
+        raise ValueError(f"Chapter {number} pattern {label!r} must occur once; found {count}")
+    return _replace_editorial_anchor(
+        current,
+        chapter,
+        revised,
+        f"chapter {number}: {label}",
+    )
+
+
+def _insert_before_chapter_heading(
+    current: str,
+    number: int,
+    heading: str,
+    section: str,
+    label: str,
+) -> str:
+    return _replace_once_in_chapter(
+        current,
+        number,
+        heading,
+        section.rstrip() + "\n\n" + heading,
+        label,
+    )
+
+
+def _append_unique_chapter_sources(
+    current: str,
+    number: int,
+    sources: tuple[str, ...],
+) -> str:
+    chapter = extract_chapter(current, number)
+    if "### Источники главы" not in chapter:
+        raise ValueError(f"Chapter {number} source section is missing")
+    for source in sources:
+        source_id = source.split(".", 1)[0].strip("*")
+        if re.search(rf"(?m)^\*\*{re.escape(source_id)}\.\*\*", chapter):
+            raise ValueError(f"Chapter {number} already contains source {source_id}")
+    revised = chapter.rstrip() + "\n" + "\n".join(sources)
+    return _replace_editorial_anchor(
+        current,
+        chapter,
+        revised,
+        f"chapter {number}: new August sources",
+    )
+
+
+def _replace_required_occurrences(
+    text: str,
+    replacements: tuple[tuple[str, str, int], ...],
+) -> str:
+    for old, new, expected_count in replacements:
+        if text.count(old) != expected_count:
+            raise ValueError(
+                f"August identifier anchor {old!r} must occur {expected_count} times; "
+                f"found {text.count(old)}"
+            )
+        text = text.replace(old, new)
+    return text
+
+
 def apply_editorial_pass_2026_08_01(text: str) -> str:
     """Apply the August protocol, pedagogy, and terminology corrections."""
-
-    def replace_in_chapter(
-        current: str,
-        number: int,
-        old: str,
-        new: str,
-        label: str,
-    ) -> str:
-        chapter = extract_chapter(current, number)
-        if chapter.count(old) != 1:
-            raise ValueError(
-                f"Chapter {number} anchor {label!r} must occur once; found {chapter.count(old)}"
-            )
-        revised = chapter.replace(old, new, 1)
-        return _replace_editorial_anchor(
-            current,
-            chapter,
-            revised,
-            f"chapter {number}: {label}",
-        )
-
-    def replace_pattern_in_chapter(
-        current: str,
-        number: int,
-        pattern: str,
-        replacement: str,
-        label: str,
-    ) -> str:
-        chapter = extract_chapter(current, number)
-        revised, count = re.subn(pattern, replacement, chapter, flags=re.DOTALL)
-        if count != 1:
-            raise ValueError(f"Chapter {number} pattern {label!r} must occur once; found {count}")
-        return _replace_editorial_anchor(
-            current,
-            chapter,
-            revised,
-            f"chapter {number}: {label}",
-        )
-
-    def insert_before_heading(
-        current: str,
-        number: int,
-        heading: str,
-        section: str,
-        label: str,
-    ) -> str:
-        return replace_in_chapter(
-            current,
-            number,
-            heading,
-            section.rstrip() + "\n\n" + heading,
-            label,
-        )
-
-    def append_chapter_sources(
-        current: str,
-        number: int,
-        sources: tuple[str, ...],
-    ) -> str:
-        chapter = extract_chapter(current, number)
-        if "### Источники главы" not in chapter:
-            raise ValueError(f"Chapter {number} source section is missing")
-        for source in sources:
-            source_id = source.split(".", 1)[0].strip("*")
-            if re.search(rf"(?m)^\*\*{re.escape(source_id)}\.\*\*", chapter):
-                raise ValueError(f"Chapter {number} already contains source {source_id}")
-        revised = chapter.rstrip() + "\n" + "\n".join(sources)
-        return _replace_editorial_anchor(
-            current,
-            chapter,
-            revised,
-            f"chapter {number}: new August sources",
-        )
 
     version = "ru-manuscript-editorial-2026-07-29"
     if text.count(version) != 2:
@@ -13840,13 +13859,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         ("support_triage_ref", "support-triage-ref", 1),
         ("    risk: medium\n", "    risk: high\n", 1),
     )
-    for old, new, expected_count in identifier_replacements:
-        if text.count(old) != expected_count:
-            raise ValueError(
-                f"August identifier anchor {old!r} must occur {expected_count} times; "
-                f"found {text.count(old)}"
-            )
-        text = text.replace(old, new)
+    text = _replace_required_occurrences(text, identifier_replacements)
 
     policy_decision = (
         "**Решение политики.** `allow`, `deny` или `approval_required` отвечают "
@@ -13865,7 +13878,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         "policy decision and control action vocabularies",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         5,
         "Политика также должна уметь возвращать управляющее решение, а не "
@@ -13886,7 +13899,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
     )
 
     compact_invariant = """В длинных запусках каталог ссылается на версионируемый контракт непрерывности: какие управляющие поля переживают сокращение контекста, где хранится контрольная точка и когда следующий шаг требует новой авторизации. Сводка для модели остается недоверенным производным представлением и никогда не переносит полномочия. Полный протокол сжатия, восстановления и проверки разбирается в главе 9 рядом с жизненным циклом контекста."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         5,
         r"В длинных запусках необходимо различать два слоя\..*?"
@@ -13911,7 +13924,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
 5. **Заново авторизовать продолжение.** После проверки пересобрать контекст, записать `context_rehydration` и выполнить обычную авторизацию. Целостность перехода сама по себе не разрешает действие.
 
 Контракт проверяется парными сценариями на полной и сокращенной истории. При одинаковом долговечном состоянии решения должны совпадать. Подмена сводки, новая версия политики или возможности, истекшее подтверждение и дрейф делегирования завершаются запретом; неизвестный побочный эффект блокирует продолжение до сверки."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         9,
         "### Не все обновления памяти должны происходить в горячем пути",
@@ -13966,7 +13979,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
 Контракт такой проверки сохраняет `review_hypothesis`, список `evidence_ref`, измеримый `review_cost` и машинно проверяемый `quality_gate`. Шлюз отвергает вывод, если доказательства отсутствуют, выходят за область гипотезы или не позволяют воспроизвести замечание. Найденная проблема возвращается в обычный инженерный цикл как тест или проверяемый предикат, а не как свободный комментарий модели.
 
 Последовательность проста: сформулировать риск изменения, собрать узкий пакет, выполнить проверку, независимо подтвердить блокирующее замечание и только затем разрешить выпуск. Такой рабочий процесс ограничивает пространство поиска, но не ослабляет независимость финального решения (см. источник **S122**)."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         10,
         "### Важно различать инструменты чтения и инструменты записи",
@@ -13974,7 +13987,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         "workflow-constrained review",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "* различать возобновление сессии, повтор вызова инструмента, "
@@ -13983,7 +13996,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         "длительных задач и повторного ввода;",
         "current MCP learning outcome",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "В этой главе границы безопасности MCP, поверхности отравления "
@@ -14015,7 +14028,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
 #### Шлюз маршрутизирует сообщение, а не угадывает состояние
 
 `Mcp-Method` и `Mcp-Name` помогают маршрутизации, `ttlMs` и `cacheScope` — кэшированию, а W3C Trace Context — трассировке; авторизация остается обязательной. Расширенная поддержка MCP в AgentCore Gateway иллюстрирует динамический список, `outputSchema`, `listing_mode`, `listed_under_principal`, `output_schema_hash` и `tool_annotations`. Но поведение AWS от 25 ноября 2025 года зависит от поставщика и версии сервиса, а не задает универсальное ядро MCP."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         11,
         r"### Состояние, делегирование и выбор протокола\n\n"
@@ -14054,7 +14067,7 @@ capabilities:
     timeout_seconds: 10
     approval: always
 ```"""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         11,
         r"capabilities:\n\n`search_docs`:.*?approval: always\n\n"
@@ -14068,7 +14081,7 @@ capabilities:
 `outputSchema` и аннотации ограничивают результат, но не заменяют политику; динамический список строится под идентичностью пользователя, и кэш чужого каталога не становится полномочием. После разрыва исходный вызов повторяют лишь при известном неисполнении. Неизвестный эффект сначала сверяют, Tasks проверяют по `task_id`, а дополнительный ввод возвращают через `requestState` и `inputResponses` после свежей авторизации.
 
 OBO-обмен сохраняет исходного субъекта и сужает аудиторию токена. Прикладной дескриптор, задача и ключ идемпотентности связывают работу, но не заменяют аутентификацию и авторизацию."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         11,
         r"#### Сессия MCP не равна повтору вызова\n\n"
@@ -14076,7 +14089,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         mcp_retry + "\n\n",
         "MCP retry and application continuity",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "**Что изменилось после этой главы.** MCP, песочница и A2A теперь "
@@ -14095,7 +14108,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "неограниченно распространяться по цепочке агентов.",
         "current MCP chapter closure",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "* Возобновление сессии, повтор вызова и повторная инициализация — "
@@ -14106,7 +14119,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "* Сеть агентов требует явных пределов распространения риска.",
         "current MCP key conclusion",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "**Практический шаг.** Составьте матрицу угроз для одного MCP-сервера: "
@@ -14125,7 +14138,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
 До исполнения шлюз фиксирует `payer_identity`, валюту, `spending_cap`, период бюджета и правило превышения. После исполнения он связывает результат с `metering_record_id` и `payment_proof_ref`, чтобы трасса могла сопоставить заявленный объем, фактическое списание и полезный исход. Отсутствующее или неоднозначное платежное доказательство переводит операцию в сверку и запрещает слепой повтор.
 
 Полезно держать два независимых решения: политика возможности разрешает предметное действие, а политика расходов разрешает конкретное финансовое обязательство. Резервный поставщик не сбрасывает лимит, смена плательщика требует новой авторизации, а частичный результат не скрывает уже возникшее списание. Такой контракт превращает платную возможность из неявной статьи расходов в управляемый внешний эффект (см. источник **S118**)."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         14,
         "### SLO эскалации защищает не систему, а людей вокруг нее",
@@ -14142,7 +14155,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
 Подтвержденные исправления предметных экспертов сохраняют старую и новую метку, основание, автора и версию рубрики и возвращаются в офлайн-набор.
 
 Память проверяется многоходовым сценарием: **ожидаемая запись → конфликтующая ревизия → устаревшее извлечение → удаление**. Он доказывает победившую ревизию и удаление из индексов, кэшей и производных сводок."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         15,
         "### Симуляция пользователя и среды",
@@ -14155,7 +14168,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
 Модельный проверяющий работает по узкой схеме без инструментов и побочных эффектов. Его калибровочный набор версионирует эталонную разметку, сложность, неоднозначные случаи и пороги; для безопасности детерминированные инварианты остаются обязательными.
 
 **Дрейф проверяющего** является риском выпуска: такой дрейф проверяющего после смены модели, подсказки, рубрики или входной схемы требует новой версии контракта и повторной калибровки. Контрольная выборка и человеческое решение отделяют изменение агента от изменения измерителя; необъясненное различие дает `inconclusive`."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         15,
         r"#### Калибровка модельного проверяющего\n\n"
@@ -14164,7 +14177,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "evaluate the evaluators",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         17,
         "Иначе вы можете много строить, но не становиться системно лучше.",
@@ -14178,7 +14191,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "adoption versus product value",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         19,
         "### Инвентарь и реестр — не одно и то же",
@@ -14187,7 +14200,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "их допуск; инвентарь показывает более широкую фактическую поверхность.",
         "agent registry terminology",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         21,
         "### Утвержденный реестр и доверенные артефакты не одно и то же",
@@ -14283,12 +14296,12 @@ OBO-обмен сохраняет исходного субъекта и суж�
         new_bibliography + "### Дополнительное чтение",
         "sources S116-S122",
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         10,
         ("**S122.** GitHub, Better tools made Copilot code review worse.",),
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         11,
         (
@@ -14297,12 +14310,12 @@ OBO-обмен сохраняет исходного субъекта и суж�
             "Specification Release Candidate.",
         ),
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         14,
         ("**S118.** Cloudflare, Announcing the Monetization Gateway.",),
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         15,
         (
@@ -14706,8 +14719,8 @@ def _split_shell_line_for_print(line: str, width: int = 81) -> list[str]:
     return wrapped
 
 
-def reflow_code_blocks_for_print(text: str) -> str:
-    """Keep listings readable in the publisher template while preserving syntax."""
+def _apply_required_print_width_replacements(text: str) -> str:
+    """Apply the ordered print-width anchor replacements."""
 
     exact_replacements = {
         "Escalate when approval is required or when the outcome of a write action is uncertain.": (
@@ -14789,6 +14802,12 @@ def reflow_code_blocks_for_print(text: str) -> str:
             raise ValueError(f"Print-width code anchor is missing: {old!r}")
         text = text.replace(old, new)
 
+    return text
+
+
+def _split_temp_directory_guard_patterns(text: str) -> str:
+    """Split the two fixed shell guard patterns at their third atom."""
+
     long_patterns = (
         '    "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
         '  "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
@@ -14800,7 +14819,12 @@ def reflow_code_blocks_for_print(text: str) -> str:
         midpoint = pattern.index("[A-Za-z0-9]", midpoint + 1) + len("[A-Za-z0-9]")
         text = text.replace(pattern, pattern[:midpoint] + "\\\n" + pattern[midpoint:])
 
-    lines = text.splitlines()
+    return text
+
+
+def _reflow_shell_fences(lines: Sequence[str]) -> list[str]:
+    """Reflow oversized lines only inside supported shell fences."""
+
     output: list[str] = []
     language = ""
     in_fence = False
@@ -14820,14 +14844,31 @@ def reflow_code_blocks_for_print(text: str) -> str:
         else:
             output.append(line)
 
+    return output
+
+
+def _oversized_fenced_lines(lines: Sequence[str]) -> list[tuple[int, int]]:
+    """Return line number and width for oversized lines in any fenced block."""
+
     oversized: list[tuple[int, int]] = []
     in_fence = False
-    for number, line in enumerate(output, start=1):
+    for number, line in enumerate(lines, start=1):
         if line.startswith("```"):
             in_fence = not in_fence
             continue
         if in_fence and len(line) > 81:
             oversized.append((number, len(line)))
+
+    return oversized
+
+
+def reflow_code_blocks_for_print(text: str) -> str:
+    """Keep listings readable in the publisher template while preserving syntax."""
+
+    text = _apply_required_print_width_replacements(text)
+    text = _split_temp_directory_guard_patterns(text)
+    output = _reflow_shell_fences(text.splitlines())
+    oversized = _oversized_fenced_lines(output)
     if oversized:
         raise ValueError(f"Code lines still exceed print width: {oversized[:8]}")
 

@@ -75,6 +75,190 @@ def join_shell_continuations(text: str) -> str:
     return text.replace("\\\n", "")
 
 
+def test_august_chapter_helpers_preserve_counts_errors_and_duplicate_sources() -> None:
+    manuscript = (
+        "## Глава 10\\. Review\n\n"
+        "old anchor\n\n"
+        "### Источники главы\n"
+        "**S1.** Existing source.\n\n"
+        "## Глава 11\\. Next\n"
+    )
+
+    replaced = revision_tool._replace_once_in_chapter(
+        manuscript,
+        10,
+        "old anchor",
+        "new anchor",
+        "direct anchor",
+    )
+    assert "new anchor" in revision_tool.extract_chapter(replaced, 10)
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 10 anchor 'missing' must occur once; found 0$",
+    ):
+        revision_tool._replace_once_in_chapter(
+            manuscript,
+            10,
+            "absent",
+            "new",
+            "missing",
+        )
+
+    patterned = revision_tool._replace_pattern_once_in_chapter(
+        manuscript,
+        10,
+        r"old .*",
+        "pattern replacement",
+        "pattern",
+    )
+    assert "pattern replacement" in revision_tool.extract_chapter(patterned, 10)
+
+    inserted = revision_tool._insert_before_chapter_heading(
+        manuscript,
+        10,
+        "### Источники главы",
+        "new section\n",
+        "section",
+    )
+    assert "new section\n\n### Источники главы" in inserted
+
+    duplicated = revision_tool._append_unique_chapter_sources(
+        manuscript,
+        10,
+        ("**S2.** New source.", "**S2.** New source."),
+    )
+    assert revision_tool.extract_chapter(duplicated, 10).count("**S2.**") == 2
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 10 already contains source S1$",
+    ):
+        revision_tool._append_unique_chapter_sources(
+            manuscript,
+            10,
+            ("**S1.** Existing source.",),
+        )
+
+
+def test_required_occurrence_replacements_are_ordered_and_fail_closed() -> None:
+    replacements = (("alpha", "beta", 1), ("beta", "gamma", 1))
+
+    assert (
+        revision_tool._replace_required_occurrences(
+            "alpha",
+            replacements,
+        )
+        == "gamma"
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^August identifier anchor 'beta' must occur 1 times; found 0$",
+    ):
+        revision_tool._replace_required_occurrences(
+            "alpha",
+            (("beta", "gamma", 1),),
+        )
+
+
+def test_print_width_helpers_keep_exact_missing_errors_and_temp_split() -> None:
+    first_print_anchor = (
+        "Escalate when approval is required or when the outcome of a write action "
+        "is uncertain."
+    )
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Print-width code anchor is missing: "
+            + re.escape(repr(first_print_anchor))
+            + r"$"
+        ),
+    ):
+        revision_tool._apply_required_print_width_replacements("no print anchors")
+
+    four_space_guard = (
+        '    "$LAB_PREFIX"'
+        "[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]"
+        "[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])"
+    )
+    two_space_guard = four_space_guard[2:]
+    revised = revision_tool._split_temp_directory_guard_patterns(
+        four_space_guard + "\n" + two_space_guard
+    )
+    assert revised.count("[A-Za-z0-9]\\\n[A-Za-z0-9]") == 2
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Temporary-directory guard anchor is missing: "
+            + re.escape(repr(two_space_guard))
+            + r"$"
+        ),
+    ):
+        revision_tool._split_temp_directory_guard_patterns(four_space_guard)
+
+
+@pytest.mark.parametrize(
+    ("line", "should_split"),
+    (
+        ("command " + "argument " * 12, True),
+        ("command '" + "quoted value " * 8 + "'", True),
+        ("x" * 82, False),
+        ("x" * 81, False),
+    ),
+)
+def test_shell_print_split_respects_quotes_legal_boundaries_and_exact_width(
+    line: str,
+    should_split: bool,
+) -> None:
+    wrapped = revision_tool._split_shell_line_for_print(line)
+
+    assert (len(wrapped) > 1) is should_split
+    if should_split:
+        assert join_shell_continuations("\n".join(wrapped)) == line
+
+
+def test_shell_print_split_uses_last_legal_space_and_skips_escaped_spaces() -> None:
+    line = "run " + "word " * 12 + r"path\ with\ spaces tail"
+
+    assert revision_tool._split_shell_line_for_print(line) == [
+        "run " + "word " * 11 + "word \\",
+        r"  path\ with\ spaces tail",
+    ]
+
+
+def test_shell_fence_reflow_tracks_language_indentation_and_unclosed_state() -> None:
+    long_shell = "run " + "argument " * 12
+    long_python = "print('" + "x" * 90 + "')"
+    text = (
+        "```python\n"
+        f"{long_python}\n"
+        "```\n"
+        "    ```bash\n"
+        f"{long_shell}\n"
+        "    ```\n"
+        "```bash\n"
+        f"{long_shell}\n"
+        "tail " + "argument " * 12
+    )
+
+    revised_lines = revision_tool._reflow_shell_fences(text.splitlines())
+    revised = "\n".join(revised_lines)
+
+    assert long_python in revised
+    assert revised.count(" \\") >= 2
+    # The legacy parser intentionally recognizes column-zero fence markers only.
+    assert revised.count(long_shell) == 1
+
+
+def test_oversized_fenced_lines_reports_all_languages_and_first_eight_payload() -> None:
+    lines = ["```text", *("x" * (82 + index) for index in range(10)), "```"]
+
+    oversized = revision_tool._oversized_fenced_lines(lines)
+
+    assert oversized[:8] == [(number, 80 + number) for number in range(2, 10)]
+    assert len(oversized) == 10
+    assert revision_tool._oversized_fenced_lines(["```text", "x" * 81, "```"]) == []
+
+
 def test_post_audit_conditional_anchor_preserves_legacy_current_precedence() -> None:
     replace = revision_tool._replace_legacy_or_validate_current
 
