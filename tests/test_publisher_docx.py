@@ -138,7 +138,7 @@ def paragraph_text(paragraph: ET.Element) -> str:
 
 def map_template_semantic_styles_in_runtime(
     document_xml: bytes,
-) -> tuple[ET.Element, list[tuple[str, int]]]:
+) -> tuple[ET.Element, dict[str, int]]:
     script = r'''
 import base64
 import json
@@ -152,7 +152,7 @@ sys.stdout.write(
     json.dumps(
         {
             "document_xml": base64.b64encode(document_xml).decode("ascii"),
-            "mappings": list(mappings.items()),
+            "mappings": mappings,
         },
         ensure_ascii=False,
     )
@@ -166,8 +166,7 @@ sys.stdout.write(
         capture_output=True,
     )
     payload = json.loads(completed.stdout)
-    mappings = [(key, count) for key, count in payload["mappings"]]
-    return ET.fromstring(base64.b64decode(payload["document_xml"])), mappings
+    return ET.fromstring(base64.b64decode(payload["document_xml"])), payload["mappings"]
 
 
 def template_semantic_style_fixture_xml() -> bytes:
@@ -199,6 +198,10 @@ def template_semantic_style_fixture_xml() -> bytes:
       <w:pPr><w:pStyle w:val="Heading2"/></w:pPr>
       <w:r><w:t>Заголовок сбрасывает выноску</w:t></w:r>
     </w:p>
+    <w:p><w:pPr><w:pStyle w:val="Title"/></w:pPr><w:r><w:t>Title</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="Heading3"/></w:pPr><w:r><w:t>H3</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="Heading4"/></w:pPr><w:r><w:t>H4</w:t></w:r></w:p>
+    <w:p><w:pPr><w:pStyle w:val="Heading5"/></w:pPr><w:r><w:t>H5</w:t></w:r></w:p>
     <w:p><w:r><w:t>Текст после заголовка</w:t></w:r></w:p>
     <w:p><w:r><w:t>Граница доказательств.</w:t></w:r></w:p>
     <w:p><w:r><w:drawing><wp:inline>
@@ -1028,20 +1031,20 @@ def test_template2000n_semantic_style_mapping_characterization() -> None:
         template_semantic_style_fixture_xml()
     )
 
-    assert mappings == [
-        ("body_text", 4),
-        ("table_header", 1),
-        ("table_body", 1),
-        ("callout_heading", 3),
-        ("callout_body", 1),
-        ("table_caption", 1),
-        ("list", 1),
-        ("program", 1),
-        ("picture", 3),
-        ("picture_kept_with_caption", 1),
-        ("image_alt_text", 3),
-        ("figure_caption", 1),
-    ]
+    assert mappings == {
+        "body_text": 4,
+        "table_header": 1,
+        "table_body": 1,
+        "callout_heading": 3,
+        "callout_body": 1,
+        "table_caption": 1,
+        "list": 1,
+        "program": 1,
+        "picture": 3,
+        "picture_kept_with_caption": 1,
+        "image_alt_text": 3,
+        "figure_caption": 1,
+    }
 
     style_attribute = f"{{{WORD_NS}}}val"
     paragraphs = document.findall(f".//{{{WORD_NS}}}p")
@@ -1058,6 +1061,10 @@ def test_template2000n_semantic_style_mapping_characterization() -> None:
         "Сохраненный заголовок": "Heading1",
         "Частые ошибки.": "Style24",
         "Заголовок сбрасывает выноску": "Heading2",
+        "Title": "Title",
+        "H3": "Heading3",
+        "H4": "Heading4",
+        "H5": "Heading5",
         "Текст после заголовка": "BodyText",
         "Граница доказательств.": "Style24",
         "Рисунок 8. Подпись после изображения": "Style17",
