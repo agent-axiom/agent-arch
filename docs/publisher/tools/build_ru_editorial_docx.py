@@ -560,36 +560,7 @@ class DocxRenderer:
         if tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
             self.render_heading(element, int(tag[1]))
         elif tag == "p":
-            images = element.findall("img")
-            prose = normalized_prose(element.text).strip()
-            if len(images) == 1 and not prose and len(element) == 1:
-                self.render_image(images[0])
-            else:
-                paragraph = self.add_paragraph()
-                if self.is_first_element:
-                    self.render_title(paragraph, element)
-                else:
-                    self._render_inline(
-                        paragraph,
-                        element,
-                        allow_internal_links=self._bookmark_anchor(element) is None,
-                    )
-                    self._add_bookmark(paragraph, element)
-                    if re.fullmatch(r"Таблица \d+\. .+", paragraph.text.strip()):
-                        paragraph.style = available_paragraph_style(
-                            self.document,
-                            "Caption",
-                        )
-                        set_keep_next(paragraph)
-                        set_keep_lines(paragraph)
-                    if re.match(r"^S\d{3}\.", paragraph.text.strip()):
-                        paragraph.paragraph_format.left_indent = Inches(0.28)
-                        paragraph.paragraph_format.first_line_indent = Inches(-0.28)
-                        paragraph.paragraph_format.space_after = Pt(2)
-                        set_keep_lines(paragraph)
-                    elif self.in_chapter_sources:
-                        set_keep_next(paragraph)
-                self.is_first_element = False
+            self._render_paragraph(element)
         elif tag in {"ul", "ol"}:
             self.render_list(element, list_level)
         elif tag == "pre":
@@ -597,27 +568,65 @@ class DocxRenderer:
         elif tag == "table":
             self.render_table(element)
         elif tag == "blockquote":
-            for child in element:
-                paragraph = self.add_paragraph()
-                paragraph.paragraph_format.left_indent = Inches(0.3)
-                render_inline(
-                    paragraph,
-                    child,
-                    InlineStyle(italic=True),
-                    self.available_anchors,
-                )
+            self._render_blockquote(element)
         elif tag == "hr":
-            paragraph = self.add_paragraph()
-            border = OxmlElement("w:pBdr")
-            bottom = OxmlElement("w:bottom")
-            bottom.set(qn("w:val"), "single")
-            bottom.set(qn("w:sz"), "4")
-            bottom.set(qn("w:color"), "B7B7B7")
-            border.append(bottom)
-            paragraph._p.get_or_add_pPr().append(border)
+            self._render_horizontal_rule()
         else:
             for child in element:
                 self.render_block(child, list_level)
+
+    def _render_paragraph(self, element) -> None:
+        images = element.findall("img")
+        prose = normalized_prose(element.text).strip()
+        if len(images) == 1 and not prose and len(element) == 1:
+            self.render_image(images[0])
+        else:
+            paragraph = self.add_paragraph()
+            if self.is_first_element:
+                self.render_title(paragraph, element)
+            else:
+                self._render_inline(
+                    paragraph,
+                    element,
+                    allow_internal_links=self._bookmark_anchor(element) is None,
+                )
+                self._add_bookmark(paragraph, element)
+                if re.fullmatch(r"Таблица \d+\. .+", paragraph.text.strip()):
+                    paragraph.style = available_paragraph_style(
+                        self.document,
+                        "Caption",
+                    )
+                    set_keep_next(paragraph)
+                    set_keep_lines(paragraph)
+                if re.match(r"^S\d{3}\.", paragraph.text.strip()):
+                    paragraph.paragraph_format.left_indent = Inches(0.28)
+                    paragraph.paragraph_format.first_line_indent = Inches(-0.28)
+                    paragraph.paragraph_format.space_after = Pt(2)
+                    set_keep_lines(paragraph)
+                elif self.in_chapter_sources:
+                    set_keep_next(paragraph)
+            self.is_first_element = False
+
+    def _render_blockquote(self, element) -> None:
+        for child in element:
+            paragraph = self.add_paragraph()
+            paragraph.paragraph_format.left_indent = Inches(0.3)
+            render_inline(
+                paragraph,
+                child,
+                InlineStyle(italic=True),
+                self.available_anchors,
+            )
+
+    def _render_horizontal_rule(self) -> None:
+        paragraph = self.add_paragraph()
+        border = OxmlElement("w:pBdr")
+        bottom = OxmlElement("w:bottom")
+        bottom.set(qn("w:val"), "single")
+        bottom.set(qn("w:sz"), "4")
+        bottom.set(qn("w:color"), "B7B7B7")
+        border.append(bottom)
+        paragraph._p.get_or_add_pPr().append(border)
 
     def render_title(self, paragraph, element) -> None:
         render_inline(
@@ -774,37 +783,53 @@ class DocxRenderer:
             row_properties.append(keep_row_together)
             cells = row.xpath("./th | ./td")
             for column_index, cell in enumerate(cells):
-                target = table.cell(row_index, column_index)
-                target.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-                paragraph = target.paragraphs[0]
-                render_inline(
-                    paragraph,
+                text_length = self._render_table_cell(
+                    table.cell(row_index, column_index),
                     cell,
-                    InlineStyle(bold=row_index == 0 or cell.tag.lower() == "th"),
-                    self.available_anchors,
+                    row_index,
+                    len(rows),
                 )
-                paragraph.alignment = (
-                    WD_ALIGN_PARAGRAPH.CENTER
-                    if row_index == 0
-                    else WD_ALIGN_PARAGRAPH.LEFT
+                text_lengths[column_index] = max(
+                    text_lengths[column_index],
+                    text_length,
                 )
-                paragraph.paragraph_format.space_before = Pt(0)
-                paragraph.paragraph_format.space_after = Pt(0)
-                paragraph.paragraph_format.line_spacing = 1.0
-                if row_index in {0, 1, max(0, len(rows) - 2)}:
-                    set_keep_next(paragraph)
-                for run in paragraph.runs:
-                    fonts = run._r.get_or_add_rPr().rFonts
-                    if fonts is not None and any(
-                        "mono" in value.lower() or "courier" in value.lower()
-                        for value in fonts.attrib.values()
-                    ):
-                        run.font.size = Pt(8)
-                text_lengths[column_index] = max(text_lengths[column_index], len(paragraph.text))
-                if row_index == 0:
-                    shading = OxmlElement("w:shd")
-                    shading.set(qn("w:fill"), "EDEDED")
-                    target._tc.get_or_add_tcPr().append(shading)
+        shares = self._table_column_shares(rows, text_lengths)
+        self._apply_table_column_widths(table, shares)
+        self.metrics["tables"] += 1
+
+    def _render_table_cell(self, target, cell, row_index: int, row_count: int) -> int:
+        target.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
+        paragraph = target.paragraphs[0]
+        render_inline(
+            paragraph,
+            cell,
+            InlineStyle(bold=row_index == 0 or cell.tag.lower() == "th"),
+            self.available_anchors,
+        )
+        paragraph.alignment = (
+            WD_ALIGN_PARAGRAPH.CENTER if row_index == 0 else WD_ALIGN_PARAGRAPH.LEFT
+        )
+        paragraph.paragraph_format.space_before = Pt(0)
+        paragraph.paragraph_format.space_after = Pt(0)
+        paragraph.paragraph_format.line_spacing = 1.0
+        if row_index in {0, 1, max(0, row_count - 2)}:
+            set_keep_next(paragraph)
+        for run in paragraph.runs:
+            fonts = run._r.get_or_add_rPr().rFonts
+            if fonts is not None and any(
+                "mono" in value.lower() or "courier" in value.lower()
+                for value in fonts.attrib.values()
+            ):
+                run.font.size = Pt(8)
+        if row_index == 0:
+            shading = OxmlElement("w:shd")
+            shading.set(qn("w:fill"), "EDEDED")
+            target._tc.get_or_add_tcPr().append(shading)
+        return len(paragraph.text)
+
+    @staticmethod
+    def _table_column_shares(rows, text_lengths: list[int]) -> list[float]:
+        column_count = len(text_lengths)
         weights = [min(length, 48) for length in text_lengths]
         total_weight = sum(weights)
         minimum_share = min(0.15, 0.8 / column_count)
@@ -826,12 +851,14 @@ class DocxRenderer:
             remainder = 1 - requested
             other_total = sum(shares[1:])
             shares = [requested, *[share * remainder / other_total for share in shares[1:]]]
+        return shares
+
+    def _apply_table_column_widths(self, table, shares: list[float]) -> None:
         for column_index, share in enumerate(shares):
             width = int(self.usable_width * share)
             table.columns[column_index].width = width
             for cell in table.columns[column_index].cells:
                 cell.width = width
-        self.metrics["tables"] += 1
 
 
 def prune_unused_document_relationships(document: Document) -> None:
