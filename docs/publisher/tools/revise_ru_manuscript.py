@@ -8694,8 +8694,8 @@ def _normalize_source_url(url: str) -> str:
     return url.replace("\\_", "_").replace("\\-", "-")
 
 
-def rebuild_source_apparatus(text: str) -> str:
-    """Keep URLs in one bibliography and use stable print identifiers in chapters."""
+def _ensure_mcp_security_source(text: str) -> str:
+    """Insert the MCP security source when its normalized URL is absent."""
     missing_source_url = (
         "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
     )
@@ -8714,7 +8714,11 @@ def rebuild_source_apparatus(text: str) -> str:
             missing_source + anchor,
             "missing MCP security bibliography entry",
         )
+    return text
 
+
+def _number_source_appendix(text: str) -> tuple[str, dict[str, str]]:
+    """Assign stable identifiers to bibliography entries in encounter order."""
     appendix_match = re.search(
         r"(?ms)^## Приложение 4\\\..*?(?=^## Приложение 5\\\.)",
         text,
@@ -8747,64 +8751,93 @@ def rebuild_source_apparatus(text: str) -> str:
 
     numbered_appendix = source_pattern.sub(number_appendix_entry, appendix)
     text = text[: appendix_match.start()] + numbered_appendix + text[appendix_match.end() :]
+    return text, source_ids
 
-    inline_link_pattern = re.compile(r"(?<!!)\[(?P<title>[^\]]+)\]\((?P<url>https?://[^)]+)\)")
+
+def _chapter_source_ids(
+    sources: str,
+    number: int,
+    source_ids: dict[str, str],
+) -> tuple[list[str], str]:
+    """Resolve and number chapter-local sources without deduplicating them."""
     chapter_source_pattern = re.compile(
         r"(?m)^\* \[(?P<title>[^\]]+)\]\((?P<url>https?://[^)]+)\)\.?$"
     )
+    chapter_entries = list(chapter_source_pattern.finditer(sources))
+    if len(chapter_entries) < 2:
+        raise ValueError(f"Chapter {number} has too few source entries")
 
+    chapter_ids: list[str] = []
+    for match in chapter_entries:
+        url = _normalize_source_url(match.group("url"))
+        if url not in source_ids:
+            raise ValueError(f"Chapter {number} source is absent from the bibliography: {url}")
+        chapter_ids.append(source_ids[url])
+
+    def replace_chapter_source(match: re.Match[str]) -> str:
+        source_id = source_ids[_normalize_source_url(match.group("url"))]
+        return f"* **{source_id}.** {match.group('title')}."
+
+    return chapter_ids, chapter_source_pattern.sub(replace_chapter_source, sources)
+
+
+def _claim_citation_span(body: str, number: int) -> tuple[int, int, str]:
+    """Find the preferred claim span that receives chapter citations."""
+    claim_pattern = re.compile(r"(?m)^\* Устойчивые утверждения: .+$")
+    claim_match = claim_pattern.search(body)
+    if claim_match is not None:
+        return claim_match.start(), claim_match.end(), claim_match.group(0).rstrip(".")
+
+    key_takeaways = body.find("### Ключевые выводы")
+    if key_takeaways == -1:
+        raise ValueError(f"Chapter {number} lacks a claim citation anchor")
+    takeaway_match = re.search(r"(?m)^\* .+$", body[key_takeaways:])
+    if takeaway_match is None:
+        raise ValueError(f"Chapter {number} lacks a key takeaway")
+    return (
+        key_takeaways + takeaway_match.start(),
+        key_takeaways + takeaway_match.end(),
+        takeaway_match.group(0).rstrip("."),
+    )
+
+
+def _rewrite_chapter_source_apparatus(
+    chapter: str,
+    number: int,
+    source_ids: dict[str, str],
+) -> str:
+    """Replace chapter URLs and add citations to the preferred claim."""
+    if chapter.count("### Источники главы") != 1:
+        raise ValueError(f"Chapter {number} must have one source section")
+    body, sources = chapter.split("### Источники главы", 1)
+    chapter_ids, sources = _chapter_source_ids(sources, number, source_ids)
+
+    inline_link_pattern = re.compile(r"(?<!!)\[(?P<title>[^\]]+)\]\((?P<url>https?://[^)]+)\)")
+
+    def replace_inline_link(match: re.Match[str]) -> str:
+        normalized = _normalize_source_url(match.group("url"))
+        source_id = source_ids.get(normalized)
+        if source_id is None:
+            raise ValueError(
+                f"Chapter {number} inline source is absent from bibliography: {normalized}"
+            )
+        return f"{match.group('title')} (см. источник **{source_id}**)"
+
+    body = inline_link_pattern.sub(replace_inline_link, body)
+    claim_start, claim_end, claim = _claim_citation_span(body, number)
+    cited_ids = chapter_ids[:2]
+    citation = ", ".join(f"**{source_id}**" for source_id in cited_ids)
+    body = body[:claim_start] + f"{claim} (см. источники {citation})." + body[claim_end:]
+    return body + "### Источники главы" + sources
+
+
+def rebuild_source_apparatus(text: str) -> str:
+    """Keep URLs in one bibliography and use stable print identifiers in chapters."""
+    text = _ensure_mcp_security_source(text)
+    text, source_ids = _number_source_appendix(text)
     for number in range(28, 0, -1):
         chapter = extract_chapter(text, number)
-        if chapter.count("### Источники главы") != 1:
-            raise ValueError(f"Chapter {number} must have one source section")
-        body, sources = chapter.split("### Источники главы", 1)
-        chapter_entries = list(chapter_source_pattern.finditer(sources))
-        if len(chapter_entries) < 2:
-            raise ValueError(f"Chapter {number} has too few source entries")
-
-        chapter_ids: list[str] = []
-        for match in chapter_entries:
-            url = _normalize_source_url(match.group("url"))
-            if url not in source_ids:
-                raise ValueError(f"Chapter {number} source is absent from the bibliography: {url}")
-            chapter_ids.append(source_ids[url])
-
-        def replace_chapter_source(match: re.Match[str]) -> str:
-            source_id = source_ids[_normalize_source_url(match.group("url"))]
-            return f"* **{source_id}.** {match.group('title')}."
-
-        sources = chapter_source_pattern.sub(replace_chapter_source, sources)
-
-        def replace_inline_link(match: re.Match[str]) -> str:
-            normalized = _normalize_source_url(match.group("url"))
-            source_id = source_ids.get(normalized)
-            if source_id is None:
-                raise ValueError(
-                    f"Chapter {number} inline source is absent from bibliography: {normalized}"
-                )
-            return f"{match.group('title')} (см. источник **{source_id}**)"
-
-        body = inline_link_pattern.sub(replace_inline_link, body)
-        claim_pattern = re.compile(r"(?m)^\* Устойчивые утверждения: .+$")
-        claim_match = claim_pattern.search(body)
-        if claim_match is not None:
-            claim_start = claim_match.start()
-            claim_end = claim_match.end()
-            claim = claim_match.group(0).rstrip(".")
-        else:
-            key_takeaways = body.find("### Ключевые выводы")
-            if key_takeaways == -1:
-                raise ValueError(f"Chapter {number} lacks a claim citation anchor")
-            takeaway_match = re.search(r"(?m)^\* .+$", body[key_takeaways:])
-            if takeaway_match is None:
-                raise ValueError(f"Chapter {number} lacks a key takeaway")
-            claim_start = key_takeaways + takeaway_match.start()
-            claim_end = key_takeaways + takeaway_match.end()
-            claim = takeaway_match.group(0).rstrip(".")
-        cited_ids = chapter_ids[:2]
-        citation = ", ".join(f"**{source_id}**" for source_id in cited_ids)
-        body = body[:claim_start] + f"{claim} (см. источники {citation})." + body[claim_end:]
-        revised = body + "### Источники главы" + sources
+        revised = _rewrite_chapter_source_apparatus(chapter, number, source_ids)
         text = text.replace(chapter, revised.rstrip(), 1)
 
     return text.rstrip() + "\n"

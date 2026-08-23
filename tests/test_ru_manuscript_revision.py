@@ -174,6 +174,195 @@ def test_command_restoration_rejects_unclosed_fence() -> None:
         revision_tool.fence_remaining_commands_and_json("```console\nuv run test\n")
 
 
+MCP_SECURITY_URL = (
+    "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+)
+
+
+def _synthetic_source_appendix(urls: list[str]) -> str:
+    entries = "\n".join(
+        f"* [Источник {index}]({url}), дата обращения: 15 июля 2026 года."
+        for index, url in enumerate(urls, start=1)
+    )
+    return (
+        "## Приложение 4\\. Источники\n\n"
+        f"{entries}\n\n"
+        "#### Облачные платформы и долговечное исполнение\n\n"
+        "## Приложение 5\\. Указатель\n"
+    )
+
+
+def _synthetic_source_document(
+    *,
+    chapter_sources: dict[int, list[tuple[str, str]]] | None = None,
+    omit_source_sections: set[int] | None = None,
+) -> str:
+    bibliography_urls = [MCP_SECURITY_URL] + [
+        f"https://example.test/source-{index}" for index in range(2, 91)
+    ]
+    local_sources = chapter_sources or {}
+    omitted = omit_source_sections or set()
+    chapters: list[str] = []
+    for number in range(1, 29):
+        sources = local_sources.get(
+            number,
+            [
+                ("Первый источник", bibliography_urls[0]),
+                ("Второй источник", bibliography_urls[1]),
+            ],
+        )
+        source_section = ""
+        if number not in omitted:
+            source_lines = "\n".join(
+                f"* [{title}]({url})." for title, url in sources
+            )
+            source_section = f"\n### Источники главы\n\n{source_lines}\n"
+        chapters.append(
+            f"## Глава {number}\\. Заголовок\n\n"
+            f"* Устойчивые утверждения: тезис главы {number}.\n"
+            f"{source_section}"
+        )
+    return (
+        "\n".join(chapters)
+        + "\n# Заключение\n\n"
+        + _synthetic_source_appendix(bibliography_urls)
+    )
+
+
+def test_source_appendix_ids_follow_encounter_order_and_normalize_literal_escapes() -> None:
+    escaped_url = "https://example.test/path\\_one\\-1"
+    urls = [escaped_url] + [
+        f"https://example.test/source-{index}" for index in range(2, 91)
+    ]
+
+    revised, source_ids = revision_tool._number_source_appendix(
+        _synthetic_source_appendix(urls)
+    )
+
+    assert source_ids["https://example.test/path_one-1"] == "S001"
+    assert source_ids["https://example.test/source-2"] == "S002"
+    assert f"**S001.** [Источник 1]({escaped_url})" in revised
+    assert "**S090.** [Источник 90](https://example.test/source-90)" in revised
+
+
+def test_source_appendix_rejects_duplicate_normalized_urls_with_exact_error() -> None:
+    urls = [
+        "https://example.test/path\\_one\\-1",
+        "https://example.test/path_one-1",
+        *(f"https://example.test/source-{index}" for index in range(3, 91)),
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            "^Duplicate bibliography URL before numbering: "
+            "https://example\\.test/path_one-1$"
+        ),
+    ):
+        revision_tool._number_source_appendix(_synthetic_source_appendix(urls))
+
+
+def test_mcp_security_source_is_inserted_before_cloud_anchor() -> None:
+    appendix = _synthetic_source_appendix(
+        [f"https://example.test/source-{index}" for index in range(1, 91)]
+    )
+
+    revised = revision_tool._ensure_mcp_security_source(appendix)
+
+    source_line = (
+        "* [Model Context Protocol, Security Best Practices]"
+        f"({MCP_SECURITY_URL}), дата обращения: 15 июля 2026 года."
+    )
+    assert revised.index(source_line) < revised.index(
+        "#### Облачные платформы и долговечное исполнение"
+    )
+    assert revised.count(MCP_SECURITY_URL) == 1
+
+
+def test_mcp_security_source_is_unchanged_when_normalized_url_exists() -> None:
+    escaped_url = MCP_SECURITY_URL.replace("_", "\\_")
+    appendix = _synthetic_source_appendix(
+        [escaped_url]
+        + [f"https://example.test/source-{index}" for index in range(2, 91)]
+    )
+
+    assert revision_tool._ensure_mcp_security_source(appendix) == appendix
+
+
+def test_source_rebuild_keeps_duplicate_local_ids_in_first_two_citations() -> None:
+    document = _synthetic_source_document(
+        chapter_sources={
+            28: [
+                ("Первый источник", MCP_SECURITY_URL),
+                ("Повтор первого источника", MCP_SECURITY_URL),
+                ("Второй источник", "https://example.test/source-2"),
+            ]
+        }
+    )
+
+    revised = revision_tool.rebuild_source_apparatus(document)
+    chapter = revision_tool.extract_chapter(revised, 28)
+
+    assert "(см. источники **S001**, **S001**)." in chapter
+    assert chapter.count("* **S001.**") == 2
+    assert "* **S002.** Второй источник." in chapter
+
+
+def test_source_rebuild_validates_chapters_in_reverse_order() -> None:
+    document = _synthetic_source_document(
+        chapter_sources={27: [("Один источник", MCP_SECURITY_URL)]},
+        omit_source_sections={26},
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="^Chapter 27 has too few source entries$",
+    ):
+        revision_tool.rebuild_source_apparatus(document)
+
+
+def test_claim_citation_prefers_stable_claim_and_strips_all_trailing_periods() -> None:
+    body = (
+        "* Устойчивые утверждения: основной тезис...\n\n"
+        "### Ключевые выводы\n\n"
+        "* запасной тезис.\n"
+    )
+
+    start, end, claim = revision_tool._claim_citation_span(body, 7)
+
+    assert body[start:end] == "* Устойчивые утверждения: основной тезис..."
+    assert claim == "* Устойчивые утверждения: основной тезис"
+
+
+def test_claim_citation_uses_first_key_takeaway_bullet() -> None:
+    body = "Введение.\n\n### Ключевые выводы\n\n* первый тезис.\n* второй тезис.\n"
+
+    start, end, claim = revision_tool._claim_citation_span(body, 8)
+
+    assert body[start:end] == "* первый тезис."
+    assert claim == "* первый тезис"
+
+
+@pytest.mark.parametrize(
+    ("body", "message"),
+    [
+        ("Текст без вывода.", "Chapter 4 lacks a claim citation anchor"),
+        ("### Ключевые выводы\n\nТекст без списка.", "Chapter 4 lacks a key takeaway"),
+    ],
+)
+def test_claim_citation_keeps_exact_missing_anchor_errors(body: str, message: str) -> None:
+    with pytest.raises(ValueError, match=f"^{re.escape(message)}$"):
+        revision_tool._claim_citation_span(body, 4)
+
+
+def test_source_apparatus_missing_markers_keep_exact_errors() -> None:
+    with pytest.raises(IndexError, match="^list index out of range$"):
+        revision_tool._ensure_mcp_security_source("рукопись без приложений")
+
+    with pytest.raises(ValueError, match="^Source appendix is missing$"):
+        revision_tool._number_source_appendix("рукопись без приложений")
+
+
 def _long_fenced_block(language: str, marker: str) -> str:
     body = "\n".join(f"{marker}-{number}" for number in range(21))
     return f"```{language}\n{body}\n```"
