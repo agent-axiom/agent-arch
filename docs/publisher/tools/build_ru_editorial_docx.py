@@ -6,6 +6,7 @@ import json
 import os
 import re
 import subprocess
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -16,7 +17,9 @@ from docx.opc.constants import RELATIONSHIP_TYPE
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.shared import Inches, Pt, RGBColor
+from docx.table import Table, _Cell
 from lxml import html
+from lxml.html import HtmlElement
 from PIL import Image
 
 FIRST_CHAPTERS_IN_PART = {1, 4, 7, 10, 13, 17, 22, 26}
@@ -575,7 +578,7 @@ class DocxRenderer:
             for child in element:
                 self.render_block(child, list_level)
 
-    def _render_paragraph(self, element) -> None:
+    def _render_paragraph(self, element: HtmlElement) -> None:
         images = element.findall("img")
         prose = normalized_prose(element.text).strip()
         if len(images) == 1 and not prose and len(element) == 1:
@@ -607,7 +610,7 @@ class DocxRenderer:
                     set_keep_next(paragraph)
             self.is_first_element = False
 
-    def _render_blockquote(self, element) -> None:
+    def _render_blockquote(self, element: HtmlElement) -> None:
         for child in element:
             paragraph = self.add_paragraph()
             paragraph.paragraph_format.left_indent = Inches(0.3)
@@ -797,7 +800,13 @@ class DocxRenderer:
         self._apply_table_column_widths(table, shares)
         self.metrics["tables"] += 1
 
-    def _render_table_cell(self, target, cell, row_index: int, row_count: int) -> int:
+    def _render_table_cell(
+        self,
+        target: _Cell,
+        cell: HtmlElement,
+        row_index: int,
+        row_count: int,
+    ) -> int:
         target.vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
         paragraph = target.paragraphs[0]
         render_inline(
@@ -828,7 +837,10 @@ class DocxRenderer:
         return len(paragraph.text)
 
     @staticmethod
-    def _table_column_shares(rows, text_lengths: list[int]) -> list[float]:
+    def _table_column_shares(
+        rows: Sequence[HtmlElement],
+        text_lengths: Sequence[int],
+    ) -> list[float]:
         column_count = len(text_lengths)
         weights = [min(length, 48) for length in text_lengths]
         total_weight = sum(weights)
@@ -853,7 +865,11 @@ class DocxRenderer:
             shares = [requested, *[share * remainder / other_total for share in shares[1:]]]
         return shares
 
-    def _apply_table_column_widths(self, table, shares: list[float]) -> None:
+    def _apply_table_column_widths(
+        self,
+        table: Table,
+        shares: Sequence[float],
+    ) -> None:
         for column_index, share in enumerate(shares):
             width = int(self.usable_width * share)
             table.columns[column_index].width = width

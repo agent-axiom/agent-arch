@@ -1,4 +1,5 @@
 import ast
+import base64
 import hashlib
 import json
 import os
@@ -40,6 +41,9 @@ DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDra
 DRAWINGML_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 DC_NS = "http://purl.org/dc/elements/1.1/"
 CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+FIXTURE_PNG = base64.b64decode(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
+)
 
 
 def document_runtime_python() -> Path:
@@ -64,9 +68,14 @@ def render_editorial_fixture(
     runtime_python = document_runtime_python()
 
     source_path = tmp_path / "fixture.html"
+    manuscript_path = tmp_path / "manuscript.md"
+    image_path = tmp_path / "visuals/fixture.png"
     output = tmp_path / "fixture.docx"
     metrics_path = tmp_path / "metrics.json"
     source_path.write_text(source, encoding="utf-8")
+    manuscript_path.write_text("# Fixture manuscript\n", encoding="utf-8")
+    image_path.parent.mkdir()
+    image_path.write_bytes(FIXTURE_PNG)
     script = r'''
 import json
 import sys
@@ -86,11 +95,11 @@ root = html.fragment_fromstring(
 )
 renderer = build_ru_editorial_docx.DocxRenderer(
     document,
-    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    Path(sys.argv[3]),
 )
 renderer.render(root)
-document.save(sys.argv[3])
-Path(sys.argv[4]).write_text(
+document.save(sys.argv[4])
+Path(sys.argv[5]).write_text(
     json.dumps(renderer.metrics, ensure_ascii=False),
     encoding="utf-8",
 )
@@ -102,6 +111,7 @@ Path(sys.argv[4]).write_text(
             script,
             str(ROOT),
             str(source_path),
+            str(manuscript_path),
             str(output),
             str(metrics_path),
         ],
@@ -304,7 +314,7 @@ def test_editorial_renderer_preserves_nested_block_dispatch_and_formatting(
     document, metrics = render_editorial_fixture(
         tmp_path,
         """
-        <p><img src="visuals/ru-figure-01-book-map.png" alt="Проверочная схема"></p>
+        <p><img src="visuals/fixture.png" alt="Проверочная схема"></p>
         <p>Свежий заголовок</p>
         <h1>Часть I. Проверка диспетчеризации</h1>
         <section><article>
