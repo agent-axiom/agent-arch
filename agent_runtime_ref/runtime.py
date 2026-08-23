@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import cast
+from collections.abc import Callable
+from typing import TypeVar, cast
 
 from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.background import BackgroundWorker
@@ -26,6 +27,8 @@ from agent_runtime_ref.models import (
 from agent_runtime_ref.policy import PolicyDecision, PolicyEngine
 from agent_runtime_ref.session import SessionStore
 from agent_runtime_ref.telemetry import TelemetryEmitter
+
+_RuntimeComponentT = TypeVar("_RuntimeComponentT")
 
 
 def _read_optional_request_string(value: str, *, field: str) -> str:
@@ -81,6 +84,88 @@ def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
     return cast(list[object], entries)
 
 
+def _runtime_component(
+    value: _RuntimeComponentT | None,
+    expected_type: type[_RuntimeComponentT],
+    factory: Callable[[], _RuntimeComponentT],
+    label: str,
+) -> _RuntimeComponentT:
+    component = factory() if value is None else value
+    if not isinstance(component, expected_type):
+        raise TypeError(f"Runtime {label} must be {expected_type.__name__}")
+    return component
+
+
+def _normalize_run_request(request: RunRequest) -> RunRequest:
+    if not isinstance(request, RunRequest):
+        raise TypeError("Runtime request must be RunRequest")
+    request.user_input = _read_required_request_string(
+        request.user_input,
+        field="user_input",
+    )
+    request.tenant_id = _read_optional_request_string(
+        request.tenant_id,
+        field="tenant_id",
+    )
+    request.principal_id = _read_optional_request_string(
+        request.principal_id,
+        field="principal_id",
+    )
+    request.trace_id = _read_required_request_string(
+        request.trace_id,
+        field="trace_id",
+    )
+    request.session_id = _read_required_request_string(
+        request.session_id,
+        field="session_id",
+    )
+    request.agent_id = _read_optional_request_string(request.agent_id, field="agent_id")
+    request.authorization_mode = _read_authorization_mode(request.authorization_mode)
+    request.delegated_principal_id = _read_optional_request_string(
+        request.delegated_principal_id,
+        field="delegated_principal_id",
+    )
+    request.delegated_scope = _read_optional_request_string(
+        request.delegated_scope,
+        field="delegated_scope",
+    )
+    request.intent_id = _read_optional_request_string(
+        request.intent_id,
+        field="intent_id",
+    )
+    request.test_fault = _read_optional_request_string(
+        request.test_fault,
+        field="test_fault",
+    )
+    if request.authorization_mode == "user_delegated":
+        request.delegated_principal_id = _read_required_delegated_string(
+            request.delegated_principal_id,
+            field="delegated_principal_id",
+        )
+        request.delegated_scope = _read_required_delegated_string(
+            request.delegated_scope,
+            field="delegated_scope",
+        )
+    return request
+
+
+def _legacy_tool_status(outcome: str) -> str:
+    if outcome == "permission_denied":
+        return "denied"
+    if outcome == "retryable_failure":
+        return "failed"
+    return outcome
+
+
+def _reconciliation_effect(side_effect_status: str, outcome: str) -> str:
+    unresolved_effects = {"side_effect_unknown", "partial_side_effect"}
+    if side_effect_status in unresolved_effects:
+        return side_effect_status
+    if outcome in unresolved_effects:
+        return outcome
+    return ""
+
+
 class AgentRuntime:
     """Minimal runnable skeleton for the book's reference implementation."""
 
@@ -97,41 +182,21 @@ class AgentRuntime:
         idempotency: IdempotencyStore | None = None,
         sandbox_profile: dict[str, object] | None = None,
     ) -> None:
-        if catalog is None:
-            catalog = CapabilityCatalog()
-        if not isinstance(catalog, CapabilityCatalog):
-            raise TypeError("Runtime catalog must be CapabilityCatalog")
-        self.catalog = catalog
-        if policy is None:
-            policy = PolicyEngine()
-        if not isinstance(policy, PolicyEngine):
-            raise TypeError("Runtime policy must be PolicyEngine")
-        self.policy = policy
-        if telemetry is None:
-            telemetry = TelemetryEmitter()
-        if not isinstance(telemetry, TelemetryEmitter):
-            raise TypeError("Runtime telemetry must be TelemetryEmitter")
-        self.telemetry = telemetry
-        if memory is None:
-            memory = MemoryStore()
-        if not isinstance(memory, MemoryStore):
-            raise TypeError("Runtime memory must be MemoryStore")
-        self.memory = memory
-        if approvals is None:
-            approvals = ApprovalQueue()
-        if not isinstance(approvals, ApprovalQueue):
-            raise TypeError("Runtime approvals must be ApprovalQueue")
-        self.approvals = approvals
-        if sessions is None:
-            sessions = SessionStore()
-        if not isinstance(sessions, SessionStore):
-            raise TypeError("Runtime sessions must be SessionStore")
-        self.sessions = sessions
-        if idempotency is None:
-            idempotency = IdempotencyStore()
-        if not isinstance(idempotency, IdempotencyStore):
-            raise TypeError("Runtime idempotency must be IdempotencyStore")
-        self.idempotency = idempotency
+        self.catalog = _runtime_component(
+            catalog, CapabilityCatalog, CapabilityCatalog, "catalog"
+        )
+        self.policy = _runtime_component(policy, PolicyEngine, PolicyEngine, "policy")
+        self.telemetry = _runtime_component(
+            telemetry, TelemetryEmitter, TelemetryEmitter, "telemetry"
+        )
+        self.memory = _runtime_component(memory, MemoryStore, MemoryStore, "memory")
+        self.approvals = _runtime_component(
+            approvals, ApprovalQueue, ApprovalQueue, "approvals"
+        )
+        self.sessions = _runtime_component(sessions, SessionStore, SessionStore, "sessions")
+        self.idempotency = _runtime_component(
+            idempotency, IdempotencyStore, IdempotencyStore, "idempotency"
+        )
         if sandbox_profile is None:
             sandbox_profile = {}
         if not isinstance(sandbox_profile, dict):
@@ -158,55 +223,7 @@ class AgentRuntime:
         self.background = background
 
     def run(self, request: RunRequest) -> RunResult:
-        if not isinstance(request, RunRequest):
-            raise TypeError("Runtime request must be RunRequest")
-        request.user_input = _read_required_request_string(
-            request.user_input,
-            field="user_input",
-        )
-        request.tenant_id = _read_optional_request_string(
-            request.tenant_id,
-            field="tenant_id",
-        )
-        request.principal_id = _read_optional_request_string(
-            request.principal_id,
-            field="principal_id",
-        )
-        request.trace_id = _read_required_request_string(
-            request.trace_id,
-            field="trace_id",
-        )
-        request.session_id = _read_required_request_string(
-            request.session_id,
-            field="session_id",
-        )
-        request.agent_id = _read_optional_request_string(request.agent_id, field="agent_id")
-        request.authorization_mode = _read_authorization_mode(request.authorization_mode)
-        request.delegated_principal_id = _read_optional_request_string(
-            request.delegated_principal_id,
-            field="delegated_principal_id",
-        )
-        request.delegated_scope = _read_optional_request_string(
-            request.delegated_scope,
-            field="delegated_scope",
-        )
-        request.intent_id = _read_optional_request_string(
-            request.intent_id,
-            field="intent_id",
-        )
-        request.test_fault = _read_optional_request_string(
-            request.test_fault,
-            field="test_fault",
-        )
-        if request.authorization_mode == "user_delegated":
-            request.delegated_principal_id = _read_required_delegated_string(
-                request.delegated_principal_id,
-                field="delegated_principal_id",
-            )
-            request.delegated_scope = _read_required_delegated_string(
-                request.delegated_scope,
-                field="delegated_scope",
-            )
+        request = _normalize_run_request(request)
         capability_session_id = ""
         capability_session_status = ""
         authorization_mode = request.authorization_mode
@@ -312,11 +329,7 @@ class AgentRuntime:
             self._handle_tool_request(context, request, model_output.tool_request)
             latest_tool = context.tool_results[-1] if context.tool_results else None
             if latest_tool is not None:
-                legacy_tool_status = latest_tool.outcome
-                if latest_tool.outcome == "permission_denied":
-                    legacy_tool_status = "denied"
-                elif latest_tool.outcome == "retryable_failure":
-                    legacy_tool_status = "failed"
+                legacy_tool_status = _legacy_tool_status(latest_tool.outcome)
                 capability_session_id = latest_tool.payload.get("capability_session_id", "")
                 capability_session_status = latest_tool.payload.get(
                     "capability_session_status", legacy_tool_status
@@ -331,13 +344,10 @@ class AgentRuntime:
                 idempotency_key = latest_tool.payload.get("idempotency_key", idempotency_key)
                 approval_id = latest_tool.payload.get("approval_id", approval_id)
                 capability_name = latest_tool.capability_name
-                unresolved_effects = {"side_effect_unknown", "partial_side_effect"}
-                if latest_tool.side_effect_status in unresolved_effects:
-                    reconciliation_effect = latest_tool.side_effect_status
-                elif latest_tool.outcome in unresolved_effects:
-                    reconciliation_effect = latest_tool.outcome
-                else:
-                    reconciliation_effect = ""
+                reconciliation_effect = _reconciliation_effect(
+                    latest_tool.side_effect_status,
+                    latest_tool.outcome,
+                )
                 requires_reconciliation = bool(reconciliation_effect)
                 if latest_tool.outcome == "approval_required" and not requires_reconciliation:
                     result = RunResult(
