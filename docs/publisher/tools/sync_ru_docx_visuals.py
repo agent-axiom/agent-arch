@@ -185,6 +185,91 @@ def resize_drawing(drawing: ET.Element, image_path: Path) -> tuple[int, int]:
     return width, height
 
 
+def _image_relationship_targets(relationships: ET.Element) -> dict[str, str]:
+    return {
+        node.attrib["Id"]: posixpath.normpath(f"word/{node.attrib['Target']}")
+        for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
+        if node.attrib.get("Type", "").endswith("/image")
+    }
+
+
+def _ordered_drawings(
+    document: ET.Element,
+) -> list[tuple[ET.Element, ET.Element, ET.Element]]:
+    drawings: list[tuple[ET.Element, ET.Element, ET.Element]] = []
+    for paragraph in document.findall(".//w:p", NS):
+        for drawing in paragraph.findall(".//w:drawing", NS):
+            blip = drawing.find(".//a:blip", NS)
+            if blip is not None:
+                drawings.append((paragraph, drawing, blip))
+    return drawings
+
+
+def _synchronize_drawing(
+    root: Path,
+    visual: dict[str, object],
+    drawing_parts: tuple[ET.Element, ET.Element, ET.Element],
+    targets: dict[str, str],
+    parent_by_child: dict[ET.Element, ET.Element],
+) -> tuple[str, int | None]:
+    paragraph, drawing, blip = drawing_parts
+    relationship_id = blip.get(f"{{{NS['r']}}}embed", "")
+    target = targets.get(relationship_id)
+    if target is None:
+        raise ValueError(f"Image relationship is missing: {relationship_id}")
+    destination = root / target
+    source = Path(visual["path"])
+    destination.write_bytes(source.read_bytes())
+
+    _, height = resize_drawing(drawing, source)
+    for properties in drawing.findall(".//wp:docPr", NS):
+        properties.set("title", "Иллюстрация к рукописи")
+        properties.set("descr", str(visual["alt"])[:1000])
+
+    number = visual["figure_number"]
+    if not number:
+        return target, None
+    parent = parent_by_child.get(paragraph)
+    if parent is None:
+        raise ValueError(f"Figure {number} has no document parent")
+    caption = find_nearby_paragraph(
+        parent,
+        paragraph,
+        re.compile(rf"^Рисунок {number}\."),
+    )
+    reference = find_preceding_paragraph(
+        parent,
+        caption,
+        re.compile(rf"^На рисунке {number} представлена схема"),
+    )
+    title = str(visual["figure_title"])
+    set_paragraph_text(caption, f"Рисунок {number}. {title}")
+    set_paragraph_text(
+        reference,
+        f"На рисунке {number} представлена схема «{title}».",
+    )
+    set_paragraph_flag(paragraph, "keepNext")
+    set_paragraph_flag(caption, "keepLines")
+    parent.remove(caption)
+    image_index = list(parent).index(paragraph)
+    parent.insert(image_index + 1, caption)
+    return target, height
+
+
+def _write_docx_archive(root: Path, temporary_output: Path, output_docx: Path) -> None:
+    with zipfile.ZipFile(
+        temporary_output,
+        "w",
+        compression=zipfile.ZIP_DEFLATED,
+    ) as archive:
+        for path in sorted(root.rglob("*")):
+            if path.is_file():
+                archive.write(path, path.relative_to(root).as_posix())
+
+    output_docx.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(temporary_output, output_docx)
+
+
 def synchronize(
     input_docx: Path,
     manuscript: Path,
@@ -202,19 +287,10 @@ def synchronize(
         relationships_path = root / "word/_rels/document.xml.rels"
         document = ET.fromstring(document_path.read_bytes())
         relationships = ET.fromstring(relationships_path.read_bytes())
-        targets = {
-            node.attrib["Id"]: posixpath.normpath(f"word/{node.attrib['Target']}")
-            for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
-            if node.attrib.get("Type", "").endswith("/image")
-        }
+        targets = _image_relationship_targets(relationships)
 
         parent_by_child = {child: parent for parent in document.iter() for child in list(parent)}
-        drawings: list[tuple[ET.Element, ET.Element, ET.Element]] = []
-        for paragraph in document.findall(".//w:p", NS):
-            for drawing in paragraph.findall(".//w:drawing", NS):
-                blip = drawing.find(".//a:blip", NS)
-                if blip is not None:
-                    drawings.append((paragraph, drawing, blip))
+        drawings = _ordered_drawings(document)
 
         if len(drawings) != len(visuals):
             raise ValueError(
@@ -223,51 +299,17 @@ def synchronize(
 
         media_targets: list[str] = []
         figure_heights: list[int] = []
-        for visual, (paragraph, drawing, blip) in zip(visuals, drawings):
-            relationship_id = blip.get(f"{{{NS['r']}}}embed", "")
-            target = targets.get(relationship_id)
-            if target is None:
-                raise ValueError(f"Image relationship is missing: {relationship_id}")
-            destination = root / target
-            source = Path(visual["path"])
-            destination.write_bytes(source.read_bytes())
+        for visual, drawing_parts in zip(visuals, drawings):
+            target, figure_height = _synchronize_drawing(
+                root,
+                visual,
+                drawing_parts,
+                targets,
+                parent_by_child,
+            )
             media_targets.append(target)
-
-            width, height = resize_drawing(drawing, source)
-            if visual["figure_number"]:
-                figure_heights.append(height)
-
-            for properties in drawing.findall(".//wp:docPr", NS):
-                properties.set("title", "Иллюстрация к рукописи")
-                properties.set("descr", str(visual["alt"])[:1000])
-
-            number = visual["figure_number"]
-            if not number:
-                continue
-            parent = parent_by_child.get(paragraph)
-            if parent is None:
-                raise ValueError(f"Figure {number} has no document parent")
-            caption = find_nearby_paragraph(
-                parent,
-                paragraph,
-                re.compile(rf"^Рисунок {number}\."),
-            )
-            reference = find_preceding_paragraph(
-                parent,
-                caption,
-                re.compile(rf"^На рисунке {number} представлена схема"),
-            )
-            title = str(visual["figure_title"])
-            set_paragraph_text(caption, f"Рисунок {number}. {title}")
-            set_paragraph_text(
-                reference,
-                f"На рисунке {number} представлена схема «{title}».",
-            )
-            set_paragraph_flag(paragraph, "keepNext")
-            set_paragraph_flag(caption, "keepLines")
-            parent.remove(caption)
-            image_index = list(parent).index(paragraph)
-            parent.insert(image_index + 1, caption)
+            if figure_height is not None:
+                figure_heights.append(figure_height)
 
         if len(set(media_targets)) != len(media_targets):
             raise ValueError("Multiple drawings unexpectedly share one media target")
@@ -275,17 +317,7 @@ def synchronize(
         document_path.write_bytes(ET.tostring(document, encoding="utf-8", xml_declaration=True))
 
         temporary_output = Path(temporary_directory) / "output.docx"
-        with zipfile.ZipFile(
-            temporary_output,
-            "w",
-            compression=zipfile.ZIP_DEFLATED,
-        ) as archive:
-            for path in sorted(root.rglob("*")):
-                if path.is_file():
-                    archive.write(path, path.relative_to(root).as_posix())
-
-        output_docx.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(temporary_output, output_docx)
+        _write_docx_archive(root, temporary_output, output_docx)
 
     return {
         "input_docx": str(input_docx),
