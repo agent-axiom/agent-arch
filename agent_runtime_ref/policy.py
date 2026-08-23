@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 from agent_runtime_ref.catalog import CapabilitySpec
 from agent_runtime_ref.identity import ApprovedInventory
@@ -117,8 +117,9 @@ def _read_capability_policies(raw: object) -> dict[str, CapabilityPolicy]:
             raise ValueError("Policy capability name must not be empty")
         if not isinstance(raw_entry, Mapping):
             raise TypeError(f"Policy for capability {name!r} must be a mapping")
-        decision = _read_policy_decision(raw_entry.get("decision", "deny"))
-        approver = _read_policy_approver(raw_entry.get("approver"))
+        entry = cast(Mapping[object, object], raw_entry)
+        decision = _read_policy_decision(entry.get("decision", "deny"))
+        approver = _read_policy_approver(entry.get("approver"))
         if decision == "approval_required" and approver == "":
             raise ValueError(f"Policy approver must not be empty: {capability_name}")
         if capability_name in capability_policies:
