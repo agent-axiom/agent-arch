@@ -46,7 +46,7 @@ jobs:
         run: uv run ruff check .
 
       - name: Run ty
-        run: uv run ty check
+        run: uv run ty check agent_runtime_ref
 
       - name: Run pre-commit
         run: uv run pre-commit run --all-files

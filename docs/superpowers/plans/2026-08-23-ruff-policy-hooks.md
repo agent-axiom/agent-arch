@@ -20,7 +20,7 @@
 
 **Modify: configuration and guidance**
 
-- `pyproject.toml` — development dependency, Ruff selectors, and the supported ty source root.
+- `pyproject.toml` — development dependency and Ruff selectors.
 - `uv.lock` — locked pre-commit dependency graph.
 - `README.md`, `CONTRIBUTING.md` — local policy and validation commands.
 
@@ -64,10 +64,10 @@
   matches fresh generator output byte-for-byte and must not be copied into a
   feature commit. Run the final full suite after fast-forwarding the feature
   branch into the original working tree.
-- `ty check agent_runtime_ref` passes. Configure that package as ty's explicit
-  supported source root so the documented `ty check` command does not discover
-  optional publisher scripts whose runtime dependencies are intentionally
-  external.
+- `ty check agent_runtime_ref` passes. Keep that supported scope explicit in
+  CI and contributor commands instead of narrowing project-wide `ty` discovery
+  in `pyproject.toml`; optional publisher scripts have external runtime
+  dependencies and are not part of this type gate.
 
 ### Task 1: Make The Policy Executable
 
@@ -93,7 +93,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_complexity_suppressions_are_protected() -> None:
     project = tomllib.loads((ROOT / "pyproject.toml").read_text(encoding="utf-8"))
     assert {"C901", "PLR0912"} <= set(project["tool"]["ruff"]["lint"]["select"])
-    assert project["tool"]["ty"]["src"]["include"] == ["agent_runtime_ref"]
+    assert "src" not in project["tool"].get("ty", {})
 
     config = yaml.safe_load((ROOT / ".pre-commit-config.yaml").read_text(encoding="utf-8"))
     repository = next(
@@ -111,7 +111,7 @@ Run: `uv run pytest tests/test_quality_policy.py -q`
 
 Expected: FAIL because `.pre-commit-config.yaml` and the protected selectors do not exist.
 
-- [ ] **Step 3: Add the exact policy and supported ty source root**
+- [ ] **Step 3: Add the exact Ruff policy**
 
 ```toml
 [dependency-groups]
@@ -126,8 +126,6 @@ dev = [
 [tool.ruff.lint]
 select = ["E", "F", "I", "C901", "PLR0912"]
 
-[tool.ty.src]
-include = ["agent_runtime_ref"]
 ```
 
 ```yaml
@@ -829,9 +827,9 @@ Expected: PASS.
 
 - [ ] **Step 3: Run the supported type target**
 
-Run: `uv run ty check`
+Run: `uv run ty check agent_runtime_ref`
 
-Expected: `All checks passed!` for `agent_runtime_ref` via `[tool.ty.src].include`.
+Expected: `All checks passed!` for the explicit `agent_runtime_ref` target.
 
 - [ ] **Step 4: Commit any strictly mechanical cleanup**
 
@@ -855,7 +853,7 @@ def test_quality_workflow_runs_ruff_ty_and_policy() -> None:
     workflow = (ROOT / ".github/workflows/quality.yml").read_text(encoding="utf-8")
     for command in (
         "uv run ruff check .",
-        "uv run ty check",
+        "uv run ty check agent_runtime_ref",
         "uv run pre-commit run --all-files",
     ):
         assert command in workflow
@@ -888,7 +886,7 @@ jobs:
       - run: uv python install 3.12
       - run: uv sync --group dev
       - run: uv run ruff check .
-      - run: uv run ty check
+      - run: uv run ty check agent_runtime_ref
       - run: uv run pre-commit run --all-files
 ```
 
@@ -921,7 +919,7 @@ Run:
 ```bash
 uv sync --locked --group docs --group dev
 uv run ruff check . --no-cache
-uv run ty check
+uv run ty check agent_runtime_ref
 uv run pre-commit run --all-files
 uv run pytest --cov=agent_runtime_ref --cov-report=term-missing \
   --ignore=tests/test_ru_manuscript_revision.py
@@ -959,7 +957,7 @@ Run:
 ```bash
 uv sync --locked --group docs --group dev
 uv run ruff check . --no-cache
-uv run ty check
+uv run ty check agent_runtime_ref
 uv run pre-commit run --all-files
 uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict

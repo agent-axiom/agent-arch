@@ -14,7 +14,7 @@ def test_project_keeps_recommended_ruff_policy_defaults() -> None:
 
     assert "pre-commit>=4.3,<5" in dev_dependencies
     assert {"C901", "PLR0912"} <= set(project["tool"]["ruff"]["lint"]["select"])
-    assert project["tool"]["ty"]["src"]["include"] == ["agent_runtime_ref"]
+    assert "src" not in project["tool"].get("ty", {})
 
     ruff_lint = project["tool"]["ruff"]["lint"]
     assert ruff_lint.get("mccabe", {}).get("max-complexity", 10) == 10
@@ -70,6 +70,6 @@ def test_quality_workflow_runs_the_local_policy_checks() -> None:
         "uv run pytest tests/test_agent_runtime_ref.py -q -k workflow",
         "uv run pytest tests/test_quality_policy.py -q",
         "uv run ruff check .",
-        "uv run ty check",
+        "uv run ty check agent_runtime_ref",
         "uv run pre-commit run --all-files",
     ]
