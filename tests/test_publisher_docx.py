@@ -5,8 +5,10 @@ import json
 import os
 import posixpath
 import re
+import struct
 import subprocess
 import sys
+import zlib
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
@@ -156,6 +158,221 @@ def test_document_runtime_python_validates_explicit_override(
         ),
     ):
         document_runtime_python()
+
+
+def _png_payload(*, seed: int, alpha: bool = False) -> bytes:
+    color_type = 6 if alpha else 2
+    channels = 4 if alpha else 3
+    pixel = bytes((seed + offset) % 256 for offset in range(channels))
+    scanlines = b"\x00" + pixel * 2
+
+    def chunk(kind: bytes, payload: bytes) -> bytes:
+        checksum = zlib.crc32(kind + payload) & 0xFFFFFFFF
+        return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", checksum)
+
+    header = struct.pack(">IIBBBBB", 2, 1, 8, color_type, 0, 0, 0)
+    return (
+        b"\x89PNG\r\n\x1a\n"
+        + chunk(b"IHDR", header)
+        + chunk(b"IDAT", zlib.compress(scanlines))
+        + chunk(b"IEND", b"")
+    )
+
+
+def _text_paragraph(parent: ET.Element, text: str) -> ET.Element:
+    paragraph = ET.SubElement(parent, f"{{{WORD_NS}}}p")
+    run = ET.SubElement(paragraph, f"{{{WORD_NS}}}r")
+    node = ET.SubElement(run, f"{{{WORD_NS}}}t")
+    node.text = text
+    return paragraph
+
+
+def _drawing_paragraph(
+    parent: ET.Element,
+    *,
+    index: int,
+    relationship_id: str,
+    description: str,
+    extent: tuple[int, int],
+) -> tuple[ET.Element, ET.Element, ET.Element]:
+    paragraph = ET.SubElement(parent, f"{{{WORD_NS}}}p")
+    drawing = ET.SubElement(paragraph, f"{{{WORD_NS}}}drawing")
+    inline = ET.SubElement(drawing, f"{{{DRAWING_NS}}}inline")
+    width, height = extent
+    ET.SubElement(
+        inline,
+        f"{{{DRAWING_NS}}}extent",
+        {"cx": str(width), "cy": str(height)},
+    )
+    ET.SubElement(
+        inline,
+        f"{{{DRAWING_NS}}}docPr",
+        {"id": str(index), "name": f"Picture {index}", "descr": description},
+    )
+    graphic = ET.SubElement(inline, f"{{{DRAWINGML_NS}}}graphic")
+    blip = ET.SubElement(graphic, f"{{{DRAWINGML_NS}}}blip")
+    blip.set(f"{{{OFFICE_REL_NS}}}embed", relationship_id)
+    transform = ET.SubElement(graphic, f"{{{DRAWINGML_NS}}}xfrm")
+    ET.SubElement(
+        transform,
+        f"{{{DRAWINGML_NS}}}ext",
+        {"cx": str(width), "cy": str(height)},
+    )
+    return paragraph, drawing, blip
+
+
+def _write_docx_fixture(
+    path: Path,
+    payloads: list[bytes],
+    *,
+    drawing_relationship_ids: list[str] | None = None,
+    relationship_targets: list[str] | None = None,
+    descriptions: list[str] | None = None,
+    extents: list[tuple[int, int]] | None = None,
+    numbered_count: int = 0,
+    captions_before_drawings: bool = False,
+    missing_caption: int | None = None,
+) -> None:
+    count = len(payloads)
+    relationship_ids = [f"rId{index}" for index in range(1, count + 1)]
+    drawing_relationship_ids = drawing_relationship_ids or relationship_ids
+    relationship_targets = relationship_targets or [
+        f"media/image-{index}.png" for index in range(1, count + 1)
+    ]
+    descriptions = descriptions or [f"Alternative text {index}" for index in range(1, count + 1)]
+    extents = extents or [
+        (2 * sync_ru_docx_visuals.EMU_PER_INCH, sync_ru_docx_visuals.EMU_PER_INCH)
+        for _ in range(count)
+    ]
+
+    document = ET.Element(f"{{{WORD_NS}}}document")
+    body = ET.SubElement(document, f"{{{WORD_NS}}}body")
+    for index, (relationship_id, description, extent) in enumerate(
+        zip(drawing_relationship_ids, descriptions, extents, strict=True),
+        start=1,
+    ):
+        if captions_before_drawings and index <= numbered_count:
+            _text_paragraph(
+                body,
+                f"На рисунке {index} представлена схема «Старое название {index}».",
+            )
+            if index != missing_caption:
+                _text_paragraph(body, f"Рисунок {index}. Старое название {index}")
+        _drawing_paragraph(
+            body,
+            index=index,
+            relationship_id=relationship_id,
+            description=description,
+            extent=extent,
+        )
+        if not captions_before_drawings and index <= numbered_count and index != missing_caption:
+            _text_paragraph(body, f"Рисунок {index}. Название {index}")
+
+    relationships = ET.Element(f"{{{PACKAGE_REL_NS}}}Relationships")
+    media: dict[str, bytes] = {}
+    for relationship_id, target, payload in zip(
+        relationship_ids,
+        relationship_targets,
+        payloads,
+        strict=True,
+    ):
+        ET.SubElement(
+            relationships,
+            f"{{{PACKAGE_REL_NS}}}Relationship",
+            {
+                "Id": relationship_id,
+                "Type": f"{OFFICE_REL_NS}/image",
+                "Target": target,
+            },
+        )
+        media.setdefault(f"word/{target}", payload)
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with ZipFile(path, "w") as archive:
+        archive.writestr(
+            "word/document.xml",
+            ET.tostring(document, encoding="utf-8", xml_declaration=True),
+        )
+        archive.writestr(
+            "word/_rels/document.xml.rels",
+            ET.tostring(relationships, encoding="utf-8", xml_declaration=True),
+        )
+        for target, payload in media.items():
+            archive.writestr(target, payload)
+
+
+def _write_manuscript_fixture(root: Path, payloads: list[bytes]) -> Path:
+    visuals_directory = root / "visuals"
+    visuals_directory.mkdir(parents=True)
+    lines: list[str] = []
+    for index, payload in enumerate(payloads, start=1):
+        relative_path = f"visuals/image-{index}.png"
+        (root / relative_path).write_bytes(payload)
+        lines.extend((f"![Alt {index}]({relative_path})", ""))
+        if index <= 25:
+            lines.extend((f"Рисунок {index}. Новое название {index}", ""))
+    manuscript = root / "manuscript.md"
+    manuscript.write_text("\n".join(lines), encoding="utf-8")
+    return manuscript
+
+
+def _audit_visuals(root: Path, payloads: list[bytes]) -> list[dict[str, object]]:
+    root.mkdir(parents=True)
+    visuals: list[dict[str, object]] = []
+    for index, payload in enumerate(payloads, start=1):
+        path = root / f"image-{index}.png"
+        path.write_bytes(payload)
+        visuals.append(
+            {
+                "path": str(path),
+                "figure_number": index,
+                "figure_title": f"Название {index}",
+                "alt": f"Alternative text {index}",
+            }
+        )
+    return visuals
+
+
+def _audit_docx_in_runtime(
+    raw_docx: Path,
+    template_docx: Path,
+    visuals: list[dict[str, object]],
+) -> dict[str, object]:
+    script = r"""
+import json
+import sys
+from pathlib import Path
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import audit_ru_visuals
+
+visuals = json.loads(sys.argv[4])
+for visual in visuals:
+    visual["path"] = Path(visual["path"])
+try:
+    metrics = audit_ru_visuals.audit_docx(Path(sys.argv[2]), Path(sys.argv[3]), visuals)
+except ValueError as error:
+    result = {"error": str(error)}
+else:
+    result = {"metrics": metrics}
+print(json.dumps(result, ensure_ascii=False, sort_keys=True))
+"""
+    completed = subprocess.run(
+        [
+            str(document_runtime_python()),
+            "-c",
+            script,
+            str(ROOT),
+            str(raw_docx),
+            str(template_docx),
+            json.dumps(visuals, ensure_ascii=False),
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    return json.loads(completed.stdout)
 
 
 def test_visual_audit_accepts_every_current_manuscript_image() -> None:
@@ -961,3 +1178,256 @@ def test_numbered_figure_captions_follow_images_and_stay_with_them() -> None:
         assert next_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
 
     assert numbered_pairs == 25
+
+
+def test_audit_docx_characterizes_media_order_and_metrics(tmp_path: Path) -> None:
+    payloads = [_png_payload(seed=index) for index in range(1, 26)]
+    visuals = _audit_visuals(tmp_path / "assets", payloads)
+    raw_docx = tmp_path / "raw.docx"
+    template_docx = tmp_path / "template.docx"
+    _write_docx_fixture(raw_docx, payloads, numbered_count=25)
+    _write_docx_fixture(template_docx, payloads, numbered_count=25)
+
+    result = _audit_docx_in_runtime(raw_docx, template_docx, visuals)
+
+    assert result == {
+        "metrics": {
+            "alpha_images": 0,
+            "max_aspect_error": 0.0,
+            "max_height_inches": 1.0,
+            "numbered_figure_caption_pairs": 25,
+            "raw_images": 25,
+            "raw_media_matches_source": True,
+            "template_images": 25,
+            "template_media_order_matches_raw": True,
+        }
+    }
+
+    swapped_payloads = [payloads[1], payloads[0], *payloads[2:]]
+    _write_docx_fixture(raw_docx, swapped_payloads, numbered_count=25)
+    assert _audit_docx_in_runtime(raw_docx, template_docx, visuals) == {
+        "error": "Raw DOCX media no longer matches manuscript visual order"
+    }
+
+    _write_docx_fixture(raw_docx, payloads, numbered_count=25)
+    relationship_ids = ["rId2", "rId1", *[f"rId{index}" for index in range(3, 26)]]
+    _write_docx_fixture(
+        template_docx,
+        payloads,
+        drawing_relationship_ids=relationship_ids,
+        numbered_count=25,
+    )
+    assert _audit_docx_in_runtime(raw_docx, template_docx, visuals) == {
+        "error": "Template2000n changed media relationship order"
+    }
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_error"),
+    [
+        ("blank-alt", "Template2000n contains an image without alternative text"),
+        ("aspect", "A Template2000n image is geometrically distorted"),
+        ("height", "A Template2000n image exceeds the print-height limit"),
+        ("alpha", "Template2000n contains an alpha-channel image"),
+    ],
+)
+def test_audit_docx_rejects_invalid_template_media(
+    tmp_path: Path,
+    case: str,
+    expected_error: str,
+) -> None:
+    payloads = [_png_payload(seed=index) for index in range(1, 26)]
+    visuals = _audit_visuals(tmp_path / "assets", payloads)
+    raw_docx = tmp_path / "raw.docx"
+    template_docx = tmp_path / "template.docx"
+    _write_docx_fixture(raw_docx, payloads, numbered_count=25)
+
+    descriptions = [f"Alternative text {index}" for index in range(1, 26)]
+    extents = [
+        (2 * sync_ru_docx_visuals.EMU_PER_INCH, sync_ru_docx_visuals.EMU_PER_INCH) for _ in payloads
+    ]
+    template_payloads = list(payloads)
+    if case == "blank-alt":
+        descriptions[0] = " "
+    elif case == "aspect":
+        extents[0] = (
+            sync_ru_docx_visuals.EMU_PER_INCH,
+            sync_ru_docx_visuals.EMU_PER_INCH,
+        )
+    elif case == "height":
+        extents[0] = (
+            14 * sync_ru_docx_visuals.EMU_PER_INCH,
+            7 * sync_ru_docx_visuals.EMU_PER_INCH,
+        )
+    else:
+        template_payloads[0] = _png_payload(seed=1, alpha=True)
+    _write_docx_fixture(
+        template_docx,
+        template_payloads,
+        descriptions=descriptions,
+        extents=extents,
+        numbered_count=25,
+    )
+
+    assert _audit_docx_in_runtime(raw_docx, template_docx, visuals) == {"error": expected_error}
+
+
+def test_audit_docx_rejects_a_missing_numbered_caption(tmp_path: Path) -> None:
+    payloads = [_png_payload(seed=index) for index in range(1, 26)]
+    visuals = _audit_visuals(tmp_path / "assets", payloads)
+    raw_docx = tmp_path / "raw.docx"
+    template_docx = tmp_path / "template.docx"
+    _write_docx_fixture(raw_docx, payloads, numbered_count=25)
+    _write_docx_fixture(
+        template_docx,
+        payloads,
+        numbered_count=25,
+        missing_caption=7,
+    )
+
+    assert _audit_docx_in_runtime(raw_docx, template_docx, visuals) == {
+        "error": "Caption does not follow figure 7"
+    }
+
+
+@pytest.mark.parametrize(
+    ("case", "expected_error"),
+    [
+        ("count", "DOCX has 55 drawings; manuscript has 56 visuals"),
+        ("relationship", "Image relationship is missing: rMissing"),
+        ("duplicate", "Multiple drawings unexpectedly share one media target"),
+    ],
+)
+def test_synchronize_rejects_invalid_docx_structure(
+    tmp_path: Path,
+    case: str,
+    expected_error: str,
+) -> None:
+    source_payloads = [_png_payload(seed=index) for index in range(1, 57)]
+    manuscript = _write_manuscript_fixture(tmp_path / "source", source_payloads)
+    input_payloads = [_png_payload(seed=index + 100) for index in range(1, 57)]
+    relationship_ids = [f"rId{index}" for index in range(1, 57)]
+    targets = [f"media/image-{index}.png" for index in range(1, 57)]
+    if case == "count":
+        input_payloads = input_payloads[:-1]
+        relationship_ids = relationship_ids[:-1]
+        targets = targets[:-1]
+    elif case == "relationship":
+        relationship_ids[0] = "rMissing"
+    else:
+        targets[1] = targets[0]
+
+    input_docx = tmp_path / "input.docx"
+    output_docx = tmp_path / "nested/output.docx"
+    _write_docx_fixture(
+        input_docx,
+        input_payloads,
+        drawing_relationship_ids=relationship_ids,
+        relationship_targets=targets,
+        numbered_count=min(25, len(input_payloads)),
+        captions_before_drawings=True,
+    )
+
+    with pytest.raises(ValueError, match=re.escape(expected_error)):
+        sync_ru_docx_visuals.synchronize(input_docx, manuscript, output_docx)
+    assert not output_docx.exists()
+
+
+def test_synchronize_drawing_rejects_a_numbered_figure_without_a_parent(
+    tmp_path: Path,
+) -> None:
+    root = tmp_path / "docx"
+    destination = root / "word/media/image-1.png"
+    destination.parent.mkdir(parents=True)
+    destination.write_bytes(_png_payload(seed=200))
+    source = tmp_path / "source.png"
+    source_payload = _png_payload(seed=1)
+    source.write_bytes(source_payload)
+    body = ET.Element(f"{{{WORD_NS}}}body")
+    drawing_parts = _drawing_paragraph(
+        body,
+        index=1,
+        relationship_id="rId1",
+        description="Old alternative text",
+        extent=(
+            2 * sync_ru_docx_visuals.EMU_PER_INCH,
+            sync_ru_docx_visuals.EMU_PER_INCH,
+        ),
+    )
+    visual: dict[str, object] = {
+        "path": source,
+        "figure_number": 1,
+        "figure_title": "Новое название 1",
+        "alt": "Alt 1",
+    }
+
+    with pytest.raises(ValueError, match="Figure 1 has no document parent"):
+        sync_ru_docx_visuals._synchronize_drawing(
+            root,
+            visual,
+            drawing_parts,
+            {"rId1": "word/media/image-1.png"},
+            {},
+        )
+    assert destination.read_bytes() == source_payload
+
+
+def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Path) -> None:
+    source_payloads = [_png_payload(seed=index) for index in range(1, 57)]
+    manuscript = _write_manuscript_fixture(tmp_path / "source", source_payloads)
+    input_docx = tmp_path / "input.docx"
+    output_docx = tmp_path / "nested/output.docx"
+    _write_docx_fixture(
+        input_docx,
+        [_png_payload(seed=index + 100) for index in range(1, 57)],
+        numbered_count=25,
+        captions_before_drawings=True,
+    )
+
+    metrics = sync_ru_docx_visuals.synchronize(input_docx, manuscript, output_docx)
+
+    assert metrics == {
+        "input_docx": str(input_docx),
+        "manuscript": str(manuscript),
+        "output_docx": str(output_docx),
+        "output_bytes": output_docx.stat().st_size,
+        "output_sha256": hashlib.sha256(output_docx.read_bytes()).hexdigest(),
+        "visuals_synchronized": 56,
+        "numbered_figures_reordered": 25,
+        "media_targets_unique": 56,
+        "max_numbered_figure_height_inches": 1.0,
+    }
+    targets, hashes = ordered_embedded_images(output_docx)
+    assert len(targets) == len(set(targets)) == 56
+    assert hashes == [hashlib.sha256(payload).hexdigest() for payload in source_payloads]
+
+    with ZipFile(output_docx) as archive:
+        assert archive.namelist() == sorted(archive.namelist())
+        document = ET.fromstring(archive.read("word/document.xml"))
+    paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+    first_drawing_index = next(
+        index
+        for index, paragraph in enumerate(paragraphs)
+        if paragraph.find(f".//{{{WORD_NS}}}drawing") is not None
+    )
+    texts = [
+        "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+        for paragraph in paragraphs
+    ]
+    assert texts[first_drawing_index - 1] == "На рисунке 1 представлена схема «Новое название 1»."
+    assert texts[first_drawing_index + 1] == "Рисунок 1. Новое название 1"
+    image_paragraph = paragraphs[first_drawing_index]
+    caption = paragraphs[first_drawing_index + 1]
+    assert image_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert caption.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
+    properties = image_paragraph.find(f".//{{{DRAWING_NS}}}docPr")
+    assert properties is not None
+    assert properties.attrib["title"] == "Иллюстрация к рукописи"
+    assert properties.attrib["descr"] == "Alt 1"
+    extents = image_paragraph.findall(f".//{{{DRAWINGML_NS}}}ext")
+    assert [(node.attrib["cx"], node.attrib["cy"]) for node in extents] == [
+        (
+            str(2 * sync_ru_docx_visuals.EMU_PER_INCH),
+            str(sync_ru_docx_visuals.EMU_PER_INCH),
+        )
+    ]
