@@ -54,10 +54,12 @@ This repository exists to document that full operating model.
 
 ```bash
 uv sync --group docs --group dev
+uv run pre-commit install
 uv run mkdocs serve
 ```
 
 The local site will be available at `http://127.0.0.1:8000/`.
+The `pre-commit install` command is a one-time setup for each checkout.
 
 ## Agent skill
 
@@ -80,9 +82,16 @@ npx skills add agent-axiom/agent-arch --skill safe-agent-architecture --agent co
 ```bash
 uv run ruff check .
 uv run ty check
+uv run pre-commit run --all-files
 uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
+
+Ruff is the enforcement gate for `C901` and `PLR0912` across the repository. The policy hook
+prevents inline targeted or blanket `noqa` suppressions and global configuration from disabling
+those protected selectors. Deliberate `per-file-ignores` remain explicit configuration exemptions.
+Separately, the policy contract tests keep Ruff's default complexity limit of 10 and branch limit
+of 12.
 
 ## Reference package
 
@@ -140,6 +149,7 @@ branches:
 ```bash
 .venv/bin/ruff check .
 .venv/bin/ty check
+.venv/bin/pre-commit run --all-files
 .venv/bin/pytest --cov=agent_runtime_ref --cov-report=term-missing
 .venv/bin/mkdocs build --strict
 git diff --check
