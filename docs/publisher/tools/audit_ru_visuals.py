@@ -10,6 +10,7 @@ import posixpath
 import zipfile
 from io import BytesIO
 from pathlib import Path
+from typing import TypedDict
 from xml.etree import ElementTree as ET
 
 import pdfplumber
@@ -24,6 +25,7 @@ if __package__:
         EMU_PER_INCH,
         NS,
         PACKAGE_REL_NS,
+        VisualRecord,
         paragraph_text,
         parse_manuscript_visuals,
         validate_docx_image_counts,
@@ -33,10 +35,23 @@ else:
         EMU_PER_INCH,
         NS,
         PACKAGE_REL_NS,
+        VisualRecord,
         paragraph_text,
         parse_manuscript_visuals,
         validate_docx_image_counts,
     )
+
+
+class DocxImageRecord(TypedDict):
+    target: str
+    sha256: str
+    descr: str
+    width_inches: float
+    height_inches: float
+    pixel_width: int
+    pixel_height: int
+    has_alpha: bool
+    aspect_error: float
 
 
 def payload_hash(payload: bytes) -> str:
@@ -55,7 +70,7 @@ def content_fill(path: Path) -> tuple[float, float]:
         )
 
 
-def audit_assets(visuals: list[dict[str, object]]) -> list[dict[str, object]]:
+def audit_assets(visuals: list[VisualRecord]) -> list[dict[str, object]]:
     results: list[dict[str, object]] = []
     for index, visual in enumerate(visuals, start=1):
         path = Path(visual["path"])
@@ -88,7 +103,7 @@ def audit_assets(visuals: list[dict[str, object]]) -> list[dict[str, object]]:
 
 def ordered_docx_images(
     path: Path,
-) -> tuple[list[dict[str, object]], list[ET.Element], ET.Element]:
+) -> tuple[list[DocxImageRecord], list[ET.Element], ET.Element]:
     with zipfile.ZipFile(path) as archive:
         document = ET.fromstring(archive.read("word/document.xml"))
         relationships = ET.fromstring(archive.read("word/_rels/document.xml.rels"))
@@ -97,7 +112,7 @@ def ordered_docx_images(
             for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
             if node.attrib.get("Type", "").endswith("/image")
         }
-        results: list[dict[str, object]] = []
+        results: list[DocxImageRecord] = []
         image_paragraphs: list[ET.Element] = []
         for paragraph in document.findall(".//w:p", NS):
             for drawing in paragraph.findall(".//w:drawing", NS):
@@ -131,9 +146,9 @@ def ordered_docx_images(
 
 
 def _validate_docx_media(
-    raw: list[dict[str, object]],
-    template: list[dict[str, object]],
-    visuals: list[dict[str, object]],
+    raw: list[DocxImageRecord],
+    template: list[DocxImageRecord],
+    visuals: list[VisualRecord],
 ) -> None:
     validate_docx_image_counts(len(raw), len(template), len(visuals))
 
@@ -153,7 +168,7 @@ def _validate_docx_media(
 
 
 def _validate_numbered_figure_captions(
-    visuals: list[dict[str, object]],
+    visuals: list[VisualRecord],
     image_paragraphs: list[ET.Element],
     document: ET.Element,
 ) -> int:
@@ -180,7 +195,7 @@ def _validate_numbered_figure_captions(
 def audit_docx(
     raw_docx: Path,
     template_docx: Path,
-    visuals: list[dict[str, object]],
+    visuals: list[VisualRecord],
 ) -> dict[str, object]:
     raw, _, _ = ordered_docx_images(raw_docx)
     template, template_paragraphs, template_document = ordered_docx_images(template_docx)
@@ -282,7 +297,7 @@ def audit_pdf(
     pdf_path: Path,
     render_dir: Path,
     contact_dir: Path,
-    visuals: list[dict[str, object]],
+    visuals: list[VisualRecord],
 ) -> dict[str, object]:
     placements: list[dict[str, object]] = []
     with pdfplumber.open(pdf_path) as pdf:

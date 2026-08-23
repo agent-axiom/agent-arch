@@ -37,12 +37,15 @@ EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13
 EXPECTED_TABLE_COUNT = 11
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
+CONTENT_TYPES_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 WORD_NS = "http://schemas.openxmlformats.org/wordprocessingml/2006/main"
 DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
 DRAWINGML_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 DC_NS = "http://purl.org/dc/elements/1.1/"
 CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+PRESERVED_DOCX_MEMBER = "customXml/preserved.xml"
+PRESERVED_DOCX_PAYLOAD = b"<preserved>fixture-member</preserved>"
 FIXTURE_PNG = base64.b64decode(
     "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII="
 )
@@ -267,6 +270,7 @@ def _write_docx_fixture(
         )
         if not captions_before_drawings and index <= numbered_count and index != missing_caption:
             _text_paragraph(body, f"Рисунок {index}. Название {index}")
+    ET.SubElement(body, f"{{{WORD_NS}}}sectPr")
 
     relationships = ET.Element(f"{{{PACKAGE_REL_NS}}}Relationships")
     media: dict[str, bytes] = {}
@@ -286,9 +290,59 @@ def _write_docx_fixture(
             },
         )
         media.setdefault(f"word/{target}", payload)
+    ET.SubElement(
+        relationships,
+        f"{{{PACKAGE_REL_NS}}}Relationship",
+        {
+            "Id": "rIdPreserved",
+            "Type": f"{OFFICE_REL_NS}/customXml",
+            "Target": "../customXml/preserved.xml",
+        },
+    )
+
+    package_relationships = ET.Element(f"{{{PACKAGE_REL_NS}}}Relationships")
+    ET.SubElement(
+        package_relationships,
+        f"{{{PACKAGE_REL_NS}}}Relationship",
+        {
+            "Id": "rId1",
+            "Type": f"{OFFICE_REL_NS}/officeDocument",
+            "Target": "word/document.xml",
+        },
+    )
+    content_types = ET.Element(f"{{{CONTENT_TYPES_NS}}}Types")
+    for extension, content_type in (
+        ("rels", "application/vnd.openxmlformats-package.relationships+xml"),
+        ("xml", "application/xml"),
+        ("png", "image/png"),
+    ):
+        ET.SubElement(
+            content_types,
+            f"{{{CONTENT_TYPES_NS}}}Default",
+            {"Extension": extension, "ContentType": content_type},
+        )
+    ET.SubElement(
+        content_types,
+        f"{{{CONTENT_TYPES_NS}}}Override",
+        {
+            "PartName": "/word/document.xml",
+            "ContentType": (
+                "application/vnd.openxmlformats-officedocument."
+                "wordprocessingml.document.main+xml"
+            ),
+        },
+    )
 
     path.parent.mkdir(parents=True, exist_ok=True)
     with ZipFile(path, "w") as archive:
+        archive.writestr(
+            "[Content_Types].xml",
+            ET.tostring(content_types, encoding="utf-8", xml_declaration=True),
+        )
+        archive.writestr(
+            "_rels/.rels",
+            ET.tostring(package_relationships, encoding="utf-8", xml_declaration=True),
+        )
         archive.writestr(
             "word/document.xml",
             ET.tostring(document, encoding="utf-8", xml_declaration=True),
@@ -297,6 +351,7 @@ def _write_docx_fixture(
             "word/_rels/document.xml.rels",
             ET.tostring(relationships, encoding="utf-8", xml_declaration=True),
         )
+        archive.writestr(PRESERVED_DOCX_MEMBER, PRESERVED_DOCX_PAYLOAD)
         for target, payload in media.items():
             archive.writestr(target, payload)
 
@@ -1339,7 +1394,8 @@ def test_synchronize_drawing_rejects_a_numbered_figure_without_a_parent(
     root = tmp_path / "docx"
     destination = root / "word/media/image-1.png"
     destination.parent.mkdir(parents=True)
-    destination.write_bytes(_png_payload(seed=200))
+    original_payload = _png_payload(seed=200)
+    destination.write_bytes(original_payload)
     source = tmp_path / "source.png"
     source_payload = _png_payload(seed=1)
     source.write_bytes(source_payload)
@@ -1354,8 +1410,10 @@ def test_synchronize_drawing_rejects_a_numbered_figure_without_a_parent(
             sync_ru_docx_visuals.EMU_PER_INCH,
         ),
     )
-    visual: dict[str, object] = {
+    original_drawing_xml = ET.tostring(drawing_parts[1])
+    visual: sync_ru_docx_visuals.VisualRecord = {
         "path": source,
+        "relative_path": "visuals/source.png",
         "figure_number": 1,
         "figure_title": "Новое название 1",
         "alt": "Alt 1",
@@ -1369,7 +1427,8 @@ def test_synchronize_drawing_rejects_a_numbered_figure_without_a_parent(
             {"rId1": "word/media/image-1.png"},
             {},
         )
-    assert destination.read_bytes() == source_payload
+    assert destination.read_bytes() == original_payload
+    assert ET.tostring(drawing_parts[1]) == original_drawing_xml
 
 
 def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Path) -> None:
@@ -1386,6 +1445,16 @@ def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Pa
 
     metrics = sync_ru_docx_visuals.synchronize(input_docx, manuscript, output_docx)
 
+    subprocess.run(
+        [
+            str(document_runtime_python()),
+            "-c",
+            "import sys; from docx import Document; Document(sys.argv[1])",
+            str(output_docx),
+        ],
+        cwd=ROOT,
+        check=True,
+    )
     assert metrics == {
         "input_docx": str(input_docx),
         "manuscript": str(manuscript),
@@ -1403,6 +1472,7 @@ def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Pa
 
     with ZipFile(output_docx) as archive:
         assert archive.namelist() == sorted(archive.namelist())
+        assert archive.read(PRESERVED_DOCX_MEMBER) == PRESERVED_DOCX_PAYLOAD
         document = ET.fromstring(archive.read("word/document.xml"))
     paragraphs = document.findall(f".//{{{WORD_NS}}}p")
     first_drawing_index = next(

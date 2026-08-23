@@ -13,6 +13,7 @@ import struct
 import zipfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import TypedDict
 from xml.etree import ElementTree as ET
 
 NS = {
@@ -24,6 +25,17 @@ NS = {
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 EMU_PER_INCH = 914_400
 MAX_FIGURE_HEIGHT = int(5.6 * EMU_PER_INCH)
+
+
+class VisualRecord(TypedDict):
+    alt: str
+    relative_path: str
+    path: Path
+    figure_number: int | None
+    figure_title: str | None
+
+
+type DrawingParts = tuple[ET.Element, ET.Element, ET.Element]
 
 for prefix, uri in NS.items():
     ET.register_namespace(prefix, uri)
@@ -56,9 +68,9 @@ def validate_docx_image_counts(
         )
 
 
-def parse_manuscript_visuals(manuscript: Path) -> list[dict[str, object]]:
+def parse_manuscript_visuals(manuscript: Path) -> list[VisualRecord]:
     lines = manuscript.read_text(encoding="utf-8").splitlines()
-    visuals: list[dict[str, object]] = []
+    visuals: list[VisualRecord] = []
     image_pattern = re.compile(r"^!\[(.*)\]\((visuals/[^)]+)\)$")
     caption_pattern = re.compile(r"^Рисунок (\d+)\. (.+)$")
 
@@ -195,8 +207,8 @@ def _image_relationship_targets(relationships: ET.Element) -> dict[str, str]:
 
 def _ordered_drawings(
     document: ET.Element,
-) -> list[tuple[ET.Element, ET.Element, ET.Element]]:
-    drawings: list[tuple[ET.Element, ET.Element, ET.Element]] = []
+) -> list[DrawingParts]:
+    drawings: list[DrawingParts] = []
     for paragraph in document.findall(".//w:p", NS):
         for drawing in paragraph.findall(".//w:drawing", NS):
             blip = drawing.find(".//a:blip", NS)
@@ -207,8 +219,8 @@ def _ordered_drawings(
 
 def _synchronize_drawing(
     root: Path,
-    visual: dict[str, object],
-    drawing_parts: tuple[ET.Element, ET.Element, ET.Element],
+    visual: VisualRecord,
+    drawing_parts: DrawingParts,
     targets: dict[str, str],
     parent_by_child: dict[ET.Element, ET.Element],
 ) -> tuple[str, int | None]:
@@ -217,6 +229,28 @@ def _synchronize_drawing(
     target = targets.get(relationship_id)
     if target is None:
         raise ValueError(f"Image relationship is missing: {relationship_id}")
+    number = visual["figure_number"]
+    caption_context: tuple[ET.Element, ET.Element, ET.Element, int] | None = None
+    if number:
+        parent = parent_by_child.get(paragraph)
+        if parent is None:
+            raise ValueError(f"Figure {number} has no document parent")
+        caption = find_nearby_paragraph(
+            parent,
+            paragraph,
+            re.compile(rf"^Рисунок {number}\."),
+        )
+        reference = find_preceding_paragraph(
+            parent,
+            caption,
+            re.compile(rf"^На рисунке {number} представлена схема"),
+        )
+        children = list(parent)
+        image_index = children.index(paragraph)
+        caption_index = children.index(caption)
+        insert_index = image_index if caption_index < image_index else image_index + 1
+        caption_context = parent, caption, reference, insert_index
+
     destination = root / target
     source = Path(visual["path"])
     destination.write_bytes(source.read_bytes())
@@ -226,22 +260,9 @@ def _synchronize_drawing(
         properties.set("title", "Иллюстрация к рукописи")
         properties.set("descr", str(visual["alt"])[:1000])
 
-    number = visual["figure_number"]
-    if not number:
+    if caption_context is None:
         return target, None
-    parent = parent_by_child.get(paragraph)
-    if parent is None:
-        raise ValueError(f"Figure {number} has no document parent")
-    caption = find_nearby_paragraph(
-        parent,
-        paragraph,
-        re.compile(rf"^Рисунок {number}\."),
-    )
-    reference = find_preceding_paragraph(
-        parent,
-        caption,
-        re.compile(rf"^На рисунке {number} представлена схема"),
-    )
+    parent, caption, reference, insert_index = caption_context
     title = str(visual["figure_title"])
     set_paragraph_text(caption, f"Рисунок {number}. {title}")
     set_paragraph_text(
@@ -251,8 +272,7 @@ def _synchronize_drawing(
     set_paragraph_flag(paragraph, "keepNext")
     set_paragraph_flag(caption, "keepLines")
     parent.remove(caption)
-    image_index = list(parent).index(paragraph)
-    parent.insert(image_index + 1, caption)
+    parent.insert(insert_index, caption)
     return target, height
 
 
