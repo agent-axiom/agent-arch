@@ -5,6 +5,7 @@ import os
 import posixpath
 import re
 import subprocess
+import sys
 from pathlib import Path
 from xml.etree import ElementTree as ET
 from zipfile import ZipFile
@@ -41,19 +42,26 @@ DC_NS = "http://purl.org/dc/elements/1.1/"
 CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
 
 
+def document_runtime_python() -> Path:
+    override = os.environ.get("CODEX_DOCUMENT_PYTHON")
+    if override is None:
+        runtime_python = Path(sys.executable)
+        source = "sys.executable"
+    else:
+        runtime_python = Path(override)
+        source = "CODEX_DOCUMENT_PYTHON"
+    if not runtime_python.is_file() or not os.access(runtime_python, os.X_OK):
+        raise RuntimeError(
+            f"{source} must point to an existing executable: {runtime_python}"
+        )
+    return runtime_python
+
+
 def render_editorial_fixture(
     tmp_path: Path,
     source: str,
 ) -> tuple[ET.Element, dict[str, int]]:
-    runtime_python = Path(
-        os.environ.get(
-            "CODEX_DOCUMENT_PYTHON",
-            Path.home()
-            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        )
-    )
-    if not runtime_python.is_file():
-        pytest.skip("bundled document runtime is unavailable")
+    runtime_python = document_runtime_python()
 
     source_path = tmp_path / "fixture.html"
     output = tmp_path / "fixture.docx"
@@ -113,6 +121,33 @@ def paragraph_text(paragraph: ET.Element) -> str:
     )
 
 
+def test_document_runtime_python_defaults_to_current_interpreter(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.delenv("CODEX_DOCUMENT_PYTHON", raising=False)
+
+    assert document_runtime_python() == Path(sys.executable)
+
+
+def test_document_runtime_python_validates_explicit_override(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    monkeypatch.setenv("CODEX_DOCUMENT_PYTHON", sys.executable)
+    assert document_runtime_python() == Path(sys.executable)
+
+    missing_python = tmp_path / "missing-python"
+    monkeypatch.setenv("CODEX_DOCUMENT_PYTHON", str(missing_python))
+    with pytest.raises(
+        RuntimeError,
+        match=re.escape(
+            "CODEX_DOCUMENT_PYTHON must point to an existing executable: "
+            f"{missing_python}"
+        ),
+    ):
+        document_runtime_python()
+
+
 def test_visual_audit_accepts_every_current_manuscript_image() -> None:
     assert len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT)) == 56
 
@@ -143,15 +178,7 @@ def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
 def test_editorial_renderer_adds_resolvable_internal_bookmarks_and_links(
     tmp_path: Path,
 ) -> None:
-    runtime_python = Path(
-        os.environ.get(
-            "CODEX_DOCUMENT_PYTHON",
-            Path.home()
-            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        )
-    )
-    if not runtime_python.is_file():
-        pytest.skip("bundled document runtime is unavailable")
+    runtime_python = document_runtime_python()
 
     output = tmp_path / "internal-links.docx"
     script = r'''
@@ -217,15 +244,7 @@ document.save(sys.argv[2])
 def test_editorial_renderer_formats_sources_as_breakable_hanging_paragraphs(
     tmp_path: Path,
 ) -> None:
-    runtime_python = Path(
-        os.environ.get(
-            "CODEX_DOCUMENT_PYTHON",
-            Path.home()
-            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
-        )
-    )
-    if not runtime_python.is_file():
-        pytest.skip("bundled document runtime is unavailable")
+    runtime_python = document_runtime_python()
 
     output = tmp_path / "source-paragraph.docx"
     script = r'''
