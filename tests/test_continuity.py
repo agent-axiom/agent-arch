@@ -62,6 +62,59 @@ def _state(**overrides: object) -> ContinuityState:
     return ContinuityState(**values)  # type: ignore[arg-type]
 
 
+@pytest.mark.parametrize(
+    ("overrides", "message"),
+    [
+        (
+            {
+                "schema_version": "continuity-envelope/v0",
+                "delegated_principal_id": "",
+                "delegated_scope": "",
+                "summary_sha256": "md5:invalid",
+                "requires_reauthorization": False,
+            },
+            "Continuity schema version is not supported: continuity-envelope/v0",
+        ),
+        (
+            {
+                "delegated_principal_id": "",
+                "delegated_scope": "",
+                "summary_sha256": "md5:invalid",
+                "requires_reauthorization": False,
+            },
+            "Continuity field is required: delegated_principal_id",
+        ),
+        (
+            {
+                "delegated_scope": "",
+                "summary_sha256": "md5:invalid",
+                "requires_reauthorization": False,
+            },
+            "Continuity field is required: delegated_scope",
+        ),
+        (
+            {
+                "summary_sha256": "md5:invalid",
+                "requires_reauthorization": False,
+            },
+            "Continuity summary digest must use sha256",
+        ),
+        (
+            {"requires_reauthorization": False},
+            "Continuity envelope must require reauthorization",
+        ),
+    ],
+)
+def test_envelope_validation_preserves_error_message_and_precedence(
+    overrides: dict[str, object],
+    message: str,
+) -> None:
+    with pytest.raises(ValueError) as error:
+        _envelope(**overrides)
+
+    assert str(error.value) == message
+
+
 def test_valid_rehydration_still_requires_a_new_authorization_decision() -> None:
     decision = validate_rehydration(
         _envelope(),

@@ -44,6 +44,15 @@ def summary_sha256(summary: str) -> str:
     return f"sha256:{digest}"
 
 
+def _validate_delegated_fields(mode: str, principal_id: str, scope: str) -> None:
+    if mode != "user_delegated":
+        return
+    if not principal_id:
+        raise ValueError("Continuity field is required: delegated_principal_id")
+    if not scope:
+        raise ValueError("Continuity field is required: delegated_scope")
+
+
 @dataclass(frozen=True, slots=True)
 class ContinuityEnvelope:
     schema_version: str
@@ -111,11 +120,11 @@ class ContinuityEnvelope:
             raise ValueError(
                 f"Continuity authorization mode is not supported: {self.authorization_mode}"
             )
-        if self.authorization_mode == "user_delegated":
-            if not self.delegated_principal_id:
-                raise ValueError("Continuity field is required: delegated_principal_id")
-            if not self.delegated_scope:
-                raise ValueError("Continuity field is required: delegated_scope")
+        _validate_delegated_fields(
+            self.authorization_mode,
+            self.delegated_principal_id,
+            self.delegated_scope,
+        )
         _parse_timestamp(self.approval_expires_at, field="approval_expires_at")
         if not self.summary_sha256.startswith("sha256:"):
             raise ValueError("Continuity summary digest must use sha256")
@@ -199,6 +208,15 @@ def _decision(status: str, reason: str) -> ContinuityDecision:
     )
 
 
+def _normalize_rehydration_time(now: datetime | None) -> datetime:
+    current = datetime.now(UTC) if now is None else now
+    if not isinstance(current, datetime):
+        raise TypeError("Continuity validation time must be a datetime")
+    if current.tzinfo is None:
+        raise ValueError("Continuity validation time must include a timezone")
+    return current.astimezone(UTC)
+
+
 def validate_rehydration(
     envelope: ContinuityEnvelope,
     current: ContinuityState,
@@ -211,13 +229,7 @@ def validate_rehydration(
         raise TypeError("Continuity envelope must be ContinuityEnvelope")
     if not isinstance(current, ContinuityState):
         raise TypeError("Continuity state must be ContinuityState")
-    if now is None:
-        now = datetime.now(UTC)
-    if not isinstance(now, datetime):
-        raise TypeError("Continuity validation time must be a datetime")
-    if now.tzinfo is None:
-        raise ValueError("Continuity validation time must include a timezone")
-    now = now.astimezone(UTC)
+    now = _normalize_rehydration_time(now)
 
     if summary_sha256(summary) != envelope.summary_sha256:
         return _decision("continuity_validation_failed", "summary_digest_mismatch")
