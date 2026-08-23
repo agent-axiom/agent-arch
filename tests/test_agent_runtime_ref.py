@@ -4939,6 +4939,7 @@ class TestRuntimeCore:
         from agent_runtime_ref.approvals import ApprovalQueue
         from agent_runtime_ref.background import BackgroundWorker
         from agent_runtime_ref.catalog import CapabilityCatalog
+        from agent_runtime_ref.idempotency import IdempotencyStore
         from agent_runtime_ref.identity import AgentIdentity
         from agent_runtime_ref.session import SessionStore
         from agent_runtime_ref.telemetry import TelemetryEmitter
@@ -4974,26 +4975,56 @@ class TestRuntimeCore:
             with pytest.raises(TypeError, match=message):
                 AgentRuntime(**cast(dict[str, Any], {dependency: value}))
 
-        runtime = AgentRuntime(
-            catalog=CapabilityCatalog(),
-            policy=PolicyEngine(),
-            telemetry=TelemetryEmitter(),
-            memory=MemoryStore(),
-            approvals=ApprovalQueue(),
-            sessions=SessionStore(),
-            agent=AgentIdentity(
-                agent_id="agent-runtime-ref",
-                display_name="Reference Runtime",
-                owner_team="agent_platform",
-                runtime_principal="svc-agent-runtime-ref",
-            ),
-            background=BackgroundWorker(
-                memory_store=MemoryStore(),
-                policy=PolicyEngine(),
-                telemetry=TelemetryEmitter(),
-            ),
+        catalog = CapabilityCatalog()
+        policy = PolicyEngine()
+        telemetry = TelemetryEmitter()
+        memory = MemoryStore()
+        approvals = ApprovalQueue()
+        sessions = SessionStore()
+        idempotency = IdempotencyStore()
+        sandbox_profile: dict[str, object] = {}
+        agent = AgentIdentity(
+            agent_id="agent-runtime-ref",
+            display_name="Reference Runtime",
+            owner_team="agent_platform",
+            runtime_principal="svc-agent-runtime-ref",
         )
-        assert isinstance(runtime.catalog, CapabilityCatalog)
+        runtime = AgentRuntime(
+            catalog=catalog,
+            policy=policy,
+            telemetry=telemetry,
+            memory=memory,
+            approvals=approvals,
+            sessions=sessions,
+            idempotency=idempotency,
+            sandbox_profile=sandbox_profile,
+            agent=agent,
+        )
+        assert runtime.catalog is catalog
+        assert runtime.policy is policy
+        assert runtime.telemetry is telemetry
+        assert runtime.memory is memory
+        assert runtime.approvals is approvals
+        assert runtime.sessions is sessions
+        assert runtime.idempotency is idempotency
+        assert runtime.sandbox_profile is sandbox_profile
+        assert runtime.agent is agent
+        assert runtime.background.memory_store is memory
+        assert runtime.background.policy is policy
+        assert runtime.background.telemetry is telemetry
+
+        custom_background = BackgroundWorker(
+            memory_store=memory,
+            policy=policy,
+            telemetry=telemetry,
+        )
+        runtime_with_custom_background = AgentRuntime(
+            memory=memory,
+            policy=policy,
+            telemetry=telemetry,
+            background=custom_background,
+        )
+        assert runtime_with_custom_background.background is custom_background
 
     def test_background_worker_rejects_malformed_direct_process_inputs(self) -> None:
         from agent_runtime_ref.background import BackgroundWorker
