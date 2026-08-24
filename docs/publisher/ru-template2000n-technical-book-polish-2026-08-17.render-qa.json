@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-template2000n-technical-book-polish-2026-08-17-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0009442412537587259,
+      "page": 190
+    },
+    {
+      "density": 0.0013241280437751787,
+      "page": 246
+    },
+    {
+      "density": 0.0016241575578432492,
+      "page": 45
+    },
+    {
+      "density": 0.0035856180272317768,
+      "page": 235
+    },
+    {
+      "density": 0.004075164856943632,
+      "page": 24
+    },
+    {
+      "density": 0.0055751414890545655,
+      "page": 2
+    },
+    {
+      "density": 0.0056951502557799375,
+      "page": 204
+    },
+    {
+      "density": 0.00781473238600886,
+      "page": 226
+    },
+    {
+      "density": 0.007826256155089951,
+      "page": 91
+    },
+    {
+      "density": 0.00855275502600496,
+      "page": 61
+    }
+  ],
+  "pages": 345,
+  "render_dir": "/private/tmp/agent-arch-ru-template2000n-technical-book-polish-2026-08-17-render"
+}

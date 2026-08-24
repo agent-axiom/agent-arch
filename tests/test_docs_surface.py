@@ -30,6 +30,95 @@ def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+@pytest.mark.parametrize(
+    ("filename", "heading", "column_marker", "chapter_23_marker"),
+    (
+        (
+            "index.md",
+            "## Chapter map",
+            "Практика и справочник",
+            "Несоответствие целей и внутренний риск",
+        ),
+        (
+            "index.en.md",
+            "## Chapter map",
+            "Practice and reference",
+            "Goal misalignment and insider risk",
+        ),
+        ("index.zh.md", "## 章节地图", "实践与参考", "目标错位与内部风险"),
+    ),
+)
+def test_online_companion_maps_every_print_chapter_to_stable_routes(
+    filename: str,
+    heading: str,
+    column_marker: str,
+    chapter_23_marker: str,
+) -> None:
+    path = ROOT / "docs/companion" / filename
+    text = path.read_text(encoding="utf-8")
+    section = text[text.index(heading) :]
+    assert section.splitlines()[0].endswith("{#chapter-map}")
+
+    rows = re.findall(r"(?m)^\| (\d{1,2}) \| (.*?) \| (.*?) \|$", section)
+    chapter_numbers = [int(number) for number, _online, _practice in rows]
+    assert chapter_numbers == list(range(1, 29))
+    assert column_marker in section
+    assert chapter_23_marker in section
+    assert "part-viii/chapter-24" in section
+    assert "part-viii/chapter-25" in section
+    assert "capability-contract-support-ticket.md" in section
+
+    relative_targets = re.findall(r"\]\((?!https?://)([^)#]+)(?:#[^)]+)?\)", section)
+    assert relative_targets
+    missing = [
+        target
+        for target in relative_targets
+        if not (path.parent / target).resolve().is_file()
+    ]
+    assert not missing
+
+    if filename != "index.md":
+        assert not re.search(r"[А-Яа-яЁё]", section)
+
+    expected_online_routes = (
+        ("../book/part-i/chapter-1.md",),
+        ("../book/part-i/chapter-2.md", "../book/part-i/practical-manager-handoffs.md"),
+        ("../book/part-i/chapter-2.md",),
+        ("../book/part-ii/chapter-3.md",),
+        ("../book/part-vii/chapter-17.md",),
+        ("../book/part-ii/chapter-4.md",),
+        ("../book/part-iii/chapter-5.md",),
+        ("../book/part-iii/chapter-6.md",),
+        ("../book/part-iii/chapter-7.md",),
+        ("../book/part-iv/chapter-8.md",),
+        ("../book/part-iv/chapter-9.md", "../book/part-iv/practical-mcp-a2a.md"),
+        ("../book/part-iv/chapter-10.md",),
+        ("../book/part-v/chapter-11.md",),
+        ("../book/part-v/chapter-12.md",),
+        ("../book/part-v/chapter-13.md",),
+        ("../book/part-v/evidence-spine.md",),
+        ("../book/part-vi/chapter-14.md",),
+        ("../book/part-vi/chapter-15.md",),
+        ("../book/part-viii/chapter-27.md",),
+        ("../book/part-viii/chapter-19.md", "../book/part-viii/chapter-20.md"),
+        ("../book/part-viii/chapter-22.md",),
+        ("../book/part-viii/chapter-26.md",),
+        ("../book/part-viii/chapter-24.md", "../book/part-viii/chapter-25.md"),
+        ("../book/part-viii/chapter-21.md",),
+        ("../book/part-viii/chapter-23.md",),
+        ("../book/part-vii/chapter-16.md",),
+        ("../book/part-vii/chapter-17.md",),
+        ("../book/part-vii/chapter-18.md",),
+    )
+    actual_online_routes = []
+    for _number, online_cell, _practice_cell in rows:
+        targets = re.findall(r"\]\(([^)]+)\)", online_cell)
+        actual_online_routes.append(
+            tuple(re.sub(r"\.(?:en|zh)\.md$", ".md", target) for target in targets)
+        )
+    assert tuple(actual_online_routes) == expected_online_routes
+
+
 def test_zh_case_spine_notes_use_localized_primary_labels() -> None:
     raw_case_spine_lead = re.compile(
         r'(?m)^(?:!!! note\s+")?(?:\*\*)?'
@@ -19959,6 +20048,98 @@ def test_agentrx_trace_level_diagnosis_is_documented() -> None:
             "microsoft/AgentRx",
         ),
     )
+
+
+@pytest.mark.parametrize(
+    ("path", "heading", "semantic_markers", "companion_link"),
+    (
+        (
+            "docs/book/part-vii/chapter-17.md",
+            "### 7.2. Политика должна оценивать не только действие, но и траекторию",
+            (
+                "накопленный бюджет",
+                "предшествующие шаги",
+                "состояние подтверждения",
+                "вне контекста модели",
+                "Ограничения частоты",
+            ),
+            "../../companion/examples/trajectory-policy-scenarios.md",
+        ),
+        (
+            "docs/book/part-vii/chapter-17.en.md",
+            "### 7.2. Policy must evaluate the trajectory, not only the action",
+            (
+                "cumulative budget",
+                "predecessor steps",
+                "approval state",
+                "outside the model context",
+                "Rate limits",
+            ),
+            "../../companion/examples/trajectory-policy-scenarios.en.md",
+        ),
+        (
+            "docs/book/part-vii/chapter-17.zh.md",
+            "### 7.2. 策略不仅要评估单个动作，还要评估整条轨迹",
+            ("累计预算", "前置步骤", "审批状态", "模型上下文", "速率限制"),
+            "../../companion/examples/trajectory-policy-scenarios.zh.md",
+        ),
+    ),
+    ids=("ru", "en", "zh"),
+)
+def test_trajectory_level_policy_controls_are_localized(
+    path: str,
+    heading: str,
+    semantic_markers: tuple[str, ...],
+    companion_link: str,
+) -> None:
+    text = _read(path)
+
+    heading_pattern = re.compile(rf"^{re.escape(heading)}$", re.MULTILINE)
+    heading_matches = list(heading_pattern.finditer(text))
+    assert len(heading_matches) == 1, path
+
+    section = re.split(
+        r"^#{2,3}[ \t]+",
+        text[heading_matches[0].end() :],
+        maxsplit=1,
+        flags=re.MULTILINE,
+    )[0]
+    assert section.count("`trajectory_policy_decision`") == 1, path
+    for marker in semantic_markers:
+        assert marker in section, (path, marker)
+    assert companion_link in section, path
+    assert "`CAS`" in section, path
+    assert "`AgentRuntime`" in section, path
+
+
+def test_trajectory_policy_uses_one_named_primary_source_per_locale() -> None:
+    source_url = (
+        "https://aws.amazon.com/blogs/machine-learning/"
+        "control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-"
+        "in-amazon-bedrock-agentcore/"
+    )
+    chapter_paths = (
+        "docs/book/part-vii/chapter-17.md",
+        "docs/book/part-vii/chapter-17.en.md",
+        "docs/book/part-vii/chapter-17.zh.md",
+    )
+    source_paths = (
+        "docs/appendix/sources.md",
+        "docs/appendix/sources.en.md",
+        "docs/appendix/sources.zh.md",
+    )
+
+    for path in chapter_paths:
+        text = _read(path)
+        assert text.count("[^aws-agentcore-trajectory-policy]") == 2, path
+        assert text.count(source_url) == 1, path
+
+    for path in source_paths:
+        assert _read(path).count(source_url) == 1, path
+
+    source_map = _read("docs/publisher/ru-source-map.md")
+    assert source_map.count(source_url) == 1
+    assert "docs/companion/examples/run_trajectory_policy_scenarios.py" in source_map
 
 
 def test_production_agent_runtime_contract_is_documented() -> None:

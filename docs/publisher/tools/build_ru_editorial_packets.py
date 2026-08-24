@@ -7,8 +7,8 @@ import argparse
 import re
 from pathlib import Path
 
-PUBLICATION_DATE = "2026-08-03"
-HUMAN_REVIEW_DATE = "2026-08-14"
+PUBLICATION_DATE = "2026-08-17"
+HUMAN_REVIEW_DATE = "2026-08-17"
 
 INDEX_ENTRIES = (
     (
@@ -523,10 +523,10 @@ def build_human_review_packet() -> str:
 - каноническая рукопись:
   `docs/publisher/ru-manuscript-editorial-2026-07-13.md`;
 - Google-ориентированная издательская пара:
-  `docs/publisher/artifacts/agent-arch-ru-google-doc-publication-readiness-2026-08-14.docx`
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-17.docx`
   и одноименный PDF;
 - издательская пара `Template2000n`:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-publication-readiness-2026-08-14.docx`
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx`
   и одноименный PDF;
 - репозиторий с примерами, схемами, тестами и воспроизводимыми сборщиками;
 - читательская точка входа:

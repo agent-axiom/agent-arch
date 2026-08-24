@@ -1,0 +1,62 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-book-standards-final6-contact.png",
+  "edge_touch_pages": [],
+  "lowest_density_pages": [
+    {
+      "density": 0.004960529919653841,
+      "page": 374
+    },
+    {
+      "density": 0.006457398008407552,
+      "page": 434
+    },
+    {
+      "density": 0.006541894674523292,
+      "page": 413
+    },
+    {
+      "density": 0.006776400399732085,
+      "page": 250
+    },
+    {
+      "density": 0.007106127582191311,
+      "page": 439
+    },
+    {
+      "density": 0.007635207992636032,
+      "page": 68
+    },
+    {
+      "density": 0.00952559361244102,
+      "page": 433
+    },
+    {
+      "density": 0.009577429680855665,
+      "page": 119
+    },
+    {
+      "density": 0.009700341865062957,
+      "page": 315
+    },
+    {
+      "density": 0.009905380371938036,
+      "page": 525
+    }
+  ],
+  "minimum_ink_margins_pixels": {
+    "bottom": 184,
+    "left": 179,
+    "right": 179,
+    "top": 182
+  },
+  "page_sizes": [
+    {
+      "count": 539,
+      "height": 2002,
+      "width": 1547
+    }
+  ],
+  "pages": 539,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-book-standards-2026-08-24-render-final6"
+}

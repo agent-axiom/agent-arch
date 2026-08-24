@@ -1,0 +1,48 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-google-doc-technical-book-polish-2026-08-17-contact.png",
+  "lowest_density_pages": [
+    {
+      "density": 0.0014434948424833973,
+      "page": 256
+    },
+    {
+      "density": 0.0016371691226248434,
+      "page": 264
+    },
+    {
+      "density": 0.002258685330285011,
+      "page": 121
+    },
+    {
+      "density": 0.004365355926251778,
+      "page": 135
+    },
+    {
+      "density": 0.0051928210451348215,
+      "page": 316
+    },
+    {
+      "density": 0.009314050589384252,
+      "page": 353
+    },
+    {
+      "density": 0.012032297651522717,
+      "page": 212
+    },
+    {
+      "density": 0.012301869771735545,
+      "page": 248
+    },
+    {
+      "density": 0.016434492665528065,
+      "page": 167
+    },
+    {
+      "density": 0.01657864930612944,
+      "page": 126
+    }
+  ],
+  "pages": 466,
+  "render_dir": "/private/tmp/agent-arch-ru-google-doc-technical-book-polish-2026-08-17-render"
+}

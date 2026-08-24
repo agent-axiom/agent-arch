@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "input": "docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx",
+  "template_body_style": {
+    "style": "Normal",
+    "font": "Times New Roman",
+    "size_points": 10.0
+  },
+  "template_program_style": {
+    "style": "Программа",
+    "font": "Courier New",
+    "size_points": 9.0
+  },
+  "embedded_font_registrations": [
+    "Noto Sans Symbols Regular",
+    "Noto Sans Symbols Bold",
+    "Roboto Mono Regular",
+    "Roboto Mono Bold",
+    "Roboto Mono Italic",
+    "Roboto Mono BoldItalic"
+  ],
+  "embedded_font_files": 6,
+  "registrations_and_targets_valid": true,
+  "passed": true
+}

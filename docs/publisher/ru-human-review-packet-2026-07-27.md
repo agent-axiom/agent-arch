@@ -1,6 +1,6 @@
 # Пакет человеческой проверки русской рукописи
 
-Дата подготовки: 2026-08-14.
+Дата подготовки: 2026-08-17.
 
 **Статус человеческой проверки: не выполнена.**
 
@@ -14,10 +14,10 @@
 - каноническая рукопись:
   `docs/publisher/ru-manuscript-editorial-2026-07-13.md`;
 - Google-ориентированная издательская пара:
-  `docs/publisher/artifacts/agent-arch-ru-google-doc-publication-readiness-2026-08-14.docx`
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-17.docx`
   и одноименный PDF;
 - издательская пара `Template2000n`:
-  `docs/publisher/artifacts/agent-arch-ru-template2000n-publication-readiness-2026-08-14.docx`
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx`
   и одноименный PDF;
 - репозиторий с примерами, схемами, тестами и воспроизводимыми сборщиками;
 - читательская точка входа:
