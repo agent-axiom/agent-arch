@@ -1,0 +1,62 @@
+{
+  "blank_like_pages": [],
+  "contact_sheet": "/private/tmp/agent-arch-ru-template2000n-book-standards-final6-contact.png",
+  "edge_touch_pages": [],
+  "lowest_density_pages": [
+    {
+      "density": 0.0016340124633215625,
+      "page": 121
+    },
+    {
+      "density": 0.003494513015787589,
+      "page": 216
+    },
+    {
+      "density": 0.004952618645154483,
+      "page": 138
+    },
+    {
+      "density": 0.0061778810818698265,
+      "page": 150
+    },
+    {
+      "density": 0.006263280555078722,
+      "page": 190
+    },
+    {
+      "density": 0.0062885426929687165,
+      "page": 267
+    },
+    {
+      "density": 0.008173731790599352,
+      "page": 175
+    },
+    {
+      "density": 0.008632127343865434,
+      "page": 92
+    },
+    {
+      "density": 0.00874527199102278,
+      "page": 48
+    },
+    {
+      "density": 0.01107145006532816,
+      "page": 210
+    }
+  ],
+  "minimum_ink_margins_pixels": {
+    "bottom": 184,
+    "left": 182,
+    "right": 160,
+    "top": 182
+  },
+  "page_sizes": [
+    {
+      "count": 380,
+      "height": 2002,
+      "width": 1547
+    }
+  ],
+  "pages": 380,
+  "render_dir": "/private/tmp/agent-arch-ru-template2000n-book-standards-2026-08-24-render-final6"
+}

@@ -1,5 +1,6 @@
 import ast
 import hashlib
+import json
 import os
 import posixpath
 import re
@@ -10,7 +11,7 @@ from zipfile import ZipFile
 
 import pytest
 
-from docs.publisher.tools import sync_ru_docx_visuals
+from docs.publisher.tools import normalize_docx_figure_caption_order, sync_ru_docx_visuals
 
 ROOT = Path(__file__).resolve().parents[1]
 EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
@@ -21,6 +22,31 @@ EDITORIAL_TEMPLATE_DOCX = ROOT / (
     "docs/publisher/artifacts/agent-arch-ru-template2000n-publication-readiness-2026-08-14.docx"
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
+CURRENT_RAW_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-google-doc-book-standards-2026-08-23.docx"
+)
+CURRENT_TEMPLATE_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-template2000n-book-standards-2026-08-23.docx"
+)
+RAW_A11Y = ROOT / "docs/publisher/ru-google-doc-book-standards-2026-08-23.a11y.json"
+RAW_RENDER_QA = ROOT / "docs/publisher/ru-google-doc-book-standards-2026-08-23.render-qa.json"
+TEMPLATE_A11Y = ROOT / "docs/publisher/ru-template2000n-book-standards-2026-08-23.a11y.json"
+TEMPLATE_FONT_AUDIT = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.font-audit.json"
+)
+TEMPLATE_METRICS = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.metrics.json"
+)
+TEMPLATE_RENDER_QA = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.render-qa.json"
+)
+TEMPLATE_VISUAL_AUDIT = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.visual-audit.json"
+)
+VISUAL_LAYOUT_AUDIT = ROOT / "docs/publisher/ru-visual-layout-audit-2026-08-24.json"
+INLINE_DIAGRAMS = ROOT / "docs/publisher/ru-inline-diagrams-2026-07-13.json"
+NUMBERED_DIAGRAMS = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
+DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
 EXPECTED_TABLE_COUNT = 12
 EXPECTED_IMAGE_COUNT = 57
 
@@ -33,11 +59,113 @@ DC_NS = "http://purl.org/dc/elements/1.1/"
 CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
 
 
+def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
+    styled_characters = 0
+    monospace_characters = 0
+    monospace_run_seen = False
+    for run in paragraph.findall(f"{{{WORD_NS}}}r"):
+        run_text = "".join(
+            node.text or "" for node in run.findall(f".//{{{WORD_NS}}}t")
+        )
+        fonts = run.find(f"{{{WORD_NS}}}rPr/{{{WORD_NS}}}rFonts")
+        if fonts is None:
+            continue
+        is_monospace = any(
+            "mono" in value.lower() or "courier" in value.lower()
+            for value in fonts.attrib.values()
+        )
+        monospace_run_seen = monospace_run_seen or is_monospace
+        if not run_text.strip():
+            continue
+        styled_characters += len(run_text)
+        if is_monospace:
+            monospace_characters += len(run_text)
+    if styled_characters == 0:
+        return monospace_run_seen
+    return monospace_characters / styled_characters >= 0.8
+
+
+def active_on_off_property(paragraph: ET.Element, name: str) -> bool:
+    property_node = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}{name}")
+    return property_node is not None and property_node.attrib.get(
+        f"{{{WORD_NS}}}val", "1"
+    ) not in {"0", "false", "off"}
+
+
 def test_visual_audit_accepts_every_current_manuscript_image() -> None:
     assert (
         len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT))
         == EXPECTED_IMAGE_COUNT
     )
+
+
+def test_mermaid_visuals_reserve_space_below_cluster_titles() -> None:
+    report = json.loads(VISUAL_LAYOUT_AUDIT.read_text(encoding="utf-8"))
+
+    assert report["rendered"] == 56
+    assert report["violations"] == []
+    assert report["minimum_effective_font_pt"] >= 8.5
+    assert report["cluster_title_violations"] == []
+    assert report["cluster_title_edge_violations"] == []
+    assert report["node_label_violations"] == []
+    assert report["minimum_cluster_title_gap_px"] >= 12
+
+
+def test_mermaid_renderer_rejects_hidden_edges_and_intrinsic_label_clipping() -> None:
+    source = DIAGRAM_RENDERER.read_text(encoding="utf-8")
+
+    assert "if (crossedLabel.opaque_background) continue;" not in source
+    assert "scrollWidth" in source
+    assert "clientWidth" in source
+
+
+def test_generated_mermaid_svgs_are_valid_standalone_xml() -> None:
+    for manifest_path in (INLINE_DIAGRAMS, NUMBERED_DIAGRAMS):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for diagram in manifest["diagrams"]:
+            svg_path = ROOT / "docs/publisher/visuals" / diagram["filename"].replace(
+                ".png", ".svg"
+            )
+            ET.parse(svg_path)
+
+
+def test_mermaid_sources_connect_nodes_instead_of_cluster_frames() -> None:
+    for manifest_path in (INLINE_DIAGRAMS, NUMBERED_DIAGRAMS):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for diagram in manifest["diagrams"]:
+            source = diagram["mermaid"]
+            cluster_ids = set(re.findall(r"^subgraph\s+([A-Za-z][\w-]*)", source, re.M))
+            linked_cluster_ids = {
+                endpoint
+                for left, right in re.findall(
+                    r"^\s*([A-Za-z][\w-]*)\s*(?:-->|-\.->|~~~)(?:\|[^\n]*?\|)?\s*"
+                    r"([A-Za-z][\w-]*)",
+                    source,
+                    re.M,
+                )
+                for endpoint in (left, right)
+                if endpoint in cluster_ids
+            }
+            assert linked_cluster_ids == set(), (
+                f"{diagram['filename']} links cluster frames: "
+                f"{sorted(linked_cluster_ids)}"
+            )
+
+
+def test_independently_reviewed_decisions_have_explicit_safe_branches() -> None:
+    inline = {
+        item["filename"]: item["mermaid"]
+        for item in json.loads(INLINE_DIAGRAMS.read_text(encoding="utf-8"))["diagrams"]
+    }
+
+    assert 'V -->|"Да"| Y' in inline["ru-inline-diagram-05.png"]
+    assert 'V -->|"Нет"| Q' in inline["ru-inline-diagram-05.png"]
+    assert 'U -->|"Нет"| E' in inline["ru-inline-diagram-10.png"]
+    assert 'U -->|"Да"| F' in inline["ru-inline-diagram-10.png"]
+    assert 'F -->|"Эффекта нет"| E' in inline["ru-inline-diagram-10.png"]
+    assert 'F -->|"Исход неизвестен"| H' in inline["ru-inline-diagram-10.png"]
+    assert 'G -->|"Да"| H' in inline["ru-inline-diagram-29.png"]
+    assert 'G -->|"Нет"| R' in inline["ru-inline-diagram-29.png"]
 
 
 def test_visual_audit_uses_the_parsed_manuscript_count_for_docx_validation() -> None:
@@ -47,6 +175,76 @@ def test_visual_audit_uses_the_parsed_manuscript_count_for_docx_validation() -> 
     validate(EXPECTED_IMAGE_COUNT, EXPECTED_IMAGE_COUNT, EXPECTED_IMAGE_COUNT)
     with pytest.raises(ValueError, match="raw=56, template=57, expected=57"):
         validate(56, 57, 57)
+
+
+def test_visual_resize_is_idempotent_at_the_print_height_limit() -> None:
+    drawing = ET.fromstring(
+        f'<w:drawing xmlns:w="{WORD_NS}" xmlns:wp="{DRAWING_NS}" '
+        f'xmlns:a="{DRAWINGML_NS}">'
+        '<wp:extent cx="5943600" cy="5943600"/>'
+        '<a:xfrm><a:ext cx="5943600" cy="5943600"/></a:xfrm>'
+        "</w:drawing>"
+    )
+    image = ROOT / "docs/publisher/visuals/ru-figure-13-autonomy-ladder.png"
+
+    first = sync_ru_docx_visuals.resize_drawing(drawing, image)
+    first_xml = ET.tostring(drawing)
+    second = sync_ru_docx_visuals.resize_drawing(drawing, image)
+
+    assert first == second
+    assert first[1] <= sync_ru_docx_visuals.MAX_FIGURE_HEIGHT
+    assert ET.tostring(drawing) == first_xml
+
+
+def test_visual_resize_expands_small_legacy_placeholders_to_the_print_frame() -> None:
+    drawing = ET.fromstring(
+        f'<w:drawing xmlns:w="{WORD_NS}" xmlns:wp="{DRAWING_NS}" '
+        f'xmlns:a="{DRAWINGML_NS}">'
+        f'<wp:extent cx="{sync_ru_docx_visuals.EMU_PER_INCH}" '
+        f'cy="{sync_ru_docx_visuals.EMU_PER_INCH}"/>'
+        f'<a:xfrm><a:ext cx="{sync_ru_docx_visuals.EMU_PER_INCH}" '
+        f'cy="{sync_ru_docx_visuals.EMU_PER_INCH}"/></a:xfrm>'
+        "</w:drawing>"
+    )
+    image = ROOT / "docs/publisher/visuals/ru-figure-01-book-map.png"
+
+    width, height = sync_ru_docx_visuals.resize_drawing(drawing, image)
+
+    assert width > sync_ru_docx_visuals.EMU_PER_INCH
+    assert width <= sync_ru_docx_visuals.MAX_FIGURE_WIDTH
+    assert height <= sync_ru_docx_visuals.MAX_FIGURE_HEIGHT
+
+
+def test_caption_normalizer_moves_only_captions_that_precede_images() -> None:
+    paragraphs: list[str] = []
+    for number in range(1, 26):
+        caption = f"<w:p><w:r><w:t>Рисунок {number}. Схема {number}</w:t></w:r></w:p>"
+        image = "<w:p><w:r><w:drawing/></w:r></w:p>"
+        paragraphs.extend((caption, image) if number <= 20 else (image, caption))
+    payload = (
+        f'<w:document xmlns:w="{WORD_NS}"><w:body>'
+        + "".join(paragraphs)
+        + "</w:body></w:document>"
+    ).encode()
+
+    normalized, metrics = normalize_docx_figure_caption_order.normalize_document_xml(
+        payload
+    )
+    document = ET.fromstring(normalized)
+    children = list(document.find(f"{{{WORD_NS}}}body"))
+
+    assert metrics == {
+        "numbered_captions": 25,
+        "captions_moved": 20,
+        "captions_already_after_images": 5,
+        "captions_after_images": 25,
+    }
+    for index, paragraph in enumerate(children):
+        text = "".join(paragraph.itertext()).strip()
+        if not text.startswith("Рисунок "):
+            continue
+        assert index > 0
+        assert children[index - 1].find(f".//{{{WORD_NS}}}drawing") is not None
 
 
 def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
@@ -306,6 +504,141 @@ def test_template2000n_final_preserves_embedded_font_registrations() -> None:
     assert b"Noto Sans Symbols" not in numbering_xml
 
 
+def test_current_book_standards_artifacts_pass_machine_gates() -> None:
+    raw_a11y = json.loads(RAW_A11Y.read_text(encoding="utf-8"))
+    raw_render = json.loads(RAW_RENDER_QA.read_text(encoding="utf-8"))
+    template_a11y = json.loads(TEMPLATE_A11Y.read_text(encoding="utf-8"))
+    font_audit = json.loads(TEMPLATE_FONT_AUDIT.read_text(encoding="utf-8"))
+    metrics = json.loads(TEMPLATE_METRICS.read_text(encoding="utf-8"))
+    template_render = json.loads(TEMPLATE_RENDER_QA.read_text(encoding="utf-8"))
+    visual_audit = json.loads(TEMPLATE_VISUAL_AUDIT.read_text(encoding="utf-8"))
+
+    assert raw_a11y["counts"] == {"high": 0, "medium": 0, "low": 2}
+    assert template_a11y["counts"] == {"high": 0, "medium": 0, "low": 2}
+    assert raw_render["pages"] == 539
+    assert raw_render["blank_like_pages"] == []
+    assert raw_render["page_sizes"] == [{"count": 539, "height": 2002, "width": 1547}]
+    assert raw_render["edge_touch_pages"] == []
+    assert template_render["pages"] == 380
+    assert template_render["blank_like_pages"] == []
+    assert template_render["page_sizes"] == [
+        {"count": 380, "height": 2002, "width": 1547}
+    ]
+    assert template_render["edge_touch_pages"] == []
+    for report in (raw_render, template_render):
+        assert min(report["minimum_ink_margins_pixels"].values()) >= 150
+    assert font_audit["passed"] is True
+    assert font_audit["embedded_font_registrations"] == [
+        "Noto Sans Symbols Regular",
+        "Noto Sans Symbols Bold",
+        "Roboto Mono Regular",
+        "Roboto Mono Bold",
+        "Roboto Mono Italic",
+        "Roboto Mono BoldItalic",
+    ]
+    assert metrics["document_text_equality"] is True
+    assert metrics["media_byte_equality"] is True
+    assert metrics["media_files"] == EXPECTED_IMAGE_COUNT
+    assert metrics["approximate_words"] >= 95_000
+    assert visual_audit["docx"]["raw_media_matches_source"] is True
+    assert visual_audit["docx"]["template_media_order_matches_raw"] is True
+    assert visual_audit["docx"]["numbered_figure_caption_pairs"] == 25
+    assert visual_audit["docx"]["alpha_images"] == 0
+    assert visual_audit["pdf"]["images"] == EXPECTED_IMAGE_COUNT
+
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            current_document = ET.fromstring(archive.read("word/document.xml"))
+        tables = current_document.findall(f".//{{{WORD_NS}}}tbl")
+        assert len(tables) == EXPECTED_TABLE_COUNT
+        for table in tables:
+            rows = table.findall(f"{{{WORD_NS}}}tr")
+            assert rows
+            header = rows[0].find(
+                f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader"
+            )
+            assert header is not None
+            assert header.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+            for row in rows:
+                keep_together = row.find(
+                    f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit"
+                )
+                assert keep_together is not None
+                assert keep_together.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                    "0",
+                    "false",
+                    "off",
+                }
+
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document_xml = archive.read("word/document.xml")
+            font_table_xml = archive.read("word/fontTable.xml")
+
+        document = ET.fromstring(document_xml)
+        text = "".join(document.itertext())
+        assert "Политика последовательности проверяет всю траекторию" in text
+        assert text.count("approval -> resume -> execute -> audit") == 3
+        assert "approval → resume → execute → audit" not in text
+        assert b"Nova Mono" not in font_table_xml
+
+        parent_by_child = {
+            child: parent for parent in document.iter() for child in list(parent)
+        }
+        captions: list[tuple[int, ET.Element]] = []
+        for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+            paragraph_value = "".join(
+                node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            match = re.fullmatch(r"Рисунок (\d+)\. .+", paragraph_value)
+            if match:
+                captions.append((int(match.group(1)), paragraph))
+
+        assert [number for number, _ in captions] == list(range(1, 26))
+        for number, caption in captions:
+            parent = parent_by_child[caption]
+            siblings = list(parent)
+            previous = next(
+                (
+                    candidate
+                    for candidate in reversed(siblings[: siblings.index(caption)])
+                    if candidate.tag == f"{{{WORD_NS}}}p"
+                    and (
+                        candidate.find(f".//{{{WORD_NS}}}drawing") is not None
+                        or "".join(
+                            node.text or ""
+                            for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                        ).strip()
+                    )
+                ),
+                None,
+            )
+            assert previous is not None, f"Figure {number} has no preceding paragraph"
+            assert previous.find(f".//{{{WORD_NS}}}drawing") is not None
+            image_keep_next = previous.find(
+                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext"
+            )
+            caption_keep_lines = caption.find(
+                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines"
+            )
+            assert image_keep_next is not None
+            assert image_keep_next.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+            assert caption_keep_lines is not None
+            assert caption_keep_lines.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+
+
 def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> None:
     with ZipFile(EDITORIAL_TEMPLATE_DOCX) as archive:
         document = ET.fromstring(archive.read("word/document.xml"))
@@ -386,10 +719,134 @@ def test_editorial_tables_repeat_headers_and_keep_rows_together() -> None:
         assert tables
         for table in tables:
             rows = table.findall(f"{{{WORD_NS}}}tr")
-            assert rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader") is not None
-            assert all(
-                row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None for row in rows
+            header = rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader")
+            assert header is not None
+            assert header.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+            for row in rows:
+                keep_together = row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit")
+                assert keep_together is not None
+                assert keep_together.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                    "0",
+                    "false",
+                    "off",
+                }
+
+
+def test_editorial_docx_has_no_empty_numbered_paragraphs() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        empty_numbered = []
+        for index, paragraph in enumerate(document.findall(f".//{{{WORD_NS}}}p")):
+            text = "".join(
+                node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            if (
+                not text
+                and paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}numPr") is not None
+            ):
+                empty_numbered.append(index)
+
+        assert empty_numbered == []
+
+
+def test_editorial_page_break_headings_have_no_leading_empty_paragraph() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+        for index, paragraph in enumerate(paragraphs):
+            if not active_on_off_property(paragraph, "pageBreakBefore"):
+                continue
+            assert index > 0
+            previous_text = "".join(
+                node.text or ""
+                for node in paragraphs[index - 1].findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            assert previous_text
+
+
+def test_editorial_code_blocks_avoid_orphaned_opening_lines() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+        code_blocks: list[list[ET.Element]] = []
+        current_block: list[ET.Element] = []
+        for paragraph in paragraphs:
+            if paragraph_uses_monospace_font(paragraph):
+                current_block.append(paragraph)
+                continue
+            if current_block:
+                code_blocks.append(current_block)
+                current_block = []
+        if current_block:
+            code_blocks.append(current_block)
+
+        assert len(code_blocks) >= 30
+        for block in code_blocks:
+            assert all(active_on_off_property(paragraph, "keepLines") for paragraph in block)
+            for index, paragraph in enumerate(block):
+                expected = (
+                    index < len(block) - 1
+                    and (index + 1)
+                    % sync_ru_docx_visuals.MAX_CODE_PARAGRAPHS_PER_KEEP_GROUP
+                    != 0
+                )
+                assert active_on_off_property(paragraph, "keepNext") is expected
+
+
+def test_inline_visual_titles_stay_with_their_images() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+        matched_titles = 0
+        for index, paragraph in enumerate(paragraphs):
+            image_properties = paragraph.find(f".//{{{DRAWING_NS}}}docPr")
+            if image_properties is None:
+                continue
+            description = image_properties.attrib.get("descr", "").strip()
+            previous_paragraph = next(
+                (
+                    candidate
+                    for candidate in reversed(paragraphs[:index])
+                    if "".join(
+                        node.text or ""
+                        for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                    ).strip()
+                ),
+                None,
             )
+            if previous_paragraph is None:
+                continue
+            previous_text = "".join(
+                node.text or ""
+                for node in previous_paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            if previous_text != description:
+                continue
+
+            matched_titles += 1
+            keep_next = previous_paragraph.find(
+                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext"
+            )
+            assert keep_next is not None
+            assert keep_next.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+
+        assert matched_titles >= 10
 
 
 def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
@@ -579,8 +1036,8 @@ def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
         hashlib.sha256((EDITORIAL_MANUSCRIPT.parent / path).read_bytes()).hexdigest()
         for path in relative_paths
     ]
-    raw_targets, raw_hashes = ordered_embedded_images(RAW_EDITORIAL_DOCX)
-    template_targets, _ = ordered_embedded_images(EDITORIAL_TEMPLATE_DOCX)
+    raw_targets, raw_hashes = ordered_embedded_images(CURRENT_RAW_DOCX)
+    template_targets, _ = ordered_embedded_images(CURRENT_TEMPLATE_DOCX)
 
     assert len(relative_paths) == EXPECTED_IMAGE_COUNT
     assert raw_hashes == expected_hashes

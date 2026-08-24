@@ -10,6 +10,7 @@ const sharp = require("sharp");
 const VISUAL_STYLE_ID = "agent-arch-book-v1";
 const MIN_EFFECTIVE_FONT_PT = 8.5;
 const MIN_VIEWBOX_ASPECT_RATIO = 0.72;
+const MIN_CLUSTER_TITLE_GAP_PX = 12;
 const PRINT_MAX_WIDTH_INCHES = 6.5;
 const PRINT_MAX_HEIGHT_INCHES = 6.3;
 const PNG_DENSITY = 300;
@@ -109,14 +110,23 @@ function wrapLabel(value, maxCharacters = 22) {
 }
 
 
-function wrapMermaidLabels(source) {
-  return source.replaceAll(/"([^"\r\n]*)"/g, (_match, label) => `"${wrapLabel(label)}"`);
+function wrapMermaidLabels(source, maxCharacters) {
+  return source
+    .split("\n")
+    .map((line) => {
+      if (/^\s*subgraph\b/.test(line)) return line;
+      return line.replaceAll(
+        /"([^"\r\n]*)"/g,
+        (_match, label) => `"${wrapLabel(label, maxCharacters)}"`,
+      );
+    })
+    .join("\n");
 }
 
 
 function normalizeMermaidSource(source) {
   const withoutLocalTheme = source.replace(/^\s*%%\{init:.*?\}%%\s*/s, "");
-  return wrapMermaidLabels(withoutLocalTheme.trim());
+  return wrapMermaidLabels(withoutLocalTheme.trim(), 22);
 }
 
 
@@ -148,7 +158,7 @@ async function renderDiagram(page, diagram, outputDir) {
 
   const title = `<title>${escapeXml(diagram.caption)}</title>`;
   const xmlSafeRendered = rendered.replaceAll(/<br\s*>/g, "<br/>");
-  const svg = xmlSafeRendered.replace(
+  const initialSvg = xmlSafeRendered.replace(
     /<svg([^>]*)>/,
     `<svg$1 data-visual-style="${VISUAL_STYLE_ID}">${title}${UNIFIED_SVG_STYLE}`,
   );
@@ -156,7 +166,6 @@ async function renderDiagram(page, diagram, outputDir) {
   const svgPath = path.join(outputDir, `${stem}.svg`);
   const pngPath = path.join(outputDir, diagram.filename);
 
-  await fs.writeFile(svgPath, `${svg}\n`, "utf8");
   await page.evaluate((svgMarkup) => {
     document.body.innerHTML = `<main id="diagram">${svgMarkup}</main>`;
     document.documentElement.style.background = "#ffffff";
@@ -165,7 +174,172 @@ async function renderDiagram(page, diagram, outputDir) {
     const element = document.querySelector("#diagram > svg");
     element.style.display = "block";
     element.style.maxWidth = "none";
-  }, svg);
+  }, initialSvg);
+  await page.locator("#diagram > svg").evaluate((element) => {
+    const root = element.querySelector(".root");
+    if (!root) return;
+    const edgePaths = [...element.querySelectorAll(".flowchart-link")];
+    const countEdgeIntersections = (labelBounds) => edgePaths.reduce((count, pathElement) => {
+      const length = pathElement.getTotalLength();
+      const matrix = pathElement.getScreenCTM();
+      if (!matrix || length === 0) return count;
+      for (let offset = 0; offset <= length; offset += 2) {
+        const localPoint = pathElement.getPointAtLength(offset);
+        const point = new DOMPoint(localPoint.x, localPoint.y).matrixTransform(matrix);
+        if (
+          point.x >= labelBounds.left - 3
+          && point.x <= labelBounds.right + 3
+          && point.y >= labelBounds.top - 3
+          && point.y <= labelBounds.bottom + 3
+        ) return count + 1;
+      }
+      return count;
+    }, 0);
+    for (const cluster of element.querySelectorAll(".cluster")) {
+      const label = cluster.querySelector(":scope > .cluster-label");
+      if (!label) continue;
+      const text = label.querySelector("text, foreignObject");
+      if (!text || !(label.textContent ?? "").trim()) continue;
+      const bounds = text.getBBox();
+      const frame = cluster.querySelector(":scope > rect");
+      if (!frame) continue;
+      let background = label.querySelector(":scope > rect.background");
+      if (!background) {
+        background = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        background.setAttribute("class", "background");
+        label.prepend(background);
+      }
+      background.setAttribute("x", String(bounds.x - 7));
+      background.setAttribute("y", String(bounds.y - 4));
+      background.setAttribute("width", String(bounds.width + 14));
+      background.setAttribute("height", String(bounds.height + 6));
+      background.setAttribute("rx", "4");
+      background.setAttribute("fill", "#f7f9fc");
+      background.setAttribute("stroke", "none");
+      label.dataset.clusterId = cluster.id;
+      label.dataset.opaqueBackground = "true";
+      root.append(label);
+
+      const frameBounds = frame.getBBox();
+      const top = frameBounds.y + 8 - bounds.y;
+      const candidates = [
+        frameBounds.x + 14 - bounds.x,
+        frameBounds.x + frameBounds.width - bounds.width - 14 - bounds.x,
+        frameBounds.x + (frameBounds.width - bounds.width) / 2 - bounds.x,
+      ];
+      const placements = candidates.map((left, preference) => {
+        label.setAttribute("transform", `translate(${left} ${top})`);
+        const labelBounds = label.getBoundingClientRect();
+        return {
+          left,
+          preference,
+          intersections: countEdgeIntersections(labelBounds),
+        };
+      });
+      placements.sort((left, right) => (
+        left.intersections - right.intersections
+        || left.preference - right.preference
+      ));
+      label.setAttribute("transform", `translate(${placements[0].left} ${top})`);
+    }
+  });
+  const svg = await page.locator("#diagram > svg").evaluate((element) => element.outerHTML);
+  const standaloneSvg = svg.replaceAll(/<br\s*>/g, "<br/>");
+  await fs.writeFile(svgPath, `${standaloneSvg}\n`, "utf8");
+  const geometryAudit = await page.locator("#diagram > svg").evaluate((element) => {
+    const nodes = [...element.querySelectorAll(".node")].map((node) => ({
+      element: node,
+      bounds: node.getBoundingClientRect(),
+    }));
+    const clusterLabels = [...element.querySelectorAll(".cluster-label[data-cluster-id]")].flatMap((label) => {
+      if (!(label.textContent ?? "").trim()) return [];
+      const cluster = element.querySelector(`#${CSS.escape(label.dataset.clusterId)}`);
+      if (!cluster) return [];
+      const frame = cluster.querySelector(":scope > rect");
+      if (!frame || !label) return [];
+      const frameBounds = frame.getBoundingClientRect();
+      const labelBounds = label.getBoundingClientRect();
+      const containedNodes = nodes.filter(({ bounds }) => {
+        const centerX = bounds.left + bounds.width / 2;
+        const centerY = bounds.top + bounds.height / 2;
+        return (
+          centerX >= frameBounds.left
+          && centerX <= frameBounds.right
+          && centerY >= frameBounds.top
+          && centerY <= frameBounds.bottom
+        );
+      });
+      if (containedNodes.length === 0) return [];
+      const gap = Math.min(...containedNodes.map(({ bounds }) => bounds.top)) - labelBounds.bottom;
+      return [{
+        cluster: cluster.id || label.textContent.trim(),
+        bounds: labelBounds,
+        gap_px: Number(gap.toFixed(2)),
+        opaque_background: label.dataset.opaqueBackground === "true",
+      }];
+    });
+    const edgeTitleIntersections = [];
+    for (const pathElement of element.querySelectorAll(".flowchart-link")) {
+      const length = pathElement.getTotalLength();
+      const matrix = pathElement.getScreenCTM();
+      if (!matrix || length === 0) continue;
+      for (let offset = 0; offset <= length; offset += 2) {
+        const localPoint = pathElement.getPointAtLength(offset);
+        const point = new DOMPoint(localPoint.x, localPoint.y).matrixTransform(matrix);
+        const crossedLabel = clusterLabels.find(({ bounds }) => (
+          point.x >= bounds.left - 3
+          && point.x <= bounds.right + 3
+          && point.y >= bounds.top - 3
+          && point.y <= bounds.bottom + 3
+        ));
+        if (!crossedLabel) continue;
+        edgeTitleIntersections.push({
+          cluster: crossedLabel.cluster,
+          edge: pathElement.id || "unnamed-edge",
+        });
+        break;
+      }
+    }
+    const nodeLabelOverflows = nodes.flatMap(({ element: node }) => {
+      const shape = node.querySelector(
+        ":scope > rect, :scope > circle, :scope > ellipse, :scope > polygon, :scope > path",
+      );
+      const label = node.querySelector(":scope > .label");
+      if (!shape || !label) return [];
+      const shapeBounds = shape.getBoundingClientRect();
+      const labelBounds = label.getBoundingClientRect();
+      const intrinsicLabelOverflow = [...label.querySelectorAll("foreignObject div")].some(
+        (content) => (
+          content.scrollWidth > content.clientWidth + 1
+          || content.scrollHeight > content.clientHeight + 1
+        ),
+      );
+      const tolerance = 2;
+      if (
+        !intrinsicLabelOverflow
+        &&
+        labelBounds.left >= shapeBounds.left - tolerance
+        && labelBounds.right <= shapeBounds.right + tolerance
+        && labelBounds.top >= shapeBounds.top - tolerance
+        && labelBounds.bottom <= shapeBounds.bottom + tolerance
+      ) return [];
+      return [{
+        node: node.id || label.textContent.trim(),
+        intrinsic_clip: intrinsicLabelOverflow,
+        overflow_px: {
+          left: Number(Math.max(0, shapeBounds.left - labelBounds.left).toFixed(2)),
+          right: Number(Math.max(0, labelBounds.right - shapeBounds.right).toFixed(2)),
+          top: Number(Math.max(0, shapeBounds.top - labelBounds.top).toFixed(2)),
+          bottom: Number(Math.max(0, labelBounds.bottom - shapeBounds.bottom).toFixed(2)),
+        },
+      }];
+    });
+    return {
+      cluster_title_gaps: clusterLabels.map(({ bounds: _bounds, ...cluster }) => cluster),
+      edge_title_intersections: edgeTitleIntersections,
+      node_label_overflows: nodeLabelOverflows,
+    };
+  });
   const sourceFontSize = await page.locator("#diagram > svg").evaluate((element) => {
     const sizes = [...element.querySelectorAll("text, foreignObject span")]
       .filter((node) => (node.textContent ?? "").trim())
@@ -193,10 +367,10 @@ async function renderDiagram(page, diagram, outputDir) {
     .toBuffer();
   await sharp(resized)
     .extend({
-      top: 48,
-      bottom: 48,
-      left: 48,
-      right: 48,
+      top: 32,
+      bottom: 32,
+      left: 32,
+      right: 32,
       background: "#ffffff",
     })
     .flatten({ background: "#ffffff" })
@@ -217,6 +391,7 @@ async function renderDiagram(page, diagram, outputDir) {
   }
   const effectiveFontPt = calculateEffectiveFontPt(svg, metadata, sourceFontSize);
   const violations = [];
+  const warnings = [];
   if (effectiveFontPt < MIN_EFFECTIVE_FONT_PT) {
     violations.push(
       `effective font ${effectiveFontPt.toFixed(2)}pt is below ${MIN_EFFECTIVE_FONT_PT}pt`,
@@ -226,8 +401,27 @@ async function renderDiagram(page, diagram, outputDir) {
   if (!viewBox) throw new Error(`Missing viewBox for ${diagram.filename}`);
   const aspectRatio = Number(viewBox[1]) / Number(viewBox[2]);
   if (aspectRatio < MIN_VIEWBOX_ASPECT_RATIO) {
+    warnings.push(
+      `manual review: viewBox aspect ${aspectRatio.toFixed(3)} is below `
+      + `${MIN_VIEWBOX_ASPECT_RATIO}`,
+    );
+  }
+  for (const cluster of geometryAudit.cluster_title_gaps) {
+    if (cluster.gap_px < MIN_CLUSTER_TITLE_GAP_PX) {
+      violations.push(
+        `cluster ${cluster.cluster} title gap ${cluster.gap_px.toFixed(2)}px `
+        + `is below ${MIN_CLUSTER_TITLE_GAP_PX}px`,
+      );
+    }
+  }
+  for (const intersection of geometryAudit.edge_title_intersections) {
     violations.push(
-      `viewBox aspect ${aspectRatio.toFixed(3)} is below ${MIN_VIEWBOX_ASPECT_RATIO}`,
+      `edge ${intersection.edge} crosses cluster title ${intersection.cluster}`,
+    );
+  }
+  for (const overflow of geometryAudit.node_label_overflows) {
+    violations.push(
+      `node ${overflow.node} label exceeds its shape: ${JSON.stringify(overflow.overflow_px)}`,
     );
   }
   return {
@@ -237,6 +431,10 @@ async function renderDiagram(page, diagram, outputDir) {
     png: pngPath,
     effective_font_pt: Number(effectiveFontPt.toFixed(2)),
     viewbox_aspect_ratio: Number(aspectRatio.toFixed(3)),
+    cluster_title_gaps: geometryAudit.cluster_title_gaps,
+    cluster_title_edge_intersections: geometryAudit.edge_title_intersections,
+    node_label_overflows: geometryAudit.node_label_overflows,
+    warnings,
     violations,
   };
 }
@@ -287,6 +485,10 @@ async function main() {
           nodeSpacing: 36,
           rankSpacing: 44,
           padding: 14,
+          subGraphTitleMargin: {
+            top: 8,
+            bottom: 24,
+          },
         },
         themeVariables: {
           background: "#ffffff",
@@ -319,6 +521,25 @@ async function main() {
       minimum_effective_font_pt: Math.min(...results.map((item) => item.effective_font_pt)),
       minimum_viewbox_aspect_ratio: Math.min(
         ...results.map((item) => item.viewbox_aspect_ratio),
+      ),
+      minimum_cluster_title_gap_px: Math.min(
+        ...results.flatMap((item) => item.cluster_title_gaps.map((cluster) => cluster.gap_px)),
+      ),
+      cluster_title_violations: results.flatMap((item) =>
+        item.cluster_title_gaps
+          .filter((cluster) => cluster.gap_px < MIN_CLUSTER_TITLE_GAP_PX)
+          .map((cluster) => `${item.filename}: ${cluster.cluster} (${cluster.gap_px}px)`),
+      ),
+      cluster_title_edge_violations: results.flatMap((item) =>
+        item.cluster_title_edge_intersections.map((intersection) => (
+          `${item.filename}: ${intersection.edge} -> ${intersection.cluster}`
+        )),
+      ),
+      node_label_violations: results.flatMap((item) =>
+        item.node_label_overflows.map((overflow) => `${item.filename}: ${overflow.node}`),
+      ),
+      aspect_ratio_warnings: results.flatMap((item) =>
+        item.warnings.map((warning) => `${item.filename}: ${warning}`),
       ),
       violations: results.flatMap((item) =>
         item.violations.map((violation) => `${item.filename}: ${violation}`),

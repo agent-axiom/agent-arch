@@ -179,8 +179,23 @@ def set_paragraph_flag(paragraph: ET.Element, name: str) -> None:
     if ppr is None:
         ppr = ET.Element(f"{{{NS['w']}}}pPr")
         paragraph.insert(0, ppr)
-    if ppr.find(f"w:{name}", NS) is None:
-        ppr.append(ET.Element(f"{{{NS['w']}}}{name}"))
+    flag = ppr.find(f"w:{name}", NS)
+    if flag is None:
+        flag = ET.Element(f"{{{NS['w']}}}{name}")
+        ppr.append(flag)
+    flag.set(f"{{{NS['w']}}}val", "1")
+
+
+def set_table_row_flag(row: ET.Element, name: str) -> None:
+    row_properties = row.find("w:trPr", NS)
+    if row_properties is None:
+        row_properties = ET.Element(f"{{{NS['w']}}}trPr")
+        row.insert(0, row_properties)
+    flag = row_properties.find(f"w:{name}", NS)
+    if flag is None:
+        flag = ET.Element(f"{{{NS['w']}}}{name}")
+        row_properties.append(flag)
+    flag.set(f"{{{NS['w']}}}val", "1")
 
 
 def paragraph_is_monospace(paragraph: ET.Element) -> bool:
@@ -208,6 +223,11 @@ def map_semantic_styles(document_xml: bytes) -> tuple[bytes, Counter[str]]:
     table_styles: dict[ET.Element, str] = {}
     for table in root.findall(".//w:tbl", NS):
         for row_index, row in enumerate(table.findall("w:tr", NS)):
+            set_table_row_flag(row, "cantSplit")
+            mappings["table_rows_kept_together"] += 1
+            if row_index == 0:
+                set_table_row_flag(row, "tblHeader")
+                mappings["table_headers_repeated"] += 1
             style_id = "Style20" if row_index == 0 else "Style21"
             for paragraph in row.findall(".//w:p", NS):
                 table_styles[paragraph] = style_id

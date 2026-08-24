@@ -181,6 +181,185 @@ approval_contract:
 
 И здесь эта же среда явно фиксирует форму входного набора средств управления: проверка конфигурации средств управления сообщает `Controls policy config must be a mapping`, `'controls' must be a mapping`, `'controls.require' must be a list`, `'controls.block_if' must be a list`, `controls.require entries must be strings`, `controls.require entries must not be empty`, `controls.require entries must be unique`, `controls.block_if entries must be strings`, `controls.block_if entries must not be empty` и `controls.block_if entries must be unique`; переопределения сигналов сообщают `Assessment signals must be a mapping`, `Assessment signal key must be a string`, `Assessment signal key must not be empty`, `Assessment signal keys must be unique` и `Assessment signal value must be a boolean: {field}`. Поэтому оператор может отличить испорченный набор политик от провалившейся, но корректно сформированной оценки средств управления.
 
+## Production extension: правила политики траектории
+
+Проверка одного вызова не ловит ограничения, зависящие от всей
+последовательности. Для таких случаев промышленную схему полезно расширить
+декларативным разделом `trajectory_policy`. Ниже минимальная переносимая форма,
+а не YAML-конфигурация, которую уже загружает `AgentRuntime`:
+
+```yaml
+trajectory_policy:
+  policy_id: transfer-trajectory
+  policy_version: 2026.08.23
+  history_contract:
+    source: trusted_immutable_snapshot
+    expected_history_ref: required_on_request
+    expected_history_version: required_on_request
+    required_integrity: verified
+    required_status: current
+    request_snapshot_identity: [tenant_id, subject_id]
+    snapshot_policy_identity: [policy_id, policy_version]
+    on_absent_malformed_missing_corrupt_stale_or_unverified: deny
+  request_fingerprint:
+    algorithm: sha256_canonical_json
+    include:
+      - action
+      - tenant_id
+      - subject_id
+      - expected_history_ref
+      - expected_history_version
+      - sequence_number
+      - window_id
+      - policy_id
+      - policy_version
+      - sorted_significant_fingerprints
+      - sorted_counter_deltas
+    caller_supplied_value_allowed: false
+  numeric_contract:
+    type: decimal
+    minimum: "0"
+    maximum: "999999999999.999999"
+    maximum_scale: 6
+    local_precision: 32
+    trap_rounding_and_decimal_errors: true
+    on_arithmetic_error: deny
+  collection_contract:
+    maximum_fingerprints_per_request_or_snapshot: 16
+    maximum_counters_per_request_or_snapshot: 32
+  rules:
+    - kind: value_binding
+      rule_id: destination-binding
+      fingerprint_name: destination
+    - kind: cumulative_limit
+      rule_id: daily-amount-limit
+      counter_name: amount
+      limit: "100.00"
+      window_id: from_request_and_snapshot
+      required_window_state: open
+    - kind: required_predecessor
+      rule_id: destination-confirmed-first
+      predecessor: confirm_destination
+    - kind: required_approval
+      rule_id: transfer-approval
+      approval_scope: transfer
+      bind_to: request_fingerprint
+  decisions:
+    - allow
+    - deny
+    - approval_required
+```
+
+Минимальные declarative rule kinds имеют узкий смысл:
+
+- `value_binding` сравнивает fingerprint текущего поля с fingerprint того же
+  поля в доверенной истории;
+- `cumulative_limit` складывает сохранённый счётчик и текущую дельту только в
+  совпадающем открытом окне с точной арифметикой из `numeric_contract`;
+- `required_predecessor` требует именованный более ранний шаг в
+  `observed_sequence`;
+- `required_approval` ищет активную запись нужного `approval_scope`, связанную
+  с текущим `request_fingerprint`.
+
+`request_fingerprint` не является свободным полем request. Исполняемый контракт
+канонически сериализует перечисленную identity запроса, сортирует fingerprints
+и counter deltas по имени, нормализует Decimal без потери точности и вычисляет
+SHA-256. Поэтому approval от прежних action, tenant/subject, history ref/version,
+sequence, window или policy id/version не авторизует изменённый запрос.
+
+Значения счётчиков принимаются только как конечные неотрицательные `Decimal` со
+scale не более 6 и значением не более `999999999999.999999`. Сложение выполняется
+в локальном `Decimal` context с precision 32 и traps для округления и
+арифметических ошибок, поэтому поведение не зависит от глобального context.
+Выход суммы за диапазон или иная arithmetic failure закрыто дают `deny` с
+причиной `counter_arithmetic_error`; в telemetry попадает состояние
+`arithmetic_error`, а не число.
+
+Запрос и снимок истории содержат не более 16 отпечатков и 32 счётчиков каждый.
+Эти границы проверяются при создании объектов и не позволяют формально
+допустимому запросу переполнить строковые сводки обязательного события аудита.
+Максимальные разрешённые наборы укладываются в лимит 8192 символов для каждого
+поля телеметрии даже при несовпадающих именах в запросе и снимке.
+
+Для `required_approval` binding проверяется до состояния записи. Любая
+`rejected`, `revoked` или `expired` запись требуемого scope, связанная именно с
+текущим `request_fingerprint`, закрыто даёт `deny` с причиной
+`required_approval_inactive`, даже если рядом есть `approved`. Записи того же
+scope для другого request не отменяют текущий binding: при отсутствии записи
+для текущего fingerprint результатом будет `approval_required` с причиной
+`approval_binding_mismatch`. Перед `allow` агрегированное `approval_state`
+обязано согласовываться с однородным состоянием связанных записей; отсутствие
+записей при агрегированном `approved`, смешанные `approved`/`pending` или иное
+расхождение дают `deny` с причиной `approval_state_mismatch`.
+
+Исполняемый учебный контракт в `agent_runtime_ref/trajectory.py` отражает эту
+семантику frozen dataclasses, но намеренно не парсит приведённый YAML и не
+подключён к `AgentRuntime`. `TrajectoryRequest` содержит `action`,
+`tenant_id`, `subject_id`, `expected_history_ref`, `expected_history_version`,
+`sequence_number`, `fingerprints`, `counters` и `window_id`. Доверенный
+`TrajectorySnapshot` содержит как минимум `history_ref`, `history_version`,
+`tenant_id`, `subject_id`, `policy_id`, `policy_version`, `integrity`, `status`,
+`observed_sequence`, нормализованные `fingerprints`, `counters`, `window_id`,
+`window_state`, `approval_records` и `approval_state`. Каждая запись
+подтверждения хранит `approval_id`, `scope`, связанный с вычисленным запросом
+`request_fingerprint` и `state`; сырые реквизиты и секреты в snapshot или
+событие решения не входят.
+
+Evaluator получает request и готовый snapshot явными аргументами. Он не читает
+историю из model context, prompt, памяти модели или compaction summary. `None`
+на публичной границе даёт `deny/history_missing`, а mapping или объект чужого
+типа — `deny/history_malformed`; их содержимое не отражается в решении. Затем он
+закрыто отклоняет missing, corrupt, stale и unverified history, несовпадение
+history ref/version, request/snapshot identity, snapshot/policy identity, номера
+последовательности или окна и детерминированно проверяет rules в объявленном
+порядке. Результат несёт `policy_id`, `policy_version`,
+`rule_id`, `reason`, `history_ref`, `history_version`, `sequence_summary`,
+`sequence_ref`, `fingerprints`, `counters`, `window_id`, `window_state`,
+`approval_state` и `decision`; точная форма события описана в
+[схеме трасс](trace-schema.md).
+
+Само значение `integrity: verified` является входным утверждением доверенного
+поставщика snapshot. Production-контур обязан отдельно проверять подпись,
+происхождение и актуальность, а также обеспечивать транзакционную фиксацию
+версии, счётчиков, решения и внешнего эффекта. Учебная функция этого не делает.
+
+Идентификаторы исполняемого контракта ограничены lowercase ASCII slug длиной до
+64 символов; history references — lowercase URI-like значениями длиной до 256
+символов без whitespace/control characters. Финальный строковый telemetry
+payload также проверяется allowlist и лимитом длины. Это только structural
+safeguard: доверенный provider обязан отдельно не допускать семантические
+секреты внутри формально допустимых identifiers, references и hashes.
+
+Валидация исполняемого контракта использует следующие стабильные сообщения:
+`Trajectory field must be a string: {field}`,
+`Trajectory field is required: {field}`,
+`Trajectory identifier is invalid: {field}`,
+`Trajectory reference is invalid: {field}`,
+`Trajectory telemetry value is invalid: {field}`,
+`Trajectory field must be an integer: {field}`,
+`Trajectory integer must not be negative: {field}`,
+`Trajectory integer must be positive: {field}`,
+`Trajectory field is not supported: {field}={normalized}`,
+`Trajectory fingerprint must be sha256: {field}`,
+`Trajectory counter value must be a Decimal: {field}`,
+`Trajectory counter value must be finite: {field}`,
+`Trajectory counter value must not be negative: {field}`,
+`Trajectory counter scale exceeds maximum: {field}`,
+`Trajectory counter value exceeds maximum: {field}`,
+`Trajectory {label} must be a tuple`,
+`Trajectory {label} entries must be {item_type.__name__}`,
+`Trajectory {label} must contain at most {maximum} entries`,
+`Trajectory {label} names must be unique`,
+`Trajectory approval record IDs must be unique`,
+`Trajectory counter limit must be positive: {counter_name}`,
+`Trajectory policy must contain at least one rule`,
+`Trajectory rules entries must be trajectory rule objects`,
+`Trajectory rule IDs must be unique`,
+`Trajectory fingerprint request must be TrajectoryRequest`,
+`Trajectory fingerprint policy must be TrajectoryPolicy`,
+`Trajectory request must be TrajectoryRequest`,
+`Trajectory policy must be TrajectoryPolicy`.
+
 ## Что должна добавить промышленная схема
 
 Как только в среде выполнения появляются MCP с состоянием и возобновляемые сессии возможностей, набор политик уже должен описывать не только допустимость возможности “в принципе”, но и то, как управляется ее живой жизненный цикл сессии.
