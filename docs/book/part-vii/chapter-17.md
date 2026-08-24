@@ -249,6 +249,16 @@ DeepMind AI Control Roadmap полезно формулирует еще одн�
 
 AWS AgentCore Gateway показывает практический вариант такого слоя вокруг MCP tools: policy и Lambda interceptors стоят вне model loop, поэтому control path не зависит от того, как агент объясняет свой следующий вызов.[^aws-agentcore-policy-interceptors] Policy на Cedar дает deterministic allow/deny decision по principal, action, resource и context, а request/response interceptors закрывают динамическую часть: проверку bearer token, act-on-behalf token exchange, context injection, tool authorization, payload transformation и response filtering. Для эталонного runtime это полезная подсказка: tool call должен проходить через pre-call decision point, downstream call и post-call response filter, а trace должен хранить policy decision, denial reason, sanitized request/response, interceptor version и audit event.
 
+### 7.2. Политика должна оценивать не только действие, но и траекторию
+
+Отдельно допустимые действия могут образовать опасную последовательность. Чтение реквизитов счета и перевод разрешены сами по себе, но перевод на реквизиты, не совпадающие с прочитанными, должен быть запрещен. Несколько покупок могут по отдельности оставаться ниже порога подтверждения, но вместе превысить бюджет; допустимый повтор превращается в опасный цикл, когда накопленный лимит уже исчерпан.[^aws-agentcore-trajectory-policy]
+
+Поэтому перед очередным внешним действием политика проверяет не только текущий запрос. Ей нужны связывание значений и нормализованные отпечатки значимых полей, накопленный бюджет, обязательные предшествующие шаги и их порядок, состояние подтверждения, временное окно и версия политики. Доверенная история решений хранится вне контекста модели и вне сжатой сводки: модель может предложить следующий шаг, но не может переписать доказательство того, что уже произошло.
+
+Результат такой проверки записывается отдельным событием `trajectory_policy_decision` с идентификатором правила, безопасным представлением наблюдаемой последовательности, счетчиками, причиной и итоговым решением. Ограничения частоты дополняют этот контракт, ограничивая число запросов, токены или длительность соединения, но не заменяют смысловую политику траектории, которая проверяет порядок действий, связность значений и накопленный эффект.
+
+Исполняемый учебный пример и ожидаемые решения собраны в [сценариях политики траектории](../../companion/examples/trajectory-policy-scenarios.md). Вычислитель получает проверенный снимок от доверенного поставщика, но сам не подтверждает его происхождение, не реализует распределенное долговечное хранилище, блокировки, сравнение и обмен (`CAS`), атомарную фиксацию действия со счетчиком или восстановление после сбоя и не подключен к `AgentRuntime`.
+
 ## 8. Пример контракта политики
 
 Ниже очень простой, но практичный шаблон:
@@ -601,6 +611,7 @@ capability_release_contract:
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
 [^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
+[^aws-agentcore-trajectory-policy]: AWS, [Control agent behaviors and cost beyond a single action: New capabilities in Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-in-amazon-bedrock-agentcore/)
 
 ## 17. Полезные справочные страницы
 
