@@ -249,6 +249,16 @@ DeepMind 的 AI Control Roadmap 很好地指出了策略层的另一项职责：
 
 AWS AgentCore Gateway 展示了围绕 MCP tools 建立这类层的实践版本：policy 和 Lambda interceptors 位于 model loop 之外，所以 control path 不依赖 agent 怎样解释自己的下一次调用。[^aws-agentcore-policy-interceptors] Cedar policy 基于 principal、action、resource 和 context 给出 deterministic allow/deny decision；request/response interceptors 则处理动态部分：bearer token validation、act-on-behalf token exchange、context injection、tool authorization、payload transformation 和 response filtering。对参考运行时来说，有用的结论是：tool call 应该经过 pre-call decision point、downstream call 和 post-call response filter，而 trace 应该保存 policy decision、denial reason、sanitized request/response、interceptor version 和 audit event。
 
+### 7.2. 策略不仅要评估单个动作，还要评估整条轨迹
+
+单独看起来合法的动作，组合后可能形成危险序列。读取账户信息和执行转账可以分别被允许，但如果转账目标与先前读取的账户信息不一致，就必须拒绝。多笔采购可能每一笔都低于审批阈值，累计后却超过预算；当累计额度已经耗尽时，原本合法的重试也会变成危险循环。[^aws-agentcore-trajectory-policy]
+
+因此，在执行下一个外部动作前，策略不能只检查当前请求。它还需要检查重要字段的值绑定与规范化指纹、累计预算、必需前置步骤及其顺序、审批状态、时间窗口和策略版本。可信的决策历史保存在模型上下文与压缩摘要之外：模型可以提出下一步，但不能改写已经发生之事的证据。
+
+运行时应把这次检查记录为独立的 `trajectory_policy_decision` 事件，其中包含规则标识符、对已观察序列的安全表示、计数器、原因和最终决策。速率限制通过约束请求频率、令牌或连接时长来补充这一契约，但不能替代语义层面的轨迹策略；后者检查动作顺序、值的一致性和累计影响。
+
+[轨迹策略场景](../../companion/examples/trajectory-policy-scenarios.zh.md)提供了可运行的教学示例及预期决策。评估器从可信提供方接收已验证快照，但它本身不证明快照来源，不实现分布式持久存储、锁、比较并交换（`CAS`）、动作与计数器的原子提交或崩溃恢复，也没有接入 `AgentRuntime`。
+
 ## 8. 一个策略契约示例
 
 下面是一个非常简单但实用的模板：
@@ -481,6 +491,7 @@ def get_capability(name: str) -> CapabilitySpec | None:
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
 [^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
+[^aws-agentcore-trajectory-policy]: AWS, [Control agent behaviors and cost beyond a single action: New capabilities in Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-in-amazon-bedrock-agentcore/)
 
 ## 17. 值得配套阅读的参考页
 

@@ -155,6 +155,7 @@ Below is the main set of primary sources used by the current version of the book
 - AWS, [MCP tool design: practical approaches and tradeoffs](https://aws.amazon.com/blogs/machine-learning/mcp-tool-design-practical-approaches-and-tradeoffs/)
 - AWS Prescriptive Guidance, [Design tools for AI agents](https://docs.aws.amazon.com/prescriptive-guidance/latest/agentic-ai-patterns/tool-design.html)
 - AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
+- AWS, [Control agent behaviors and cost beyond a single action: New capabilities in Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-in-amazon-bedrock-agentcore/)
 - AWS, [How Smartsheet built a remote MCP server on AWS](https://aws.amazon.com/blogs/machine-learning/how-smartsheet-built-a-remote-mcp-server-on-aws/)
 - AWS, [Introducing stateful MCP client capabilities on Amazon Bedrock AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/introducing-stateful-mcp-client-capabilities-on-amazon-bedrock-agentcore-runtime/)
 - AWS, [Extending MCP support for Amazon Bedrock AgentCore Gateway](https://aws.amazon.com/blogs/machine-learning/extending-mcp-support-for-amazon-bedrock-agentcore-gateway-2/)
