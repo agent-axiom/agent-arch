@@ -37,6 +37,14 @@
 
 Именно здесь `MCP` ложится естественно.
 
+### 2.1. Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент
+
+AlbumentationsX MCP — open-source community-интеграция, разработанная автором этой книги. Она не является официальным продуктом AlbumentationsX и не заменяет Python API: сервер даёт MCP-хосту типизированный путь для проверки конвейеров аугментации, небольших локальных превью, сравнения вариантов, фиксации визуальной обратной связи и экспорта принятой конфигурации.[^albu-mcp-guide][^albu-mcp-project]
+
+Архитектурно это возможность, а не отдельный агент. У сервера нет собственной операционной роли, цели или права самостоятельно менять процесс обучения. Он не обучает модели, не загружает удалённые изображения, не перезаписывает наборы данных и не исполняет переданный пользователем произвольный Python-код. Зато граница возможности выражена явно: чтение ограничивается настроенным `allowed-root`, результаты пишутся в отдельный каталог артефактов, запрос проверяется до рендеринга и ограничивается по числу входов и вариантов. Детерминированные seed, манифесты и трассы применённых преобразований помогают воспроизвести результат; профили возможностей уменьшают видимую поверхность инструментов, а снапшоты контрактов и golden evals обнаруживают дрейф интерфейса.
+
+Эти свойства не превращают проект в гарантию безопасности. Узкий `allowed-root` нужно задавать явно; принятие превью остаётся правилом рабочего процесса, а не жёстким шлюзом авторизации; молодой проект не доказывает широкое промышленное внедрение. Переносимый урок скромнее и полезнее: хороший MCP-сервер соединяет узкий доменный контракт, исполняемые ограничения, воспроизводимые артефакты и честную границу доказательств.
+
 ## 3. Когда тебе действительно нужен A2A
 
 `A2A` имеет смысл, когда у тебя уже есть не просто набор инструментов, а реально разные агенты с отдельной ответственностью:
@@ -254,3 +262,5 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 [^google-multiagent]: [Google Cloud Architecture Center, Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
 [^a2a-spec]: [Agent2Agent Protocol, A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)
+[^albu-mcp-guide]: [Albumentations, AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/)
+[^albu-mcp-project]: [dKosarevsky/albu-mcp, release v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) и [снимок исходного кода 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8)
