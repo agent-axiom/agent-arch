@@ -208,7 +208,7 @@ Project Think 把同一条经验整理成一条实用框架：**primitive -> fai
 
 简短说法是：prompt/tool/skill layer 负责定义 **agent 能做什么**，runtime layer 负责定义 **这次执行如何保持可治理、可恢复、可调查**。如果没有这条边界，团队通常会把整个系统都叫作 “agent harness”，然后很晚才发现 crash recovery、multi-tenancy、approval sleep/resume 和 observability 分散在不同地方，没有共同 contract。
 
-在这条架构光谱较窄的一端，是本书作者的开源项目 Laconian：它的 `if` 是 Markdown-only behavioral skill，不调用 tools，也不产生 side effects；benchmark machinery 留在 runtime 所加载的 artifact 之外。[^laconian-runtime-boundary] 下文的 Cloudflare `security-audit` 案例位于另一端：一个由 durable multi-stage workflow 支撑的 skill-shaped entry point。
+在这条架构光谱较窄的一端，是本书作者的开源项目 Laconian：它的 `if` 是 Markdown-only behavioral skill。其可安装的 artifact 不包含 executable 或 tool-specific logic，也不会自行产生 external effects；任何 tool use 或 side effects 都属于 host task and runtime，而 benchmark machinery 留在该 runtime 所加载的 artifact 之外。[^laconian-runtime-boundary] 下文的 Cloudflare `security-audit` 案例位于另一端：一个由 durable multi-stage workflow 支撑的 skill-shaped entry point。
 
 AWS AgentCore 和 GitHub security validation for third-party coding agents 可以作为同一个 contract 的新 production reference。[^aws-agentcore-agentops][^aws-agentcore-coding-agents][^github-third-party-coding-agent-validation] AgentCore AgentOps 把 traces、latency、token/cost metrics、session history、PII redaction 和 governance signals 变成可见对象；hosting coding agents 的例子补上 isolated session、persistent workspace、scoped credentials，以及用户关掉 laptop 后 agent 仍在 managed environment 里继续任务；GitHub validation 则说明，agent-generated code 在被视为 ready for review 之前，应该先经过 platform-owned CodeQL、dependency risk 和 secret scanning gates。
 
