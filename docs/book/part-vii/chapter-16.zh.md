@@ -208,6 +208,8 @@ Project Think 把同一条经验整理成一条实用框架：**primitive -> fai
 
 简短说法是：prompt/tool/skill layer 负责定义 **agent 能做什么**，runtime layer 负责定义 **这次执行如何保持可治理、可恢复、可调查**。如果没有这条边界，团队通常会把整个系统都叫作 “agent harness”，然后很晚才发现 crash recovery、multi-tenancy、approval sleep/resume 和 observability 分散在不同地方，没有共同 contract。
 
+在这条架构光谱较窄的一端，是本书作者的开源项目 Laconian：它的 `if` 是 Markdown-only behavioral skill，不调用 tools，也不产生 side effects；benchmark machinery 留在 runtime 所加载的 artifact 之外。[^laconian-runtime-boundary] 下文的 Cloudflare `security-audit` 案例位于另一端：一个由 durable multi-stage workflow 支撑的 skill-shaped entry point。
+
 AWS AgentCore 和 GitHub security validation for third-party coding agents 可以作为同一个 contract 的新 production reference。[^aws-agentcore-agentops][^aws-agentcore-coding-agents][^github-third-party-coding-agent-validation] AgentCore AgentOps 把 traces、latency、token/cost metrics、session history、PII redaction 和 governance signals 变成可见对象；hosting coding agents 的例子补上 isolated session、persistent workspace、scoped credentials，以及用户关掉 laptop 后 agent 仍在 managed environment 里继续任务；GitHub validation 则说明，agent-generated code 在被视为 ready for review 之前，应该先经过 platform-owned CodeQL、dependency risk 和 secret scanning gates。
 
 因此，可移植的 production runtime contract 可以写成：**isolated session → durable workspace → scoped credentials → egress/tool boundary → trace and cost ledger → PII redaction → platform security validation → human review artifact**。对参考运行时来说，这不是“必须用 AWS”或“必须用 GitHub”，而是一份 checklist：runtime 应该知道 workspace 在哪里、哪些 credentials 可用、哪些 network/tool boundaries 生效、这次 run 花费多少、哪些 sensitive fields 被 redacted、哪些 security gates 检查过 staged output，以及人类之后会 review 哪个 artifact。
@@ -625,6 +627,8 @@ runtime:
 [^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
 
 [^anthropic-managed-agents]: Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents).
+
+[^laconian-runtime-boundary]: Laconian，固定在 revision `669c45e849f75c99f81af19561d09cf24664e935`：[`skills/if/SKILL.md`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md)与[`docs/design.md`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md)。
 
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 
