@@ -39,6 +39,7 @@
 
 ## Архитектура агентных систем и платформенные паттерны
 
+- Дмитрий Викулин, [Laconian — открытый проект автора этой книги](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md): [контракт навыка `if`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md), [граница навыка и оценочной обвязки](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md), [принцип «сначала смысл, потом сжатие»](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md) и [методология бенчмарка](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md). На этой зафиксированной ревизии публичных результатов бенчмарка еще нет; smoke-тесты проверяют оценочный путь, а не производительность.
 - Дмитрий Викулин, [«Архитектура надежных AI-агентов»](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 - Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
