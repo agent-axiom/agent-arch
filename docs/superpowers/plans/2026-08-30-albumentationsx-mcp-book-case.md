@@ -8,6 +8,15 @@
 
 **Tech Stack:** Markdown, MkDocs Material, Python 3.12, pytest, the repository's deterministic Russian manuscript transformer, `uv`.
 
+> **Integration note (30 August 2026).** The implementation was rebased onto the
+> post-PR #57 `main`, where AWS already occupies publisher source `S123` and
+> editorial passes continue through 23 August. The merged form therefore uses
+> `S124`/`S125`, runs the author-case transform after the 23 August passes,
+> preserves the newer “Выбор протокола” bridge, and finishes at 123 case words
+> and 4,985 Chapter 11 words. Command and code excerpts below retain the
+> pre-rebase sequence as an execution record; the repository implementation and
+> tests are authoritative.
+
 ---
 
 ## File Map
