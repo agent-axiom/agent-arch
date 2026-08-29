@@ -462,6 +462,18 @@ GitHub Copilot agentic harness 给了一个很有用的生产信号：agent qual
 
 实际结论是：如果团队改动 harness、context strategy 或 model routing，就需要 harness-level release gate。否则团队很容易误判成“模型变好了”或“模型变差了”，而真正原因其实在 orchestration layer。
 
+!!! example "本书作者的开源项目：把 Laconian 当作可检验的 skill"
+
+    Laconian 是本书作者的开源项目，`if` 是其中可移植的 skill。[^laconian-case] 完整的可安装 artifact 只有 `skills/if/SKILL.md` 这一个 behavioral Markdown file：不包含 scripts、dependencies、permissions、assets、network calls 或 tool-specific instructions。这里披露的是作者自己的案例，不是独立第三方验证。
+
+    `if` 的 contract 并不要求不惜代价地追求 brevity。它的优先级依次是 correctness and safety；用户要求、所需细节、format 与 tone；material facts、constraints、warnings 与 uncertainty；practical sufficiency；clarity and natural language；最后才是 brevity。Code、commands、errors、numbers、versions、URLs、identifiers、schemas、required keys、order 和 format 在精确形式承载意义时必须保持不变。一旦下一次删除会削弱 correctness、safety、requirement coverage、completeness、usefulness、clarity 或 tone，压缩就应该停止。
+
+    Benchmark 刻意把两个问题分开：activation 与 deliberately applied response behavior。Activation suite 检查 agent host 是否应该为某个请求选择 `if`；response suite 绕过 automatic selection，主动施加每个 comparison arm。四个 arms 分别是 `baseline`、完全一致的指令 `Answer concisely.`、按字节固定的 Caveman fixture，以及 `skills/if/SKILL.md` 的 exact bytes。不同 arms 之间的 model、user prompt、generation settings、tool availability 和 instruction placement 保持不变；只有 comparison instruction 改变。
+
+    Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行，因此失败的 answer 不能只因为更短就获胜。每次 run 都保留 runner version、完整 case hash、prompt 与 instruction hashes、attempt/retry lineage，以及 append-only raw artifacts；只有使用 semantic judging 时才保留 judge provenance。这样，hypothesis 才是可审查、可证伪的。
+
+    在该固定 revision 上，仓库尚无公开 benchmark 结果。Smoke/replay fixtures 只验证 evaluation path；它们不能证明 `if` 节省 token、优于另一条 arm，或在不同 agent hosts 上表现一致。这里成立的是 contract 与 evaluation discipline，而不是一个有利结果。
+
 ### 7.2. 质量回归也可能在产品 harness 里
 
 Anthropic 关于 Claude Code quality reports 的复盘，把同一个问题展示得更直接。[^anthropic-claude-code-quality-reports] 用户感受到 Claude Code、Claude Agent SDK 和 Claude Cowork 的质量下降，但 API 和 inference layer 并不是原因。三个变化都在产品 harness 层：为了 latency 降低 default reasoning effort；stale-session optimization 反复裁掉 older thinking；为了降低 verbosity 加入的 system prompt instruction 又伤害了 coding quality。
@@ -673,3 +685,4 @@ Google 的 Discovery Bench 还补了第二个提醒：团队也要 **evaluate yo
 [^google-evaluate-agents]: Google Cloud, [Evaluate your agents](https://docs.cloud.google.com/gemini-enterprise-agent-platform/optimize/evaluation/evaluate-agents).
 [^google-evaluate-agent-performance]: Google Cloud Blog, [Evaluate agent performance](https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
+[^laconian-case]: Laconian 是本书作者的开源项目；以下 primary materials 固定在 revision `669c45e849f75c99f81af19561d09cf24664e935`：[README](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md)、[`if` skill contract](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md)、[skill/evaluation-harness boundary](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md)、[fidelity-before-compression rationale](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md)与[benchmark methodology](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md)。

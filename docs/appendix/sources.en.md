@@ -39,6 +39,7 @@ Below is the main set of primary sources used by the current version of the book
 
 ## Agent Architecture and Platform Patterns
 
+- Dmitry Vikulin, [Laconian — an open-source project by the author of this book](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md): [the `if` skill contract](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md), [the skill/evaluation-harness boundary](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md), [the fidelity-before-compression rationale](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md), and [benchmark methodology](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md). At this pinned revision no public benchmark result is available; smoke fixtures validate the evaluation path rather than performance.
 - Dmitry Vikulin, [Architecture of Reliable AI Agents](https://vikulin.ai/library/tpost/ai_agent_architecture)
 - Anthropic, [Building Effective AI Agents](https://www.anthropic.com/engineering/building-effective-agents)
 - Anthropic, [Harness design for long-running application development](https://www.anthropic.com/engineering/harness-design-long-running-apps)
