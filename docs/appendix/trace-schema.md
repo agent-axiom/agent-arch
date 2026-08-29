@@ -126,6 +126,7 @@
 | `retrieval` | при извлечении контекста памяти | фиксирует источник и число найденных записей |
 | `context_layers_built` | после сборки контекста | показывает, какие слои контекста реально попали в запуск; внутри `RunContext` хранятся `retrieved_context` и `retrieved_records` до обработки `tool_request` |
 | `tool_policy_decision` | перед выполнением инструмента | фиксирует решение политики и причину: разрешить, запретить или запросить подтверждение |
+| `trajectory_policy_decision` | после оценки текущего запроса относительно доверенного frozen snapshot истории | фиксирует решение `allow`, `deny` или `approval_required`, сработавшее правило и безопасные сводки последовательности без сырых реквизитов |
 | `mcp_tool_risk_review` | при разборе риска инструмента или сервера MCP | связывает класс угрозы, доказательства из реестра, проверку области доступа и состояние карантина |
 | `tool_execution` | после вызова возможности или передачи на подтверждение | фиксирует статус возможности и контекст принципала инструмента |
 | `a2a_handoff` | когда один агент делегирует работу другому агенту | фиксирует цепочку делегирования, авторизацию и контекст атрибуции сбоя |
@@ -170,6 +171,84 @@
 - какие поля можно добавлять без поломки зависимых инструментов;
 - какие поля нужны для оценки;
 - какие поля нужны для аудита.
+
+### Событие `trajectory_policy_decision`
+
+Чистый evaluator политики траектории возвращает `TrajectoryPolicyDecision` и
+сам не эмитит события. Companion runner вызывает `to_event_payload()` у этого
+решения и передаёт полученные поля в существующий `TelemetryEmitter.emit`.
+Сформированный таким способом `payload` содержит **ровно** следующие поля, и
+значение каждого поля является строкой:
+
+| Поле | Смысл |
+| --- | --- |
+| `policy_id` | идентификатор набора правил |
+| `policy_version` | версия набора правил |
+| `rule_id` | первое сработавшее правило или `trajectory.all_rules` |
+| `reason` | стабильная машинная причина решения |
+| `history_ref` | ссылка на доверенный snapshot, а не текстовая сводка модели |
+| `history_version` | версия snapshot, сериализованная как строка |
+| `sequence_summary` | безопасная сводка вида `observed=2;current=3` |
+| `sequence_ref` | ссылка на `observed_sequence` внутри snapshot |
+| `fingerprints` | нормализованные fingerprints текущего запроса и истории плюс вычисленный canonical request fingerprint |
+| `counters` | только состояния проверок счётчиков, например `amount=limit_exceeded` или `amount=arithmetic_error`, без числовых значений |
+| `window_id` | идентификатор окна накопления |
+| `window_state` | состояние окна, например `open` |
+| `approval_state` | агрегированное состояние подтверждения |
+| `decision` | только `allow`, `deny` или `approval_required` |
+
+Пример оболочки:
+
+```json
+{
+  "schema_version": "1.0",
+  "event_type": "trajectory_policy_decision",
+  "trace_id": "trace-destination_fingerprint_mismatch",
+  "payload": {
+    "policy_id": "transfer-trajectory",
+    "policy_version": "2026.08.23",
+    "rule_id": "destination-binding",
+    "reason": "value_binding_mismatch",
+    "history_ref": "trajectory://transfer/example-001",
+    "history_version": "7",
+    "sequence_summary": "observed=2;current=3",
+    "sequence_ref": "trajectory://transfer/example-001#observed_sequence",
+    "fingerprints": "destination[history=sha256:aaaa,current=sha256:bbbb];request[sha256:cccc]",
+    "counters": "amount=not_evaluated",
+    "window_id": "daily-2026-08-23",
+    "window_state": "open",
+    "approval_state": "approved",
+    "decision": "deny"
+  },
+  "redacted_fields": []
+}
+```
+
+Сокращённые fingerprints в примере показывают форму, а исполняемый контракт
+принимает полный `sha256:` и 64 шестнадцатеричных символа. Canonical request
+fingerprint вычисляет код из action, tenant/subject, ожидаемых history
+ref/version, sequence, window, policy id/version, отсортированных значимых
+fingerprints и дельт счётчиков; caller не передаёт его в `TrajectoryRequest`.
+
+Значения идентификаторов имеют длину не более 64 символов и форму
+`[a-z0-9][a-z0-9._-]{0,63}`. Ссылки имеют длину не более 256 символов,
+lowercase URI-like форму без whitespace и control characters. Перед emission
+`to_event_payload()` дополнительно ограничивает каждое значение payload длиной
+8192 и ASCII allowlist; небезопасное значение даёт
+`Trajectory telemetry value is invalid: {field}`. Это структурная защита, а не
+детектор секретов: доверенный поставщик всё равно отвечает за semantic secret
+hygiene и не должен кодировать секрет в формально допустимом slug или URI.
+Исполняемый контракт заранее ограничивает запрос и снимок 16 отпечатками и 32
+счётчиками каждый, поэтому допустимые максимальные наборы не могут сорвать
+формирование обязательного события из-за длины строковой сводки.
+
+В событии запрещены сырые destination, номера счетов и иные реквизиты, tool
+arguments, числовые значения счётчиков, токены, credentials и секреты. Для
+чувствительных значений с низкой энтропией даже обычного SHA-256 недостаточно:
+production-поставщик snapshot должен применять keyed HMAC или другой
+утверждённый механизм псевдонимизации с ротацией ключей. Само событие является
+доказательством решения, но не заменяет транзакционный журнал, блокировку или
+атомарную фиксацию счётчика и внешнего эффекта.
 
 Для `agent_threat_evidence` полезно сохранять маркеры доказательств из единой модели доказательств угроз агенту (unified agent threat evidence model), чтобы строки угроз можно было проверить по трассам, а не только по объясняющему тексту:
 

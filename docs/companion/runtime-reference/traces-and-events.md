@@ -8,8 +8,9 @@
 
 - Telemetry model: `agent_runtime_ref/telemetry.py`
 - Runtime execution: `agent_runtime_ref/runtime.py`, `agent_runtime_ref/execution.py`
+- Isolated trajectory policy: `agent_runtime_ref/trajectory.py`
 - CLI export: `agent_runtime_ref/__main__.py`
-- Тесты trace/export: `tests/test_agent_runtime_ref.py`
+- Тесты trace/export: `tests/test_agent_runtime_ref.py`, `tests/test_trajectory_policy.py`
 - Печатная привязка: главы 13-15 и глава 23
 
 ## Минимальный event chain
@@ -30,6 +31,40 @@ required_events:
 ```
 
 Если запуск завершился отказом или неизвестным side effect, trace должен сохранить failure reason и recovery context, а не только финальный статус.
+
+## Trajectory policy decision
+
+Чистый evaluator политики всей последовательности возвращает decision и не
+эмитит telemetry. Companion runner преобразует decision в строковый payload и
+передаёт его в `TelemetryEmitter.emit` как `trajectory_policy_decision`. Payload
+содержит строковые `policy_id`,
+`policy_version`, `rule_id`, `reason`, `history_ref`, `history_version`,
+`sequence_summary`, `sequence_ref`, `fingerprints`, `counters`, `window_id`,
+`window_state`, `approval_state` и `decision`. В `decision` допустимы только
+`allow`, `deny` и `approval_required`.
+
+Детерминированный runner и ожидаемые решения находятся в
+[сценариях политики траектории](../examples/trajectory-policy-scenarios.md):
+
+```bash
+/path/to/agent-arch/.venv/bin/python \
+  docs/companion/examples/run_trajectory_policy_scenarios.py
+```
+
+Runner эмитит событие через `TelemetryEmitter`; каждое значение payload —
+строка. `fingerprints` содержит только нормализованные отпечатки и вычисленный
+canonical request fingerprint; `counters` — только состояния проверок, включая
+`arithmetic_error`, но не суммы. Caller не передаёт request fingerprint: код
+связывает action, tenant/subject, history ref/version, sequence, window, policy
+id/version, отсортированные fingerprints и counter deltas.
+
+Идентификаторы, ссылки и итоговые значения payload проходят bounded lowercase
+ASCII allowlist без whitespace/control characters. Это structural safeguard:
+trusted snapshot provider всё равно отвечает за semantic secret hygiene. Сырые
+реквизиты, tool arguments, credentials и секреты запрещены. `None` и malformed
+history дают редактированные `deny` с причинами `history_missing` и
+`history_malformed`. Этот пример не включён в event chain `AgentRuntime` и не
+представляет собой распределённый транзакционный журнал.
 
 ## Поля, которые нельзя терять
 

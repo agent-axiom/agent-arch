@@ -249,6 +249,16 @@ This is an important boundary: not every danger looks like adversarial misuse. S
 
 AWS AgentCore Gateway shows a practical version of this layer around MCP tools: policy and Lambda interceptors sit outside the model loop, so the control path does not depend on how the agent explains its next call.[^aws-agentcore-policy-interceptors] Cedar policy provides a deterministic allow/deny decision over principal, action, resource, and context, while request/response interceptors handle the dynamic part: bearer-token validation, act-on-behalf token exchange, context injection, tool authorization, payload transformation, and response filtering. For a reference runtime, the useful lesson is that a tool call should pass through a pre-call decision point, downstream call, and post-call response filter, while the trace stores the policy decision, denial reason, sanitized request/response, interceptor version, and audit event.
 
+### 7.2. Policy must evaluate the trajectory, not only the action
+
+Actions that are legitimate in isolation can form an unsafe sequence. Reading account details and making a transfer may each be allowed, but a transfer to details that do not match the earlier read must be denied. Several purchases may each remain below an approval threshold yet exceed the budget together; an otherwise valid retry becomes an unsafe loop once the cumulative allowance has been exhausted.[^aws-agentcore-trajectory-policy]
+
+Before the next external action, policy must therefore evaluate more than the current request. It needs value bindings and normalized fingerprints for significant fields, the cumulative budget, required predecessor steps and their order, approval state, time window, and policy version. The trusted decision history lives outside the model context and outside the compaction summary: the model may propose the next step, but it cannot rewrite the evidence of what has already happened.
+
+The runtime records this check as a separate `trajectory_policy_decision` event containing the rule identifier, a safe representation of the observed sequence, counters, reason, and final decision. Rate limits complement this contract by constraining request frequency, tokens, or connection duration, but they do not replace semantic trajectory policy, which checks action order, value continuity, and cumulative effect.
+
+The [trajectory-policy scenarios](../../companion/examples/trajectory-policy-scenarios.en.md) provide a runnable teaching example and its expected decisions. The evaluator receives a verified snapshot from a trusted provider, but does not itself prove that snapshot's provenance, implement a distributed durable store, locking, compare-and-swap (`CAS`), an atomic action-and-counter commit, or crash recovery, and is not connected to `AgentRuntime`.
+
 ## 8. Example Policy Contract
 
 Here is a very simple but practical template:
@@ -481,6 +491,7 @@ The next logical step in the reference implementation is to assemble a productio
 [^openai-structured]: [OpenAI, Structured model outputs](https://developers.openai.com/api/docs/guides/structured-outputs)
 [^deepmind-ai-control]: Google DeepMind, [Securing the future of AI agents](https://deepmind.google/discover/blog/securing-the-future-of-ai-agents/)
 [^aws-agentcore-policy-interceptors]: AWS, [Secure AI agents with Policy and Lambda interceptors in Amazon Bedrock AgentCore gateway](https://aws.amazon.com/blogs/machine-learning/secure-ai-agents-with-policy-and-lambda-interceptors-in-amazon-bedrock-agentcore-gateway/)
+[^aws-agentcore-trajectory-policy]: AWS, [Control agent behaviors and cost beyond a single action: New capabilities in Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-in-amazon-bedrock-agentcore/)
 
 ## 17. Useful Reference Pages
 

@@ -15,26 +15,42 @@ from zipfile import ZipFile
 
 import pytest
 
-from docs.publisher.tools import sync_ru_docx_visuals
+from docs.publisher.tools import normalize_docx_figure_caption_order, sync_ru_docx_visuals
 
 ROOT = Path(__file__).resolve().parents[1]
 EDITORIAL_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_docx.py"
-RAW_EDITORIAL_DOCX = (
-    ROOT
-    / (
-        "docs/publisher/artifacts/"
-        "agent-arch-ru-google-doc-unified-visuals-2026-08-02.docx"
-    )
+RAW_EDITORIAL_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-google-doc-publication-readiness-2026-08-14.docx"
 )
-EDITORIAL_TEMPLATE_DOCX = (
-    ROOT
-    / (
-        "docs/publisher/artifacts/"
-        "agent-arch-ru-template2000n-unified-visuals-2026-08-02.docx"
-    )
+EDITORIAL_TEMPLATE_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-template2000n-publication-readiness-2026-08-14.docx"
 )
 EDITORIAL_MANUSCRIPT = ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md"
-EXPECTED_TABLE_COUNT = 11
+CURRENT_RAW_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-google-doc-book-standards-2026-08-23.docx"
+)
+CURRENT_TEMPLATE_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-template2000n-book-standards-2026-08-23.docx"
+)
+RAW_A11Y = ROOT / "docs/publisher/ru-google-doc-book-standards-2026-08-23.a11y.json"
+RAW_RENDER_QA = ROOT / "docs/publisher/ru-google-doc-book-standards-2026-08-23.render-qa.json"
+TEMPLATE_A11Y = ROOT / "docs/publisher/ru-template2000n-book-standards-2026-08-23.a11y.json"
+TEMPLATE_FONT_AUDIT = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.font-audit.json"
+)
+TEMPLATE_METRICS = ROOT / ("docs/publisher/ru-template2000n-book-standards-2026-08-23.metrics.json")
+TEMPLATE_RENDER_QA = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.render-qa.json"
+)
+TEMPLATE_VISUAL_AUDIT = ROOT / (
+    "docs/publisher/ru-template2000n-book-standards-2026-08-23.visual-audit.json"
+)
+VISUAL_LAYOUT_AUDIT = ROOT / "docs/publisher/ru-visual-layout-audit-2026-08-24.json"
+INLINE_DIAGRAMS = ROOT / "docs/publisher/ru-inline-diagrams-2026-07-13.json"
+NUMBERED_DIAGRAMS = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
+DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
+EXPECTED_TABLE_COUNT = 12
+EXPECTED_IMAGE_COUNT = 57
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 CONTENT_TYPES_NS = "http://schemas.openxmlformats.org/package/2006/content-types"
@@ -60,9 +76,7 @@ def document_runtime_python() -> Path:
         runtime_python = Path(override)
         source = "CODEX_DOCUMENT_PYTHON"
     if not runtime_python.is_file() or not os.access(runtime_python, os.X_OK):
-        raise RuntimeError(
-            f"{source} must point to an existing executable: {runtime_python}"
-        )
+        raise RuntimeError(f"{source} must point to an existing executable: {runtime_python}")
     return runtime_python
 
 
@@ -81,7 +95,7 @@ def render_editorial_fixture(
     manuscript_path.write_text("# Fixture manuscript\n", encoding="utf-8")
     image_path.parent.mkdir()
     image_path.write_bytes(FIXTURE_PNG)
-    script = r'''
+    script = r"""
 import json
 import sys
 from pathlib import Path
@@ -108,7 +122,7 @@ Path(sys.argv[5]).write_text(
     json.dumps(renderer.metrics, ensure_ascii=False),
     encoding="utf-8",
 )
-'''
+"""
     subprocess.run(
         [
             str(runtime_python),
@@ -131,15 +145,13 @@ Path(sys.argv[5]).write_text(
 
 
 def paragraph_text(paragraph: ET.Element) -> str:
-    return "".join(
-        node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-    )
+    return "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
 
 
 def map_template_semantic_styles_in_runtime(
     document_xml: bytes,
 ) -> tuple[ET.Element, dict[str, int]]:
-    script = r'''
+    script = r"""
 import base64
 import json
 import sys
@@ -157,7 +169,7 @@ sys.stdout.write(
         ensure_ascii=False,
     )
 )
-'''
+"""
     completed = subprocess.run(
         [str(document_runtime_python()), "-c", script, str(ROOT)],
         input=document_xml,
@@ -243,8 +255,7 @@ def test_document_runtime_python_validates_explicit_override(
     with pytest.raises(
         RuntimeError,
         match=re.escape(
-            "CODEX_DOCUMENT_PYTHON must point to an existing executable: "
-            f"{missing_python}"
+            f"CODEX_DOCUMENT_PYTHON must point to an existing executable: {missing_python}"
         ),
     ):
         document_runtime_python()
@@ -414,8 +425,7 @@ def _write_docx_fixture(
         {
             "PartName": "/word/document.xml",
             "ContentType": (
-                "application/vnd.openxmlformats-officedocument."
-                "wordprocessingml.document.main+xml"
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"
             ),
         },
     )
@@ -517,17 +527,244 @@ print(json.dumps(result, ensure_ascii=False, sort_keys=True))
     return json.loads(completed.stdout)
 
 
+def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
+    styled_characters = 0
+    monospace_characters = 0
+    monospace_run_seen = False
+    for run in paragraph.findall(f"{{{WORD_NS}}}r"):
+        run_text = "".join(node.text or "" for node in run.findall(f".//{{{WORD_NS}}}t"))
+        fonts = run.find(f"{{{WORD_NS}}}rPr/{{{WORD_NS}}}rFonts")
+        if fonts is None:
+            continue
+        is_monospace = any(
+            "mono" in value.lower() or "courier" in value.lower() for value in fonts.attrib.values()
+        )
+        monospace_run_seen = monospace_run_seen or is_monospace
+        if not run_text.strip():
+            continue
+        styled_characters += len(run_text)
+        if is_monospace:
+            monospace_characters += len(run_text)
+    if styled_characters == 0:
+        return monospace_run_seen
+    return monospace_characters / styled_characters >= 0.8
+
+
+def active_on_off_property(paragraph: ET.Element, name: str) -> bool:
+    property_node = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}{name}")
+    return property_node is not None and property_node.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+        "0",
+        "false",
+        "off",
+    }
+
+
 def test_visual_audit_accepts_every_current_manuscript_image() -> None:
-    assert len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT)) == 56
+    assert (
+        len(sync_ru_docx_visuals.parse_manuscript_visuals(EDITORIAL_MANUSCRIPT))
+        == EXPECTED_IMAGE_COUNT
+    )
+
+
+def test_mermaid_visuals_reserve_space_below_cluster_titles() -> None:
+    report = json.loads(VISUAL_LAYOUT_AUDIT.read_text(encoding="utf-8"))
+
+    assert report["rendered"] == 56
+    assert report["violations"] == []
+    assert report["minimum_effective_font_pt"] >= 8.5
+    assert report["cluster_title_violations"] == []
+    assert report["cluster_title_edge_violations"] == []
+    assert report["node_label_violations"] == []
+    assert report["minimum_cluster_title_gap_px"] >= 12
+
+
+def test_mermaid_renderer_rejects_hidden_edges_and_intrinsic_label_clipping() -> None:
+    source = DIAGRAM_RENDERER.read_text(encoding="utf-8")
+
+    assert "if (crossedLabel.opaque_background) continue;" not in source
+    assert "scrollWidth" in source
+    assert "clientWidth" in source
+
+
+def test_generated_mermaid_svgs_are_valid_standalone_xml() -> None:
+    for manifest_path in (INLINE_DIAGRAMS, NUMBERED_DIAGRAMS):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for diagram in manifest["diagrams"]:
+            svg_path = ROOT / "docs/publisher/visuals" / diagram["filename"].replace(".png", ".svg")
+            ET.parse(svg_path)
+
+
+def test_mermaid_sources_connect_nodes_instead_of_cluster_frames() -> None:
+    for manifest_path in (INLINE_DIAGRAMS, NUMBERED_DIAGRAMS):
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        for diagram in manifest["diagrams"]:
+            source = diagram["mermaid"]
+            cluster_ids = set(re.findall(r"^subgraph\s+([A-Za-z][\w-]*)", source, re.M))
+            linked_cluster_ids = {
+                endpoint
+                for left, right in re.findall(
+                    r"^\s*([A-Za-z][\w-]*)\s*(?:-->|-\.->|~~~)(?:\|[^\n]*?\|)?\s*"
+                    r"([A-Za-z][\w-]*)",
+                    source,
+                    re.M,
+                )
+                for endpoint in (left, right)
+                if endpoint in cluster_ids
+            }
+            assert linked_cluster_ids == set(), (
+                f"{diagram['filename']} links cluster frames: {sorted(linked_cluster_ids)}"
+            )
+
+
+def test_independently_reviewed_decisions_have_explicit_safe_branches() -> None:
+    inline = {
+        item["filename"]: item["mermaid"]
+        for item in json.loads(INLINE_DIAGRAMS.read_text(encoding="utf-8"))["diagrams"]
+    }
+
+    assert 'V -->|"Да"| Y' in inline["ru-inline-diagram-05.png"]
+    assert 'V -->|"Нет"| Q' in inline["ru-inline-diagram-05.png"]
+    assert 'U -->|"Нет"| E' in inline["ru-inline-diagram-10.png"]
+    assert 'U -->|"Да"| F' in inline["ru-inline-diagram-10.png"]
+    assert 'F -->|"Эффекта нет"| E' in inline["ru-inline-diagram-10.png"]
+    assert 'F -->|"Исход неизвестен"| H' in inline["ru-inline-diagram-10.png"]
+    assert 'G -->|"Да"| H' in inline["ru-inline-diagram-29.png"]
+    assert 'G -->|"Нет"| R' in inline["ru-inline-diagram-29.png"]
 
 
 def test_visual_audit_uses_the_parsed_manuscript_count_for_docx_validation() -> None:
     validate = getattr(sync_ru_docx_visuals, "validate_docx_image_counts", None)
 
     assert validate is not None
-    validate(56, 56, 56)
-    with pytest.raises(ValueError, match="raw=55, template=56, expected=56"):
-        validate(55, 56, 56)
+    validate(EXPECTED_IMAGE_COUNT, EXPECTED_IMAGE_COUNT, EXPECTED_IMAGE_COUNT)
+    with pytest.raises(ValueError, match="raw=56, template=57, expected=57"):
+        validate(56, 57, 57)
+
+
+def test_visual_resize_is_idempotent_at_the_print_height_limit() -> None:
+    drawing = ET.fromstring(
+        f'<w:drawing xmlns:w="{WORD_NS}" xmlns:wp="{DRAWING_NS}" '
+        f'xmlns:a="{DRAWINGML_NS}">'
+        '<wp:extent cx="5943600" cy="5943600"/>'
+        '<a:xfrm><a:ext cx="5943600" cy="5943600"/></a:xfrm>'
+        "</w:drawing>"
+    )
+    image = ROOT / "docs/publisher/visuals/ru-figure-13-autonomy-ladder.png"
+
+    first = sync_ru_docx_visuals.resize_drawing(drawing, image)
+    first_xml = ET.tostring(drawing)
+    second = sync_ru_docx_visuals.resize_drawing(drawing, image)
+
+    assert first == second
+    assert first[1] <= sync_ru_docx_visuals.MAX_FIGURE_HEIGHT
+    assert ET.tostring(drawing) == first_xml
+
+
+def test_visual_resize_expands_small_legacy_placeholders_to_the_print_frame() -> None:
+    drawing = ET.fromstring(
+        f'<w:drawing xmlns:w="{WORD_NS}" xmlns:wp="{DRAWING_NS}" '
+        f'xmlns:a="{DRAWINGML_NS}">'
+        f'<wp:extent cx="{sync_ru_docx_visuals.EMU_PER_INCH}" '
+        f'cy="{sync_ru_docx_visuals.EMU_PER_INCH}"/>'
+        f'<a:xfrm><a:ext cx="{sync_ru_docx_visuals.EMU_PER_INCH}" '
+        f'cy="{sync_ru_docx_visuals.EMU_PER_INCH}"/></a:xfrm>'
+        "</w:drawing>"
+    )
+    image = ROOT / "docs/publisher/visuals/ru-figure-01-book-map.png"
+
+    width, height = sync_ru_docx_visuals.resize_drawing(drawing, image)
+
+    assert width > sync_ru_docx_visuals.EMU_PER_INCH
+    assert width <= sync_ru_docx_visuals.MAX_FIGURE_WIDTH
+    assert height <= sync_ru_docx_visuals.MAX_FIGURE_HEIGHT
+
+
+def test_caption_normalizer_moves_only_captions_that_precede_images() -> None:
+    paragraphs: list[str] = []
+    expected_paragraphs: list[str] = []
+    for number in range(1, 26):
+        caption = f"<w:p><w:r><w:t>Рисунок {number}. Схема {number}</w:t></w:r></w:p>"
+        image = "<w:p><w:r><w:drawing/></w:r></w:p>"
+        paragraphs.extend((caption, image) if number <= 20 else (image, caption))
+        expected_paragraphs.extend(("<w:p><w:r><w:drawing /></w:r></w:p>", caption))
+    payload = (
+        f'<w:document xmlns:w="{WORD_NS}"><w:body>' + "".join(paragraphs) + "</w:body></w:document>"
+    ).encode()
+
+    normalized, metrics = normalize_docx_figure_caption_order.normalize_document_xml(payload)
+    document = ET.fromstring(normalized)
+    children = list(document.find(f"{{{WORD_NS}}}body"))
+
+    assert metrics == {
+        "numbered_captions": 25,
+        "captions_moved": 20,
+        "captions_already_after_images": 5,
+        "captions_after_images": 25,
+    }
+    assert (
+        normalized
+        == (
+            "<?xml version='1.0' encoding='UTF-8'?>\n"
+            f'<w:document xmlns:w="{WORD_NS}"><w:body>'
+            + "".join(expected_paragraphs)
+            + "</w:body></w:document>"
+        ).encode()
+    )
+    for index, paragraph in enumerate(children):
+        text = "".join(paragraph.itertext()).strip()
+        if not text.startswith("Рисунок "):
+            continue
+        assert index > 0
+        assert children[index - 1].find(f".//{{{WORD_NS}}}drawing") is not None
+
+
+def test_caption_normalizer_skips_empty_paragraphs_before_an_image() -> None:
+    paragraphs = [
+        "<w:p><w:r><w:t>Рисунок 1. Схема 1</w:t></w:r></w:p>",
+        "<w:p/>",
+        "<w:p><w:r><w:drawing/></w:r></w:p>",
+    ]
+    for number in range(2, 26):
+        paragraphs.extend(
+            (
+                "<w:p><w:r><w:drawing/></w:r></w:p>",
+                f"<w:p><w:r><w:t>Рисунок {number}. Схема {number}</w:t></w:r></w:p>",
+            )
+        )
+    payload = (
+        f'<w:document xmlns:w="{WORD_NS}"><w:body>' + "".join(paragraphs) + "</w:body></w:document>"
+    ).encode()
+
+    normalized, metrics = normalize_docx_figure_caption_order.normalize_document_xml(payload)
+    document = ET.fromstring(normalized)
+    children = list(document.find(f"{{{WORD_NS}}}body"))
+
+    assert paragraph_text(children[0]) == ""
+    assert children[1].find(f".//{{{WORD_NS}}}drawing") is not None
+    assert paragraph_text(children[2]) == "Рисунок 1. Схема 1"
+    assert metrics == {
+        "numbered_captions": 25,
+        "captions_moved": 1,
+        "captions_already_after_images": 24,
+        "captions_after_images": 25,
+    }
+
+
+def test_caption_normalizer_reports_the_first_caption_without_an_adjacent_image() -> None:
+    paragraphs: list[str] = []
+    for number in range(1, 26):
+        caption = f"<w:p><w:r><w:t>Рисунок {number}. Схема {number}</w:t></w:r></w:p>"
+        image = "<w:p><w:r><w:drawing/></w:r></w:p>"
+        paragraphs.append(caption)
+        if number == 7:
+            paragraphs.append("<w:p><w:r><w:t>Между подписью и рисунком</w:t></w:r></w:p>")
+        paragraphs.append(image)
+    payload = (
+        f'<w:document xmlns:w="{WORD_NS}"><w:body>' + "".join(paragraphs) + "</w:body></w:document>"
+    ).encode()
+
+    with pytest.raises(ValueError, match="^No adjacent image found for figure caption 7$"):
+        normalize_docx_figure_caption_order.normalize_document_xml(payload)
 
 
 def test_editorial_builder_knows_all_eight_part_boundaries() -> None:
@@ -603,9 +840,7 @@ document.save(sys.argv[2])
     assert set(anchors) <= set(names)
 
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
-        value = "".join(
-            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-        )
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
         if re.match(r"^(?:Рисунок 3|Таблица 4|Листинг 12)\.", value):
             assert paragraph.find(f"{{{WORD_NS}}}hyperlink") is None
 
@@ -652,9 +887,7 @@ document.save(sys.argv[2])
 
     source_paragraphs = []
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
-        value = "".join(
-            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-        )
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
         if re.match(r"^S\d{3}\.", value):
             source_paragraphs.append(paragraph)
 
@@ -740,21 +973,15 @@ beta</code></pre>
     assert title_fonts is not None
     assert set(title_fonts.attrib.values()) == {"Arial"}
     assert title_run_properties.find(f"{{{WORD_NS}}}sz").attrib[f"{{{WORD_NS}}}val"] == "52"
-    assert title_run_properties.find(f"{{{WORD_NS}}}color").attrib[
-        f"{{{WORD_NS}}}val"
-    ] == "000000"
-    assert title_run_properties.find(f"{{{WORD_NS}}}b").attrib[
-        f"{{{WORD_NS}}}val"
-    ] == "0"
+    assert title_run_properties.find(f"{{{WORD_NS}}}color").attrib[f"{{{WORD_NS}}}val"] == "000000"
+    assert title_run_properties.find(f"{{{WORD_NS}}}b").attrib[f"{{{WORD_NS}}}val"] == "0"
 
     image = next(
         paragraph
         for paragraph in paragraphs
         if paragraph.find(f".//{{{WORD_NS}}}drawing") is not None
     )
-    assert image.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}jc").attrib[
-        f"{{{WORD_NS}}}val"
-    ] == "center"
+    assert image.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}jc").attrib[f"{{{WORD_NS}}}val"] == "center"
     assert image.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
     image_properties = image.find(f".//{{{DRAWING_NS}}}docPr")
     assert image_properties is not None
@@ -764,9 +991,7 @@ beta</code></pre>
     caption = by_text["Таблица 7. Проверочная подпись"]
     caption_properties = caption.find(f"{{{WORD_NS}}}pPr")
     assert caption_properties is not None
-    assert caption_properties.find(f"{{{WORD_NS}}}pStyle").attrib[
-        f"{{{WORD_NS}}}val"
-    ] == "Caption"
+    assert caption_properties.find(f"{{{WORD_NS}}}pStyle").attrib[f"{{{WORD_NS}}}val"] == "Caption"
     assert caption_properties.find(f"{{{WORD_NS}}}keepNext") is not None
     assert caption_properties.find(f"{{{WORD_NS}}}keepLines") is not None
 
@@ -783,13 +1008,13 @@ beta</code></pre>
         for paragraph in paragraphs
         if paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pBdr") is not None
     )
-    bottom_border = rule.find(
-        f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pBdr/{{{WORD_NS}}}bottom"
-    )
+    bottom_border = rule.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pBdr/{{{WORD_NS}}}bottom")
     assert bottom_border is not None
-    assert {
-        name.split("}")[-1]: value for name, value in bottom_border.attrib.items()
-    } == {"val": "single", "sz": "4", "color": "B7B7B7"}
+    assert {name.split("}")[-1]: value for name, value in bottom_border.attrib.items()} == {
+        "val": "single",
+        "sz": "4",
+        "color": "B7B7B7",
+    }
 
     list_paragraphs = [
         paragraph
@@ -797,40 +1022,37 @@ beta</code></pre>
         if paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}numPr") is not None
     ]
     assert [
-        paragraph.find(
-            f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}numPr/{{{WORD_NS}}}ilvl"
-        ).attrib[f"{{{WORD_NS}}}val"]
+        paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}numPr/{{{WORD_NS}}}ilvl").attrib[
+            f"{{{WORD_NS}}}val"
+        ]
         for paragraph in list_paragraphs
     ] == ["0", "1"]
 
     code_paragraphs = [
         paragraph
         for paragraph in paragraphs
-        if (
-            shading := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}shd")
-        )
-        is not None
+        if (shading := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}shd")) is not None
         and shading.attrib[f"{{{WORD_NS}}}fill"] == "F5F5F5"
     ]
     assert [paragraph_text(paragraph) for paragraph in code_paragraphs] == ["alpha", "beta"]
     for paragraph in code_paragraphs:
         run_properties = paragraph.find(f"{{{WORD_NS}}}r/{{{WORD_NS}}}rPr")
         assert run_properties is not None
-        assert set(
-            run_properties.find(f"{{{WORD_NS}}}rFonts").attrib.values()
-        ) == {"Roboto Mono"}
-        assert run_properties.find(f"{{{WORD_NS}}}sz").attrib[
-            f"{{{WORD_NS}}}val"
-        ] == "17"
+        assert set(run_properties.find(f"{{{WORD_NS}}}rFonts").attrib.values()) == {"Roboto Mono"}
+        assert run_properties.find(f"{{{WORD_NS}}}sz").attrib[f"{{{WORD_NS}}}val"] == "17"
         assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
 
-    assert metrics | {
-        "images": 1,
-        "lists": 2,
-        "list_items": 2,
-        "code_lines": 2,
-        "tables": 1,
-    } == metrics
+    assert (
+        metrics
+        | {
+            "images": 1,
+            "lists": 2,
+            "list_items": 2,
+            "code_lines": 2,
+            "tables": 1,
+        }
+        == metrics
+    )
 
 
 def test_editorial_renderer_preserves_table_layout_and_pagination(
@@ -864,12 +1086,8 @@ def test_editorial_renderer_preserves_table_layout_and_pagination(
 
     table_properties = table.find(f"{{{WORD_NS}}}tblPr")
     assert table_properties is not None
-    assert table_properties.find(f"{{{WORD_NS}}}jc").attrib[
-        f"{{{WORD_NS}}}val"
-    ] == "left"
-    assert table_properties.find(f"{{{WORD_NS}}}tblLayout").attrib[
-        f"{{{WORD_NS}}}type"
-    ] == "fixed"
+    assert table_properties.find(f"{{{WORD_NS}}}jc").attrib[f"{{{WORD_NS}}}val"] == "left"
+    assert table_properties.find(f"{{{WORD_NS}}}tblLayout").attrib[f"{{{WORD_NS}}}type"] == "fixed"
 
     widths = [
         int(column.attrib[f"{{{WORD_NS}}}w"])
@@ -883,31 +1101,28 @@ def test_editorial_renderer_preserves_table_layout_and_pagination(
     repeat_header = rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader")
     assert repeat_header is not None
     assert repeat_header.attrib[f"{{{WORD_NS}}}val"] == "true"
-    assert all(
-        row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None
-        for row in rows
-    )
+    assert all(row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None for row in rows)
 
     for row_index, row in enumerate(rows):
         cells = row.findall(f"{{{WORD_NS}}}tc")
         assert len(cells) == 3
         for column_index, cell in enumerate(cells):
-            assert int(
-                cell.find(f"{{{WORD_NS}}}tcPr/{{{WORD_NS}}}tcW").attrib[
-                    f"{{{WORD_NS}}}w"
-                ]
-            ) == widths[column_index]
-            assert cell.find(f"{{{WORD_NS}}}tcPr/{{{WORD_NS}}}vAlign").attrib[
-                f"{{{WORD_NS}}}val"
-            ] == "center"
+            assert (
+                int(cell.find(f"{{{WORD_NS}}}tcPr/{{{WORD_NS}}}tcW").attrib[f"{{{WORD_NS}}}w"])
+                == widths[column_index]
+            )
+            assert (
+                cell.find(f"{{{WORD_NS}}}tcPr/{{{WORD_NS}}}vAlign").attrib[f"{{{WORD_NS}}}val"]
+                == "center"
+            )
             paragraph = cell.find(f"{{{WORD_NS}}}p")
             assert paragraph is not None
             assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}jc").attrib[
                 f"{{{WORD_NS}}}val"
             ] == ("center" if row_index == 0 else "left")
-            assert (
-                paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
-            ) == (row_index in {0, 1, 2})
+            assert (paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None) == (
+                row_index in {0, 1, 2}
+            )
             shading = cell.find(f"{{{WORD_NS}}}tcPr/{{{WORD_NS}}}shd")
             if row_index == 0:
                 assert shading is not None
@@ -926,12 +1141,37 @@ def test_editorial_renderer_preserves_table_layout_and_pagination(
     )
     monospace_properties = monospace.find(f"{{{WORD_NS}}}rPr")
     assert monospace_properties is not None
-    assert set(
-        monospace_properties.find(f"{{{WORD_NS}}}rFonts").attrib.values()
-    ) == {"Roboto Mono"}
-    assert monospace_properties.find(f"{{{WORD_NS}}}sz").attrib[
-        f"{{{WORD_NS}}}val"
-    ] == "16"
+    assert set(monospace_properties.find(f"{{{WORD_NS}}}rFonts").attrib.values()) == {"Roboto Mono"}
+    assert monospace_properties.find(f"{{{WORD_NS}}}sz").attrib[f"{{{WORD_NS}}}val"] == "16"
+
+
+def test_editorial_renderer_keeps_multiline_code_blocks_together(
+    tmp_path: Path,
+) -> None:
+    document, _ = render_editorial_fixture(
+        tmp_path,
+        (
+            "<h2>Глава 1. Тест</h2>"
+            "<p><strong>Команда.</strong> Запустите сценарий:</p>"
+            "<pre><code>first line\nsecond line\nlast line</code></pre>"
+        ),
+    )
+
+    intro_paragraph = None
+    code_paragraphs = []
+    for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+        value = paragraph_text(paragraph)
+        if value == "Команда. Запустите сценарий:":
+            intro_paragraph = paragraph
+        elif value in {"first line", "second line", "last line"}:
+            code_paragraphs.append(paragraph)
+
+    assert intro_paragraph is not None
+    assert active_on_off_property(intro_paragraph, "keepNext")
+    assert len(code_paragraphs) == 3
+    assert all(active_on_off_property(paragraph, "keepLines") for paragraph in code_paragraphs)
+    assert all(active_on_off_property(paragraph, "keepNext") for paragraph in code_paragraphs[:-1])
+    assert not active_on_off_property(code_paragraphs[-1], "keepNext")
 
 
 def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
@@ -979,6 +1219,128 @@ def test_template2000n_final_preserves_embedded_font_registrations() -> None:
     assert b"Noto Sans Symbols" not in numbering_xml
 
 
+def test_current_book_standards_artifacts_pass_machine_gates() -> None:
+    raw_a11y = json.loads(RAW_A11Y.read_text(encoding="utf-8"))
+    raw_render = json.loads(RAW_RENDER_QA.read_text(encoding="utf-8"))
+    template_a11y = json.loads(TEMPLATE_A11Y.read_text(encoding="utf-8"))
+    font_audit = json.loads(TEMPLATE_FONT_AUDIT.read_text(encoding="utf-8"))
+    metrics = json.loads(TEMPLATE_METRICS.read_text(encoding="utf-8"))
+    template_render = json.loads(TEMPLATE_RENDER_QA.read_text(encoding="utf-8"))
+    visual_audit = json.loads(TEMPLATE_VISUAL_AUDIT.read_text(encoding="utf-8"))
+
+    assert raw_a11y["counts"] == {"high": 0, "medium": 0, "low": 2}
+    assert template_a11y["counts"] == {"high": 0, "medium": 0, "low": 2}
+    assert raw_render["pages"] == 539
+    assert raw_render["blank_like_pages"] == []
+    assert raw_render["page_sizes"] == [{"count": 539, "height": 2002, "width": 1547}]
+    assert raw_render["edge_touch_pages"] == []
+    assert template_render["pages"] == 380
+    assert template_render["blank_like_pages"] == []
+    assert template_render["page_sizes"] == [{"count": 380, "height": 2002, "width": 1547}]
+    assert template_render["edge_touch_pages"] == []
+    for report in (raw_render, template_render):
+        assert min(report["minimum_ink_margins_pixels"].values()) >= 150
+    assert font_audit["passed"] is True
+    assert font_audit["embedded_font_registrations"] == [
+        "Noto Sans Symbols Regular",
+        "Noto Sans Symbols Bold",
+        "Roboto Mono Regular",
+        "Roboto Mono Bold",
+        "Roboto Mono Italic",
+        "Roboto Mono BoldItalic",
+    ]
+    assert metrics["document_text_equality"] is True
+    assert metrics["media_byte_equality"] is True
+    assert metrics["media_files"] == EXPECTED_IMAGE_COUNT
+    assert metrics["approximate_words"] >= 95_000
+    assert visual_audit["docx"]["raw_media_matches_source"] is True
+    assert visual_audit["docx"]["template_media_order_matches_raw"] is True
+    assert visual_audit["docx"]["numbered_figure_caption_pairs"] == 25
+    assert visual_audit["docx"]["alpha_images"] == 0
+    assert visual_audit["pdf"]["images"] == EXPECTED_IMAGE_COUNT
+
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            current_document = ET.fromstring(archive.read("word/document.xml"))
+        tables = current_document.findall(f".//{{{WORD_NS}}}tbl")
+        assert len(tables) == EXPECTED_TABLE_COUNT
+        for table in tables:
+            rows = table.findall(f"{{{WORD_NS}}}tr")
+            assert rows
+            header = rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader")
+            assert header is not None
+            assert header.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+            for row in rows:
+                keep_together = row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit")
+                assert keep_together is not None
+                assert keep_together.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                    "0",
+                    "false",
+                    "off",
+                }
+
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document_xml = archive.read("word/document.xml")
+            font_table_xml = archive.read("word/fontTable.xml")
+
+        document = ET.fromstring(document_xml)
+        text = "".join(document.itertext())
+        assert "Политика последовательности проверяет всю траекторию" in text
+        assert text.count("approval -> resume -> execute -> audit") == 3
+        assert "approval → resume → execute → audit" not in text
+        assert b"Nova Mono" not in font_table_xml
+
+        parent_by_child = {child: parent for parent in document.iter() for child in list(parent)}
+        captions: list[tuple[int, ET.Element]] = []
+        for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+            paragraph_value = "".join(
+                node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            match = re.fullmatch(r"Рисунок (\d+)\. .+", paragraph_value)
+            if match:
+                captions.append((int(match.group(1)), paragraph))
+
+        assert [number for number, _ in captions] == list(range(1, 26))
+        for number, caption in captions:
+            parent = parent_by_child[caption]
+            siblings = list(parent)
+            previous = next(
+                (
+                    candidate
+                    for candidate in reversed(siblings[: siblings.index(caption)])
+                    if candidate.tag == f"{{{WORD_NS}}}p"
+                    and (
+                        candidate.find(f".//{{{WORD_NS}}}drawing") is not None
+                        or "".join(
+                            node.text or "" for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                        ).strip()
+                    )
+                ),
+                None,
+            )
+            assert previous is not None, f"Figure {number} has no preceding paragraph"
+            assert previous.find(f".//{{{WORD_NS}}}drawing") is not None
+            image_keep_next = previous.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext")
+            caption_keep_lines = caption.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines")
+            assert image_keep_next is not None
+            assert image_keep_next.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+            assert caption_keep_lines is not None
+            assert caption_keep_lines.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+
+
 def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> None:
     with ZipFile(EDITORIAL_TEMPLATE_DOCX) as archive:
         document = ET.fromstring(archive.read("word/document.xml"))
@@ -1014,7 +1376,7 @@ def test_template2000n_editorial_has_semantic_styles_and_image_alt_text() -> Non
     assert unstyled_non_empty == []
 
     image_properties = document.findall(f".//{{{DRAWING_NS}}}docPr")
-    assert len(image_properties) == 56
+    assert len(image_properties) == EXPECTED_IMAGE_COUNT
     assert all(node.attrib.get("descr", "").strip() for node in image_properties)
 
     hyperlinks = [
@@ -1035,6 +1397,8 @@ def test_template2000n_semantic_style_mapping_characterization() -> None:
         "body_text": 4,
         "table_header": 1,
         "table_body": 1,
+        "table_headers_repeated": 1,
+        "table_rows_kept_together": 2,
         "callout_heading": 3,
         "callout_body": 1,
         "table_caption": 1,
@@ -1072,14 +1436,23 @@ def test_template2000n_semantic_style_mapping_characterization() -> None:
         "Опорный текст": "BodyText",
     }
     assert {
-        text: by_text[text].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle").attrib[
-            style_attribute
-        ]
+        text: by_text[text].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle").attrib[style_attribute]
         for text in expected_styles
     } == expected_styles
 
     blank_paragraph = next(paragraph for paragraph in paragraphs if len(paragraph) == 0)
     assert blank_paragraph.find(f"{{{WORD_NS}}}pPr") is None
+
+    table_rows = document.findall(f".//{{{WORD_NS}}}tbl/{{{WORD_NS}}}tr")
+    assert len(table_rows) == 2
+    for row in table_rows:
+        keep_together = row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit")
+        assert keep_together is not None
+        assert keep_together.attrib[f"{{{WORD_NS}}}val"] == "1"
+    repeat_header = table_rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader")
+    assert repeat_header is not None
+    assert repeat_header.attrib[f"{{{WORD_NS}}}val"] == "1"
+    assert table_rows[1].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader") is None
 
     table_caption = by_text["Таблица 4. Проверочная таблица"]
     assert table_caption.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
@@ -1094,9 +1467,7 @@ def test_template2000n_semantic_style_mapping_characterization() -> None:
         if paragraph.find(f".//{{{WORD_NS}}}drawing") is not None
     ]
     assert [
-        paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle").attrib[
-            style_attribute
-        ]
+        paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle").attrib[style_attribute]
         for paragraph in images
     ] == ["Style28", "Style28", "Style28"]
     assert images[0].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
@@ -1139,13 +1510,124 @@ def test_editorial_tables_repeat_headers_and_keep_rows_together() -> None:
         assert tables
         for table in tables:
             rows = table.findall(f"{{{WORD_NS}}}tr")
-            assert rows[0].find(
-                f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader"
-            ) is not None
-            assert all(
-                row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit") is not None
-                for row in rows
+            header = rows[0].find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}tblHeader")
+            assert header is not None
+            assert header.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+            for row in rows:
+                keep_together = row.find(f"{{{WORD_NS}}}trPr/{{{WORD_NS}}}cantSplit")
+                assert keep_together is not None
+                assert keep_together.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                    "0",
+                    "false",
+                    "off",
+                }
+
+
+def test_editorial_docx_has_no_empty_numbered_paragraphs() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        empty_numbered = []
+        for index, paragraph in enumerate(document.findall(f".//{{{WORD_NS}}}p")):
+            text = "".join(
+                node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            if not text and paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}numPr") is not None:
+                empty_numbered.append(index)
+
+        assert empty_numbered == []
+
+
+def test_editorial_page_break_headings_have_no_leading_empty_paragraph() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+        for index, paragraph in enumerate(paragraphs):
+            if not active_on_off_property(paragraph, "pageBreakBefore"):
+                continue
+            assert index > 0
+            previous_text = "".join(
+                node.text or "" for node in paragraphs[index - 1].findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            assert previous_text
+
+
+def test_editorial_code_blocks_avoid_orphaned_opening_lines() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+        code_blocks: list[list[ET.Element]] = []
+        current_block: list[ET.Element] = []
+        for paragraph in paragraphs:
+            if paragraph_uses_monospace_font(paragraph):
+                current_block.append(paragraph)
+                continue
+            if current_block:
+                code_blocks.append(current_block)
+                current_block = []
+        if current_block:
+            code_blocks.append(current_block)
+
+        assert len(code_blocks) >= 30
+        for block in code_blocks:
+            assert all(active_on_off_property(paragraph, "keepLines") for paragraph in block)
+            for index, paragraph in enumerate(block):
+                expected = (
+                    index < len(block) - 1
+                    and (index + 1) % sync_ru_docx_visuals.MAX_CODE_PARAGRAPHS_PER_KEEP_GROUP != 0
+                )
+                assert active_on_off_property(paragraph, "keepNext") is expected
+
+
+def test_inline_visual_titles_stay_with_their_images() -> None:
+    for docx_path in (CURRENT_RAW_DOCX, CURRENT_TEMPLATE_DOCX):
+        with ZipFile(docx_path) as archive:
+            document = ET.fromstring(archive.read("word/document.xml"))
+
+        paragraphs = document.findall(f".//{{{WORD_NS}}}p")
+        matched_titles = 0
+        for index, paragraph in enumerate(paragraphs):
+            image_properties = paragraph.find(f".//{{{DRAWING_NS}}}docPr")
+            if image_properties is None:
+                continue
+            description = image_properties.attrib.get("descr", "").strip()
+            previous_paragraph = next(
+                (
+                    candidate
+                    for candidate in reversed(paragraphs[:index])
+                    if "".join(
+                        node.text or "" for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                    ).strip()
+                ),
+                None,
             )
+            if previous_paragraph is None:
+                continue
+            previous_text = "".join(
+                node.text or "" for node in previous_paragraph.findall(f".//{{{WORD_NS}}}t")
+            ).strip()
+            if previous_text != description:
+                continue
+
+            matched_titles += 1
+            keep_next = previous_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext")
+            assert keep_next is not None
+            assert keep_next.attrib.get(f"{{{WORD_NS}}}val", "1") not in {
+                "0",
+                "false",
+                "off",
+            }
+
+        assert matched_titles >= 10
 
 
 def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
@@ -1156,22 +1638,18 @@ def test_editorial_docx_has_print_navigation_language_and_metadata() -> None:
             styles = ET.fromstring(archive.read("word/styles.xml"))
             core = ET.fromstring(archive.read("docProps/core.xml"))
             footer_names = [
-                name
-                for name in archive.namelist()
-                if re.fullmatch(r"word/footer\d+\.xml", name)
+                name for name in archive.namelist() if re.fullmatch(r"word/footer\d+\.xml", name)
             ]
             footer_xml = b"\n".join(archive.read(name) for name in footer_names)
 
         instructions = " ".join(
-            node.text or ""
-            for node in document.findall(f".//{{{WORD_NS}}}instrText")
+            node.text or "" for node in document.findall(f".//{{{WORD_NS}}}instrText")
         )
         document_text = "\n".join(
             node.text or "" for node in document.findall(f".//{{{WORD_NS}}}t")
         )
         style_languages = {
-            node.attrib.get(f"{{{WORD_NS}}}val")
-            for node in styles.findall(f".//{{{WORD_NS}}}lang")
+            node.attrib.get(f"{{{WORD_NS}}}val") for node in styles.findall(f".//{{{WORD_NS}}}lang")
         }
 
         assert 'TOC \\o "1-2"' in instructions
@@ -1194,14 +1672,9 @@ def test_editorial_heading_styles_define_pdf_outline_levels() -> None:
             styles = ET.fromstring(archive.read("word/styles.xml"))
 
         for level in range(1, 5):
-            style = styles.find(
-                f".//{{{WORD_NS}}}style"
-                f"[@{{{WORD_NS}}}styleId='Heading{level}']"
-            )
+            style = styles.find(f".//{{{WORD_NS}}}style[@{{{WORD_NS}}}styleId='Heading{level}']")
             assert style is not None
-            outline_level = style.find(
-                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}outlineLvl"
-            )
+            outline_level = style.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}outlineLvl")
             assert outline_level is not None
             assert outline_level.attrib.get(f"{{{WORD_NS}}}val") == str(level - 1)
 
@@ -1221,10 +1694,7 @@ def test_editorial_toc_has_a_readable_static_result_before_word_updates_it() -> 
             index
             for index, (paragraph, value) in enumerate(zip(paragraphs, paragraph_texts))
             if value == "Об авторе"
-            and (
-                style := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")
-            )
-            is not None
+            and (style := paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")) is not None
             and style.attrib.get(f"{{{WORD_NS}}}val") == "Heading2"
         )
         toc_text = "\n".join(paragraph_texts[:first_body_heading])
@@ -1241,9 +1711,7 @@ def test_template2000n_table_captions_use_caption_style_and_stay_with_tables() -
 
     captions = []
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
-        value = "".join(
-            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
-        ).strip()
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")).strip()
         if re.fullmatch(r"Таблица \d+\. .+", value):
             captions.append(paragraph)
 
@@ -1268,9 +1736,7 @@ def test_editorial_table_columns_have_readable_minimum_width() -> None:
         for table_index, table in enumerate(tables, start=1):
             widths = [
                 int(column.attrib[f"{{{WORD_NS}}}w"])
-                for column in table.findall(
-                    f"{{{WORD_NS}}}tblGrid/{{{WORD_NS}}}gridCol"
-                )
+                for column in table.findall(f"{{{WORD_NS}}}tblGrid/{{{WORD_NS}}}gridCol")
             ]
             total_width = sum(widths)
             assert min(widths) / total_width >= 0.14, (
@@ -1293,8 +1759,7 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
             int(match.group(1))
             for paragraph, paragraph_node in zip(paragraphs, paragraph_nodes)
             if (
-                (style := paragraph_node.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle"))
-                is not None
+                (style := paragraph_node.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pStyle")) is not None
                 and style.attrib.get(f"{{{WORD_NS}}}val") == "Heading2"
                 and (match := re.fullmatch(r"Глава (\d+)\. .+", paragraph.strip()))
             )
@@ -1305,7 +1770,9 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
         assert "create_support_ticket" not in text
         assert "Покрытие обязательным подтверждением и трассировкой" in text
         assert "except GatewayTimeout" in text
-        assert len(re.findall(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)) == 25
+        figure_leads = re.findall(r"^На рисунке \d+ .+$", text, re.MULTILINE)
+        assert len(figure_leads) == 25
+        assert all("представлена схема" not in lead for lead in figure_leads)
         assert "дата доступа зафиксированы 15 июля 2026 года" in text
         assert "дата доступа зафиксированы 14 июля 2026 года" not in text
         assert text.count("После главы вы сможете:") == 28
@@ -1329,9 +1796,7 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
             text = "".join(
                 node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
             ).strip()
-            page_break = paragraph.find(
-                f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pageBreakBefore"
-            )
+            page_break = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pageBreakBefore")
             if page_break is not None:
                 value = page_break.attrib.get(f"{{{WORD_NS}}}val", "true")
                 if value not in {"false", "0", "off"}:
@@ -1347,17 +1812,15 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
 
 def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
     manuscript = EDITORIAL_MANUSCRIPT.read_text(encoding="utf-8")
-    relative_paths = re.findall(
-        r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.MULTILINE
-    )
+    relative_paths = re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.MULTILINE)
     expected_hashes = [
         hashlib.sha256((EDITORIAL_MANUSCRIPT.parent / path).read_bytes()).hexdigest()
         for path in relative_paths
     ]
-    raw_targets, raw_hashes = ordered_embedded_images(RAW_EDITORIAL_DOCX)
-    template_targets, _ = ordered_embedded_images(EDITORIAL_TEMPLATE_DOCX)
+    raw_targets, raw_hashes = ordered_embedded_images(CURRENT_RAW_DOCX)
+    template_targets, _ = ordered_embedded_images(CURRENT_TEMPLATE_DOCX)
 
-    assert len(relative_paths) == 56
+    assert len(relative_paths) == EXPECTED_IMAGE_COUNT
     assert raw_hashes == expected_hashes
     assert template_targets == raw_targets
 
@@ -1376,8 +1839,7 @@ def test_numbered_figure_captions_follow_images_and_stay_with_them() -> None:
                 candidate
                 for candidate in paragraphs[index + 1 :]
                 if "".join(
-                    node.text or ""
-                    for node in candidate.findall(f".//{{{WORD_NS}}}t")
+                    node.text or "" for node in candidate.findall(f".//{{{WORD_NS}}}t")
                 ).strip()
             ),
             None,
@@ -1515,7 +1977,7 @@ def test_audit_docx_rejects_a_missing_numbered_caption(tmp_path: Path) -> None:
 @pytest.mark.parametrize(
     ("case", "expected_error"),
     [
-        ("count", "DOCX has 55 drawings; manuscript has 56 visuals"),
+        ("count", "DOCX has 56 drawings; manuscript has 57 visuals"),
         ("relationship", "Image relationship is missing: rMissing"),
         ("duplicate", "Multiple drawings unexpectedly share one media target"),
     ],
@@ -1525,11 +1987,11 @@ def test_synchronize_rejects_invalid_docx_structure(
     case: str,
     expected_error: str,
 ) -> None:
-    source_payloads = [_png_payload(seed=index) for index in range(1, 57)]
+    source_payloads = [_png_payload(seed=index) for index in range(1, 58)]
     manuscript = _write_manuscript_fixture(tmp_path / "source", source_payloads)
-    input_payloads = [_png_payload(seed=index + 100) for index in range(1, 57)]
-    relationship_ids = [f"rId{index}" for index in range(1, 57)]
-    targets = [f"media/image-{index}.png" for index in range(1, 57)]
+    input_payloads = [_png_payload(seed=index + 100) for index in range(1, 58)]
+    relationship_ids = [f"rId{index}" for index in range(1, 58)]
+    targets = [f"media/image-{index}.png" for index in range(1, 58)]
     if case == "count":
         input_payloads = input_payloads[:-1]
         relationship_ids = relationship_ids[:-1]
@@ -1599,13 +2061,13 @@ def test_synchronize_drawing_rejects_a_numbered_figure_without_a_parent(
 
 
 def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Path) -> None:
-    source_payloads = [_png_payload(seed=index) for index in range(1, 57)]
+    source_payloads = [_png_payload(seed=index) for index in range(1, 58)]
     manuscript = _write_manuscript_fixture(tmp_path / "source", source_payloads)
     input_docx = tmp_path / "input.docx"
     output_docx = tmp_path / "nested/output.docx"
     _write_docx_fixture(
         input_docx,
-        [_png_payload(seed=index + 100) for index in range(1, 57)],
+        [_png_payload(seed=index + 100) for index in range(1, 58)],
         numbered_count=25,
         captions_before_drawings=True,
     )
@@ -1628,13 +2090,21 @@ def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Pa
         "output_docx": str(output_docx),
         "output_bytes": output_docx.stat().st_size,
         "output_sha256": hashlib.sha256(output_docx.read_bytes()).hexdigest(),
-        "visuals_synchronized": 56,
+        "visuals_synchronized": 57,
         "numbered_figures_reordered": 25,
-        "media_targets_unique": 56,
-        "max_numbered_figure_height_inches": 1.0,
+        "media_targets_unique": 57,
+        "table_headers_repeated": 0,
+        "table_rows_kept_together": 0,
+        "empty_numbered_paragraphs_removed": 0,
+        "empty_paragraphs_before_page_breaks_removed": 0,
+        "code_blocks_kept_together": 0,
+        "code_paragraphs_kept_together": 0,
+        "image_numbering_removed": 0,
+        "inline_visual_titles_kept": 0,
+        "max_numbered_figure_height_inches": 0.003,
     }
     targets, hashes = ordered_embedded_images(output_docx)
-    assert len(targets) == len(set(targets)) == 56
+    assert len(targets) == len(set(targets)) == 57
     assert hashes == [hashlib.sha256(payload).hexdigest() for payload in source_payloads]
 
     with ZipFile(output_docx) as archive:
@@ -1651,7 +2121,7 @@ def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Pa
         "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
         for paragraph in paragraphs
     ]
-    assert texts[first_drawing_index - 1] == "На рисунке 1 представлена схема «Новое название 1»."
+    assert texts[first_drawing_index - 1] == "На рисунке 1 представлена схема «Старое название 1»."
     assert texts[first_drawing_index + 1] == "Рисунок 1. Новое название 1"
     image_paragraph = paragraphs[first_drawing_index]
     caption = paragraphs[first_drawing_index + 1]
@@ -1664,7 +2134,7 @@ def test_synchronize_preserves_caption_relocation_media_and_metrics(tmp_path: Pa
     extents = image_paragraph.findall(f".//{{{DRAWINGML_NS}}}ext")
     assert [(node.attrib["cx"], node.attrib["cy"]) for node in extents] == [
         (
-            str(2 * sync_ru_docx_visuals.EMU_PER_INCH),
-            str(sync_ru_docx_visuals.EMU_PER_INCH),
+            str(2 * sync_ru_docx_visuals.EMU_PER_INCH // sync_ru_docx_visuals.PNG_DENSITY),
+            str(sync_ru_docx_visuals.EMU_PER_INCH // sync_ru_docx_visuals.PNG_DENSITY),
         )
     ]

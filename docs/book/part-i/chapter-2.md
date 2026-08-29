@@ -346,12 +346,12 @@ class ToolRequest:
 
 def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway):
     decision = policy_engine.evaluate(request)
-    if not decision.allowed:
+    if decision.action == "deny":
         raise PermissionError(decision.reason)
-
-    if decision.requires_approval:
-        approval_service.require_human_signoff(request, decision)
-
+    if decision.action == "approval_required":
+        return approval_service.request_pause(request, decision)
+    if decision.action != "allow":
+        raise RuntimeError(f"Unknown policy action: {decision.action}")
     return gateway.call(request.tool_name, request.payload)
 ```
 
