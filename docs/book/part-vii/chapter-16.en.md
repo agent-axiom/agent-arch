@@ -208,6 +208,8 @@ A minimal requirements table looks like this:
 
 The short version: the prompt/tool/skill layer defines **what the agent can do**, and the runtime layer defines **how that execution stays governable, resumable, and investigable**. Without that boundary, teams often call the whole thing an “agent harness” and only later discover that crash recovery, multi-tenancy, approval sleep/resume, and observability live in separate places with no shared contract.
 
+At the narrow end of this architectural spectrum sits Laconian, an open-source project by the author of this book: its `if` is a Markdown-only behavioral skill that neither invokes tools nor creates side effects, while the benchmark machinery stays outside the artifact loaded into the runtime.[^laconian-runtime-boundary] The Cloudflare `security-audit` example below occupies the opposite end: a skill-shaped entry point backed by a durable multi-stage workflow.
+
 AWS AgentCore and GitHub security validation for third-party coding agents are useful recent production references for that same contract.[^aws-agentcore-agentops][^aws-agentcore-coding-agents][^github-third-party-coding-agent-validation] AgentCore AgentOps makes traces, latency, token/cost metrics, session history, PII redaction, and governance signals visible; the coding-agent hosting example adds isolated session, persistent workspace, scoped credentials, and the ability to close the laptop while the agent continues inside a managed environment; GitHub validation shows that agent-generated code should pass platform-owned CodeQL, dependency risk, and secret scanning gates before the result is treated as ready for review.
 
 The portable production runtime contract is therefore: **isolated session → durable workspace → scoped credentials → egress/tool boundary → trace and cost ledger → PII redaction → platform security validation → human review artifact**. For the reference runtime, this is not a requirement to use AWS or GitHub. It is a checklist: the runtime should know where the workspace lives, which credentials were available, which network/tool boundaries applied, how much the run cost, which sensitive fields were redacted, which security gates checked the staged output, and which artifact a human later reviews.
@@ -626,6 +628,8 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
 
 [^anthropic-managed-agents]: Anthropic, [Scaling Managed Agents: Decoupling the brain from the hands](https://www.anthropic.com/engineering/managed-agents).
+
+[^laconian-runtime-boundary]: Laconian, pinned to revision `669c45e849f75c99f81af19561d09cf24664e935`: [`skills/if/SKILL.md`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md) and [`docs/design.md`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md).
 
 [^cloudflare-vulnerability-harness]: Cloudflare Blog, [Build your own vulnerability harness](https://blog.cloudflare.com/build-your-own-vulnerability-harness/).
 

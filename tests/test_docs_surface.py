@@ -22612,3 +22612,61 @@ def test_laconian_skill_eval_case_is_documented() -> None:
             "https://github.com/agent-axiom/laconian/tree/main/",
         ),
     )
+
+
+def test_laconian_skill_runtime_boundary_is_documented() -> None:
+    localized_markers = {
+        "docs/book/part-vii/chapter-16.md": (
+            "Laconian — открытый проект автора этой книги",
+            "`if` — поведенческий навык в одном Markdown-файле",
+            "не вызывает инструменты",
+            "не создает побочных эффектов",
+            "бенчмарка остается за пределами артефакта, загружаемого в среду исполнения",
+            "противоположный край",
+            "Cloudflare `security-audit`",
+            "долговечный многостадийный рабочий процесс",
+        ),
+        "docs/book/part-vii/chapter-16.en.md": (
+            "Laconian, an open-source project by the author of this book",
+            "`if` is a Markdown-only behavioral skill",
+            "neither invokes tools",
+            "nor creates side effects",
+            "benchmark machinery stays outside the artifact loaded into the runtime",
+            "opposite end",
+            "Cloudflare `security-audit`",
+            "durable multi-stage workflow",
+        ),
+        "docs/book/part-vii/chapter-16.zh.md": (
+            "本书作者的开源项目 Laconian",
+            "`if` 是 Markdown-only behavioral skill",
+            "不调用 tools",
+            "不产生 side effects",
+            "benchmark machinery 留在 runtime 所加载的 artifact 之外",
+            "另一端",
+            "Cloudflare `security-audit`",
+            "durable multi-stage workflow",
+        ),
+    }
+    revision = "669c45e849f75c99f81af19561d09cf24664e935"
+    pinned_urls = (
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/skills/if/SKILL.md",
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/docs/design.md",
+    )
+
+    for path, markers in localized_markers.items():
+        text = _read(path)
+        _, start, after_start = text.partition("prompt/tool/skill layer")
+        runtime_boundary, end, _ = after_start.partition("AWS AgentCore")
+        assert start and end, path
+        for marker in markers:
+            assert marker in runtime_boundary, (path, marker)
+        assert "[^laconian-runtime-boundary]" in runtime_boundary, path
+
+        footnote = re.search(
+            r"(?m)^\[\^laconian-runtime-boundary\]:.*$", text
+        )
+        assert footnote, path
+        for url in pinned_urls:
+            assert url in footnote.group(0), (path, url)
+        assert "blob/main" not in text, path
+        assert "tree/main" not in text, path
