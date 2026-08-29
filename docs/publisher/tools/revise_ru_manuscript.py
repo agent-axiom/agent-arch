@@ -13795,6 +13795,7 @@ def _append_unique_chapter_sources(
     current: str,
     number: int,
     sources: tuple[str, ...],
+    separator: str = "\n",
 ) -> str:
     chapter = extract_chapter(current, number)
     if "### Источники главы" not in chapter:
@@ -13803,7 +13804,7 @@ def _append_unique_chapter_sources(
         source_id = source.split(".", 1)[0].strip("*")
         if re.search(rf"(?m)^\*\*{re.escape(source_id)}\.\*\*", chapter):
             raise ValueError(f"Chapter {number} already contains source {source_id}")
-    revised = chapter.rstrip() + "\n" + "\n".join(sources)
+    revised = chapter.rstrip() + separator + separator.join(sources)
     return _replace_editorial_anchor(
         current,
         chapter,
@@ -17505,10 +17506,8 @@ def apply_albumentationsx_mcp_author_case_2026_08_30(text: str) -> str:
     text = _replace_once_in_chapter(
         text,
         11,
-        "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: на уровне "
-        "отдельного адаптера и на уровне всего ландшафта MCP.\n\n"
         "Типовые проблемы очень повторяемы:\n\n",
-        "**Частые ошибки.**\n\n",
+        "",
         "duplicate Chapter 11 common-problems lead-in",
     )
 
@@ -17517,7 +17516,7 @@ def apply_albumentationsx_mcp_author_case_2026_08_30(text: str) -> str:
 Это возможность, а не самостоятельная операционная роль: она не владеет целью или политикой и не обучает модель. Чтение ограничивается настроенным `allowed-root`, запись — отдельным каталогом артефактов; до рендеринга проверяются запрос и лимиты, а seed, манифесты, трассы, профили возможностей, снапшоты контрактов и golden evals делают поведение наблюдаемым.
 
 Граница доказательств тоже явна: узкий корень нужно настроить, принятие превью не является жёсткой авторизацией, а молодой проект не доказывает широкое промышленное внедрение."""
-    old_generic_block = """**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как
+    protocol_choice = """**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как
 управляемую возможность. A2A передает задачу самостоятельной операционной роли
 с собственными владельцем, политикой и жизненным циклом.
 
@@ -17526,17 +17525,22 @@ def apply_albumentationsx_mcp_author_case_2026_08_30(text: str) -> str:
 передаются ответственность и ограниченные полномочия.
 
 """
+    old_generic_block = (
+        "Именно поэтому песочница не должна быть галочкой в проверочном списке. "
+        "Она должна быть частью модели выполнения.\n\n" + protocol_choice
+    )
     text = _replace_once_in_chapter(
         text,
         11,
         old_generic_block,
-        author_case + "\n\n",
+        protocol_choice + author_case + "\n\n",
         "AlbumentationsX MCP author case",
     )
 
     bibliography = """#### Авторский кейс AlbumentationsX MCP
 
 **S124.** [Albumentations, AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/), дата обращения: 30 августа 2026 года.
+
 **S125.** [GitHub, dKosarevsky/albu-mcp v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) и [снимок исходного кода 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8), дата обращения: 30 августа 2026 года.
 
 """
@@ -17553,6 +17557,7 @@ def apply_albumentationsx_mcp_author_case_2026_08_30(text: str) -> str:
             "**S124.** Albumentations, AlbumentationsX MCP integration.",
             "**S125.** GitHub, dKosarevsky/albu-mcp v1.21.1 and source snapshot 171e2ca.",
         ),
+        separator="\n\n",
     )
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 

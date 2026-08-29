@@ -3637,6 +3637,14 @@ def test_final_reader_copyedit_repairs_language_and_assembly_residue() -> None:
 
 def test_final_reader_copyedit_uses_russian_first_terminology() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
+    allowed_author_case_labels = (
+        "Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент.",
+        "Авторский кейс AlbumentationsX MCP",
+    )
+    terminology_text = text
+    for label in allowed_author_case_labels:
+        assert terminology_text.count(label) == 1
+        terminology_text = terminology_text.replace(label, "")
 
     for residue in (
         r"\bрелиз[а-яё-]*\b",
@@ -3649,7 +3657,7 @@ def test_final_reader_copyedit_uses_russian_first_terminology() -> None:
         r"\bкомплаенс[а-яё-]*\b",
         r"\bkeyed HMAC\b",
     ):
-        assert not re.search(residue, text, re.IGNORECASE)
+        assert not re.search(residue, terminology_text, re.IGNORECASE)
 
     for preferred in (
         "координационный подход",
@@ -3833,7 +3841,7 @@ def test_source_appendix_separates_cited_sources_from_further_reading() -> None:
 
     assert cited_ids == used_ids
     assert cited_ids.isdisjoint(further_ids)
-    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 124)}
+    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 126)}
 
 
 def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
@@ -4516,6 +4524,7 @@ def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -
     for marker in (
         "разработанная автором этой книги",
         "не является официальным продуктом AlbumentationsX",
+        "не заменяет Python API",
         "настроенным `allowed-root`",
         "не является жёсткой авторизацией",
         "молодой проект",
@@ -4527,9 +4536,16 @@ def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -
 
     assert 120 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", author_case)) <= 160
     assert "**Короткое правило.**" not in chapter_eleven
-    assert "**Выбор протокола.**" not in chapter_eleven
+    assert chapter_eleven.count("**Выбор протокола.**") == 1
+    assert chapter_eleven.index("**Выбор протокола.**") < case_start
+    assert chapter_eleven.count("Теперь типовые проблемы повторяются уже на двух уровнях:") == 1
     assert "Типовые проблемы очень повторяемы:" not in chapter_eleven
-    assert "**Частые ошибки.**\n\n* возможность" in chapter_eleven
+    assert (
+        "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: "
+        "на уровне отдельного адаптера и на уровне всего ландшафта MCP.\n\n"
+        "* возможность"
+    ) in chapter_eleven
+    assert "Именно поэтому песочница не должна быть галочкой" not in chapter_eleven
 
     expected_urls = {
         "S124": "https://albumentations.ai/docs/integrations/mcp/",
