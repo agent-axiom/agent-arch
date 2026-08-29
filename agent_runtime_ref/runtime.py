@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import cast
+from collections.abc import Callable
+from typing import Never, TypeVar, cast
 
 from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.background import BackgroundWorker
@@ -26,6 +27,8 @@ from agent_runtime_ref.models import (
 from agent_runtime_ref.policy import PolicyDecision, PolicyEngine
 from agent_runtime_ref.session import SessionStore
 from agent_runtime_ref.telemetry import TelemetryEmitter
+
+_RuntimeComponentT = TypeVar("_RuntimeComponentT")
 
 
 def _read_optional_request_string(value: str, *, field: str) -> str:
@@ -81,6 +84,146 @@ def _read_workspace_entries(workspace: dict[str, object]) -> list[object]:
     return cast(list[object], entries)
 
 
+def _runtime_component(
+    value: _RuntimeComponentT | None,
+    expected_type: type[_RuntimeComponentT],
+    factory: Callable[[], _RuntimeComponentT],
+) -> _RuntimeComponentT:
+    component = factory() if value is None else value
+    if not isinstance(component, expected_type):
+        _raise_runtime_component_type_error(expected_type)
+    return component
+
+
+def _raise_runtime_component_type_error(expected_type: type[object]) -> Never:
+    if expected_type is CapabilityCatalog:
+        raise TypeError("Runtime catalog must be CapabilityCatalog")
+    if expected_type is PolicyEngine:
+        raise TypeError("Runtime policy must be PolicyEngine")
+    if expected_type is TelemetryEmitter:
+        raise TypeError("Runtime telemetry must be TelemetryEmitter")
+    if expected_type is MemoryStore:
+        raise TypeError("Runtime memory must be MemoryStore")
+    if expected_type is ApprovalQueue:
+        raise TypeError("Runtime approvals must be ApprovalQueue")
+    if expected_type is SessionStore:
+        raise TypeError("Runtime sessions must be SessionStore")
+    if expected_type is IdempotencyStore:
+        raise TypeError("Runtime idempotency must be IdempotencyStore")
+    raise AssertionError("Unsupported runtime component type")
+
+
+def _runtime_sandbox_profile(
+    value: dict[str, object] | None,
+) -> dict[str, object]:
+    if value is None:
+        value = {}
+    if not isinstance(value, dict):
+        raise TypeError("Sandbox profile config must be a mapping")
+    return value
+
+
+def _runtime_agent_identity(value: AgentIdentity | None) -> AgentIdentity:
+    if value is None:
+        value = AgentIdentity(
+            agent_id="agent-runtime-ref",
+            display_name="Reference Runtime",
+            owner_team="agent_platform",
+            runtime_principal="svc-agent-runtime-ref",
+        )
+    if not isinstance(value, AgentIdentity):
+        raise TypeError("Runtime agent must be AgentIdentity")
+    return value
+
+
+def _runtime_background_worker(
+    value: BackgroundWorker | None,
+    *,
+    memory_store: MemoryStore,
+    policy: PolicyEngine,
+    telemetry: TelemetryEmitter,
+) -> BackgroundWorker:
+    if value is None:
+        value = BackgroundWorker(
+            memory_store=memory_store,
+            policy=policy,
+            telemetry=telemetry,
+        )
+    if not isinstance(value, BackgroundWorker):
+        raise TypeError("Runtime background must be BackgroundWorker")
+    return value
+
+
+def _normalize_run_request(request: RunRequest) -> RunRequest:
+    if not isinstance(request, RunRequest):
+        raise TypeError("Runtime request must be RunRequest")
+    request.user_input = _read_required_request_string(
+        request.user_input,
+        field="user_input",
+    )
+    request.tenant_id = _read_optional_request_string(
+        request.tenant_id,
+        field="tenant_id",
+    )
+    request.principal_id = _read_optional_request_string(
+        request.principal_id,
+        field="principal_id",
+    )
+    request.trace_id = _read_required_request_string(
+        request.trace_id,
+        field="trace_id",
+    )
+    request.session_id = _read_required_request_string(
+        request.session_id,
+        field="session_id",
+    )
+    request.agent_id = _read_optional_request_string(request.agent_id, field="agent_id")
+    request.authorization_mode = _read_authorization_mode(request.authorization_mode)
+    request.delegated_principal_id = _read_optional_request_string(
+        request.delegated_principal_id,
+        field="delegated_principal_id",
+    )
+    request.delegated_scope = _read_optional_request_string(
+        request.delegated_scope,
+        field="delegated_scope",
+    )
+    request.intent_id = _read_optional_request_string(
+        request.intent_id,
+        field="intent_id",
+    )
+    request.test_fault = _read_optional_request_string(
+        request.test_fault,
+        field="test_fault",
+    )
+    if request.authorization_mode == "user_delegated":
+        request.delegated_principal_id = _read_required_delegated_string(
+            request.delegated_principal_id,
+            field="delegated_principal_id",
+        )
+        request.delegated_scope = _read_required_delegated_string(
+            request.delegated_scope,
+            field="delegated_scope",
+        )
+    return request
+
+
+def _legacy_tool_status(outcome: str) -> str:
+    if outcome == "permission_denied":
+        return "denied"
+    if outcome == "retryable_failure":
+        return "failed"
+    return outcome
+
+
+def _reconciliation_effect(side_effect_status: str, outcome: str) -> str:
+    unresolved_effects = {"side_effect_unknown", "partial_side_effect"}
+    if side_effect_status in unresolved_effects:
+        return side_effect_status
+    if outcome in unresolved_effects:
+        return outcome
+    return ""
+
+
 class AgentRuntime:
     """Minimal runnable skeleton for the book's reference implementation."""
 
@@ -97,116 +240,28 @@ class AgentRuntime:
         idempotency: IdempotencyStore | None = None,
         sandbox_profile: dict[str, object] | None = None,
     ) -> None:
-        if catalog is None:
-            catalog = CapabilityCatalog()
-        if not isinstance(catalog, CapabilityCatalog):
-            raise TypeError("Runtime catalog must be CapabilityCatalog")
-        self.catalog = catalog
-        if policy is None:
-            policy = PolicyEngine()
-        if not isinstance(policy, PolicyEngine):
-            raise TypeError("Runtime policy must be PolicyEngine")
-        self.policy = policy
-        if telemetry is None:
-            telemetry = TelemetryEmitter()
-        if not isinstance(telemetry, TelemetryEmitter):
-            raise TypeError("Runtime telemetry must be TelemetryEmitter")
-        self.telemetry = telemetry
-        if memory is None:
-            memory = MemoryStore()
-        if not isinstance(memory, MemoryStore):
-            raise TypeError("Runtime memory must be MemoryStore")
-        self.memory = memory
-        if approvals is None:
-            approvals = ApprovalQueue()
-        if not isinstance(approvals, ApprovalQueue):
-            raise TypeError("Runtime approvals must be ApprovalQueue")
-        self.approvals = approvals
-        if sessions is None:
-            sessions = SessionStore()
-        if not isinstance(sessions, SessionStore):
-            raise TypeError("Runtime sessions must be SessionStore")
-        self.sessions = sessions
-        if idempotency is None:
-            idempotency = IdempotencyStore()
-        if not isinstance(idempotency, IdempotencyStore):
-            raise TypeError("Runtime idempotency must be IdempotencyStore")
-        self.idempotency = idempotency
-        if sandbox_profile is None:
-            sandbox_profile = {}
-        if not isinstance(sandbox_profile, dict):
-            raise TypeError("Sandbox profile config must be a mapping")
-        self.sandbox_profile = sandbox_profile
-        if agent is None:
-            agent = AgentIdentity(
-                agent_id="agent-runtime-ref",
-                display_name="Reference Runtime",
-                owner_team="agent_platform",
-                runtime_principal="svc-agent-runtime-ref",
-            )
-        if not isinstance(agent, AgentIdentity):
-            raise TypeError("Runtime agent must be AgentIdentity")
-        self.agent = agent
-        if background is None:
-            background = BackgroundWorker(
-                memory_store=self.memory,
-                policy=self.policy,
-                telemetry=self.telemetry,
-            )
-        if not isinstance(background, BackgroundWorker):
-            raise TypeError("Runtime background must be BackgroundWorker")
-        self.background = background
+        self.catalog = _runtime_component(catalog, CapabilityCatalog, CapabilityCatalog)
+        self.policy = _runtime_component(policy, PolicyEngine, PolicyEngine)
+        self.telemetry = _runtime_component(
+            telemetry, TelemetryEmitter, TelemetryEmitter
+        )
+        self.memory = _runtime_component(memory, MemoryStore, MemoryStore)
+        self.approvals = _runtime_component(approvals, ApprovalQueue, ApprovalQueue)
+        self.sessions = _runtime_component(sessions, SessionStore, SessionStore)
+        self.idempotency = _runtime_component(
+            idempotency, IdempotencyStore, IdempotencyStore
+        )
+        self.sandbox_profile = _runtime_sandbox_profile(sandbox_profile)
+        self.agent = _runtime_agent_identity(agent)
+        self.background = _runtime_background_worker(
+            background,
+            memory_store=self.memory,
+            policy=self.policy,
+            telemetry=self.telemetry,
+        )
 
     def run(self, request: RunRequest) -> RunResult:
-        if not isinstance(request, RunRequest):
-            raise TypeError("Runtime request must be RunRequest")
-        request.user_input = _read_required_request_string(
-            request.user_input,
-            field="user_input",
-        )
-        request.tenant_id = _read_optional_request_string(
-            request.tenant_id,
-            field="tenant_id",
-        )
-        request.principal_id = _read_optional_request_string(
-            request.principal_id,
-            field="principal_id",
-        )
-        request.trace_id = _read_required_request_string(
-            request.trace_id,
-            field="trace_id",
-        )
-        request.session_id = _read_required_request_string(
-            request.session_id,
-            field="session_id",
-        )
-        request.agent_id = _read_optional_request_string(request.agent_id, field="agent_id")
-        request.authorization_mode = _read_authorization_mode(request.authorization_mode)
-        request.delegated_principal_id = _read_optional_request_string(
-            request.delegated_principal_id,
-            field="delegated_principal_id",
-        )
-        request.delegated_scope = _read_optional_request_string(
-            request.delegated_scope,
-            field="delegated_scope",
-        )
-        request.intent_id = _read_optional_request_string(
-            request.intent_id,
-            field="intent_id",
-        )
-        request.test_fault = _read_optional_request_string(
-            request.test_fault,
-            field="test_fault",
-        )
-        if request.authorization_mode == "user_delegated":
-            request.delegated_principal_id = _read_required_delegated_string(
-                request.delegated_principal_id,
-                field="delegated_principal_id",
-            )
-            request.delegated_scope = _read_required_delegated_string(
-                request.delegated_scope,
-                field="delegated_scope",
-            )
+        request = _normalize_run_request(request)
         capability_session_id = ""
         capability_session_status = ""
         authorization_mode = request.authorization_mode
@@ -312,11 +367,7 @@ class AgentRuntime:
             self._handle_tool_request(context, request, model_output.tool_request)
             latest_tool = context.tool_results[-1] if context.tool_results else None
             if latest_tool is not None:
-                legacy_tool_status = latest_tool.outcome
-                if latest_tool.outcome == "permission_denied":
-                    legacy_tool_status = "denied"
-                elif latest_tool.outcome == "retryable_failure":
-                    legacy_tool_status = "failed"
+                legacy_tool_status = _legacy_tool_status(latest_tool.outcome)
                 capability_session_id = latest_tool.payload.get("capability_session_id", "")
                 capability_session_status = latest_tool.payload.get(
                     "capability_session_status", legacy_tool_status
@@ -331,13 +382,10 @@ class AgentRuntime:
                 idempotency_key = latest_tool.payload.get("idempotency_key", idempotency_key)
                 approval_id = latest_tool.payload.get("approval_id", approval_id)
                 capability_name = latest_tool.capability_name
-                unresolved_effects = {"side_effect_unknown", "partial_side_effect"}
-                if latest_tool.side_effect_status in unresolved_effects:
-                    reconciliation_effect = latest_tool.side_effect_status
-                elif latest_tool.outcome in unresolved_effects:
-                    reconciliation_effect = latest_tool.outcome
-                else:
-                    reconciliation_effect = ""
+                reconciliation_effect = _reconciliation_effect(
+                    latest_tool.side_effect_status,
+                    latest_tool.outcome,
+                )
                 requires_reconciliation = bool(reconciliation_effect)
                 if latest_tool.outcome == "approval_required" and not requires_reconciliation:
                     result = RunResult(

@@ -13,6 +13,7 @@ import argparse
 import difflib
 import json
 import re
+from collections.abc import Iterator
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -240,59 +241,77 @@ def nearest_mapped_after(mapping: dict[int, int], index: int) -> tuple[int, int]
     return old_index, mapping[old_index]
 
 
-def resolve_live_range(
-    opcode: tuple[str, int, int, int, int],
+def _resolve_insert_range(
+    old_start: int,
+    mapping: dict[int, int],
+    live: list[dict[str, Any]],
+) -> tuple[int, int, dict[str, Any]]:
+    before_old, before_live = nearest_mapped_before(mapping, old_start)
+    after_old, after_live = nearest_mapped_after(mapping, old_start)
+    if before_old + 1 == after_old:
+        index = live[after_live]["startIndex"]
+    else:
+        index = live[before_live]["endIndex"]
+    return (
+        index,
+        index,
+        {
+            "before": live[before_live]["text"],
+            "after": live[after_live]["text"],
+            "unmapped_old": 0,
+        },
+    )
+
+
+def _resolve_fuzzy_single_paragraph(
+    old_start: int,
+    old_end: int,
     mapping: dict[int, int],
     live: list[dict[str, Any]],
     old_values: list[str],
+) -> tuple[int, int, dict[str, Any]] | None:
+    if old_end != old_start + 1 or old_start in mapping:
+        return None
+
+    _, before_live = nearest_mapped_before(mapping, old_start)
+    _, after_live = nearest_mapped_after(mapping, old_end)
+    candidates = []
+    for live_index in range(before_live + 1, after_live):
+        ratio = difflib.SequenceMatcher(
+            None,
+            old_values[old_start],
+            normalize(live[live_index]["text"]),
+            autojunk=False,
+        ).ratio()
+        candidates.append((ratio, live_index))
+    candidates.sort(reverse=True)
+    if not candidates or candidates[0][0] < 0.85:
+        return None
+
+    best_ratio, best_live = candidates[0]
+    second_ratio = candidates[1][0] if len(candidates) > 1 else 0.0
+    if best_ratio - second_ratio < 0.05:
+        return None
+
+    paragraph = live[best_live]
+    return (
+        paragraph["startIndex"],
+        paragraph["endIndex"],
+        {
+            "first": paragraph["text"],
+            "last": paragraph["text"],
+            "unmapped_old": 1,
+            "fuzzy_ratio": round(best_ratio, 6),
+        },
+    )
+
+
+def _resolve_mapped_span(
+    opcode: tuple[str, int, int, int, int],
+    mapping: dict[int, int],
+    live: list[dict[str, Any]],
 ) -> tuple[int, int, dict[str, Any]]:
-    tag, old_start, old_end, _, _ = opcode
-    if tag == "insert":
-        before_old, before_live = nearest_mapped_before(mapping, old_start)
-        after_old, after_live = nearest_mapped_after(mapping, old_start)
-        if before_old + 1 == after_old:
-            index = live[after_live]["startIndex"]
-        else:
-            index = live[before_live]["endIndex"]
-        return (
-            index,
-            index,
-            {
-                "before": live[before_live]["text"],
-                "after": live[after_live]["text"],
-                "unmapped_old": 0,
-            },
-        )
-
-    if old_end == old_start + 1 and old_start not in mapping:
-        _, before_live = nearest_mapped_before(mapping, old_start)
-        _, after_live = nearest_mapped_after(mapping, old_end)
-        candidates = []
-        for live_index in range(before_live + 1, after_live):
-            ratio = difflib.SequenceMatcher(
-                None,
-                old_values[old_start],
-                normalize(live[live_index]["text"]),
-                autojunk=False,
-            ).ratio()
-            candidates.append((ratio, live_index))
-        candidates.sort(reverse=True)
-        if candidates and candidates[0][0] >= 0.85:
-            best_ratio, best_live = candidates[0]
-            second_ratio = candidates[1][0] if len(candidates) > 1 else 0.0
-            if best_ratio - second_ratio >= 0.05:
-                paragraph = live[best_live]
-                return (
-                    paragraph["startIndex"],
-                    paragraph["endIndex"],
-                    {
-                        "first": paragraph["text"],
-                        "last": paragraph["text"],
-                        "unmapped_old": 1,
-                        "fuzzy_ratio": round(best_ratio, 6),
-                    },
-                )
-
+    _, old_start, old_end, _, _ = opcode
     mapped_inside = [mapping[index] for index in range(old_start, old_end) if index in mapping]
     first_old_is_mapped = old_start in mapping
     last_old_is_mapped = old_end - 1 in mapping
@@ -325,6 +344,116 @@ def resolve_live_range(
     )
 
 
+def resolve_live_range(
+    opcode: tuple[str, int, int, int, int],
+    mapping: dict[int, int],
+    live: list[dict[str, Any]],
+    old_values: list[str],
+) -> tuple[int, int, dict[str, Any]]:
+    tag, old_start, old_end, _, _ = opcode
+    if tag == "insert":
+        return _resolve_insert_range(old_start, mapping, live)
+
+    fuzzy_range = _resolve_fuzzy_single_paragraph(old_start, old_end, mapping, live, old_values)
+    if fuzzy_range is not None:
+        return fuzzy_range
+    return _resolve_mapped_span(opcode, mapping, live)
+
+
+def _paragraph_style_request(
+    paragraph: TargetParagraph,
+    start: int,
+    end: int,
+    tab_id: str,
+) -> dict[str, Any]:
+    return {
+        "updateParagraphStyle": {
+            "range": {"startIndex": start, "endIndex": end, "tabId": tab_id},
+            "paragraphStyle": {
+                "namedStyleType": paragraph.named_style,
+                "pageBreakBefore": paragraph.page_break_before,
+            },
+            "fields": "namedStyleType,pageBreakBefore",
+        }
+    }
+
+
+def _text_style_requests(
+    paragraph: TargetParagraph,
+    start: int,
+    tab_id: str,
+) -> list[dict[str, Any]]:
+    requests: list[dict[str, Any]] = []
+    for run in paragraph.runs:
+        text_style: dict[str, Any] = {}
+        fields: list[str] = []
+        if run.bold is not None:
+            text_style["bold"] = run.bold
+            fields.append("bold")
+        if run.italic is not None:
+            text_style["italic"] = run.italic
+            fields.append("italic")
+        if run.font_name:
+            text_style["weightedFontFamily"] = {"fontFamily": run.font_name}
+            fields.append("weightedFontFamily")
+        if run.link_url:
+            text_style["link"] = {"url": run.link_url}
+            fields.append("link")
+        if fields and run.end > run.start:
+            requests.append(
+                {
+                    "updateTextStyle": {
+                        "range": {
+                            "startIndex": start + run.start,
+                            "endIndex": start + run.end,
+                            "tabId": tab_id,
+                        },
+                        "textStyle": text_style,
+                        "fields": ",".join(fields),
+                    }
+                }
+            )
+    return requests
+
+
+def _iter_list_groups(
+    paragraphs: list[TargetParagraph],
+) -> Iterator[tuple[int, int]]:
+    group_start = 0
+    while group_start < len(paragraphs):
+        paragraph = paragraphs[group_start]
+        if paragraph.list_kind is None:
+            group_start += 1
+            continue
+        group_end = group_start + 1
+        while (
+            group_end < len(paragraphs)
+            and paragraphs[group_end].list_kind == paragraph.list_kind
+            and paragraphs[group_end].nesting_level == paragraph.nesting_level
+        ):
+            group_end += 1
+        yield group_start, group_end
+        group_start = group_end
+
+
+def _bullet_request(
+    paragraph: TargetParagraph,
+    start: int,
+    end: int,
+    tab_id: str,
+) -> dict[str, Any]:
+    return {
+        "createParagraphBullets": {
+            "range": {"startIndex": start, "endIndex": end, "tabId": tab_id},
+            "bulletPreset": (
+                "NUMBERED_DECIMAL_NESTED"
+                if paragraph.list_kind == "number"
+                else "BULLET_DISC_CIRCLE_SQUARE"
+            ),
+        }
+    }
+
+
 def style_requests(
     paragraphs: list[TargetParagraph], start: int, tab_id: str
 ) -> list[dict[str, Any]]:
@@ -348,84 +477,20 @@ def style_requests(
         paragraph_end = cursor + utf16_length(paragraph.text)
         style_end = paragraph_end + 1
         paragraph_ranges.append((cursor, style_end))
-        requests.append(
-            {
-                "updateParagraphStyle": {
-                    "range": {
-                        "startIndex": cursor,
-                        "endIndex": style_end,
-                        "tabId": tab_id,
-                    },
-                    "paragraphStyle": {
-                        "namedStyleType": paragraph.named_style,
-                        "pageBreakBefore": paragraph.page_break_before,
-                    },
-                    "fields": "namedStyleType,pageBreakBefore",
-                }
-            }
-        )
-
-        for run in paragraph.runs:
-            text_style: dict[str, Any] = {}
-            fields: list[str] = []
-            if run.bold is not None:
-                text_style["bold"] = run.bold
-                fields.append("bold")
-            if run.italic is not None:
-                text_style["italic"] = run.italic
-                fields.append("italic")
-            if run.font_name:
-                text_style["weightedFontFamily"] = {"fontFamily": run.font_name}
-                fields.append("weightedFontFamily")
-            if run.link_url:
-                text_style["link"] = {"url": run.link_url}
-                fields.append("link")
-            if fields and run.end > run.start:
-                requests.append(
-                    {
-                        "updateTextStyle": {
-                            "range": {
-                                "startIndex": cursor + run.start,
-                                "endIndex": cursor + run.end,
-                                "tabId": tab_id,
-                            },
-                            "textStyle": text_style,
-                            "fields": ",".join(fields),
-                        }
-                    }
-                )
+        requests.append(_paragraph_style_request(paragraph, cursor, style_end, tab_id))
+        requests.extend(_text_style_requests(paragraph, cursor, tab_id))
         cursor = style_end
 
-    group_start = 0
-    while group_start < len(paragraphs):
+    for group_start, group_end in _iter_list_groups(paragraphs):
         paragraph = paragraphs[group_start]
-        if paragraph.list_kind is None:
-            group_start += 1
-            continue
-        group_end = group_start + 1
-        while (
-            group_end < len(paragraphs)
-            and paragraphs[group_end].list_kind == paragraph.list_kind
-            and paragraphs[group_end].nesting_level == paragraph.nesting_level
-        ):
-            group_end += 1
         requests.append(
-            {
-                "createParagraphBullets": {
-                    "range": {
-                        "startIndex": paragraph_ranges[group_start][0],
-                        "endIndex": paragraph_ranges[group_end - 1][1],
-                        "tabId": tab_id,
-                    },
-                    "bulletPreset": (
-                        "NUMBERED_DECIMAL_NESTED"
-                        if paragraph.list_kind == "number"
-                        else "BULLET_DISC_CIRCLE_SQUARE"
-                    ),
-                }
-            }
+            _bullet_request(
+                paragraph,
+                paragraph_ranges[group_start][0],
+                paragraph_ranges[group_end - 1][1],
+                tab_id,
+            )
         )
-        group_start = group_end
 
     return requests
 

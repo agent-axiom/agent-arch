@@ -13,6 +13,7 @@ import struct
 import zipfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from typing import NamedTuple, TypedDict
 from xml.etree import ElementTree as ET
 
 NS = {
@@ -28,6 +29,25 @@ MAX_FIGURE_WIDTH = int(6.5 * EMU_PER_INCH)
 MAX_FIGURE_HEIGHT = int(6.3 * EMU_PER_INCH)
 MAX_CODE_PARAGRAPHS_PER_KEEP_GROUP = 12
 EXPECTED_MANUSCRIPT_VISUALS = 57
+
+
+class VisualRecord(TypedDict):
+    alt: str
+    relative_path: str
+    path: Path
+    figure_number: int | None
+    figure_title: str | None
+
+
+type DrawingParts = tuple[ET.Element, ET.Element, ET.Element]
+
+
+class DrawingSyncResult(NamedTuple):
+    target: str
+    figure_height: int | None
+    image_numbering_removed: bool
+    inline_visual_title_kept: bool
+
 
 for prefix, uri in NS.items():
     ET.register_namespace(prefix, uri)
@@ -60,9 +80,9 @@ def validate_docx_image_counts(
         )
 
 
-def parse_manuscript_visuals(manuscript: Path) -> list[dict[str, object]]:
+def parse_manuscript_visuals(manuscript: Path) -> list[VisualRecord]:
     lines = manuscript.read_text(encoding="utf-8").splitlines()
-    visuals: list[dict[str, object]] = []
+    visuals: list[VisualRecord] = []
     image_pattern = re.compile(r"^!\[(.*)\]\((visuals/[^)]+)\)$")
     caption_pattern = re.compile(r"^Рисунок (\d+)\. (.+)$")
 
@@ -143,8 +163,7 @@ def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
         if fonts is None:
             continue
         is_monospace = any(
-            "mono" in value.lower() or "courier" in value.lower()
-            for value in fonts.attrib.values()
+            "mono" in value.lower() or "courier" in value.lower() for value in fonts.attrib.values()
         )
         monospace_run_seen = monospace_run_seen or is_monospace
         if not run_text.strip():
@@ -346,6 +365,106 @@ def resize_drawing(drawing: ET.Element, image_path: Path) -> tuple[int, int]:
     return width, height
 
 
+def _image_relationship_targets(relationships: ET.Element) -> dict[str, str]:
+    return {
+        node.attrib["Id"]: posixpath.normpath(f"word/{node.attrib['Target']}")
+        for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
+        if node.attrib.get("Type", "").endswith("/image")
+    }
+
+
+def _ordered_drawings(
+    document: ET.Element,
+) -> list[DrawingParts]:
+    drawings: list[DrawingParts] = []
+    for paragraph in document.findall(".//w:p", NS):
+        for drawing in paragraph.findall(".//w:drawing", NS):
+            blip = drawing.find(".//a:blip", NS)
+            if blip is not None:
+                drawings.append((paragraph, drawing, blip))
+    return drawings
+
+
+def _synchronize_drawing(
+    root: Path,
+    visual: VisualRecord,
+    drawing_parts: DrawingParts,
+    targets: dict[str, str],
+    parent_by_child: dict[ET.Element, ET.Element],
+) -> DrawingSyncResult:
+    paragraph, drawing, blip = drawing_parts
+    relationship_id = blip.get(f"{{{NS['r']}}}embed", "")
+    target = targets.get(relationship_id)
+    if target is None:
+        raise ValueError(f"Image relationship is missing: {relationship_id}")
+    number = visual["figure_number"]
+    caption_context: tuple[ET.Element, ET.Element, int] | None = None
+    inline_title: ET.Element | None = None
+    if number:
+        parent = parent_by_child.get(paragraph)
+        if parent is None:
+            raise ValueError(f"Figure {number} has no document parent")
+        caption = find_nearby_paragraph(
+            parent,
+            paragraph,
+            re.compile(rf"^Рисунок {number}\."),
+        )
+        children = list(parent)
+        image_index = children.index(paragraph)
+        caption_index = children.index(caption)
+        insert_index = image_index if caption_index < image_index else image_index + 1
+        caption_context = parent, caption, insert_index
+    else:
+        parent = parent_by_child.get(paragraph)
+        if parent is None:
+            raise ValueError("Inline visual has no document parent")
+        candidate = previous_non_empty_paragraph(parent, paragraph)
+        if candidate is not None and paragraph_text(candidate) == visual["alt"]:
+            inline_title = candidate
+
+    destination = root / target
+    source = Path(visual["path"])
+    destination.write_bytes(source.read_bytes())
+
+    _, height = resize_drawing(drawing, source)
+    image_numbering_removed = remove_paragraph_numbering(paragraph)
+    for properties in drawing.findall(".//wp:docPr", NS):
+        properties.set("title", "Иллюстрация к рукописи")
+        properties.set("descr", str(visual["alt"])[:1000])
+
+    if caption_context is None:
+        if inline_title is not None:
+            set_paragraph_flag(inline_title, "keepNext")
+        return DrawingSyncResult(
+            target,
+            None,
+            image_numbering_removed,
+            inline_title is not None,
+        )
+    parent, caption, insert_index = caption_context
+    title = str(visual["figure_title"])
+    set_paragraph_text(caption, f"Рисунок {number}. {title}")
+    set_paragraph_flag(paragraph, "keepNext")
+    set_paragraph_flag(caption, "keepLines")
+    parent.remove(caption)
+    parent.insert(insert_index, caption)
+    return DrawingSyncResult(target, height, image_numbering_removed, False)
+
+
+def _write_docx_archive(root: Path, temporary_output: Path, output_docx: Path) -> None:
+    with zipfile.ZipFile(
+        temporary_output,
+        "w",
+        compression=zipfile.ZIP_DEFLATED,
+    ) as archive:
+        for path in sorted(root.rglob("*")):
+            if path.is_file():
+                archive.write(path, path.relative_to(root).as_posix())
+
+    output_docx.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(temporary_output, output_docx)
+
+
 def synchronize(
     input_docx: Path,
     manuscript: Path,
@@ -365,25 +484,16 @@ def synchronize(
         relationships = ET.fromstring(relationships_path.read_bytes())
         table_headers_repeated, table_rows_kept_together = normalize_table_rows(document)
         empty_numbered_paragraphs_removed = remove_empty_numbered_paragraphs(document)
-        empty_paragraphs_before_page_breaks_removed = (
-            remove_empty_paragraphs_before_page_breaks(document)
+        empty_paragraphs_before_page_breaks_removed = remove_empty_paragraphs_before_page_breaks(
+            document
         )
         code_blocks_kept_together, code_paragraphs_kept_together = keep_code_blocks_together(
             document
         )
-        targets = {
-            node.attrib["Id"]: posixpath.normpath(f"word/{node.attrib['Target']}")
-            for node in relationships.findall(f"{{{PACKAGE_REL_NS}}}Relationship")
-            if node.attrib.get("Type", "").endswith("/image")
-        }
+        targets = _image_relationship_targets(relationships)
 
         parent_by_child = {child: parent for parent in document.iter() for child in list(parent)}
-        drawings: list[tuple[ET.Element, ET.Element, ET.Element]] = []
-        for paragraph in document.findall(".//w:p", NS):
-            for drawing in paragraph.findall(".//w:drawing", NS):
-                blip = drawing.find(".//a:blip", NS)
-                if blip is not None:
-                    drawings.append((paragraph, drawing, blip))
+        drawings = _ordered_drawings(document)
 
         if len(drawings) != len(visuals):
             raise ValueError(
@@ -394,51 +504,21 @@ def synchronize(
         figure_heights: list[int] = []
         inline_visual_titles_kept = 0
         image_numbering_removed = 0
-        for visual, (paragraph, drawing, blip) in zip(visuals, drawings):
-            relationship_id = blip.get(f"{{{NS['r']}}}embed", "")
-            target = targets.get(relationship_id)
-            if target is None:
-                raise ValueError(f"Image relationship is missing: {relationship_id}")
-            destination = root / target
-            source = Path(visual["path"])
-            destination.write_bytes(source.read_bytes())
-            media_targets.append(target)
-
-            width, height = resize_drawing(drawing, source)
-            if remove_paragraph_numbering(paragraph):
-                image_numbering_removed += 1
-            if visual["figure_number"]:
-                figure_heights.append(height)
-
-            for properties in drawing.findall(".//wp:docPr", NS):
-                properties.set("title", "Иллюстрация к рукописи")
-                properties.set("descr", str(visual["alt"])[:1000])
-
-            number = visual["figure_number"]
-            if not number:
-                parent = parent_by_child.get(paragraph)
-                if parent is None:
-                    raise ValueError("Inline visual has no document parent")
-                title = previous_non_empty_paragraph(parent, paragraph)
-                if title is not None and paragraph_text(title) == visual["alt"]:
-                    set_paragraph_flag(title, "keepNext")
-                    inline_visual_titles_kept += 1
-                continue
-            parent = parent_by_child.get(paragraph)
-            if parent is None:
-                raise ValueError(f"Figure {number} has no document parent")
-            caption = find_nearby_paragraph(
-                parent,
-                paragraph,
-                re.compile(rf"^Рисунок {number}\."),
+        for visual, drawing_parts in zip(visuals, drawings):
+            result = _synchronize_drawing(
+                root,
+                visual,
+                drawing_parts,
+                targets,
+                parent_by_child,
             )
-            title = str(visual["figure_title"])
-            set_paragraph_text(caption, f"Рисунок {number}. {title}")
-            set_paragraph_flag(paragraph, "keepNext")
-            set_paragraph_flag(caption, "keepLines")
-            parent.remove(caption)
-            image_index = list(parent).index(paragraph)
-            parent.insert(image_index + 1, caption)
+            media_targets.append(result.target)
+            if result.figure_height is not None:
+                figure_heights.append(result.figure_height)
+            if result.image_numbering_removed:
+                image_numbering_removed += 1
+            if result.inline_visual_title_kept:
+                inline_visual_titles_kept += 1
 
         if len(set(media_targets)) != len(media_targets):
             raise ValueError("Multiple drawings unexpectedly share one media target")
@@ -446,17 +526,7 @@ def synchronize(
         document_path.write_bytes(ET.tostring(document, encoding="utf-8", xml_declaration=True))
 
         temporary_output = Path(temporary_directory) / "output.docx"
-        with zipfile.ZipFile(
-            temporary_output,
-            "w",
-            compression=zipfile.ZIP_DEFLATED,
-        ) as archive:
-            for path in sorted(root.rglob("*")):
-                if path.is_file():
-                    archive.write(path, path.relative_to(root).as_posix())
-
-        output_docx.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(temporary_output, output_docx)
+        _write_docx_archive(root, temporary_output, output_docx)
 
     return {
         "input_docx": str(input_docx),

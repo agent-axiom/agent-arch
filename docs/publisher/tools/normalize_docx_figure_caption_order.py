@@ -53,15 +53,8 @@ def significant_sibling(
     return None
 
 
-def normalize_document_xml(payload: bytes) -> tuple[bytes, dict[str, object]]:
-    for _, namespace in ET.iterparse(io.BytesIO(payload), events=("start-ns",)):
-        prefix, uri = namespace
-        if prefix != "xml":
-            ET.register_namespace(prefix, uri)
-    document = ET.fromstring(payload)
-    parent_by_child = {
-        child: parent for parent in document.iter() for child in list(parent)
-    }
+def numbered_captions(document: ET.Element) -> list[tuple[int, ET.Element, ET.Element]]:
+    parent_by_child = {child: parent for parent in document.iter() for child in list(parent)}
     captions: list[tuple[int, ET.Element, ET.Element]] = []
     for paragraph in document.findall(".//w:p", NS):
         match = CAPTION_PATTERN.fullmatch(paragraph_text(paragraph))
@@ -70,6 +63,16 @@ def normalize_document_xml(payload: bytes) -> tuple[bytes, dict[str, object]]:
             if parent is None:
                 raise ValueError(f"Figure caption {match.group(1)} has no parent")
             captions.append((int(match.group(1)), paragraph, parent))
+    return captions
+
+
+def normalize_document_xml(payload: bytes) -> tuple[bytes, dict[str, object]]:
+    for _, namespace in ET.iterparse(io.BytesIO(payload), events=("start-ns",)):
+        prefix, uri = namespace
+        if prefix != "xml":
+            ET.register_namespace(prefix, uri)
+    document = ET.fromstring(payload)
+    captions = numbered_captions(document)
 
     numbers = [number for number, _, _ in captions]
     if numbers != list(range(1, EXPECTED_CAPTIONS + 1)):
@@ -126,9 +129,7 @@ def normalize_docx(input_docx: Path, output_docx: Path) -> dict[str, object]:
             with zipfile.ZipFile(temporary_path, "w") as destination:
                 for info in source.infolist():
                     payload = (
-                        document_xml
-                        if info.filename == "word/document.xml"
-                        else source.read(info)
+                        document_xml if info.filename == "word/document.xml" else source.read(info)
                     )
                     destination.writestr(info, payload)
             temporary_path.replace(output_docx)

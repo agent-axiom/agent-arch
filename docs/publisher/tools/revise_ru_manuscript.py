@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from collections.abc import Sequence
 from pathlib import Path
 
 PRACTICAL_REPOSITORY_REF = "ecc5aa3cbb48eff00514a24575c64b6e68e3ffe4"
@@ -2969,6 +2970,29 @@ def label_technical_examples(text: str) -> str:
     return text
 
 
+def _pseudo_table_cells(line: str) -> list[str]:
+    return [value.strip() for value in line.strip().strip("|").split("|")]
+
+
+def _consume_pseudo_table(lines: list[str], start_index: int) -> tuple[list[str], int]:
+    table = [lines[start_index]]
+    index = start_index + 1
+    while index < len(lines):
+        if not lines[index].strip():
+            lookahead = index + 1
+            while lookahead < len(lines) and not lines[lookahead].strip():
+                lookahead += 1
+            if lookahead < len(lines) and lines[lookahead].strip().startswith("|"):
+                index = lookahead
+                continue
+            break
+        if not lines[index].strip().startswith("|"):
+            break
+        table.append(lines[index])
+        index += 1
+    return table, index
+
+
 def convert_pseudo_tables_to_lists(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
@@ -2976,33 +3000,19 @@ def convert_pseudo_tables_to_lists(text: str) -> str:
     index = 0
     target_headers = {"Ситуация", "Угроза", "Поле каталога", "Вопрос", "Event type"}
 
-    def cells(line: str) -> list[str]:
-        return [value.strip() for value in line.strip().strip("|").split("|")]
-
     while index < len(lines):
-        if not lines[index].strip().startswith("|") or cells(lines[index])[0] not in target_headers:
+        if (
+            not lines[index].strip().startswith("|")
+            or _pseudo_table_cells(lines[index])[0] not in target_headers
+        ):
             output.append(lines[index])
             index += 1
             continue
 
-        table: list[str] = [lines[index]]
-        index += 1
-        while index < len(lines):
-            if not lines[index].strip():
-                lookahead = index + 1
-                while lookahead < len(lines) and not lines[lookahead].strip():
-                    lookahead += 1
-                if lookahead < len(lines) and lines[lookahead].strip().startswith("|"):
-                    index = lookahead
-                    continue
-                break
-            if not lines[index].strip().startswith("|"):
-                break
-            table.append(lines[index])
-            index += 1
+        table, index = _consume_pseudo_table(lines, index)
 
-        headers = cells(table[0])
-        separator = cells(table[1])
+        headers = _pseudo_table_cells(table[0])
+        separator = _pseudo_table_cells(table[1])
         if (
             len(headers) < 2
             or len(separator) != len(headers)
@@ -3020,7 +3030,9 @@ def convert_pseudo_tables_to_lists(text: str) -> str:
         }
         headers = [labels.get(header, header) for header in headers]
         for row in table[2:]:
-            values = [value.replace(r"\_", "_").replace(r"\-", "-") for value in cells(row)]
+            values = [
+                value.replace(r"\_", "_").replace(r"\-", "-") for value in _pseudo_table_cells(row)
+            ]
             if len(values) != len(headers):
                 raise ValueError(f"Malformed pseudo-table row: {row}")
             lead = f"`{values[0]}`" if event_table else f"**{values[0].rstrip('.')}**"
@@ -3086,6 +3098,39 @@ def _source_listing(source_path: Path, key: str) -> str:
     return matches[0]
 
 
+def _degraded_fragment_bounds(
+    lines: list[str],
+    key_index: int,
+    verified_keys: set[str],
+) -> tuple[int, int]:
+    start = key_index
+    while start > 0:
+        previous = lines[start - 1]
+        if not previous.strip() or _code_line_key(previous) in verified_keys:
+            start -= 1
+            continue
+        break
+    while start < key_index and not lines[start].strip():
+        start += 1
+
+    end = key_index
+    cursor = key_index + 1
+    while cursor < len(lines):
+        candidate = lines[cursor]
+        if not candidate.strip() or _code_line_key(candidate) in verified_keys:
+            if candidate.strip():
+                end = cursor
+            cursor += 1
+            continue
+        break
+    return start, end
+
+
+def _fragment_key_coverage(fragment: list[str], verified_keys: set[str]) -> float:
+    restored_keys = {_code_line_key(line) for line in fragment if line.strip()}
+    return len(restored_keys & verified_keys) / max(1, len(verified_keys))
+
+
 def restore_verified_python_listings(text: str) -> str:
     repo_root = Path(__file__).resolve().parents[3]
     listing_number = 0
@@ -3112,29 +3157,8 @@ def restore_verified_python_listings(text: str) -> str:
             )
 
         key_index = candidates[0]
-        start = key_index
-        while start > 0:
-            previous = lines[start - 1]
-            if not previous.strip() or _code_line_key(previous) in code_keys:
-                start -= 1
-                continue
-            break
-        while start < key_index and not lines[start].strip():
-            start += 1
-
-        end = key_index
-        cursor = key_index + 1
-        while cursor < len(lines):
-            candidate = lines[cursor]
-            if not candidate.strip() or _code_line_key(candidate) in code_keys:
-                if candidate.strip():
-                    end = cursor
-                cursor += 1
-                continue
-            break
-
-        restored_keys = {_code_line_key(line) for line in lines[start : end + 1] if line.strip()}
-        coverage = len(restored_keys & code_keys) / max(1, len(code_keys))
+        start, end = _degraded_fragment_bounds(lines, key_index, code_keys)
+        coverage = _fragment_key_coverage(lines[start : end + 1], code_keys)
         if coverage < 0.7:
             raise ValueError(f"Listing {key!r} matched only {coverage:.0%} of its verified source")
 
@@ -3186,9 +3210,7 @@ def _structured_fence_language(raw_language: str, block: str) -> str | None:
     return None
 
 
-def restore_structured_book_blocks(text: str) -> str:
-    repo_root = Path(__file__).resolve().parents[3]
-    book_root = repo_root / "docs/book"
+def _collect_structured_source_blocks(book_root: Path) -> list[tuple[str, str]]:
     source_blocks: list[tuple[str, str]] = []
     seen_blocks: set[str] = set()
     for source_path in sorted(book_root.rglob("*.md")):
@@ -3204,70 +3226,67 @@ def restore_structured_book_blocks(text: str) -> str:
             source_blocks.append((language, block))
 
     source_blocks.sort(key=lambda item: len(item[1]), reverse=True)
+    return source_blocks
+
+
+def _index_unfenced_lines_by_key(lines: list[str]) -> dict[str, list[int]]:
+    inside_fence = False
+    outside_by_key: dict[str, list[int]] = {}
+    for index, line in enumerate(lines):
+        if line.startswith("```"):
+            inside_fence = not inside_fence
+            continue
+        if inside_fence or not line.strip():
+            continue
+        outside_by_key.setdefault(_code_line_key(line), []).append(index)
+    return outside_by_key
+
+
+def _select_unique_structured_anchor(
+    unique_keys: set[str],
+    outside_by_key: dict[str, list[int]],
+) -> int | None:
+    for key in sorted(unique_keys, key=len, reverse=True):
+        candidates = outside_by_key.get(key, [])
+        if len(key) >= 12 and len(candidates) == 1:
+            return candidates[0]
+    return None
+
+
+def _restore_structured_block(text: str, language: str, block: str) -> tuple[str, bool]:
+    match_block = next(
+        (legacy for marker, legacy in LEGACY_STRUCTURED_MATCH_SOURCES.items() if marker in block),
+        block,
+    )
+    block_keys = [_code_line_key(line) for line in match_block.splitlines() if line.strip()]
+    unique_keys = set(block_keys)
+    if len(unique_keys) < 2:
+        return text, False
+
+    lines = text.splitlines()
+    outside_by_key = _index_unfenced_lines_by_key(lines)
+    anchor_index = _select_unique_structured_anchor(unique_keys, outside_by_key)
+    if anchor_index is None:
+        return text, False
+
+    start, end = _degraded_fragment_bounds(lines, anchor_index, unique_keys)
+    coverage = _fragment_key_coverage(lines[start : end + 1], unique_keys)
+    if coverage < 0.7:
+        return text, False
+
+    lines[start : end + 1] = [f"```{language}", *block.splitlines(), "```"]
+    return "\n".join(lines).rstrip() + "\n", True
+
+
+def restore_structured_book_blocks(text: str) -> str:
+    repo_root = Path(__file__).resolve().parents[3]
+    book_root = repo_root / "docs/book"
+    source_blocks = _collect_structured_source_blocks(book_root)
     restored = 0
     for language, block in source_blocks:
-        match_block = next(
-            (
-                legacy
-                for marker, legacy in LEGACY_STRUCTURED_MATCH_SOURCES.items()
-                if marker in block
-            ),
-            block,
-        )
-        block_keys = [_code_line_key(line) for line in match_block.splitlines() if line.strip()]
-        unique_keys = set(block_keys)
-        if len(unique_keys) < 2:
-            continue
-
-        lines = text.splitlines()
-        inside_fence = False
-        outside_by_key: dict[str, list[int]] = {}
-        for index, line in enumerate(lines):
-            if line.startswith("```"):
-                inside_fence = not inside_fence
-                continue
-            if inside_fence or not line.strip():
-                continue
-            outside_by_key.setdefault(_code_line_key(line), []).append(index)
-
-        anchor_index = None
-        for key in sorted(unique_keys, key=len, reverse=True):
-            candidates = outside_by_key.get(key, [])
-            if len(key) >= 12 and len(candidates) == 1:
-                anchor_index = candidates[0]
-                break
-        if anchor_index is None:
-            continue
-
-        start = anchor_index
-        while start > 0:
-            previous = lines[start - 1]
-            if not previous.strip() or _code_line_key(previous) in unique_keys:
-                start -= 1
-                continue
-            break
-        while start < anchor_index and not lines[start].strip():
-            start += 1
-
-        end = anchor_index
-        cursor = anchor_index + 1
-        while cursor < len(lines):
-            candidate = lines[cursor]
-            if not candidate.strip() or _code_line_key(candidate) in unique_keys:
-                if candidate.strip():
-                    end = cursor
-                cursor += 1
-                continue
-            break
-
-        matched_keys = {_code_line_key(line) for line in lines[start : end + 1] if line.strip()}
-        coverage = len(matched_keys & unique_keys) / len(unique_keys)
-        if coverage < 0.7:
-            continue
-
-        lines[start : end + 1] = [f"```{language}", *block.splitlines(), "```"]
-        text = "\n".join(lines).rstrip() + "\n"
-        restored += 1
+        text, block_restored = _restore_structured_block(text, language, block)
+        if block_restored:
+            restored += 1
 
     if restored < 25:
         raise ValueError(f"Expected to restore at least 25 structured blocks, found {restored}")
@@ -4359,6 +4378,40 @@ audit:
     return text
 
 
+def _unescape_technical_line(value: str) -> str:
+    value = value.strip()
+    return re.sub(r"\\([_=\-\[\]{}*<>])", r"\1", value)
+
+
+def _is_command_line(value: str) -> bool:
+    return bool(re.match(r"^\s*(?:uv |git |cd |mkdir |python |pytest |ruff |ty |curl )", value))
+
+
+def _consume_command_group(lines: list[str], start: int) -> tuple[list[str], int]:
+    commands: list[str] = []
+    cursor = start
+    while cursor < len(lines):
+        candidate = lines[cursor]
+        if _is_command_line(candidate):
+            commands.append(_unescape_technical_line(candidate))
+            cursor += 1
+            continue
+        if (
+            not candidate.strip()
+            and cursor + 1 < len(lines)
+            and _is_command_line(lines[cursor + 1])
+        ):
+            cursor += 1
+            continue
+        break
+    return commands, cursor
+
+
+def _is_single_line_json(value: str) -> bool:
+    stripped = value.strip()
+    return len(stripped) >= 20 and stripped.startswith("{") and stripped.endswith("}")
+
+
 def fence_remaining_commands_and_json(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
@@ -4366,13 +4419,6 @@ def fence_remaining_commands_and_json(text: str) -> str:
     inside_fence = False
     restored_commands = 0
     restored_json = 0
-
-    def unescape(value: str) -> str:
-        value = value.strip()
-        return re.sub(r"\\([_=\-\[\]{}*<>])", r"\1", value)
-
-    def is_command(value: str) -> bool:
-        return bool(re.match(r"^\s*(?:uv |git |cd |mkdir |python |pytest |ruff |ty |curl )", value))
 
     while index < len(lines):
         line = lines[index]
@@ -4386,31 +4432,16 @@ def fence_remaining_commands_and_json(text: str) -> str:
             index += 1
             continue
 
-        if is_command(line):
-            commands: list[str] = []
-            cursor = index
-            while cursor < len(lines):
-                candidate = lines[cursor]
-                if is_command(candidate):
-                    commands.append(unescape(candidate))
-                    cursor += 1
-                    continue
-                if (
-                    not candidate.strip()
-                    and cursor + 1 < len(lines)
-                    and is_command(lines[cursor + 1])
-                ):
-                    cursor += 1
-                    continue
-                break
+        if _is_command_line(line):
+            commands, cursor = _consume_command_group(lines, index)
             output.extend(["```console", *commands, "```"])
             restored_commands += 1
             index = cursor
             continue
 
         stripped = line.strip()
-        if len(stripped) >= 20 and stripped.startswith("{") and stripped.endswith("}"):
-            output.extend(["```json", unescape(stripped), "```"])
+        if _is_single_line_json(stripped):
+            output.extend(["```json", _unescape_technical_line(stripped), "```"])
             restored_json += 1
             index += 1
             continue
@@ -4428,14 +4459,12 @@ def fence_remaining_commands_and_json(text: str) -> str:
     return "\n".join(output).rstrip() + "\n"
 
 
-def label_long_technical_blocks(text: str) -> str:
-    lines = text.splitlines()
-    insertions: dict[int, str] = {}
+def _iter_fenced_blocks(lines: list[str]) -> list[tuple[int, str, list[str]]]:
+    blocks: list[tuple[int, str, list[str]]] = []
     inside = False
     start = 0
     language = ""
     block: list[str] = []
-
     for index, line in enumerate(lines):
         if not line.startswith("```"):
             if inside:
@@ -4447,35 +4476,50 @@ def label_long_technical_blocks(text: str) -> str:
             language = line[3:].strip() or "text"
             block = []
             continue
-
-        if len(block) > 20:
-            nearby = [value.strip() for value in lines[max(0, start - 8) : start] if value.strip()]
-            introduced = any(
-                re.search(r"(?:Листинг|Пример|Конфигурация)", value, re.IGNORECASE)
-                for value in nearby[-4:]
-            )
-            if not introduced:
-                heading = next(
-                    (
-                        clean_inline_markup(value.lstrip("# ").strip())
-                        for value in reversed(lines[:start])
-                        if value.startswith("### ")
-                    ),
-                    "Технический контракт",
-                )
-                kind = {
-                    "yaml": "декларативная конфигурация",
-                    "json": "структурированный результат",
-                    "python": "учебный пример Python",
-                    "pseudocode": "псевдокод",
-                }.get(language, "технический пример")
-                insertions[start] = (
-                    f"**Листинг. {heading}.** Тип: {kind}; полный учебный контракт приведен ниже."
-                )
+        blocks.append((start, language, block))
         inside = False
-
     if inside:
         raise ValueError("Unclosed fenced block while labeling long examples")
+    return blocks
+
+
+def _has_nearby_listing_intro(lines: list[str], start: int) -> bool:
+    nearby = [value.strip() for value in lines[max(0, start - 8) : start] if value.strip()]
+    return any(
+        re.search(r"(?:Листинг|Пример|Конфигурация)", value, re.IGNORECASE)
+        for value in nearby[-4:]
+    )
+
+
+def _nearest_h3_title(lines: list[str], start: int) -> str:
+    return next(
+        (
+            clean_inline_markup(value.lstrip("# ").strip())
+            for value in reversed(lines[:start])
+            if value.startswith("### ")
+        ),
+        "Технический контракт",
+    )
+
+
+def _technical_block_label(heading: str, language: str) -> str:
+    kind = {
+        "yaml": "декларативная конфигурация",
+        "json": "структурированный результат",
+        "python": "учебный пример Python",
+        "pseudocode": "псевдокод",
+    }.get(language, "технический пример")
+    return f"**Листинг. {heading}.** Тип: {kind}; полный учебный контракт приведен ниже."
+
+
+def label_long_technical_blocks(text: str) -> str:
+    lines = text.splitlines()
+    insertions: dict[int, str] = {}
+    for start, language, block in _iter_fenced_blocks(lines):
+        if len(block) > 20 and not _has_nearby_listing_intro(lines, start):
+            heading = _nearest_h3_title(lines, start)
+            insertions[start] = _technical_block_label(heading, language)
+
     if len(insertions) != 7:
         raise ValueError(
             f"Expected seven previously unlabeled long examples, found {len(insertions)}"
@@ -5299,10 +5343,10 @@ def normalize_editorial_prose(text: str) -> str:
     return "\n".join(output).rstrip() + "\n"
 
 
-def demote_micro_headings(text: str) -> str:
+def _demote_h4_lines(lines: list[str]) -> tuple[list[str], int]:
     output: list[str] = []
     demoted = 0
-    for line in text.splitlines():
+    for line in lines:
         match = re.fullmatch(r"####\s+(.+)", line)
         if match is None:
             output.append(line)
@@ -5310,10 +5354,40 @@ def demote_micro_headings(text: str) -> str:
         title = clean_inline_markup(match.group(1)).rstrip(".:")
         output.append(f"**{title}.**")
         demoted += 1
+    return output, demoted
+
+
+def _short_h3_section_bounds(lines: list[str], index: int) -> tuple[int, int]:
+    end = index + 1
+    while end < len(lines) and re.match(r"^#{1,3}\s+", lines[end]) is None:
+        end += 1
+    return index + 1, end
+
+
+def _is_demotable_short_h3(lines: list[str], index: int, in_chapter: bool) -> bool:
+    match = re.fullmatch(r"###\s+(.+)", lines[index])
+    if match is None or not in_chapter:
+        return False
+    title = clean_inline_markup(match.group(1)).rstrip(".:")
+    protected = {
+        "Ключевые выводы",
+        "Источники главы",
+        "От наблюдаемого отклонения к внутреннему риску",
+    }
+    if title in protected:
+        return False
+    start, end = _short_h3_section_bounds(lines, index)
+    section = "\n".join(lines[start:end])
+    section = re.sub(r"```.*?```", "", section, flags=re.DOTALL)
+    word_count = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", section))
+    return word_count < 70
+
+
+def demote_micro_headings(text: str) -> str:
+    lines, demoted = _demote_h4_lines(text.splitlines())
     if demoted < 100:
         raise ValueError(f"Expected to demote at least 100 micro-headings, found {demoted}")
 
-    lines = output
     in_chapter = False
     chapter_context: list[bool] = []
     for line in lines:
@@ -5321,27 +5395,13 @@ def demote_micro_headings(text: str) -> str:
             in_chapter = re.match(r"^## Глава \d+", line) is not None
         chapter_context.append(in_chapter)
 
-    protected = {
-        "Ключевые выводы",
-        "Источники главы",
-        "От наблюдаемого отклонения к внутреннему риску",
-    }
     demoted_third_level = 0
     for index, line in enumerate(lines):
+        if not _is_demotable_short_h3(lines, index, chapter_context[index]):
+            continue
         match = re.fullmatch(r"###\s+(.+)", line)
-        if match is None or not chapter_context[index]:
-            continue
+        assert match is not None
         title = clean_inline_markup(match.group(1)).rstrip(".:")
-        if title in protected:
-            continue
-        end = index + 1
-        while end < len(lines) and re.match(r"^#{1,3}\s+", lines[end]) is None:
-            end += 1
-        section = "\n".join(lines[index + 1 : end])
-        section = re.sub(r"```.*?```", "", section, flags=re.DOTALL)
-        word_count = len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", section))
-        if word_count >= 70:
-            continue
         lines[index] = f"**{title}.**"
         demoted_third_level += 1
 
@@ -8617,8 +8677,8 @@ def _normalize_source_url(url: str) -> str:
     return url.replace("\\_", "_").replace("\\-", "-")
 
 
-def rebuild_source_apparatus(text: str) -> str:
-    """Keep URLs in one bibliography and use stable print identifiers in chapters."""
+def _ensure_mcp_security_source(text: str) -> str:
+    """Insert the MCP security source when its normalized URL is absent."""
     missing_source_url = (
         "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
     )
@@ -8637,7 +8697,11 @@ def rebuild_source_apparatus(text: str) -> str:
             missing_source + anchor,
             "missing MCP security bibliography entry",
         )
+    return text
 
+
+def _number_source_appendix(text: str) -> tuple[str, dict[str, str]]:
+    """Assign stable identifiers to bibliography entries in encounter order."""
     appendix_match = re.search(
         r"(?ms)^## Приложение 4\\\..*?(?=^## Приложение 5\\\.)",
         text,
@@ -8670,64 +8734,93 @@ def rebuild_source_apparatus(text: str) -> str:
 
     numbered_appendix = source_pattern.sub(number_appendix_entry, appendix)
     text = text[: appendix_match.start()] + numbered_appendix + text[appendix_match.end() :]
+    return text, source_ids
 
-    inline_link_pattern = re.compile(r"(?<!!)\[(?P<title>[^\]]+)\]\((?P<url>https?://[^)]+)\)")
+
+def _chapter_source_ids(
+    sources: str,
+    number: int,
+    source_ids: dict[str, str],
+) -> tuple[list[str], str]:
+    """Resolve and number chapter-local sources without deduplicating them."""
     chapter_source_pattern = re.compile(
         r"(?m)^\* \[(?P<title>[^\]]+)\]\((?P<url>https?://[^)]+)\)\.?$"
     )
+    chapter_entries = list(chapter_source_pattern.finditer(sources))
+    if len(chapter_entries) < 2:
+        raise ValueError(f"Chapter {number} has too few source entries")
 
+    chapter_ids: list[str] = []
+    for match in chapter_entries:
+        url = _normalize_source_url(match.group("url"))
+        if url not in source_ids:
+            raise ValueError(f"Chapter {number} source is absent from the bibliography: {url}")
+        chapter_ids.append(source_ids[url])
+
+    def replace_chapter_source(match: re.Match[str]) -> str:
+        source_id = source_ids[_normalize_source_url(match.group("url"))]
+        return f"* **{source_id}.** {match.group('title')}."
+
+    return chapter_ids, chapter_source_pattern.sub(replace_chapter_source, sources)
+
+
+def _claim_citation_span(body: str, number: int) -> tuple[int, int, str]:
+    """Find the preferred claim span that receives chapter citations."""
+    claim_pattern = re.compile(r"(?m)^\* Устойчивые утверждения: .+$")
+    claim_match = claim_pattern.search(body)
+    if claim_match is not None:
+        return claim_match.start(), claim_match.end(), claim_match.group(0).rstrip(".")
+
+    key_takeaways = body.find("### Ключевые выводы")
+    if key_takeaways == -1:
+        raise ValueError(f"Chapter {number} lacks a claim citation anchor")
+    takeaway_match = re.search(r"(?m)^\* .+$", body[key_takeaways:])
+    if takeaway_match is None:
+        raise ValueError(f"Chapter {number} lacks a key takeaway")
+    return (
+        key_takeaways + takeaway_match.start(),
+        key_takeaways + takeaway_match.end(),
+        takeaway_match.group(0).rstrip("."),
+    )
+
+
+def _rewrite_chapter_source_apparatus(
+    chapter: str,
+    number: int,
+    source_ids: dict[str, str],
+) -> str:
+    """Replace chapter URLs and add citations to the preferred claim."""
+    if chapter.count("### Источники главы") != 1:
+        raise ValueError(f"Chapter {number} must have one source section")
+    body, sources = chapter.split("### Источники главы", 1)
+    chapter_ids, sources = _chapter_source_ids(sources, number, source_ids)
+
+    inline_link_pattern = re.compile(r"(?<!!)\[(?P<title>[^\]]+)\]\((?P<url>https?://[^)]+)\)")
+
+    def replace_inline_link(match: re.Match[str]) -> str:
+        normalized = _normalize_source_url(match.group("url"))
+        source_id = source_ids.get(normalized)
+        if source_id is None:
+            raise ValueError(
+                f"Chapter {number} inline source is absent from bibliography: {normalized}"
+            )
+        return f"{match.group('title')} (см. источник **{source_id}**)"
+
+    body = inline_link_pattern.sub(replace_inline_link, body)
+    claim_start, claim_end, claim = _claim_citation_span(body, number)
+    cited_ids = chapter_ids[:2]
+    citation = ", ".join(f"**{source_id}**" for source_id in cited_ids)
+    body = body[:claim_start] + f"{claim} (см. источники {citation})." + body[claim_end:]
+    return body + "### Источники главы" + sources
+
+
+def rebuild_source_apparatus(text: str) -> str:
+    """Keep URLs in one bibliography and use stable print identifiers in chapters."""
+    text = _ensure_mcp_security_source(text)
+    text, source_ids = _number_source_appendix(text)
     for number in range(28, 0, -1):
         chapter = extract_chapter(text, number)
-        if chapter.count("### Источники главы") != 1:
-            raise ValueError(f"Chapter {number} must have one source section")
-        body, sources = chapter.split("### Источники главы", 1)
-        chapter_entries = list(chapter_source_pattern.finditer(sources))
-        if len(chapter_entries) < 2:
-            raise ValueError(f"Chapter {number} has too few source entries")
-
-        chapter_ids: list[str] = []
-        for match in chapter_entries:
-            url = _normalize_source_url(match.group("url"))
-            if url not in source_ids:
-                raise ValueError(f"Chapter {number} source is absent from the bibliography: {url}")
-            chapter_ids.append(source_ids[url])
-
-        def replace_chapter_source(match: re.Match[str]) -> str:
-            source_id = source_ids[_normalize_source_url(match.group("url"))]
-            return f"* **{source_id}.** {match.group('title')}."
-
-        sources = chapter_source_pattern.sub(replace_chapter_source, sources)
-
-        def replace_inline_link(match: re.Match[str]) -> str:
-            normalized = _normalize_source_url(match.group("url"))
-            source_id = source_ids.get(normalized)
-            if source_id is None:
-                raise ValueError(
-                    f"Chapter {number} inline source is absent from bibliography: {normalized}"
-                )
-            return f"{match.group('title')} (см. источник **{source_id}**)"
-
-        body = inline_link_pattern.sub(replace_inline_link, body)
-        claim_pattern = re.compile(r"(?m)^\* Устойчивые утверждения: .+$")
-        claim_match = claim_pattern.search(body)
-        if claim_match is not None:
-            claim_start = claim_match.start()
-            claim_end = claim_match.end()
-            claim = claim_match.group(0).rstrip(".")
-        else:
-            key_takeaways = body.find("### Ключевые выводы")
-            if key_takeaways == -1:
-                raise ValueError(f"Chapter {number} lacks a claim citation anchor")
-            takeaway_match = re.search(r"(?m)^\* .+$", body[key_takeaways:])
-            if takeaway_match is None:
-                raise ValueError(f"Chapter {number} lacks a key takeaway")
-            claim_start = key_takeaways + takeaway_match.start()
-            claim_end = key_takeaways + takeaway_match.end()
-            claim = takeaway_match.group(0).rstrip(".")
-        cited_ids = chapter_ids[:2]
-        citation = ", ".join(f"**{source_id}**" for source_id in cited_ids)
-        body = body[:claim_start] + f"{claim} (см. источники {citation})." + body[claim_end:]
-        revised = body + "### Источники главы" + sources
+        revised = _rewrite_chapter_source_apparatus(chapter, number, source_ids)
         text = text.replace(chapter, revised.rstrip(), 1)
 
     return text.rstrip() + "\n"
@@ -10426,8 +10519,68 @@ def apply_final_publisher_copyedit_2026_07_22(text: str) -> str:
     return text
 
 
-def apply_post_audit_consistency_pass_2026_07_23(text: str) -> str:
-    """Align executable contracts and reader claims after the final audit."""
+def _replace_legacy_or_validate_current(
+    text: str,
+    old: str,
+    current: str,
+    label: str,
+    *,
+    old_label: str | None = None,
+) -> str:
+    if old in text:
+        return _replace_editorial_anchor(text, old, current, old_label or label)
+    if text.count(current) != 1:
+        raise ValueError(f"Current {label} must occur exactly once")
+    return text
+
+
+def _replace_three_state_editorial_anchor(
+    text: str,
+    oldest: str,
+    intermediate: str,
+    current: str,
+    label: str,
+    *,
+    oldest_label: str | None = None,
+    intermediate_label: str | None = None,
+    current_error: str | None = None,
+) -> str:
+    if oldest in text:
+        return _replace_editorial_anchor(text, oldest, current, oldest_label or label)
+    if intermediate in text:
+        return _replace_editorial_anchor(
+            text,
+            intermediate,
+            current,
+            intermediate_label or label,
+        )
+    if text.count(current) != 1:
+        raise ValueError(current_error or f"Current {label} must occur exactly once")
+    return text
+
+
+def _insert_once_unless_marker(
+    text: str,
+    anchor: str,
+    replacement: str,
+    marker: str,
+    label: str,
+    *,
+    anchor_label: str | None = None,
+) -> str:
+    if marker not in text:
+        return _replace_editorial_anchor(
+            text,
+            anchor,
+            replacement,
+            anchor_label or label,
+        )
+    if text.count(marker) != 1:
+        raise ValueError(f"Current {label} must occur once")
+    return text
+
+
+def _apply_post_audit_memory_contracts(text: str) -> str:
 
     listing_ten_old = """```python
 from dataclasses import dataclass
@@ -10621,6 +10774,11 @@ def select_for_prompt(
     for old, new in replacements:
         text = _replace_editorial_anchor(text, old, new, "memory lab claim")
 
+    return text
+
+
+def _apply_post_audit_trace_contracts(text: str) -> str:
+
     tracing_listing_old = """```python
 from dataclasses import dataclass
 from time import monotonic
@@ -10680,15 +10838,13 @@ def emit_span(*, name: str, status: str, duration_ms: int) -> None:
         }
     )
 ```"""
-    if tracing_listing_old in text:
-        text = _replace_editorial_anchor(
-            text,
-            tracing_listing_old,
-            tracing_listing_new,
-            "tool result tracing semantics",
-        )
-    elif text.count(tracing_listing_new) != 1:
-        raise ValueError("Current tool-result tracing listing must occur exactly once")
+    text = _replace_legacy_or_validate_current(
+        text,
+        tracing_listing_old,
+        tracing_listing_new,
+        "tool-result tracing listing",
+        old_label="tool result tracing semantics",
+    )
 
     trace_intro_old = """В `agent_runtime_ref` сейчас используется намеренно простая оболочка. Сырой
 пользовательский ввод в общую телеметрию не включается; вместо него сохраняются
@@ -10745,6 +10901,11 @@ def emit_span(*, name: str, status: str, duration_ms: int) -> None:
         trace_envelope_new,
         "runtime trace envelope",
     )
+
+    return text
+
+
+def _apply_post_audit_evidence_contracts(text: str) -> str:
 
     change_classifier_old = """```python
 from dataclasses import dataclass
@@ -10840,22 +11001,16 @@ def manifest_integrity_verified(
         "def manifest_integrity_verified(",
         "def artifact_ready(",
     )
-    if artifact_listing_old in text:
-        text = _replace_editorial_anchor(
-            text,
-            artifact_listing_old,
-            artifact_listing_new,
-            "verified artifact manifest listing",
-        )
-    elif artifact_listing_current in text:
-        text = _replace_editorial_anchor(
-            text,
-            artifact_listing_current,
-            artifact_listing_new,
-            "precise artifact manifest naming",
-        )
-    elif text.count(artifact_listing_new) != 1:
-        raise ValueError("Current artifact-manifest verifier must occur once")
+    text = _replace_three_state_editorial_anchor(
+        text,
+        artifact_listing_old,
+        artifact_listing_current,
+        artifact_listing_new,
+        "artifact-manifest verifier",
+        oldest_label="verified artifact manifest listing",
+        intermediate_label="precise artifact manifest naming",
+        current_error="Current artifact-manifest verifier must occur once",
+    )
     text = _replace_editorial_anchor(
         text,
         "Идея здесь простая: доверенный артефакт полезно определять не по интуиции, "
@@ -10915,12 +11070,7 @@ slo:
       action: freeze_and_reconcile
 ```"""
     if slo_old in text:
-        text = _replace_editorial_anchor(
-            text,
-            slo_old,
-            slo_new,
-            "complete SLO card",
-        )
+        text = _replace_editorial_anchor(text, slo_old, slo_new, "complete SLO card")
     elif text.count(slo_new) != 1:
         raise ValueError("Current complete SLO card must occur once")
     text = _replace_editorial_anchor(
@@ -10934,6 +11084,11 @@ slo:
         "жестким блокером и не компенсируется хорошим средним показателем.",
         "SLO artifact reference",
     )
+
+    return text
+
+
+def _apply_post_audit_release_contracts(text: str) -> str:
 
     adlc_anchor = """8. Вывод из эксплуатации или замена
 
@@ -10967,15 +11122,13 @@ decided_at: "2026-07-23T09:30:00Z"
 обязательное доказательство должно быть проверено и принято владельцем.
 
 ADLC полезно мыслить как непрерывный контур, а не как путь до первого выпуска."""
-    if "transition_id: adlc-support-ticket-baseline-to-canary-001" not in text:
-        text = _replace_editorial_anchor(
-            text,
-            adlc_anchor,
-            adlc_addition,
-            "ADLC transition record",
-        )
-    elif text.count("transition_id: adlc-support-ticket-baseline-to-canary-001") != 1:
-        raise ValueError("Current ADLC transition record must occur once")
+    text = _insert_once_unless_marker(
+        text,
+        adlc_anchor,
+        adlc_addition,
+        "transition_id: adlc-support-ticket-baseline-to-canary-001",
+        "ADLC transition record",
+    )
 
     rollout_yaml_old = """```yaml
 rollout:
@@ -11104,15 +11257,14 @@ def ready_for_rollout(
 `docs/companion/examples/readiness-rubric-support-ticket.yaml`.
 
 **Что изменилось после этой главы.**"""
-    if "docs/companion/examples/readiness-rubric-support-ticket.yaml" not in text:
-        text = _replace_editorial_anchor(
-            text,
-            rubric_anchor,
-            rubric_addition,
-            "release readiness rubric",
-        )
-    elif text.count("docs/companion/examples/readiness-rubric-support-ticket.yaml") != 1:
-        raise ValueError("Current release-readiness rubric reference must occur once")
+    text = _insert_once_unless_marker(
+        text,
+        rubric_anchor,
+        rubric_addition,
+        "docs/companion/examples/readiness-rubric-support-ticket.yaml",
+        "release-readiness rubric reference",
+        anchor_label="release readiness rubric",
+    )
 
     text = text.replace(
         "Проверяемый артефакт этого разбора — `context-manifest.yaml`.",
@@ -11133,12 +11285,32 @@ def ready_for_rollout(
         1,
     )
 
+    return text
+
+
+def apply_post_audit_consistency_pass_2026_07_23(text: str) -> str:
+    """Align executable contracts and reader claims after the final audit."""
+    text = _apply_post_audit_memory_contracts(text)
+    text = _apply_post_audit_trace_contracts(text)
+    text = _apply_post_audit_evidence_contracts(text)
+    text = _apply_post_audit_release_contracts(text)
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
-def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
-    """Apply structural and source-discipline fixes required for print."""
+def _replace_all_required(
+    text: str,
+    replacements: tuple[tuple[str, str], ...],
+    *,
+    missing_prefix: str,
+) -> str:
+    for old, new in replacements:
+        if old not in text:
+            raise ValueError(f"{missing_prefix}: {old}")
+        text = text.replace(old, new)
+    return text
 
+
+def _apply_required_world_class_replacements(text: str) -> str:
     exact_replacements = (
         ("весь среда исполнения", "всю среду исполнения"),
         ("среда исполнения решил", "среда исполнения решила"),
@@ -11188,11 +11360,14 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
             "утверждает, маршрутизирует и аудирует MCP-точки доступа в масштабе».",
         ),
     )
-    for old, new in exact_replacements:
-        if old not in text:
-            raise ValueError(f"World-class copyedit anchor missing: {old}")
-        text = text.replace(old, new)
+    return _replace_all_required(
+        text,
+        exact_replacements,
+        missing_prefix="World-class copyedit anchor missing",
+    )
 
+
+def _normalize_create_ticket_risk(text: str) -> str:
     text = text.replace(
         "  create_ticket:\n    risk: medium\n",
         "  create_ticket:\n    risk: high\n",
@@ -11200,6 +11375,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
     if re.search(r"create_ticket:\n\s+risk: medium", text):
         raise ValueError("create_ticket risk classification still drifts")
 
+    return text
+
+
+def _strengthen_approval_chain(text: str) -> str:
     digest = "1b517f3d6f03284c09fb9f3822c346f987f9410dc23127eb22a494027f19abbd"
     text = _replace_editorial_anchor(
         text,
@@ -11243,6 +11422,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         "approval audit digest",
     )
 
+    return text
+
+
+def _extend_case_and_chapter_sources(text: str) -> str:
     text = _replace_editorial_anchor(
         text,
         "* **S021.** OpenAI, A Practical Guide to Building Agents.\n* **S009.** NIST, AI RMF 1.0.",
@@ -11289,7 +11472,14 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         "primary case source",
     )
 
-    stacked_heading_bridges = (
+    return text
+
+
+def _insert_stacked_heading_bridges(
+    text: str,
+    bridges: tuple[tuple[str, str, str], ...] | None = None,
+) -> str:
+    stacked_heading_bridges = bridges if bridges is not None else (
         (
             "## Практическое упражнение части I",
             "### Лабораторная работа 1\\. Выбор формы исполнения",
@@ -11479,6 +11669,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
             f"stacked headings: {parent}",
         )
 
+    return text
+
+
+def _label_heading_adjacent_fences(text: str) -> str:
     lines = text.splitlines()
     output: list[str] = []
     inside_fence = False
@@ -11507,6 +11701,10 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         index += 1
     text = "\n".join(output).rstrip() + "\n"
 
+    return text
+
+
+def _repair_world_class_listing_layout(text: str) -> str:
     text = text.replace(
         '        return ToolResult(status="validation_failure", payload={"reason": "missing idempotency key"})',
         "        return ToolResult(\n"
@@ -11520,8 +11718,12 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         "**Тип фрагмента:** команда для воспроизведения.\n\n```console",
     )
 
+    return text
+
+
+def _wrap_world_class_shell_lines(text: str) -> str:
     lines = text.splitlines()
-    output = []
+    output: list[str] = []
     fence_language = ""
     for line in lines:
         if line.startswith("```"):
@@ -11545,7 +11747,20 @@ def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
         else:
             output.append(line)
 
-    return re.sub(r"\n{4,}", "\n\n", "\n".join(output)).rstrip() + "\n"
+    return "\n".join(output).rstrip() + "\n"
+
+
+def apply_world_class_technical_edit_2026_07_23(text: str) -> str:
+    """Apply structural and source-discipline fixes required for print."""
+    text = _apply_required_world_class_replacements(text)
+    text = _normalize_create_ticket_risk(text)
+    text = _strengthen_approval_chain(text)
+    text = _extend_case_and_chapter_sources(text)
+    text = _insert_stacked_heading_bridges(text)
+    text = _label_heading_adjacent_fences(text)
+    text = _repair_world_class_listing_layout(text)
+    text = _wrap_world_class_shell_lines(text)
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
 def apply_final_reader_copyedit_2026_07_23(text: str) -> str:
@@ -13520,81 +13735,99 @@ uv run python -m agent_runtime_ref check-retirement \\
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
+def _replace_once_in_chapter(
+    current: str,
+    number: int,
+    old: str,
+    new: str,
+    label: str,
+) -> str:
+    chapter = extract_chapter(current, number)
+    if chapter.count(old) != 1:
+        raise ValueError(
+            f"Chapter {number} anchor {label!r} must occur once; found {chapter.count(old)}"
+        )
+    revised = chapter.replace(old, new, 1)
+    return _replace_editorial_anchor(
+        current,
+        chapter,
+        revised,
+        f"chapter {number}: {label}",
+    )
+
+
+def _replace_pattern_once_in_chapter(
+    current: str,
+    number: int,
+    pattern: str,
+    replacement: str,
+    label: str,
+) -> str:
+    chapter = extract_chapter(current, number)
+    revised, count = re.subn(pattern, replacement, chapter, flags=re.DOTALL)
+    if count != 1:
+        raise ValueError(f"Chapter {number} pattern {label!r} must occur once; found {count}")
+    return _replace_editorial_anchor(
+        current,
+        chapter,
+        revised,
+        f"chapter {number}: {label}",
+    )
+
+
+def _insert_before_chapter_heading(
+    current: str,
+    number: int,
+    heading: str,
+    section: str,
+    label: str,
+) -> str:
+    return _replace_once_in_chapter(
+        current,
+        number,
+        heading,
+        section.rstrip() + "\n\n" + heading,
+        label,
+    )
+
+
+def _append_unique_chapter_sources(
+    current: str,
+    number: int,
+    sources: tuple[str, ...],
+) -> str:
+    chapter = extract_chapter(current, number)
+    if "### Источники главы" not in chapter:
+        raise ValueError(f"Chapter {number} source section is missing")
+    for source in sources:
+        source_id = source.split(".", 1)[0].strip("*")
+        if re.search(rf"(?m)^\*\*{re.escape(source_id)}\.\*\*", chapter):
+            raise ValueError(f"Chapter {number} already contains source {source_id}")
+    revised = chapter.rstrip() + "\n" + "\n".join(sources)
+    return _replace_editorial_anchor(
+        current,
+        chapter,
+        revised,
+        f"chapter {number}: new August sources",
+    )
+
+
+def _replace_required_occurrences(
+    text: str,
+    replacements: tuple[tuple[str, str, int], ...],
+) -> str:
+    for old, new, expected_count in replacements:
+        if text.count(old) != expected_count:
+            raise ValueError(
+                f"August identifier anchor {old!r} must occur {expected_count} times; "
+                f"found {text.count(old)}"
+            )
+        text = text.replace(old, new)
+    return text
+
+
 def apply_editorial_pass_2026_08_01(text: str) -> str:
     """Apply the August protocol, pedagogy, and terminology corrections."""
-
-    def replace_in_chapter(
-        current: str,
-        number: int,
-        old: str,
-        new: str,
-        label: str,
-    ) -> str:
-        chapter = extract_chapter(current, number)
-        if chapter.count(old) != 1:
-            raise ValueError(
-                f"Chapter {number} anchor {label!r} must occur once; found {chapter.count(old)}"
-            )
-        revised = chapter.replace(old, new, 1)
-        return _replace_editorial_anchor(
-            current,
-            chapter,
-            revised,
-            f"chapter {number}: {label}",
-        )
-
-    def replace_pattern_in_chapter(
-        current: str,
-        number: int,
-        pattern: str,
-        replacement: str,
-        label: str,
-    ) -> str:
-        chapter = extract_chapter(current, number)
-        revised, count = re.subn(pattern, replacement, chapter, flags=re.DOTALL)
-        if count != 1:
-            raise ValueError(f"Chapter {number} pattern {label!r} must occur once; found {count}")
-        return _replace_editorial_anchor(
-            current,
-            chapter,
-            revised,
-            f"chapter {number}: {label}",
-        )
-
-    def insert_before_heading(
-        current: str,
-        number: int,
-        heading: str,
-        section: str,
-        label: str,
-    ) -> str:
-        return replace_in_chapter(
-            current,
-            number,
-            heading,
-            section.rstrip() + "\n\n" + heading,
-            label,
-        )
-
-    def append_chapter_sources(
-        current: str,
-        number: int,
-        sources: tuple[str, ...],
-    ) -> str:
-        chapter = extract_chapter(current, number)
-        if "### Источники главы" not in chapter:
-            raise ValueError(f"Chapter {number} source section is missing")
-        for source in sources:
-            source_id = source.split(".", 1)[0].strip("*")
-            if re.search(rf"(?m)^\*\*{re.escape(source_id)}\.\*\*", chapter):
-                raise ValueError(f"Chapter {number} already contains source {source_id}")
-        revised = chapter.rstrip() + "\n" + "\n".join(sources)
-        return _replace_editorial_anchor(
-            current,
-            chapter,
-            revised,
-            f"chapter {number}: new August sources",
-        )
 
     version = "ru-manuscript-editorial-2026-07-29"
     if text.count(version) != 2:
@@ -13608,13 +13841,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         ("support_triage_ref", "support-triage-ref", 1),
         ("    risk: medium\n", "    risk: high\n", 1),
     )
-    for old, new, expected_count in identifier_replacements:
-        if text.count(old) != expected_count:
-            raise ValueError(
-                f"August identifier anchor {old!r} must occur {expected_count} times; "
-                f"found {text.count(old)}"
-            )
-        text = text.replace(old, new)
+    text = _replace_required_occurrences(text, identifier_replacements)
 
     policy_decision = (
         "**Решение политики.** `allow`, `deny` или `approval_required` отвечают "
@@ -13633,7 +13860,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         "policy decision and control action vocabularies",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         5,
         "Политика также должна уметь возвращать управляющее решение, а не "
@@ -13654,7 +13881,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
     )
 
     compact_invariant = """В длинных запусках каталог ссылается на версионируемый контракт непрерывности: какие управляющие поля переживают сокращение контекста, где хранится контрольная точка и когда следующий шаг требует новой авторизации. Сводка для модели остается недоверенным производным представлением и никогда не переносит полномочия. Полный протокол сжатия, восстановления и проверки разбирается в главе 9 рядом с жизненным циклом контекста."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         5,
         r"В длинных запусках необходимо различать два слоя\..*?"
@@ -13679,7 +13906,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
 5. **Заново авторизовать продолжение.** После проверки пересобрать контекст, записать `context_rehydration` и выполнить обычную авторизацию. Целостность перехода сама по себе не разрешает действие.
 
 Контракт проверяется парными сценариями на полной и сокращенной истории. При одинаковом долговечном состоянии решения должны совпадать. Подмена сводки, новая версия политики или возможности, истекшее подтверждение и дрейф делегирования завершаются запретом; неизвестный побочный эффект блокирует продолжение до сверки."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         9,
         "### Не все обновления памяти должны происходить в горячем пути",
@@ -13734,7 +13961,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
 Контракт такой проверки сохраняет `review_hypothesis`, список `evidence_ref`, измеримый `review_cost` и машинно проверяемый `quality_gate`. Шлюз отвергает вывод, если доказательства отсутствуют, выходят за область гипотезы или не позволяют воспроизвести замечание. Найденная проблема возвращается в обычный инженерный цикл как тест или проверяемый предикат, а не как свободный комментарий модели.
 
 Последовательность проста: сформулировать риск изменения, собрать узкий пакет, выполнить проверку, независимо подтвердить блокирующее замечание и только затем разрешить выпуск. Такой рабочий процесс ограничивает пространство поиска, но не ослабляет независимость финального решения (см. источник **S122**)."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         10,
         "### Важно различать инструменты чтения и инструменты записи",
@@ -13742,7 +13969,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         "workflow-constrained review",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "* различать возобновление сессии, повтор вызова инструмента, "
@@ -13751,7 +13978,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
         "длительных задач и повторного ввода;",
         "current MCP learning outcome",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "В этой главе границы безопасности MCP, поверхности отравления "
@@ -13783,7 +14010,7 @@ def apply_editorial_pass_2026_08_01(text: str) -> str:
 #### Шлюз маршрутизирует сообщение, а не угадывает состояние
 
 `Mcp-Method` и `Mcp-Name` помогают маршрутизации, `ttlMs` и `cacheScope` — кэшированию, а W3C Trace Context — трассировке; авторизация остается обязательной. Расширенная поддержка MCP в AgentCore Gateway иллюстрирует динамический список, `outputSchema`, `listing_mode`, `listed_under_principal`, `output_schema_hash` и `tool_annotations`. Но поведение AWS от 25 ноября 2025 года зависит от поставщика и версии сервиса, а не задает универсальное ядро MCP."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         11,
         r"### Состояние, делегирование и выбор протокола\n\n"
@@ -13822,7 +14049,7 @@ capabilities:
     timeout_seconds: 10
     approval: always
 ```"""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         11,
         r"capabilities:\n\n`search_docs`:.*?approval: always\n\n"
@@ -13836,7 +14063,7 @@ capabilities:
 `outputSchema` и аннотации ограничивают результат, но не заменяют политику; динамический список строится под идентичностью пользователя, и кэш чужого каталога не становится полномочием. После разрыва исходный вызов повторяют лишь при известном неисполнении. Неизвестный эффект сначала сверяют, Tasks проверяют по `task_id`, а дополнительный ввод возвращают через `requestState` и `inputResponses` после свежей авторизации.
 
 OBO-обмен сохраняет исходного субъекта и сужает аудиторию токена. Прикладной дескриптор, задача и ключ идемпотентности связывают работу, но не заменяют аутентификацию и авторизацию."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         11,
         r"#### Сессия MCP не равна повтору вызова\n\n"
@@ -13844,7 +14071,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         mcp_retry + "\n\n",
         "MCP retry and application continuity",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "**Что изменилось после этой главы.** MCP, песочница и A2A теперь "
@@ -13863,7 +14090,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "неограниченно распространяться по цепочке агентов.",
         "current MCP chapter closure",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "* Возобновление сессии, повтор вызова и повторная инициализация — "
@@ -13874,7 +14101,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "* Сеть агентов требует явных пределов распространения риска.",
         "current MCP key conclusion",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         11,
         "**Практический шаг.** Составьте матрицу угроз для одного MCP-сервера: "
@@ -13893,7 +14120,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
 До исполнения шлюз фиксирует `payer_identity`, валюту, `spending_cap`, период бюджета и правило превышения. После исполнения он связывает результат с `metering_record_id` и `payment_proof_ref`, чтобы трасса могла сопоставить заявленный объем, фактическое списание и полезный исход. Отсутствующее или неоднозначное платежное доказательство переводит операцию в сверку и запрещает слепой повтор.
 
 Полезно держать два независимых решения: политика возможности разрешает предметное действие, а политика расходов разрешает конкретное финансовое обязательство. Резервный поставщик не сбрасывает лимит, смена плательщика требует новой авторизации, а частичный результат не скрывает уже возникшее списание. Такой контракт превращает платную возможность из неявной статьи расходов в управляемый внешний эффект (см. источник **S118**)."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         14,
         "### SLO эскалации защищает не систему, а людей вокруг нее",
@@ -13910,7 +14137,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
 Подтвержденные исправления предметных экспертов сохраняют старую и новую метку, основание, автора и версию рубрики и возвращаются в офлайн-набор.
 
 Память проверяется многоходовым сценарием: **ожидаемая запись → конфликтующая ревизия → устаревшее извлечение → удаление**. Он доказывает победившую ревизию и удаление из индексов, кэшей и производных сводок."""
-    text = insert_before_heading(
+    text = _insert_before_chapter_heading(
         text,
         15,
         "### Симуляция пользователя и среды",
@@ -13923,7 +14150,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
 Модельный проверяющий работает по узкой схеме без инструментов и побочных эффектов. Его калибровочный набор версионирует эталонную разметку, сложность, неоднозначные случаи и пороги; для безопасности детерминированные инварианты остаются обязательными.
 
 **Дрейф проверяющего** является риском выпуска: такой дрейф проверяющего после смены модели, подсказки, рубрики или входной схемы требует новой версии контракта и повторной калибровки. Контрольная выборка и человеческое решение отделяют изменение агента от изменения измерителя; необъясненное различие дает `inconclusive`."""
-    text = replace_pattern_in_chapter(
+    text = _replace_pattern_once_in_chapter(
         text,
         15,
         r"#### Калибровка модельного проверяющего\n\n"
@@ -13932,7 +14159,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "evaluate the evaluators",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         17,
         "Иначе вы можете много строить, но не становиться системно лучше.",
@@ -13946,7 +14173,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "adoption versus product value",
     )
 
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         19,
         "### Инвентарь и реестр — не одно и то же",
@@ -13955,7 +14182,7 @@ OBO-обмен сохраняет исходного субъекта и суж�
         "их допуск; инвентарь показывает более широкую фактическую поверхность.",
         "agent registry terminology",
     )
-    text = replace_in_chapter(
+    text = _replace_once_in_chapter(
         text,
         21,
         "### Утвержденный реестр и доверенные артефакты не одно и то же",
@@ -14051,12 +14278,12 @@ OBO-обмен сохраняет исходного субъекта и суж�
         new_bibliography + "### Дополнительное чтение",
         "sources S116-S122",
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         10,
         ("**S122.** GitHub, Better tools made Copilot code review worse.",),
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         11,
         (
@@ -14065,12 +14292,12 @@ OBO-обмен сохраняет исходного субъекта и суж�
             "Specification Release Candidate.",
         ),
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         14,
         ("**S118.** Cloudflare, Announcing the Monetization Gateway.",),
     )
-    text = append_chapter_sources(
+    text = _append_unique_chapter_sources(
         text,
         15,
         (
@@ -14472,8 +14699,8 @@ def _split_shell_line_for_print(line: str, width: int = 81) -> list[str]:
     return wrapped
 
 
-def reflow_code_blocks_for_print(text: str) -> str:
-    """Keep listings readable in the publisher template while preserving syntax."""
+def _apply_required_print_width_replacements(text: str) -> str:
+    """Apply the ordered print-width anchor replacements."""
 
     exact_replacements = {
         "Escalate when approval is required or when the outcome of a write action is uncertain.": (
@@ -14554,6 +14781,12 @@ def reflow_code_blocks_for_print(text: str) -> str:
             raise ValueError(f"Print-width code anchor is missing: {old!r}")
         text = text.replace(old, new)
 
+    return text
+
+
+def _split_temp_directory_guard_patterns(text: str) -> str:
+    """Split the two fixed shell guard patterns at their third atom."""
+
     long_patterns = (
         '    "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
         '  "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
@@ -14565,7 +14798,12 @@ def reflow_code_blocks_for_print(text: str) -> str:
         midpoint = pattern.index("[A-Za-z0-9]", midpoint + 1) + len("[A-Za-z0-9]")
         text = text.replace(pattern, pattern[:midpoint] + "\\\n" + pattern[midpoint:])
 
-    lines = text.splitlines()
+    return text
+
+
+def _reflow_shell_fences(lines: Sequence[str]) -> list[str]:
+    """Reflow oversized lines only inside supported shell fences."""
+
     output: list[str] = []
     language = ""
     in_fence = False
@@ -14585,14 +14823,31 @@ def reflow_code_blocks_for_print(text: str) -> str:
         else:
             output.append(line)
 
+    return output
+
+
+def _oversized_fenced_lines(lines: Sequence[str]) -> list[tuple[int, int]]:
+    """Return line number and width for oversized lines in any fenced block."""
+
     oversized: list[tuple[int, int]] = []
     in_fence = False
-    for number, line in enumerate(output, start=1):
+    for number, line in enumerate(lines, start=1):
         if line.startswith("```"):
             in_fence = not in_fence
             continue
         if in_fence and len(line) > 81:
             oversized.append((number, len(line)))
+
+    return oversized
+
+
+def reflow_code_blocks_for_print(text: str) -> str:
+    """Keep listings readable in the publisher template while preserving syntax."""
+
+    text = _apply_required_print_width_replacements(text)
+    text = _split_temp_directory_guard_patterns(text)
+    output = _reflow_shell_fences(text.splitlines())
+    oversized = _oversized_fenced_lines(output)
     if oversized:
         raise ValueError(f"Code lines still exceed print width: {oversized[:8]}")
 
@@ -14958,32 +15213,82 @@ Cloudflare Agents SDK показывает другую полезную баз�
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
+def _replace_final_quality_anchor(text: str, old: str, new: str, label: str) -> str:
+    count = text.count(old)
+    if count != 1:
+        raise ValueError(f"Final quality anchor {label!r} must occur once; found {count}")
+    return text.replace(old, new, 1)
+
+
+def _replace_final_quality_anchors(
+    text: str,
+    replacements: Sequence[tuple[str, str, str]],
+) -> str:
+    for old, new, label in replacements:
+        text = _replace_final_quality_anchor(text, old, new, label)
+    return text
+
+
+def _replace_final_quality_listing(text: str, number: int, code: str) -> str:
+    pattern = re.compile(
+        rf"(\*\*Листинг {number}\. .*?\n\n"
+        rf"\*\*Как читать листинг\.\*\*.*?\n\n```python\n)"
+        rf".*?(\n```)",
+        flags=re.DOTALL,
+    )
+    revised, count = pattern.subn(
+        lambda match: match.group(1) + code.strip("\n") + match.group(2),
+        text,
+        count=1,
+    )
+    if count != 1:
+        raise ValueError(f"Listing {number} must occur once; found {count}")
+    return revised
+
+
+def _renumber_final_quality_tables(text: str) -> str:
+    existing_captions = re.findall(r"^Таблица (\d+)\.", text, flags=re.MULTILINE)
+    if existing_captions != [str(number) for number in range(1, 12)]:
+        raise ValueError(f"Unexpected table numbering before final pass: {existing_captions}")
+    text = re.sub(
+        r"^Таблица (\d+)\.",
+        lambda match: f"Таблица {int(match.group(1)) + 1}.",
+        text,
+        flags=re.MULTILINE,
+    )
+    return text.replace("Таблица 1 задает исходный выбор", "Таблица 2 задает исходный выбор")
+
+
+def _replace_final_quality_figure_leads(text: str, leads: dict[int, str]) -> str:
+    for number, instruction in leads.items():
+        pattern = rf"^На рисунке {number} представлена схема «[^»]+»\.$"
+        replacement = f"На рисунке {number} {instruction}."
+        text, count = re.subn(pattern, replacement, text, count=1, flags=re.MULTILINE)
+        if count != 1:
+            raise ValueError(f"Figure {number} lead must occur once; found {count}")
+    return text
+
+
+def _insert_final_quality_table_leads(text: str, leads: dict[int, str]) -> str:
+    for number, lead in leads.items():
+        caption = rf"^Таблица {number}\."
+        match = re.search(caption, text, flags=re.MULTILINE)
+        if match is None:
+            raise ValueError(f"Table {number} caption is missing")
+        text = text[: match.start()] + lead + "\n\n" + text[match.start() :]
+    return text
+
+
 def apply_final_quality_pass_2026_08_03(text: str) -> str:
     """Close technical, learning-design, and editorial gaps found in final QA."""
 
     def replace_once(old: str, new: str, label: str) -> None:
         nonlocal text
-        if text.count(old) != 1:
-            raise ValueError(
-                f"Final quality anchor {label!r} must occur once; found {text.count(old)}"
-            )
-        text = text.replace(old, new, 1)
+        text = _replace_final_quality_anchor(text, old, new, label)
 
     def replace_listing(number: int, code: str) -> None:
         nonlocal text
-        pattern = re.compile(
-            rf"(\*\*Листинг {number}\. .*?\n\n"
-            rf"\*\*Как читать листинг\.\*\*.*?\n\n```python\n)"
-            rf".*?(\n```)",
-            flags=re.DOTALL,
-        )
-        text, count = pattern.subn(
-            lambda match: match.group(1) + code.strip("\n") + match.group(2),
-            text,
-            count=1,
-        )
-        if count != 1:
-            raise ValueError(f"Listing {number} must occur once; found {count}")
+        text = _replace_final_quality_listing(text, number, code)
 
     replace_listing(
         4,
@@ -15437,16 +15742,7 @@ uv run python docs/companion/examples/build_capstone_reference.py \\
         reader_section,
     )
 
-    existing_captions = re.findall(r"^Таблица (\d+)\.", text, flags=re.MULTILINE)
-    if existing_captions != [str(number) for number in range(1, 12)]:
-        raise ValueError(f"Unexpected table numbering before final pass: {existing_captions}")
-    text = re.sub(
-        r"^Таблица (\d+)\.",
-        lambda match: f"Таблица {int(match.group(1)) + 1}.",
-        text,
-        flags=re.MULTILINE,
-    )
-    text = text.replace("Таблица 1 задает исходный выбор", "Таблица 2 задает исходный выбор")
+    text = _renumber_final_quality_tables(text)
 
     state_matrix = """### Четыре словаря состояния и отдельное управляющее действие
 
@@ -15570,8 +15866,13 @@ uv run python -m agent_runtime_ref dump-events
             "**Открытый вопрос.** Какие промышленные доказательства позволят перейти к `limited_wave`?",
         ),
     )
-    for anchor, closure in part_closures:
-        replace_once(anchor, anchor + "\n\n" + closure, f"part closure: {anchor[:40]}")
+    text = _replace_final_quality_anchors(
+        text,
+        tuple(
+            (anchor, anchor + "\n\n" + closure, f"part closure: {anchor[:40]}")
+            for anchor, closure in part_closures
+        ),
+    )
 
     text = re.sub(
         r"\n\*\*Что изменилось после этой главы\.\*\*[^\n]*(?:\n(?!\n)[^\n]*)*\n",
@@ -15793,12 +16094,7 @@ Google Research (см. источник **S074**) формулирует гла�
         24: "найдите независимые сигналы, которые удерживают расширение волны",
         25: "проследите непрерывность итогового пакета от запроса до решения",
     }
-    for number, instruction in figure_leads.items():
-        pattern = rf"^На рисунке {number} представлена схема «[^»]+»\.$"
-        replacement = f"На рисунке {number} {instruction}."
-        text, count = re.subn(pattern, replacement, text, count=1, flags=re.MULTILINE)
-        if count != 1:
-            raise ValueError(f"Figure {number} lead must occur once; found {count}")
+    text = _replace_final_quality_figure_leads(text, figure_leads)
 
     table_leads = {
         2: "В таблице 2 сравните основания для усложнения формы исполнения.",
@@ -15813,12 +16109,7 @@ Google Research (см. источник **S074**) формулирует гла�
         11: "В таблице 11 отделите жесткий блокер от ограничения охвата.",
         12: "В таблице 12 используйте якоря рубрики, а не общее впечатление.",
     }
-    for number, lead in table_leads.items():
-        caption = rf"^Таблица {number}\."
-        match = re.search(caption, text, flags=re.MULTILINE)
-        if match is None:
-            raise ValueError(f"Table {number} caption is missing")
-        text = text[: match.start()] + lead + "\n\n" + text[match.start() :]
+    text = _insert_final_quality_table_leads(text, table_leads)
 
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
@@ -16893,20 +17184,12 @@ def apply_technical_book_polish_2026_08_17(text: str) -> str:
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
 
 
-def apply_trajectory_policy_sync_2026_08_23(text: str) -> str:
-    """Add the trajectory-policy contract and its source apparatus once."""
-
-    heading = "### Политика последовательности проверяет всю траекторию"
-    section = f"""{heading}
-
-Проверка каждого вызова по отдельности не закрывает риск всей последовательности. Чтение счета и перевод могут быть разрешены сами по себе, но перевод на реквизиты, не совпадающие с результатом чтения, должен быть запрещен. Несколько покупок могут по отдельности укладываться в порог подтверждения, но вместе превысить бюджет. Допустимый повтор может стать опасным циклом, если накопленный расход уже исчерпан (см. источник **S123**).
-
-Политика последовательности оценивает траекторию перед очередным внешним действием. Кроме текущих субъекта, действия, ресурса и контекста она проверяет выполненные предварительные шаги, нормализованные отпечатки значимых значений, накопленные счетчики, окно времени, состояние подтверждения и версию политики. Эта история решений хранится вне контекста модели и вне сжатой сводки. Модель может предложить следующий шаг, но не может переписать доказательство того, что уже произошло.
-
-Решение записывается отдельным событием `trajectory_policy_decision`: правило, наблюдаемая последовательность, счетчики, причина и итоговое решение. Ограничения частоты дополняют этот контракт, но не заменяют его. Они ограничивают частоту, токены или длительность соединения, а политика последовательности проверяет смысл порядка и накопленного эффекта.
-
-Листинг 32 ниже показывает контроль только одного вызова. Исполняемый пример политики траектории находится в `docs/companion/examples/run_trajectory_policy_scenarios.py`. Эталонный вычислитель решений намеренно не реализует распределенное долговечное хранилище истории, блокировки или сравнение и обмен (`compare-and-swap`, `CAS`), атомарную фиксацию действия вместе со счетчиком и восстановление после сбоя. Эти механизмы остаются обязательной частью промышленной границы."""
-
+def _sync_trajectory_policy_chapter(
+    text: str,
+    heading: str,
+    section: str,
+    local_source: str,
+) -> str:
     chapter = extract_chapter(text, 27)
     heading_count = len(re.findall(rf"(?m)^{re.escape(heading)}$", chapter))
     if heading_count > 1:
@@ -16934,17 +17217,11 @@ def apply_trajectory_policy_sync_2026_08_23(text: str) -> str:
         existing_section = chapter[section_start:section_end].strip()
         if existing_section != section:
             revised_chapter = (
-                chapter[:section_start]
-                + section
-                + "\n\n"
-                + chapter[section_end:].lstrip()
+                chapter[:section_start] + section + "\n\n" + chapter[section_end:].lstrip()
             )
             text = text.replace(chapter, revised_chapter, 1)
             chapter = revised_chapter
 
-    local_source = (
-        "**S123.** AWS, Control agent behaviors and cost beyond a single action."
-    )
     local_sources = re.findall(r"(?m)^\*\*S123\.\*\*.*$", chapter)
     if len(local_sources) > 1:
         raise ValueError("Chapter 27 contains duplicate S123 source entries")
@@ -16952,11 +17229,50 @@ def apply_trajectory_policy_sync_2026_08_23(text: str) -> str:
         if local_sources[0] != local_source:
             revised_chapter = chapter.replace(local_sources[0], local_source, 1)
             text = text.replace(chapter, revised_chapter, 1)
-            chapter = revised_chapter
     else:
         revised_chapter = chapter.rstrip() + "\n\n" + local_source
         text = text.replace(chapter, revised_chapter, 1)
-        chapter = revised_chapter
+    return text
+
+
+def _sync_trajectory_policy_bibliography(text: str, full_source: str) -> str:
+    appendix_start = text.index("## Приложение 4\\. Источники и дополнительные онлайн-материалы")
+    additional_reading_start = text.index("### Дополнительное чтение", appendix_start)
+    cited_sources = text[appendix_start:additional_reading_start]
+    source_entries = re.findall(r"(?m)^\*\*S123\.\*\*.*$", cited_sources)
+    if len(source_entries) > 1:
+        raise ValueError("Bibliography contains duplicate S123 source entries")
+    if source_entries:
+        if source_entries[0] != full_source:
+            revised_sources = cited_sources.replace(source_entries[0], full_source, 1)
+            text = text[:appendix_start] + revised_sources + text[additional_reading_start:]
+    else:
+        text = (
+            text[:additional_reading_start].rstrip()
+            + "\n\n"
+            + full_source
+            + "\n\n"
+            + text[additional_reading_start:]
+        )
+    return text
+
+
+def apply_trajectory_policy_sync_2026_08_23(text: str) -> str:
+    """Add the trajectory-policy contract and its source apparatus once."""
+
+    heading = "### Политика последовательности проверяет всю траекторию"
+    section = f"""{heading}
+
+Проверка каждого вызова по отдельности не закрывает риск всей последовательности. Чтение счета и перевод могут быть разрешены сами по себе, но перевод на реквизиты, не совпадающие с результатом чтения, должен быть запрещен. Несколько покупок могут по отдельности укладываться в порог подтверждения, но вместе превысить бюджет. Допустимый повтор может стать опасным циклом, если накопленный расход уже исчерпан (см. источник **S123**).
+
+Политика последовательности оценивает траекторию перед очередным внешним действием. Кроме текущих субъекта, действия, ресурса и контекста она проверяет выполненные предварительные шаги, нормализованные отпечатки значимых значений, накопленные счетчики, окно времени, состояние подтверждения и версию политики. Эта история решений хранится вне контекста модели и вне сжатой сводки. Модель может предложить следующий шаг, но не может переписать доказательство того, что уже произошло.
+
+Решение записывается отдельным событием `trajectory_policy_decision`: правило, наблюдаемая последовательность, счетчики, причина и итоговое решение. Ограничения частоты дополняют этот контракт, но не заменяют его. Они ограничивают частоту, токены или длительность соединения, а политика последовательности проверяет смысл порядка и накопленного эффекта.
+
+Листинг 32 ниже показывает контроль только одного вызова. Исполняемый пример политики траектории находится в `docs/companion/examples/run_trajectory_policy_scenarios.py`. Эталонный вычислитель решений намеренно не реализует распределенное долговечное хранилище истории, блокировки или сравнение и обмен (`compare-and-swap`, `CAS`), атомарную фиксацию действия вместе со счетчиком и восстановление после сбоя. Эти механизмы остаются обязательной частью промышленной границы."""
+
+    local_source = "**S123.** AWS, Control agent behaviors and cost beyond a single action."
+    text = _sync_trajectory_policy_chapter(text, heading, section, local_source)
 
     source_url = (
         "https://aws.amazon.com/blogs/machine-learning/"
@@ -16968,30 +17284,7 @@ def apply_trajectory_policy_sync_2026_08_23(text: str) -> str:
         f"New capabilities in Amazon Bedrock AgentCore]({source_url}), "
         "дата обращения: 20 августа 2026 года."
     )
-    appendix_start = text.index(
-        "## Приложение 4\\. Источники и дополнительные онлайн-материалы"
-    )
-    additional_reading_start = text.index("### Дополнительное чтение", appendix_start)
-    cited_sources = text[appendix_start:additional_reading_start]
-    source_entries = re.findall(r"(?m)^\*\*S123\.\*\*.*$", cited_sources)
-    if len(source_entries) > 1:
-        raise ValueError("Bibliography contains duplicate S123 source entries")
-    if source_entries:
-        if source_entries[0] != full_source:
-            revised_sources = cited_sources.replace(source_entries[0], full_source, 1)
-            text = (
-                text[:appendix_start]
-                + revised_sources
-                + text[additional_reading_start:]
-            )
-    else:
-        text = (
-            text[:additional_reading_start].rstrip()
-            + "\n\n"
-            + full_source
-            + "\n\n"
-            + text[additional_reading_start:]
-        )
+    text = _sync_trajectory_policy_bibliography(text, full_source)
 
     if text.count(source_url) != 1:
         raise ValueError("Publisher manuscript must contain the S123 URL exactly once")

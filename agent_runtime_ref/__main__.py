@@ -3,9 +3,9 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from collections.abc import Iterable, Mapping, Sequence
+from collections.abc import Callable, Iterable, Mapping, Sequence
 from pathlib import Path
-from typing import cast
+from typing import NamedTuple, cast
 
 from agent_runtime_ref.approvals import ApprovalQueue
 from agent_runtime_ref.config import (
@@ -1213,9 +1213,25 @@ def _replay_run(args: argparse.Namespace) -> dict[str, object]:
     }
 
 
-def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
-    policy = load_rollout_policy(args.config)
-    evidence_manifest = args.evidence_manifest
+class _RolloutEvidence(NamedTuple):
+    observed: dict[str, bool]
+    mode: str
+    verified: bool
+    issuer: str | None
+    subject: str | None
+    measured_at: str | None
+    artifact_ids: list[str]
+    diagnostics: list[dict[str, str]]
+
+
+def _collect_rollout_evidence(
+    *,
+    evidence_manifest: str | None,
+    required_artifact_ids: Sequence[str],
+    raw_signals: Sequence[str],
+    required_checks: Sequence[str],
+    blocked_checks: Sequence[str],
+) -> _RolloutEvidence:
     evidence_diagnostics: list[dict[str, str]] = []
     evidence_verified = False
     evidence_issuer: str | None = None
@@ -1224,13 +1240,13 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
     evidence_artifact_ids: list[str] = []
 
     if evidence_manifest is None:
-        observed = {name: True for name in policy.required_checks}
-        observed.update({name: False for name in policy.blocked_checks})
+        observed = {name: True for name in required_checks}
+        observed.update({name: False for name in blocked_checks})
         evidence_mode = "declarative_only"
     else:
         verification = verify_evidence_manifest(
             evidence_manifest,
-            required_artifact_ids=args.required_artifact_id,
+            required_artifact_ids=required_artifact_ids,
         )
         evidence_verified = verification.verified
         evidence_issuer = verification.issuer
@@ -1245,14 +1261,15 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
             }
             for diagnostic in verification.diagnostics
         ]
-        observed = {name: False for name in policy.required_checks}
-        observed.update({name: False for name in policy.blocked_checks})
+        observed = {name: False for name in required_checks}
+        observed.update({name: False for name in blocked_checks})
         if evidence_verified:
+            rollout_checks = {*required_checks, *blocked_checks}
             for name, value in verification.signals.items():
                 if isinstance(value, bool):
                     observed[name] = value
                     continue
-                if name in {*policy.required_checks, *policy.blocked_checks}:
+                if name in rollout_checks:
                     evidence_verified = False
                     evidence_diagnostics.append(
                         {
@@ -1263,44 +1280,80 @@ def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
                     )
         evidence_mode = "verified" if evidence_verified else "invalid"
 
-    for raw_signal in args.signal:
+    for raw_signal in raw_signals:
         key, value = _parse_signal(raw_signal)
         observed[key] = value
-    if evidence_manifest is not None and args.signal and evidence_verified:
+    if evidence_manifest is not None and raw_signals and evidence_verified:
         evidence_mode = "verified_with_overrides"
-    assessment = assess_rollout(policy, observed)
+    return _RolloutEvidence(
+        observed=observed,
+        mode=evidence_mode,
+        verified=evidence_verified,
+        issuer=evidence_issuer,
+        subject=evidence_subject,
+        measured_at=evidence_measured_at,
+        artifact_ids=evidence_artifact_ids,
+        diagnostics=evidence_diagnostics,
+    )
+
+
+def _recommended_rollout_action(
+    *,
+    manifest_present: bool,
+    evidence_verified: bool,
+    has_overrides: bool,
+    ready: bool,
+) -> str:
+    if not manifest_present:
+        return "attach_verified_evidence"
+    if not evidence_verified:
+        return "repair_evidence_manifest"
+    if has_overrides:
+        return "remove_manual_overrides"
+    if not ready:
+        return "collect_missing_evidence"
+    return "attach_trusted_attestation"
+
+
+def _check_rollout(args: argparse.Namespace) -> dict[str, object]:
+    policy = load_rollout_policy(args.config)
+    evidence_manifest = args.evidence_manifest
+    evidence = _collect_rollout_evidence(
+        evidence_manifest=evidence_manifest,
+        required_artifact_ids=args.required_artifact_id,
+        raw_signals=args.signal,
+        required_checks=policy.required_checks,
+        blocked_checks=policy.blocked_checks,
+    )
+    assessment = assess_rollout(policy, evidence.observed)
     support_duplicate_required = [
         signal for signal in ("duplicate_ticket_eval_passed",) if signal in policy.required_checks
     ]
     missing_support_duplicate_required = [
         signal for signal in assessment.missing_required if signal in support_duplicate_required
     ]
-    manifest_integrity_verified = evidence_verified
+    manifest_integrity_verified = evidence.verified
     trusted_attestation_verified = False
     production_ready = False
-    if evidence_manifest is None:
-        recommended_action = "attach_verified_evidence"
-    elif not evidence_verified:
-        recommended_action = "repair_evidence_manifest"
-    elif args.signal:
-        recommended_action = "remove_manual_overrides"
-    elif not assessment.ready:
-        recommended_action = "collect_missing_evidence"
-    else:
-        recommended_action = "attach_trusted_attestation"
+    recommended_action = _recommended_rollout_action(
+        manifest_present=evidence_manifest is not None,
+        evidence_verified=evidence.verified,
+        has_overrides=bool(args.signal),
+        ready=assessment.ready,
+    )
     return {
         "ready": assessment.ready,
         "production_ready": production_ready,
         "manifest_integrity_verified": manifest_integrity_verified,
         "trusted_attestation_verified": trusted_attestation_verified,
-        "evidence_mode": evidence_mode,
-        "evidence_verified": evidence_verified,
+        "evidence_mode": evidence.mode,
+        "evidence_verified": evidence.verified,
         "evidence_manifest": evidence_manifest,
-        "evidence_issuer": evidence_issuer,
-        "evidence_subject": evidence_subject,
-        "evidence_measured_at": evidence_measured_at,
-        "evidence_artifact_ids": evidence_artifact_ids,
-        "evidence_diagnostics": evidence_diagnostics,
+        "evidence_issuer": evidence.issuer,
+        "evidence_subject": evidence.subject,
+        "evidence_measured_at": evidence.measured_at,
+        "evidence_artifact_ids": evidence.artifact_ids,
+        "evidence_diagnostics": evidence.diagnostics,
         "recommended_action": recommended_action,
         "required_checks": list(policy.required_checks),
         "blocked_checks": list(policy.blocked_checks),
@@ -2774,70 +2827,62 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
+_CliHandler = Callable[[argparse.Namespace], dict[str, object]]
+
+COMMAND_HANDLERS: dict[str, _CliHandler] = {
+    "simulate-run": _simulate_run,
+    "inspect-memory": _inspect_memory,
+    "inspect-agent": _inspect_agent,
+    "dump-events": _dump_events,
+    "export-events": _export_events,
+    "inspect-trace": _inspect_trace,
+    "replay-run": _replay_run,
+    "check-rollout": _check_rollout,
+    "check-controls": _check_controls,
+    "inspect-lifecycle": _inspect_lifecycle,
+    "check-change": _check_change,
+    "check-retirement": _check_retirement,
+    "inspect-approvals": _inspect_approvals,
+    "resolve-approval": _resolve_demo_approval,
+    "inspect-session": _inspect_session,
+    "session-eval-summary": _session_eval_summary,
+    "session-replay": _session_replay,
+    "export-session": _export_session,
+    "export-eval-dataset": _export_eval_dataset,
+    "inspect-continuity": _inspect_continuity,
+}
+
+_SESSION_COMMAND_DEFAULT_INPUTS: dict[str, tuple[str, ...]] = {
+    "inspect-session": DEFAULT_SESSION_INPUTS,
+    "session-eval-summary": DEFAULT_SESSION_INPUTS,
+    "session-replay": DEFAULT_MULTI_RUN_INPUTS,
+    "export-session": DEFAULT_MULTI_RUN_INPUTS,
+}
+
+
+def _normalize_cli_argv(argv: Sequence[str] | None) -> list[str] | None:
+    if argv is None:
+        return None if len(sys.argv) > 1 else ["simulate-run"]
+    raw_args = list(argv)
+    return raw_args or ["simulate-run"]
+
+
+def _apply_command_defaults(args: argparse.Namespace, *, command: str) -> None:
+    default_inputs = _SESSION_COMMAND_DEFAULT_INPUTS.get(command)
+    if default_inputs is not None and not args.user_input:
+        args.user_input = list(default_inputs)
+
+
 def main(argv: Sequence[str] | None = None) -> int:
     parser = build_parser()
-    if argv is None:
-        raw_args = None if len(sys.argv) > 1 else ["simulate-run"]
-    else:
-        raw_args = list(argv)
-    if raw_args == []:
-        raw_args = ["simulate-run"]
-    args = parser.parse_args(raw_args)
+    args = parser.parse_args(_normalize_cli_argv(argv))
     command = args.command or "simulate-run"
-    if command == "simulate-run":
-        payload = _simulate_run(args)
-    elif command == "inspect-memory":
-        payload = _inspect_memory(args)
-    elif command == "inspect-agent":
-        payload = _inspect_agent(args)
-    elif command == "dump-events":
-        payload = _dump_events(args)
-    elif command == "export-events":
-        payload = _export_events(args)
-    elif command == "inspect-trace":
-        payload = _inspect_trace(args)
-    elif command == "replay-run":
-        payload = _replay_run(args)
-    elif command == "check-rollout":
-        payload = _check_rollout(args)
-    elif command == "check-controls":
-        payload = _check_controls(args)
-    elif command == "inspect-lifecycle":
-        payload = _inspect_lifecycle(args)
-    elif command == "check-change":
-        payload = _check_change(args)
-    elif command == "check-retirement":
-        payload = _check_retirement(args)
-    elif command == "inspect-approvals":
-        payload = _inspect_approvals(args)
-    elif command == "resolve-approval":
-        payload = _resolve_demo_approval(args)
-    elif command == "inspect-session":
-        if not args.user_input:
-            args.user_input = ["Please create a ticket for this onboarding issue."]
-        payload = _inspect_session(args)
-    elif command == "session-eval-summary":
-        if not args.user_input:
-            args.user_input = ["Please create a ticket for this onboarding issue."]
-        payload = _session_eval_summary(args)
-    elif command == "session-replay":
-        if not args.user_input:
-            args.user_input = [
-                "Please create a ticket for this onboarding issue.",
-                "What language preference do you remember?",
-            ]
-        payload = _session_replay(args)
-    elif command == "export-session":
-        if not args.user_input:
-            args.user_input = list(DEFAULT_MULTI_RUN_INPUTS)
-        payload = _export_session(args)
-    elif command == "export-eval-dataset":
-        payload = _export_eval_dataset(args)
-    elif command == "inspect-continuity":
-        payload = _inspect_continuity(args)
-    else:
+    handler = COMMAND_HANDLERS.get(command)
+    if handler is None:
         parser.error(f"Unsupported command: {command}")
         return 2
+    _apply_command_defaults(args, command=command)
+    payload = handler(args)
     print(json.dumps(payload, ensure_ascii=True))
     return 0
 

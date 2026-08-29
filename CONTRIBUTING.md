@@ -54,7 +54,10 @@ Install docs and development dependencies:
 
 ```bash
 uv sync --group docs --group dev
+uv run pre-commit install
 ```
+
+Run `uv run pre-commit install` once for each checkout.
 
 Run the local docs server:
 
@@ -74,12 +77,20 @@ Before opening a PR, run:
 
 ```bash
 uv run ruff check .
-uv run ty check
+uv run ty check agent_runtime_ref
+uv run pre-commit run --all-files
 uv run pytest --cov=agent_runtime_ref --cov-report=term-missing
 uv run mkdocs build --strict
 ```
 
-If `uv run ty check` is not relevant because the change is documentation-only, mention that clearly in your PR.
+Ruff is the enforcement gate for `C901` and `PLR0912` across the repository. The policy hook
+prevents inline targeted or blanket `noqa` suppressions and global configuration from disabling
+those protected selectors. Deliberate `per-file-ignores` remain explicit configuration exemptions.
+Separately, the policy contract tests keep the default complexity limit of 10 and branch limit
+of 12.
+
+The supported `ty` target is the `agent_runtime_ref` package. If that check is not relevant
+because the change is documentation-only, mention that clearly in your PR.
 
 ## Content conventions
 

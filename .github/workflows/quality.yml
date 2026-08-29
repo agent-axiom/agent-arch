@@ -1,0 +1,52 @@
+name: quality
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    if: >-
+      github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' ||
+      github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v8.1.0
+
+      - name: Setup Python
+        run: uv python install 3.12
+
+      - name: Sync dependencies
+        run: uv sync --locked --group dev
+
+      - name: Run workflow contract tests
+        run: uv run pytest tests/test_agent_runtime_ref.py -q -k workflow
+
+      - name: Run quality policy tests
+        run: uv run pytest tests/test_quality_policy.py -q
+
+      - name: Run Ruff
+        run: uv run ruff check .
+
+      - name: Run ty
+        run: uv run ty check agent_runtime_ref
+
+      - name: Run pre-commit
+        run: uv run pre-commit run --all-files

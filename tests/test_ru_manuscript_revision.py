@@ -74,6 +74,570 @@ def join_shell_continuations(text: str) -> str:
     return text.replace("\\\n", "")
 
 
+def test_august_chapter_helpers_preserve_counts_errors_and_duplicate_sources() -> None:
+    manuscript = (
+        "## Глава 10\\. Review\n\n"
+        "old anchor\n\n"
+        "### Источники главы\n"
+        "**S1.** Existing source.\n\n"
+        "## Глава 11\\. Next\n"
+    )
+
+    replaced = revision_tool._replace_once_in_chapter(
+        manuscript,
+        10,
+        "old anchor",
+        "new anchor",
+        "direct anchor",
+    )
+    assert "new anchor" in revision_tool.extract_chapter(replaced, 10)
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 10 anchor 'missing' must occur once; found 0$",
+    ):
+        revision_tool._replace_once_in_chapter(
+            manuscript,
+            10,
+            "absent",
+            "new",
+            "missing",
+        )
+
+    patterned = revision_tool._replace_pattern_once_in_chapter(
+        manuscript,
+        10,
+        r"old .*",
+        "pattern replacement",
+        "pattern",
+    )
+    assert "pattern replacement" in revision_tool.extract_chapter(patterned, 10)
+
+    inserted = revision_tool._insert_before_chapter_heading(
+        manuscript,
+        10,
+        "### Источники главы",
+        "new section\n",
+        "section",
+    )
+    assert "new section\n\n### Источники главы" in inserted
+
+    duplicated = revision_tool._append_unique_chapter_sources(
+        manuscript,
+        10,
+        ("**S2.** New source.", "**S2.** New source."),
+    )
+    assert revision_tool.extract_chapter(duplicated, 10).count("**S2.**") == 2
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 10 already contains source S1$",
+    ):
+        revision_tool._append_unique_chapter_sources(
+            manuscript,
+            10,
+            ("**S1.** Existing source.",),
+        )
+
+
+def test_required_occurrence_replacements_are_ordered_and_fail_closed() -> None:
+    replacements = (("alpha", "beta", 1), ("beta", "gamma", 1))
+
+    assert (
+        revision_tool._replace_required_occurrences(
+            "alpha",
+            replacements,
+        )
+        == "gamma"
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^August identifier anchor 'beta' must occur 1 times; found 0$",
+    ):
+        revision_tool._replace_required_occurrences(
+            "alpha",
+            (("beta", "gamma", 1),),
+        )
+
+
+def test_final_quality_replacement_helpers_preserve_order_and_counts() -> None:
+    replacements = (
+        ("alpha", "beta", "first"),
+        ("beta", "gamma", "second"),
+    )
+    assert revision_tool._replace_final_quality_anchors("alpha\n", replacements) == "gamma\n"
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Final quality anchor 'first' must occur once; found 2$",
+    ):
+        revision_tool._replace_final_quality_anchors("alpha alpha\n", replacements)
+
+    listing = "**Листинг 4. Demo.**\n\n**Как читать листинг.** Read it.\n\n```python\nold\n```\n"
+    duplicated = listing + "\n" + listing
+    revised = revision_tool._replace_final_quality_listing(duplicated, 4, "\nnew\n")
+    assert revised.count("\nnew\n```") == 1
+    assert revised.count("\nold\n```") == 1
+    assert revised.endswith("\n")
+
+    with pytest.raises(ValueError, match=r"^Listing 5 must occur once; found 0$"):
+        revision_tool._replace_final_quality_listing(listing, 5, "new")
+
+
+def test_final_quality_layout_helpers_keep_validation_and_insertion_order() -> None:
+    captions = "".join(f"Таблица {number}. Caption {number}\n" for number in range(1, 12))
+    renumbered = revision_tool._renumber_final_quality_tables(
+        captions + "Таблица 1 задает исходный выбор\n"
+    )
+    assert renumbered.startswith("Таблица 2. Caption 1\nТаблица 3. Caption 2\n")
+    assert "Таблица 12. Caption 11\n" in renumbered
+    assert renumbered.endswith("Таблица 2 задает исходный выбор\n")
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Unexpected table numbering before final pass: \['1', '2'\]$",
+    ):
+        revision_tool._renumber_final_quality_tables("Таблица 1. First\nТаблица 2. Second\n")
+
+    figure_text = "На рисунке 1 представлена схема «Demo».\n"
+    assert (
+        revision_tool._replace_final_quality_figure_leads(
+            figure_text,
+            {1: "проследите границу"},
+        )
+        == "На рисунке 1 проследите границу.\n"
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^Figure 2 lead must occur once; found 0$",
+    ):
+        revision_tool._replace_final_quality_figure_leads(
+            figure_text,
+            {2: "проследите границу"},
+        )
+
+    assert (
+        revision_tool._insert_final_quality_table_leads(
+            "Таблица 2. Demo\n",
+            {2: "Читайте таблицу."},
+        )
+        == "Читайте таблицу.\n\nТаблица 2. Demo\n"
+    )
+    with pytest.raises(ValueError, match=r"^Table 3 caption is missing$"):
+        revision_tool._insert_final_quality_table_leads(
+            "Таблица 2. Demo\n",
+            {3: "Читайте таблицу."},
+        )
+
+
+def test_trajectory_policy_chapter_helper_preserves_error_order_and_idempotency() -> None:
+    heading = "### Canonical trajectory policy"
+    section = heading + "\n\nCanonical body."
+    local_source = "**S123.** Canonical local source."
+    manuscript = (
+        "## Глава 27\\. Policy\n\n"
+        f"{heading}\n\nStale body.\n\n"
+        "### Next section\n\nBody.\n\n"
+        "**S123.** Stale local source.\n\n"
+        "## Глава 28\\. Next\n"
+    )
+
+    once = revision_tool._sync_trajectory_policy_chapter(
+        manuscript,
+        heading,
+        section,
+        local_source,
+    )
+    twice = revision_tool._sync_trajectory_policy_chapter(
+        once,
+        heading,
+        section,
+        local_source,
+    )
+    chapter = revision_tool.extract_chapter(once, 27)
+    assert section in chapter
+    assert chapter.count(local_source) == 1
+    assert twice == once
+    assert once.endswith("\n")
+
+    duplicate_heading = manuscript.replace(
+        "### Next section",
+        heading,
+        1,
+    ).replace(
+        "**S123.** Stale local source.",
+        "**S123.** First.\n\n**S123.** Second.",
+        1,
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 27 contains duplicate trajectory-policy sections$",
+    ):
+        revision_tool._sync_trajectory_policy_chapter(
+            duplicate_heading,
+            heading,
+            section,
+            local_source,
+        )
+
+    duplicate_source = once.replace(local_source, local_source + "\n\n" + local_source, 1)
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 27 contains duplicate S123 source entries$",
+    ):
+        revision_tool._sync_trajectory_policy_chapter(
+            duplicate_source,
+            heading,
+            section,
+            local_source,
+        )
+
+
+def test_trajectory_policy_bibliography_helper_is_exact_and_idempotent() -> None:
+    full_source = "**S123.** Canonical bibliography source."
+    manuscript = (
+        "Preface.\n\n"
+        "## Приложение 4\\. Источники и дополнительные онлайн-материалы\n\n"
+        "**S123.** Stale bibliography source.\n\n"
+        "### Дополнительное чтение\n\nTail.\n"
+    )
+
+    once = revision_tool._sync_trajectory_policy_bibliography(manuscript, full_source)
+    twice = revision_tool._sync_trajectory_policy_bibliography(once, full_source)
+    assert once.count(full_source) == 1
+    assert "Stale bibliography source" not in once
+    assert twice == once
+    assert once.endswith("\n")
+
+    duplicate = manuscript.replace(
+        "**S123.** Stale bibliography source.",
+        "**S123.** First.\n\n**S123.** Second.",
+        1,
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^Bibliography contains duplicate S123 source entries$",
+    ):
+        revision_tool._sync_trajectory_policy_bibliography(duplicate, full_source)
+
+
+def test_print_width_helpers_keep_exact_missing_errors_and_temp_split() -> None:
+    first_print_anchor = (
+        "Escalate when approval is required or when the outcome of a write action "
+        "is uncertain."
+    )
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Print-width code anchor is missing: "
+            + re.escape(repr(first_print_anchor))
+            + r"$"
+        ),
+    ):
+        revision_tool._apply_required_print_width_replacements("no print anchors")
+
+    four_space_guard = (
+        '    "$LAB_PREFIX"'
+        "[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]"
+        "[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])"
+    )
+    two_space_guard = four_space_guard[2:]
+    revised = revision_tool._split_temp_directory_guard_patterns(
+        four_space_guard + "\n" + two_space_guard
+    )
+    assert revised.count("[A-Za-z0-9]\\\n[A-Za-z0-9]") == 2
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Temporary-directory guard anchor is missing: "
+            + re.escape(repr(two_space_guard))
+            + r"$"
+        ),
+    ):
+        revision_tool._split_temp_directory_guard_patterns(four_space_guard)
+
+
+@pytest.mark.parametrize(
+    ("line", "should_split"),
+    (
+        ("command " + "argument " * 12, True),
+        ("command '" + "quoted value " * 8 + "'", True),
+        ("x" * 82, False),
+        ("x" * 81, False),
+    ),
+)
+def test_shell_print_split_respects_quotes_legal_boundaries_and_exact_width(
+    line: str,
+    should_split: bool,
+) -> None:
+    wrapped = revision_tool._split_shell_line_for_print(line)
+
+    assert (len(wrapped) > 1) is should_split
+    if should_split:
+        assert join_shell_continuations("\n".join(wrapped)) == line
+
+
+def test_shell_print_split_uses_last_legal_space_and_skips_escaped_spaces() -> None:
+    line = "run " + "word " * 12 + r"path\ with\ spaces tail"
+
+    assert revision_tool._split_shell_line_for_print(line) == [
+        "run " + "word " * 11 + "word \\",
+        r"  path\ with\ spaces tail",
+    ]
+
+
+def test_shell_fence_reflow_tracks_language_indentation_and_unclosed_state() -> None:
+    long_shell = "run " + "argument " * 12
+    long_python = "print('" + "x" * 90 + "')"
+    text = (
+        "```python\n"
+        f"{long_python}\n"
+        "```\n"
+        "    ```bash\n"
+        f"{long_shell}\n"
+        "    ```\n"
+        "```bash\n"
+        f"{long_shell}\n"
+        "tail " + "argument " * 12
+    )
+
+    revised_lines = revision_tool._reflow_shell_fences(text.splitlines())
+    revised = "\n".join(revised_lines)
+
+    assert long_python in revised
+    assert revised.count(" \\") >= 2
+    # The legacy parser intentionally recognizes column-zero fence markers only.
+    assert revised.count(long_shell) == 1
+
+
+def test_oversized_fenced_lines_reports_all_languages_and_first_eight_payload() -> None:
+    lines = ["```text", *("x" * (82 + index) for index in range(10)), "```"]
+
+    oversized = revision_tool._oversized_fenced_lines(lines)
+
+    assert oversized[:8] == [(number, 80 + number) for number in range(2, 10)]
+    assert len(oversized) == 10
+    assert revision_tool._oversized_fenced_lines(["```text", "x" * 81, "```"]) == []
+
+
+def test_post_audit_conditional_anchor_preserves_legacy_current_precedence() -> None:
+    replace = revision_tool._replace_legacy_or_validate_current
+
+    assert replace("old + current", "old", "current", "trace") == "current + current"
+    assert replace("current", "old", "current", "trace") == "current"
+    with pytest.raises(
+        ValueError,
+        match=r"^Current trace must occur exactly once$",
+    ):
+        replace("current + current", "old", "current", "trace")
+
+
+def test_post_audit_three_state_anchor_prefers_oldest_then_intermediate() -> None:
+    replace = revision_tool._replace_three_state_editorial_anchor
+
+    assert replace("old / middle / final", "old", "middle", "final", "artifact") == (
+        "final / middle / final"
+    )
+    assert replace("middle", "old", "middle", "final", "artifact") == "final"
+    assert replace("final", "old", "middle", "final", "artifact") == "final"
+    with pytest.raises(
+        ValueError,
+        match=r"^Current artifact must occur exactly once$",
+    ):
+        replace("final / final", "old", "middle", "final", "artifact")
+
+
+def test_post_audit_artifact_three_state_preserves_production_error_text() -> None:
+    with pytest.raises(
+        ValueError,
+        match=r"^Current artifact-manifest verifier must occur once$",
+    ):
+        revision_tool._replace_three_state_editorial_anchor(
+            "missing",
+            "old artifact",
+            "intermediate artifact",
+            "current artifact",
+            "artifact-manifest verifier",
+            current_error="Current artifact-manifest verifier must occur once",
+        )
+
+
+def test_post_audit_marker_coexistence_and_duplicates_keep_current_semantics() -> None:
+    insert = revision_tool._insert_once_unless_marker
+
+    assert insert("legacy + marker", "legacy", "replacement", "marker", "ADLC") == (
+        "legacy + marker"
+    )
+    assert insert("legacy", "legacy", "replacement marker", "marker", "ADLC") == (
+        "replacement marker"
+    )
+    with pytest.raises(ValueError, match=r"^Current ADLC must occur once$"):
+        insert("marker + marker", "legacy", "replacement", "marker", "ADLC")
+
+
+def test_post_audit_driver_preserves_stage_order(monkeypatch: pytest.MonkeyPatch) -> None:
+    observed: list[str] = []
+    stages = (
+        "_apply_post_audit_memory_contracts",
+        "_apply_post_audit_trace_contracts",
+        "_apply_post_audit_evidence_contracts",
+        "_apply_post_audit_release_contracts",
+    )
+    for stage in stages:
+        monkeypatch.setattr(
+            revision_tool,
+            stage,
+            lambda text, stage=stage: observed.append(stage) or f"{text}\n\n{stage}",
+        )
+
+    revised = revision_tool.apply_post_audit_consistency_pass_2026_07_23("start")
+
+    assert observed == list(stages)
+    assert revised.endswith("_apply_post_audit_release_contracts\n")
+    assert "\n\n\n" not in revised
+
+
+def test_stacked_heading_bridge_is_exact_and_rejects_already_bridged_input() -> None:
+    bridges = (("## Parent", "### Child", "Bridge."),)
+
+    assert revision_tool._insert_stacked_heading_bridges(
+        "## Parent\n\n### Child\n", bridges
+    ) == "## Parent\n\nBridge.\n\n### Child\n"
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Editorial readiness anchor 'stacked headings: ## Parent' "
+            r"must occur once; found 0$"
+        ),
+    ):
+        revision_tool._insert_stacked_heading_bridges(
+            "## Parent\n\nBridge.\n\n### Child\n", bridges
+        )
+
+
+def test_stacked_heading_bridge_rejects_duplicate_parent_child_pair() -> None:
+    bridges = (("## Parent", "### Child", "Bridge."),)
+    duplicate = "## Parent\n\n### Child\n\n## Parent\n\n### Child\n"
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            r"^Editorial readiness anchor 'stacked headings: ## Parent' "
+            r"must occur once; found 2$"
+        ),
+    ):
+        revision_tool._insert_stacked_heading_bridges(duplicate, bridges)
+
+
+def test_heading_adjacent_fence_labels_only_column_zero_atx_headings() -> None:
+    source = """#### Шаг 2. Проверка
+
+```console
+run
+```
+### Контракт
+
+```yaml
+key: value
+```
+> ### Цитата
+
+```text
+quoted
+```
+  ### Отступ
+
+```text
+indented
+```
+"""
+
+    revised = revision_tool._label_heading_adjacent_fences(source)
+
+    assert "#### Шаг 2. Проверка\n\nВыполните команду и сохраните результат:" in revised
+    assert "### Контракт\n\n**Тип фрагмента:** минимальный контракт." in revised
+    assert "> ### Цитата\n\n```text" in revised
+    assert "  ### Отступ\n\n```text" in revised
+
+
+def test_world_class_shell_wrap_keeps_quoted_tokens_and_language_boundaries() -> None:
+    quoted = '"' + ("quoted value " * 7).strip() + '"'
+    long_command = f"uv run command --message {quoted} --final-token boundary"
+    mixed_case_command = "uv run command " + "argument " * 14 + "boundary"
+    untouched_yaml = "key: " + "value " * 18 + "boundary"
+    source = (
+        f"```console\n{long_command}\n```\n"
+        f"```Console\n{mixed_case_command}\n```\n"
+        f"```yaml\n{untouched_yaml}\n```\n"
+    )
+
+    revised = revision_tool._wrap_world_class_shell_lines(source)
+
+    assert quoted in revised
+    assert " \\\n  --final-token boundary" in revised
+    assert mixed_case_command not in revised
+    assert mixed_case_command in join_shell_continuations(revised)
+    assert f"```yaml\n{untouched_yaml}\n```" in revised
+
+
+def test_required_world_class_replacements_replace_all_and_reject_current_only() -> None:
+    replacements = (("legacy", "current"),)
+
+    assert revision_tool._replace_all_required(
+        "legacy + legacy",
+        replacements,
+        missing_prefix="World-class copyedit anchor missing",
+    ) == "current + current"
+    with pytest.raises(
+        ValueError,
+        match=r"^World-class copyedit anchor missing: legacy$",
+    ):
+        revision_tool._replace_all_required(
+            "current",
+            replacements,
+            missing_prefix="World-class copyedit anchor missing",
+        )
+
+
+def test_create_ticket_risk_normalization_is_global_and_fail_closed() -> None:
+    medium = "  create_ticket:\n    risk: medium\n"
+    assert revision_tool._normalize_create_ticket_risk(medium * 2).count(
+        "risk: high"
+    ) == 2
+    with pytest.raises(
+        ValueError,
+        match=r"^create_ticket risk classification still drifts$",
+    ):
+        revision_tool._normalize_create_ticket_risk(
+            "create_ticket:\n      risk: medium\n"
+        )
+
+
+def test_world_class_driver_preserves_stage_order(monkeypatch: pytest.MonkeyPatch) -> None:
+    observed: list[str] = []
+    stages = (
+        "_apply_required_world_class_replacements",
+        "_normalize_create_ticket_risk",
+        "_strengthen_approval_chain",
+        "_extend_case_and_chapter_sources",
+        "_insert_stacked_heading_bridges",
+        "_label_heading_adjacent_fences",
+        "_repair_world_class_listing_layout",
+        "_wrap_world_class_shell_lines",
+    )
+    for stage in stages:
+        monkeypatch.setattr(
+            revision_tool,
+            stage,
+            lambda text, stage=stage: observed.append(stage) or f"{text}\n\n{stage}",
+        )
+
+    revised = revision_tool.apply_world_class_technical_edit_2026_07_23("start")
+
+    assert observed == list(stages)
+    assert revised.endswith("_wrap_world_class_shell_lines\n")
+    assert "\n\n\n" not in revised
+
+
 def test_revision_is_reproducible(tmp_path: Path) -> None:
     output = tmp_path / "manuscript.md"
     manifest = tmp_path / "diagrams.json"
@@ -84,6 +648,565 @@ def test_revision_is_reproducible(tmp_path: Path) -> None:
     data = json.loads(manifest.read_text(encoding="utf-8"))
     assert len(data["diagrams"]) == 29
     assert [item["number"] for item in data["diagrams"]] == list(range(1, 30))
+
+
+def _synthetic_pseudo_tables() -> str:
+    tables = (
+        """| Ситуация | Выбор |
+| --- | --- |
+
+| Первый случай | Первый ответ |
+
+| Второй случай | Второй ответ |""",
+        """| Угроза | Контроль |
+| --- | --- |
+| Подмена | Проверка |""",
+        """| Поле каталога | Значение |
+| --- | --- |
+| owner | Команда |""",
+        """| Вопрос | Ответ |
+| --- | --- |
+| Где? | Здесь |""",
+        r"""| Event type | Когда появляется | Зачем нужен |
+| --- | --- | --- |
+| run\_start | Сразу | Открывает запуск |""",
+    )
+    return "\n\nГраница таблиц.\n\n".join(tables) + "\n"
+
+
+def test_pseudo_tables_keep_blank_separated_rows_in_one_table() -> None:
+    revised = revision_tool.convert_pseudo_tables_to_lists(_synthetic_pseudo_tables())
+
+    assert "| Ситуация | Выбор |" not in revised
+    assert "* **Первый случай** — выбор: Первый ответ." in revised
+    assert "* **Второй случай** — выбор: Второй ответ." in revised
+    assert "* `run_start` — когда: Сразу; назначение: Открывает запуск." in revised
+    assert revised.count("Граница таблиц.") == 4
+
+
+def test_pseudo_tables_reject_malformed_rows() -> None:
+    malformed = _synthetic_pseudo_tables().replace(
+        "| Первый случай | Первый ответ |",
+        "| Первый случай | Первый ответ | Лишняя ячейка |",
+    )
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Malformed pseudo-table row: \| Первый случай .* Лишняя ячейка \|$",
+    ):
+        revision_tool.convert_pseudo_tables_to_lists(malformed)
+
+
+def _synthetic_command_and_json_fragments() -> str:
+    groups = [
+        "uv run first_command\n\nruff check first.py",
+        *(f"git status group-{number}" for number in range(2, 16)),
+    ]
+    return "\n\nПояснение.\n\n".join(groups) + '\n\n{"result\\_status": "ready"}\n'
+
+
+def test_command_restoration_keeps_blank_separated_commands_in_one_group() -> None:
+    revised = revision_tool.fence_remaining_commands_and_json(
+        _synthetic_command_and_json_fragments()
+    )
+
+    assert revised.count("```console") == 15
+    assert "```console\nuv run first_command\nruff check first.py\n```" in revised
+
+
+def test_command_restoration_fences_single_line_json() -> None:
+    revised = revision_tool.fence_remaining_commands_and_json(
+        _synthetic_command_and_json_fragments()
+    )
+
+    assert '```json\n{"result_status": "ready"}\n```' in revised
+
+
+def test_single_line_json_detection_uses_exact_stripped_length_and_braces() -> None:
+    assert not revision_tool._is_single_line_json("  {" + "x" * 17 + "}  ")
+    assert revision_tool._is_single_line_json("  {" + "x" * 18 + "}  ")
+    assert not revision_tool._is_single_line_json("x" * 19 + "}")
+    assert not revision_tool._is_single_line_json("{" + "x" * 19)
+
+
+def test_command_restoration_rejects_unclosed_fence() -> None:
+    with pytest.raises(
+        ValueError,
+        match="^Unclosed fenced block while restoring commands$",
+    ):
+        revision_tool.fence_remaining_commands_and_json("```console\nuv run test\n")
+
+
+MCP_SECURITY_URL = (
+    "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
+)
+
+
+def _synthetic_source_appendix(urls: list[str]) -> str:
+    entries = "\n".join(
+        f"* [Источник {index}]({url}), дата обращения: 15 июля 2026 года."
+        for index, url in enumerate(urls, start=1)
+    )
+    return (
+        "## Приложение 4\\. Источники\n\n"
+        f"{entries}\n\n"
+        "#### Облачные платформы и долговечное исполнение\n\n"
+        "## Приложение 5\\. Указатель\n"
+    )
+
+
+def _synthetic_source_document(
+    *,
+    chapter_sources: dict[int, list[tuple[str, str]]] | None = None,
+    omit_source_sections: set[int] | None = None,
+) -> str:
+    bibliography_urls = [MCP_SECURITY_URL] + [
+        f"https://example.test/source-{index}" for index in range(2, 91)
+    ]
+    local_sources = chapter_sources or {}
+    omitted = omit_source_sections or set()
+    chapters: list[str] = []
+    for number in range(1, 29):
+        sources = local_sources.get(
+            number,
+            [
+                ("Первый источник", bibliography_urls[0]),
+                ("Второй источник", bibliography_urls[1]),
+            ],
+        )
+        source_section = ""
+        if number not in omitted:
+            source_lines = "\n".join(
+                f"* [{title}]({url})." for title, url in sources
+            )
+            source_section = f"\n### Источники главы\n\n{source_lines}\n"
+        chapters.append(
+            f"## Глава {number}\\. Заголовок\n\n"
+            f"* Устойчивые утверждения: тезис главы {number}.\n"
+            f"{source_section}"
+        )
+    return (
+        "\n".join(chapters)
+        + "\n# Заключение\n\n"
+        + _synthetic_source_appendix(bibliography_urls)
+    )
+
+
+def test_source_appendix_ids_follow_encounter_order_and_normalize_literal_escapes() -> None:
+    escaped_url = "https://example.test/path\\_one\\-1"
+    urls = [escaped_url] + [
+        f"https://example.test/source-{index}" for index in range(2, 91)
+    ]
+
+    revised, source_ids = revision_tool._number_source_appendix(
+        _synthetic_source_appendix(urls)
+    )
+
+    assert source_ids["https://example.test/path_one-1"] == "S001"
+    assert source_ids["https://example.test/source-2"] == "S002"
+    assert f"**S001.** [Источник 1]({escaped_url})" in revised
+    assert "**S090.** [Источник 90](https://example.test/source-90)" in revised
+
+
+def test_source_appendix_rejects_duplicate_normalized_urls_with_exact_error() -> None:
+    urls = [
+        "https://example.test/path\\_one\\-1",
+        "https://example.test/path_one-1",
+        *(f"https://example.test/source-{index}" for index in range(3, 91)),
+    ]
+
+    with pytest.raises(
+        ValueError,
+        match=(
+            "^Duplicate bibliography URL before numbering: "
+            "https://example\\.test/path_one-1$"
+        ),
+    ):
+        revision_tool._number_source_appendix(_synthetic_source_appendix(urls))
+
+
+def test_mcp_security_source_is_inserted_before_cloud_anchor() -> None:
+    appendix = _synthetic_source_appendix(
+        [f"https://example.test/source-{index}" for index in range(1, 91)]
+    )
+
+    revised = revision_tool._ensure_mcp_security_source(appendix)
+
+    source_line = (
+        "* [Model Context Protocol, Security Best Practices]"
+        f"({MCP_SECURITY_URL}), дата обращения: 15 июля 2026 года."
+    )
+    assert revised.index(source_line) < revised.index(
+        "#### Облачные платформы и долговечное исполнение"
+    )
+    assert revised.count(MCP_SECURITY_URL) == 1
+
+
+def test_mcp_security_source_is_unchanged_when_normalized_url_exists() -> None:
+    escaped_url = MCP_SECURITY_URL.replace("_", "\\_")
+    appendix = _synthetic_source_appendix(
+        [escaped_url]
+        + [f"https://example.test/source-{index}" for index in range(2, 91)]
+    )
+
+    assert revision_tool._ensure_mcp_security_source(appendix) == appendix
+
+
+def test_source_rebuild_keeps_duplicate_local_ids_in_first_two_citations() -> None:
+    document = _synthetic_source_document(
+        chapter_sources={
+            28: [
+                ("Первый источник", MCP_SECURITY_URL),
+                ("Повтор первого источника", MCP_SECURITY_URL),
+                ("Второй источник", "https://example.test/source-2"),
+            ]
+        }
+    )
+
+    revised = revision_tool.rebuild_source_apparatus(document)
+    chapter = revision_tool.extract_chapter(revised, 28)
+
+    assert "(см. источники **S001**, **S001**)." in chapter
+    assert chapter.count("* **S001.**") == 2
+    assert "* **S002.** Второй источник." in chapter
+
+
+def test_source_rebuild_validates_chapters_in_reverse_order() -> None:
+    document = _synthetic_source_document(
+        chapter_sources={27: [("Один источник", MCP_SECURITY_URL)]},
+        omit_source_sections={26},
+    )
+
+    with pytest.raises(
+        ValueError,
+        match="^Chapter 27 has too few source entries$",
+    ):
+        revision_tool.rebuild_source_apparatus(document)
+
+
+def test_claim_citation_prefers_stable_claim_and_strips_all_trailing_periods() -> None:
+    body = (
+        "* Устойчивые утверждения: основной тезис...\n\n"
+        "### Ключевые выводы\n\n"
+        "* запасной тезис.\n"
+    )
+
+    start, end, claim = revision_tool._claim_citation_span(body, 7)
+
+    assert body[start:end] == "* Устойчивые утверждения: основной тезис..."
+    assert claim == "* Устойчивые утверждения: основной тезис"
+
+
+def test_claim_citation_uses_first_key_takeaway_bullet() -> None:
+    body = "Введение.\n\n### Ключевые выводы\n\n* первый тезис.\n* второй тезис.\n"
+
+    start, end, claim = revision_tool._claim_citation_span(body, 8)
+
+    assert body[start:end] == "* первый тезис."
+    assert claim == "* первый тезис"
+
+
+@pytest.mark.parametrize(
+    ("body", "message"),
+    [
+        ("Текст без вывода.", "Chapter 4 lacks a claim citation anchor"),
+        ("### Ключевые выводы\n\nТекст без списка.", "Chapter 4 lacks a key takeaway"),
+    ],
+)
+def test_claim_citation_keeps_exact_missing_anchor_errors(body: str, message: str) -> None:
+    with pytest.raises(ValueError, match=f"^{re.escape(message)}$"):
+        revision_tool._claim_citation_span(body, 4)
+
+
+def test_source_apparatus_missing_markers_keep_exact_errors() -> None:
+    with pytest.raises(IndexError, match="^list index out of range$"):
+        revision_tool._ensure_mcp_security_source("рукопись без приложений")
+
+    with pytest.raises(ValueError, match="^Source appendix is missing$"):
+        revision_tool._number_source_appendix("рукопись без приложений")
+
+
+def _long_fenced_block(language: str, marker: str) -> str:
+    body = "\n".join(f"{marker}-{number}" for number in range(21))
+    return f"```{language}\n{body}\n```"
+
+
+def test_technical_block_label_uses_intro_window_and_nearest_h3() -> None:
+    introduced = "\n".join(
+        (
+            "### Защищенный контракт",
+            "**Листинг. Уже представлен.**",
+            "Контекст один.",
+            "Контекст два.",
+            "Контекст три.",
+            _long_fenced_block("python", "introduced"),
+        )
+    )
+    unlabeled_blocks = []
+    languages = ("yaml", "json", "python", "pseudocode", "console", "text", "toml")
+    for number, language in enumerate(languages, start=1):
+        unlabeled_blocks.append(
+            "\n".join(
+                (
+                    f"### Ближайший раздел {number}",
+                    "**Пример. Слишком далеко.**",
+                    "Контекст один.",
+                    "Контекст два.",
+                    "Контекст три.",
+                    "Контекст четыре.",
+                    _long_fenced_block(language, f"block-{number}"),
+                )
+            )
+        )
+    synthetic = "\n\n".join((introduced, *unlabeled_blocks)) + "\n"
+
+    revised = revision_tool.label_long_technical_blocks(synthetic)
+
+    assert "**Листинг. Защищенный контракт.**" not in revised
+    assert revised.count("**Листинг. Ближайший раздел ") == 7
+    assert (
+        "**Листинг. Ближайший раздел 1.** Тип: декларативная конфигурация; "
+        "полный учебный контракт приведен ниже."
+    ) in revised
+    assert "**Листинг. Ближайший раздел 2.** Тип: структурированный результат;" in revised
+    assert "**Листинг. Ближайший раздел 3.** Тип: учебный пример Python;" in revised
+    assert "**Листинг. Ближайший раздел 4.** Тип: псевдокод;" in revised
+    assert "**Листинг. Ближайший раздел 5.** Тип: технический пример;" in revised
+
+
+def test_technical_block_intro_must_be_within_eight_physical_lines() -> None:
+    intro_within_window = "\n".join(
+        (
+            "### Вступление в окне",
+            "**Листинг. Уже представлен.**",
+            "",
+            "Контекст один.",
+            "",
+            "Контекст два.",
+            "",
+            "Контекст три.",
+            "",
+            _long_fenced_block("python", "within-window"),
+        )
+    )
+    intro_outside_window = "\n".join(
+        (
+            "### Вступление вне окна",
+            "**Листинг. Формально среди последних четырех непустых строк.**",
+            "",
+            "Контекст один.",
+            "",
+            "Контекст два.",
+            "",
+            "Контекст три.",
+            "",
+            "",
+            _long_fenced_block("python", "outside-window"),
+        )
+    )
+    unlabeled = [
+        "\n".join(
+            (
+                f"### Дополнительный раздел {number}",
+                "Контекст один.",
+                "Контекст два.",
+                "Контекст три.",
+                "Контекст четыре.",
+                _long_fenced_block("text", f"extra-{number}"),
+            )
+        )
+        for number in range(6)
+    ]
+    synthetic = "\n\n".join((intro_within_window, intro_outside_window, *unlabeled)) + "\n"
+
+    revised = revision_tool.label_long_technical_blocks(synthetic)
+
+    assert "**Листинг. Вступление в окне.**" not in revised
+    assert "**Листинг. Вступление вне окна.**" in revised
+    assert revised.count("**Листинг. Дополнительный раздел ") == 6
+
+
+def test_technical_block_label_rejects_unclosed_fence() -> None:
+    with pytest.raises(
+        ValueError,
+        match="^Unclosed fenced block while labeling long examples$",
+    ):
+        revision_tool.label_long_technical_blocks("```python\nprint('open')\n")
+
+
+def _synthetic_micro_heading_document() -> str:
+    fourth_level = "\n\n".join(f"#### Микрораздел {number}" for number in range(100))
+    short_sections = "\n\n".join(
+        f"### Короткий раздел {number}\n\nслово" for number in range(80)
+    )
+    words_69 = " ".join(f"слово{number}" for number in range(69))
+    words_70 = " ".join(f"слово{number}" for number in range(70))
+    fenced_words = " ".join(f"код{number}" for number in range(20))
+    return (
+        f"{fourth_level}\n\n"
+        "## Глава 1. Порог\n\n"
+        f"{short_sections}\n\n"
+        f"### Раздел из 69 слов\n\n{words_69}\n\n```text\n{fenced_words}\n```\n\n"
+        f"### Раздел из 70 слов\n\n{words_70}\n\n"
+        "### Ключевые выводы\n\nслово\n\n"
+        "### Источники главы\n\nслово\n\n"
+        "### От наблюдаемого отклонения к внутреннему риску\n\nслово\n\n"
+        "## Приложение\n\n"
+        "### Заголовок вне главы\n\nслово\n"
+    )
+
+
+def test_micro_heading_demotion_respects_protection_context_and_word_threshold() -> None:
+    revised = revision_tool.demote_micro_headings(_synthetic_micro_heading_document())
+
+    assert "**Раздел из 69 слов.**" in revised
+    assert "### Раздел из 70 слов" in revised
+    assert "### Ключевые выводы" in revised
+    assert "### Источники главы" in revised
+    assert "### От наблюдаемого отклонения к внутреннему риску" in revised
+    assert "### Заголовок вне главы" in revised
+    assert "#### Микрораздел" not in revised
+
+
+def _configure_synthetic_listing(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> str:
+    source = """def rebuild_record(value: int) -> int:
+    normalized = value + 1
+    validated = max(normalized, 0)
+    return validated"""
+    source_path = tmp_path / "source.md"
+    source_path.write_text(f"```python\n{source}\n```\n", encoding="utf-8")
+    synthetic_tool_path = tmp_path / "package/publisher/tools/revise.py"
+    monkeypatch.setattr(revision_tool, "__file__", str(synthetic_tool_path))
+    monkeypatch.setattr(
+        revision_tool,
+        "LISTING_SPECS",
+        (("def rebuild_record", "source.md", "Восстановление записи"),),
+    )
+    monkeypatch.setattr(revision_tool, "LEGACY_LISTING_MATCH_SOURCES", {})
+    return source
+
+
+def test_verified_listing_restoration_respects_fragment_bounds(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    source = _configure_synthetic_listing(monkeypatch, tmp_path)
+    degraded = r"""Текст до листинга.
+
+def rebuild\_record(value: int) -\> int:
+    normalized = value + 1
+    return validated
+
+Текст после листинга.
+"""
+
+    revised = revision_tool.restore_verified_python_listings(degraded)
+
+    expected_listing = (
+        "**Листинг 1. Восстановление записи.** Тип: синтаксически проверяемый "
+        "учебный пример; источник: `source.md`.\n\n"
+        f"```python\n{source}\n```"
+    )
+    assert revised == f"Текст до листинга.\n\n{expected_listing}\n\nТекст после листинга.\n"
+
+
+def test_verified_listing_restoration_rejects_low_key_coverage(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    _configure_synthetic_listing(monkeypatch, tmp_path)
+    degraded = """def rebuild_record(value: int) -> int:
+    return validated
+"""
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Listing 'def rebuild_record' matched only 50% of its verified source$",
+    ):
+        revision_tool.restore_verified_python_listings(degraded)
+
+
+def _configure_synthetic_structured_book(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+    count: int,
+    *,
+    duplicate_first_source: bool = False,
+) -> list[str]:
+    blocks = [
+        "\n".join(
+            (
+                f"policy_{index}_identifier: policy-value-{index}",
+                f"policy_{index}_owner: owner-{index}",
+                f"policy_{index}_mode: strict-{index}",
+            )
+        )
+        for index in range(count)
+    ]
+    book_root = tmp_path / "docs/book"
+    book_root.mkdir(parents=True)
+    (book_root / "a-source.md").write_text(
+        "\n\n".join(f"```yaml\n{block}\n```" for block in blocks) + "\n",
+        encoding="utf-8",
+    )
+    if duplicate_first_source:
+        (book_root / "z-duplicate.md").write_text(
+            f"```json\n{blocks[0]}\n```\n",
+            encoding="utf-8",
+        )
+    synthetic_tool_path = tmp_path / "package/publisher/tools/revise.py"
+    monkeypatch.setattr(revision_tool, "__file__", str(synthetic_tool_path))
+    monkeypatch.setattr(revision_tool, "LEGACY_STRUCTURED_MATCH_SOURCES", {})
+    return blocks
+
+
+def test_structured_restoration_skips_duplicate_anchors(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    blocks = _configure_synthetic_structured_book(monkeypatch, tmp_path, 26)
+    degraded = "\n\n".join((blocks[0], blocks[0], *blocks[1:])) + "\n"
+
+    revised = revision_tool.restore_structured_book_blocks(degraded)
+
+    assert revised.count(f"```yaml\n{blocks[0]}\n```") == 0
+    assert revised.count(blocks[0]) == 2
+    assert revised.count("```yaml") == 25
+
+
+def test_structured_restoration_deduplicates_sources_by_first_seen_block(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    blocks = _configure_synthetic_structured_book(
+        monkeypatch,
+        tmp_path,
+        25,
+        duplicate_first_source=True,
+    )
+
+    revised = revision_tool.restore_structured_book_blocks("\n\n".join(blocks) + "\n")
+
+    assert f"```yaml\n{blocks[0]}\n```" in revised
+    assert f"```json\n{blocks[0]}\n```" not in revised
+    assert revised.count(blocks[0]) == 1
+    assert revised.count("```yaml") == 25
+
+
+def test_structured_restoration_enforces_minimum_count(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    blocks = _configure_synthetic_structured_book(monkeypatch, tmp_path, 24)
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Expected to restore at least 25 structured blocks, found 24$",
+    ):
+        revision_tool.restore_structured_book_blocks("\n\n".join(blocks) + "\n")
 
 
 def test_reference_package_quickstart_matches_runtime_contract() -> None:
