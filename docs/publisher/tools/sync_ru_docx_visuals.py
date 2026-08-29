@@ -13,7 +13,7 @@ import struct
 import zipfile
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import TypedDict
+from typing import NamedTuple, TypedDict
 from xml.etree import ElementTree as ET
 
 NS = {
@@ -24,7 +24,11 @@ NS = {
 }
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 EMU_PER_INCH = 914_400
-MAX_FIGURE_HEIGHT = int(5.6 * EMU_PER_INCH)
+PNG_DENSITY = 300
+MAX_FIGURE_WIDTH = int(6.5 * EMU_PER_INCH)
+MAX_FIGURE_HEIGHT = int(6.3 * EMU_PER_INCH)
+MAX_CODE_PARAGRAPHS_PER_KEEP_GROUP = 12
+EXPECTED_MANUSCRIPT_VISUALS = 57
 
 
 class VisualRecord(TypedDict):
@@ -36,6 +40,14 @@ class VisualRecord(TypedDict):
 
 
 type DrawingParts = tuple[ET.Element, ET.Element, ET.Element]
+
+
+class DrawingSyncResult(NamedTuple):
+    target: str
+    figure_height: int | None
+    image_numbering_removed: bool
+    inline_visual_title_kept: bool
+
 
 for prefix, uri in NS.items():
     ET.register_namespace(prefix, uri)
@@ -97,8 +109,10 @@ def parse_manuscript_visuals(manuscript: Path) -> list[VisualRecord]:
             }
         )
 
-    if len(visuals) != 56:
-        raise ValueError(f"Expected 56 manuscript visuals, found {len(visuals)}")
+    if len(visuals) != EXPECTED_MANUSCRIPT_VISUALS:
+        raise ValueError(
+            f"Expected {EXPECTED_MANUSCRIPT_VISUALS} manuscript visuals, found {len(visuals)}"
+        )
     numbered = [item["figure_number"] for item in visuals if item["figure_number"]]
     if numbered != list(range(1, 26)):
         raise ValueError(f"Unexpected numbered figures: {numbered}")
@@ -123,30 +137,183 @@ def set_paragraph_flag(paragraph: ET.Element, name: str) -> None:
     if ppr is None:
         ppr = ET.Element(f"{{{NS['w']}}}pPr")
         paragraph.insert(0, ppr)
-    if ppr.find(f"w:{name}", NS) is None:
-        ppr.append(ET.Element(f"{{{NS['w']}}}{name}"))
+    flag = ppr.find(f"w:{name}", NS)
+    if flag is None:
+        flag = ET.Element(f"{{{NS['w']}}}{name}")
+        ppr.append(flag)
+    flag.set(f"{{{NS['w']}}}val", "1")
 
 
-def find_preceding_paragraph(
+def disable_paragraph_flag(paragraph: ET.Element, name: str) -> None:
+    ppr = paragraph.find("w:pPr", NS)
+    if ppr is None:
+        return
+    flag = ppr.find(f"w:{name}", NS)
+    if flag is not None:
+        flag.set(f"{{{NS['w']}}}val", "0")
+
+
+def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
+    styled_characters = 0
+    monospace_characters = 0
+    monospace_run_seen = False
+    for run in paragraph.findall("w:r", NS):
+        run_text = "".join(node.text or "" for node in run.findall(".//w:t", NS))
+        fonts = run.find("w:rPr/w:rFonts", NS)
+        if fonts is None:
+            continue
+        is_monospace = any(
+            "mono" in value.lower() or "courier" in value.lower() for value in fonts.attrib.values()
+        )
+        monospace_run_seen = monospace_run_seen or is_monospace
+        if not run_text.strip():
+            continue
+        styled_characters += len(run_text)
+        if is_monospace:
+            monospace_characters += len(run_text)
+    if styled_characters == 0:
+        return monospace_run_seen
+    return monospace_characters / styled_characters >= 0.8
+
+
+def keep_code_blocks_together(document: ET.Element) -> tuple[int, int]:
+    code_blocks = 0
+    code_paragraphs = 0
+    current_block: list[ET.Element] = []
+
+    def finish_block() -> None:
+        nonlocal code_blocks, code_paragraphs, current_block
+        if not current_block:
+            return
+        code_blocks += 1
+        code_paragraphs += len(current_block)
+        for paragraph in current_block:
+            set_paragraph_flag(paragraph, "keepLines")
+        for index, paragraph in enumerate(current_block):
+            keep_with_next = (
+                index < len(current_block) - 1
+                and (index + 1) % MAX_CODE_PARAGRAPHS_PER_KEEP_GROUP != 0
+            )
+            if keep_with_next:
+                set_paragraph_flag(paragraph, "keepNext")
+            else:
+                disable_paragraph_flag(paragraph, "keepNext")
+        current_block = []
+
+    for paragraph in document.findall(".//w:body/w:p", NS):
+        if paragraph_uses_monospace_font(paragraph):
+            current_block.append(paragraph)
+        else:
+            finish_block()
+    finish_block()
+    return code_blocks, code_paragraphs
+
+
+def remove_paragraph_numbering(paragraph: ET.Element) -> bool:
+    ppr = paragraph.find("w:pPr", NS)
+    if ppr is None:
+        return False
+    numbering = ppr.find("w:numPr", NS)
+    if numbering is None:
+        return False
+    ppr.remove(numbering)
+    return True
+
+
+def remove_empty_numbered_paragraphs(document: ET.Element) -> int:
+    parent_by_child = {child: parent for parent in document.iter() for child in list(parent)}
+    removed = 0
+    for paragraph in document.findall(".//w:p", NS):
+        if paragraph_text(paragraph) or paragraph.find(".//w:drawing", NS) is not None:
+            continue
+        if paragraph.find("w:pPr/w:numPr", NS) is None:
+            continue
+        parent = parent_by_child.get(paragraph)
+        if parent is None:
+            raise ValueError("Empty numbered paragraph has no document parent")
+        parent.remove(paragraph)
+        removed += 1
+    return removed
+
+
+def on_off_property_is_active(element: ET.Element | None) -> bool:
+    return element is not None and element.get(f"{{{NS['w']}}}val", "1") not in {
+        "0",
+        "false",
+        "off",
+    }
+
+
+def remove_empty_paragraphs_before_page_breaks(document: ET.Element) -> int:
+    body = document.find("w:body", NS)
+    if body is None:
+        raise ValueError("DOCX document has no body")
+    removed = 0
+    index = 1
+    while index < len(body):
+        paragraph = body[index]
+        page_break = paragraph.find("w:pPr/w:pageBreakBefore", NS)
+        if paragraph.tag != f"{{{NS['w']}}}p" or not on_off_property_is_active(page_break):
+            index += 1
+            continue
+        previous = body[index - 1]
+        if (
+            previous.tag == f"{{{NS['w']}}}p"
+            and not paragraph_text(previous)
+            and previous.find(".//w:drawing", NS) is None
+            and previous.find(".//w:pict", NS) is None
+            and previous.find(".//w:sectPr", NS) is None
+            and previous.find(".//w:bookmarkStart", NS) is None
+        ):
+            body.remove(previous)
+            removed += 1
+            index -= 1
+            continue
+        index += 1
+    return removed
+
+
+def set_table_row_flag(row: ET.Element, name: str) -> bool:
+    row_properties = row.find("w:trPr", NS)
+    if row_properties is None:
+        row_properties = ET.Element(f"{{{NS['w']}}}trPr")
+        row.insert(0, row_properties)
+    flag = row_properties.find(f"w:{name}", NS)
+    created = flag is None
+    if flag is None:
+        flag = ET.Element(f"{{{NS['w']}}}{name}")
+        row_properties.append(flag)
+    flag.set(f"{{{NS['w']}}}val", "1")
+    return created
+
+
+def normalize_table_rows(document: ET.Element) -> tuple[int, int]:
+    headers = 0
+    rows_kept_together = 0
+    for table in document.findall(".//w:tbl", NS):
+        for row_index, row in enumerate(table.findall("w:tr", NS)):
+            set_table_row_flag(row, "cantSplit")
+            rows_kept_together += 1
+            if row_index == 0:
+                set_table_row_flag(row, "tblHeader")
+                headers += 1
+    return headers, rows_kept_together
+
+
+def previous_non_empty_paragraph(
     parent: ET.Element,
     start: ET.Element,
-    pattern: re.Pattern[str],
-) -> ET.Element:
+) -> ET.Element | None:
     children = list(parent)
     start_index = children.index(start)
-    checked = 0
-    for candidate in reversed(children[:start_index]):
-        if candidate.tag != f"{{{NS['w']}}}p":
-            continue
-        text = paragraph_text(candidate)
-        if not text:
-            continue
-        checked += 1
-        if pattern.match(text):
-            return candidate
-        if checked >= 4:
-            break
-    raise ValueError(f"Preceding paragraph not found for pattern {pattern.pattern}")
+    return next(
+        (
+            candidate
+            for candidate in reversed(children[:start_index])
+            if candidate.tag == f"{{{NS['w']}}}p" and paragraph_text(candidate)
+        ),
+        None,
+    )
 
 
 def find_nearby_paragraph(
@@ -180,14 +347,15 @@ def resize_drawing(drawing: ET.Element, image_path: Path) -> tuple[int, int]:
     extent = drawing.find(".//wp:extent", NS)
     if extent is None:
         raise ValueError("Drawing has no wp:extent")
-    width = int(extent.get("cx", "0"))
-    if width <= 0:
+    existing_width = int(extent.get("cx", "0"))
+    if existing_width <= 0:
         raise ValueError("Drawing width is missing")
+    max_width_for_height = MAX_FIGURE_HEIGHT * pixel_width // pixel_height
+    native_width = pixel_width * EMU_PER_INCH // PNG_DENSITY
+    width = min(MAX_FIGURE_WIDTH, max_width_for_height, native_width)
     height = round(width * pixel_height / pixel_width)
     if height > MAX_FIGURE_HEIGHT:
-        scale = MAX_FIGURE_HEIGHT / height
-        width = round(width * scale)
-        height = MAX_FIGURE_HEIGHT
+        raise ValueError("Deterministic image scaling exceeded the height limit")
 
     extent.set("cx", str(width))
     extent.set("cy", str(height))
@@ -223,14 +391,15 @@ def _synchronize_drawing(
     drawing_parts: DrawingParts,
     targets: dict[str, str],
     parent_by_child: dict[ET.Element, ET.Element],
-) -> tuple[str, int | None]:
+) -> DrawingSyncResult:
     paragraph, drawing, blip = drawing_parts
     relationship_id = blip.get(f"{{{NS['r']}}}embed", "")
     target = targets.get(relationship_id)
     if target is None:
         raise ValueError(f"Image relationship is missing: {relationship_id}")
     number = visual["figure_number"]
-    caption_context: tuple[ET.Element, ET.Element, ET.Element, int] | None = None
+    caption_context: tuple[ET.Element, ET.Element, int] | None = None
+    inline_title: ET.Element | None = None
     if number:
         parent = parent_by_child.get(paragraph)
         if parent is None:
@@ -240,40 +409,46 @@ def _synchronize_drawing(
             paragraph,
             re.compile(rf"^Рисунок {number}\."),
         )
-        reference = find_preceding_paragraph(
-            parent,
-            caption,
-            re.compile(rf"^На рисунке {number} представлена схема"),
-        )
         children = list(parent)
         image_index = children.index(paragraph)
         caption_index = children.index(caption)
         insert_index = image_index if caption_index < image_index else image_index + 1
-        caption_context = parent, caption, reference, insert_index
+        caption_context = parent, caption, insert_index
+    else:
+        parent = parent_by_child.get(paragraph)
+        if parent is None:
+            raise ValueError("Inline visual has no document parent")
+        candidate = previous_non_empty_paragraph(parent, paragraph)
+        if candidate is not None and paragraph_text(candidate) == visual["alt"]:
+            inline_title = candidate
 
     destination = root / target
     source = Path(visual["path"])
     destination.write_bytes(source.read_bytes())
 
     _, height = resize_drawing(drawing, source)
+    image_numbering_removed = remove_paragraph_numbering(paragraph)
     for properties in drawing.findall(".//wp:docPr", NS):
         properties.set("title", "Иллюстрация к рукописи")
         properties.set("descr", str(visual["alt"])[:1000])
 
     if caption_context is None:
-        return target, None
-    parent, caption, reference, insert_index = caption_context
+        if inline_title is not None:
+            set_paragraph_flag(inline_title, "keepNext")
+        return DrawingSyncResult(
+            target,
+            None,
+            image_numbering_removed,
+            inline_title is not None,
+        )
+    parent, caption, insert_index = caption_context
     title = str(visual["figure_title"])
     set_paragraph_text(caption, f"Рисунок {number}. {title}")
-    set_paragraph_text(
-        reference,
-        f"На рисунке {number} представлена схема «{title}».",
-    )
     set_paragraph_flag(paragraph, "keepNext")
     set_paragraph_flag(caption, "keepLines")
     parent.remove(caption)
     parent.insert(insert_index, caption)
-    return target, height
+    return DrawingSyncResult(target, height, image_numbering_removed, False)
 
 
 def _write_docx_archive(root: Path, temporary_output: Path, output_docx: Path) -> None:
@@ -307,6 +482,14 @@ def synchronize(
         relationships_path = root / "word/_rels/document.xml.rels"
         document = ET.fromstring(document_path.read_bytes())
         relationships = ET.fromstring(relationships_path.read_bytes())
+        table_headers_repeated, table_rows_kept_together = normalize_table_rows(document)
+        empty_numbered_paragraphs_removed = remove_empty_numbered_paragraphs(document)
+        empty_paragraphs_before_page_breaks_removed = remove_empty_paragraphs_before_page_breaks(
+            document
+        )
+        code_blocks_kept_together, code_paragraphs_kept_together = keep_code_blocks_together(
+            document
+        )
         targets = _image_relationship_targets(relationships)
 
         parent_by_child = {child: parent for parent in document.iter() for child in list(parent)}
@@ -319,17 +502,23 @@ def synchronize(
 
         media_targets: list[str] = []
         figure_heights: list[int] = []
+        inline_visual_titles_kept = 0
+        image_numbering_removed = 0
         for visual, drawing_parts in zip(visuals, drawings):
-            target, figure_height = _synchronize_drawing(
+            result = _synchronize_drawing(
                 root,
                 visual,
                 drawing_parts,
                 targets,
                 parent_by_child,
             )
-            media_targets.append(target)
-            if figure_height is not None:
-                figure_heights.append(figure_height)
+            media_targets.append(result.target)
+            if result.figure_height is not None:
+                figure_heights.append(result.figure_height)
+            if result.image_numbering_removed:
+                image_numbering_removed += 1
+            if result.inline_visual_title_kept:
+                inline_visual_titles_kept += 1
 
         if len(set(media_targets)) != len(media_targets):
             raise ValueError("Multiple drawings unexpectedly share one media target")
@@ -348,6 +537,16 @@ def synchronize(
         "visuals_synchronized": len(visuals),
         "numbered_figures_reordered": len(figure_heights),
         "media_targets_unique": len(media_targets),
+        "table_headers_repeated": table_headers_repeated,
+        "table_rows_kept_together": table_rows_kept_together,
+        "empty_numbered_paragraphs_removed": empty_numbered_paragraphs_removed,
+        "empty_paragraphs_before_page_breaks_removed": (
+            empty_paragraphs_before_page_breaks_removed
+        ),
+        "code_blocks_kept_together": code_blocks_kept_together,
+        "code_paragraphs_kept_together": code_paragraphs_kept_together,
+        "image_numbering_removed": image_numbering_removed,
+        "inline_visual_titles_kept": inline_visual_titles_kept,
         "max_numbered_figure_height_inches": round(
             max(figure_heights) / EMU_PER_INCH,
             3,

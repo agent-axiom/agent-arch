@@ -14491,7 +14491,7 @@ class TestCli:
                 {
                     "name": "Checkout",
                     "uses": "actions/checkout@v6.0.2",
-                    "with": {"ref": "main"},
+                    "with": {"ref": "main", "fetch-depth": 0},
                 }
             ],
             ".github/workflows/deploy.yml": [

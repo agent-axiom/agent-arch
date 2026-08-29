@@ -7,7 +7,8 @@ import re
 from collections.abc import Sequence
 from pathlib import Path
 
-PRACTICAL_REPOSITORY_REF = "da0f5771bcfb2c6994b41692e1a59cdadc5408a1"
+PRACTICAL_REPOSITORY_REF = "ecc5aa3cbb48eff00514a24575c64b6e68e3ffe4"
+ONLINE_COMPANION_URL = "https://agent-axiom.github.io/agent-arch/companion/"
 
 NUMBERED_FIGURES = {
     1: (
@@ -165,39 +166,17 @@ NUMBERED_FIGURES = {
 
 INLINE_DIAGRAM_OVERRIDES = {
     1: {
-        "mermaid": """flowchart TB
-subgraph R1["От запроса к управляемому пути"]
-direction LR
-A["Запрос"] --> B["Контекст выполнения"]
-B --> C["Политики и подтверждения"]
-C --> D["Путь выполнения"]
-end
-subgraph R2["От исполнения к жизненному циклу"]
-direction LR
-D --> E["Модель, память и инструменты"]
-E --> F["Трассы и оценочные сигналы"]
-F --> G["Выпуск и жизненный цикл"]
-end""",
+        "mermaid": """flowchart LR
+A["Запрос и контекст"] --> C["Политика, подтверждение и путь выполнения"]
+C --> E["Модель, память и инструменты"]
+E --> F["Наблюдение, оценки и выпуск"]""",
     },
     2: {
         "mermaid": """flowchart TB
-subgraph R1["Вход и модель"]
-direction LR
-I["Пользователь, API, файлы и сетевой контент"] --> N["Входные проверки"]
-N --> P["Граница сборки подсказки"]
-end
-subgraph R2["Модель и среда исполнения"]
-direction LR
-M["Шлюз модели"] --> A["Среда исполнения агента"]
-end
-subgraph R3["Контролируемый внешний эффект"]
-direction LR
-T["Шлюз инструментов и песочница"] --> X["Внешние системы"]
-end
-P --> M
-A --> T
-M --> V["Поиск и контур размещения модели"]
-A --> U["Выходные фильтры, трасса и аудит"]""",
+I["Пользователь;\\nAPI;\\nфайлы;\\nсетевой\\nконтент;\\nвходные\\nпроверки;\\nграница\\nсборки\\nподсказки"] --> Q["Шлюз модели;\\nсреда\\nисполнения\\nагента"]
+Q --> V["Маршрут модели:\\nпоиск и контур\\nразмещения"]
+Q --> T["Контур выполнения:\\nшлюз инструментов;\\nпесочница;\\nвнешние системы"]
+Q --> U["Выходной контроль:\\nфильтры; трасса;\\nаудит"]""",
     },
     3: {
         "mermaid": """flowchart TB
@@ -207,85 +186,44 @@ A["Запрос запуска"] --> B["Оркестратор среды исп
 B --> C["Слой политик"]
 B --> D["Каталог возможностей"]
 end
-subgraph R2["Решение и исполнение"]
+subgraph R2[" "]
 direction LR
-E["Разрешить, запретить или запросить подтверждение"] --> G["Слой исполнения"]
-F["Контракт возможности"] --> G
+E["Решение: разрешить, запретить или запросить подтверждение"] --> G["Слой исполнения"]
+F["Контракт исполнения возможности"] --> G
 end
 C --> E
 D --> F""",
     },
     5: {
         "mermaid": """flowchart TB
-subgraph S["Разделенные хранилища"]
-direction LR
-L["Долговременные факты"]
-P["Профиль и предпочтения"]
-K["Проверенные знания"]
-L ~~~ P ~~~ K
-end
-L --> R["Контролируемое чтение"]
-P --> R
-K --> R
-R --> A["Текущий запуск"]
-A --> W{"Политика записи: сохранять результат?"}
+A["Разделенная память: контролируемое чтение для текущего запуска"]
 A -.-> T["Состояние текущего запуска"]
-W -->|"Да"| V["Проверить происхождение, область и срок"]
-V --> S
-W -->|"Нет"| X["Не записывать"]""",
+A --> W{"Сохранять результат?"}
+W -->|"Нет"| X["Не записывать"]
+W -->|"Да"| V{"Происхождение, область и срок допустимы?"}
+V -->|"Да"| Y["Записать в выбранное хранилище"]
+V -->|"Нет"| Q["Карантин или отклонение записи"]""",
     },
     6: {
         "mermaid": """flowchart LR
-subgraph C1["Чтение и использование"]
-direction TB
-A["Новый запуск"] --> B["Запросить память"]
-B --> C["Фильтры и ранжирование"]
-C --> D["Контекст подсказки"]
-D --> E["Модель и инструменты"]
-end
-subgraph C2["Обслуживание памяти"]
-direction TB
-F["Кандидаты на запись"] --> G["Сжатие, разбор и проверка"]
-G --> H["Нормализованное хранилище"]
-end
-E --> F
+A["Новый запуск"] --> B["Чтение и использование:\\nзапросить память;\\nфильтры и ранжирование;\\nконтекст подсказки"]
+B --> E["Модель и инструменты;\\nобслуживание памяти:\\nкандидаты на запись;\\nсжатие, разбор и проверка"]
+E --> H["Нормализованное хранилище"]
 H --> B""",
     },
     7: {
-        "mermaid": """flowchart TB
-subgraph R1["Предложение модели"]
-direction LR
-A["Подсказка и контекст политики"] --> B["Модель"]
-B --> C["Запрос инструмента"]
-C --> D["Слой выполнения"]
-end
-subgraph R2["Управляемое исполнение"]
-direction LR
-X["Каталог, политика и семантика повтора"] --> H["Внешняя система"]
-H --> I["Типизированный результат"]
-end
-D --> X
-H --> D
-I --> B""",
+        "mermaid": """flowchart LR
+A["Модель: подсказка, контекст политики и запрос инструмента"] --> D["Управляемый шлюз: каталог, политика и семантика повтора"]
+D --> H["Внешняя система: проверенный типизированный результат"]
+H --> A""",
     },
     8: {
         "mermaid": """flowchart TB
-subgraph R1["Управляемый вызов"]
-direction LR
-A["Среда исполнения агента"] --> B["Слой выполнения"]
-B --> C["Политика и валидация"]
-C --> D["MCP-клиент"]
-end
-subgraph R2["Серверная граница"]
-direction LR
-D --> E["MCP-сервер"]
-E --> F["Типизированный адаптер"]
-F --> G["Внешний API или система"]
-end
-G --> F
-F --> E
-E --> D
-D --> B""",
+A["Среда исполнения"] --> G["Выполнение, политика и валидация запроса"]
+G --> M["MCP-клиент"]
+M --> X["MCP-сервер и типизированный адаптер"]
+X --> E["Внешняя система"]
+E --> R["Политика, фильтрация и проверка ответа среде исполнения"]""",
     },
     9: {
         "mermaid": """flowchart TB
@@ -294,10 +232,10 @@ direction LR
 A["Координирующий агент"] --> B["Передача управления A2A"]
 B --> C["Специализированный агент"]
 end
-subgraph R2["Доступ к возможностям"]
+subgraph R2[" "]
 direction LR
-D["MCP-клиент координатора"] --> F["Сервер инструментов и ресурсов"]
-E["MCP-клиент специалиста"] --> G["Сервер инструментов и ресурсов"]
+D["Доступ координатора: MCP-клиент"] --> F["Сервер инструментов и ресурсов"]
+E["Доступ специалиста: MCP-клиент"] --> G["Сервер инструментов и ресурсов"]
 end
 A --> D
 C --> E
@@ -305,20 +243,14 @@ C --> E
     },
     10: {
         "mermaid": """flowchart TB
-subgraph R1["Первичный результат"]
-direction LR
-A["Запрос и действие с ключом идемпотентности"] --> C{"Исход известен?"}
-C -->|"Успех"| D["Сохранить квитанцию и продолжить"]
-C -->|"Ошибка доступа или валидации"| G["Вернуть структурированный отказ"]
-end
-subgraph R2["Безопасное восстановление"]
-direction LR
-F["Сверить внешнее состояние"] -->|"Применен"| H["Переиспользовать найденный результат"]
-F -->|"Не применен"| E["Повторить с тем же ключом и задержкой"]
-F -->|"По-прежнему неизвестен"| I["Остановить автоматизацию и передать человеку"]
-end
-C -->|"Эффекта нет"| E
-C -->|"Эффект неизвестен"| F""",
+C{"Исход известен?"}
+C -->|"Да"| D["Вернуть квитанцию или отказ"]
+C -->|"Нет"| U{"Внешний эффект возможен?"}
+U -->|"Нет"| E["Повторить с тем же ключом"]
+U -->|"Да"| F{"Сверка завершена?"}
+F -->|"Результат найден"| R["Вернуть квитанцию"]
+F -->|"Эффекта нет"| E
+F -->|"Исход неизвестен"| H["Остановить и передать человеку"]""",
     },
     11: {
         "mermaid": """flowchart TB
@@ -326,10 +258,10 @@ subgraph R1["Запуск и трасса"]
 direction LR
 A["Запрос пользователя"] --> B["Трасса запуска"]
 end
-subgraph R2["Наблюдаемые участки"]
+subgraph R2[" "]
 direction LR
-C["Политика, подтверждение, извлечение и память"] --> E["Связанные причины и решения"]
-D["Модель, проверка статуса и создание заявки"] --> E
+C["Наблюдаемый участок: политика, подтверждение, извлечение и память"] --> E["Связанные причины и решения"]
+D["Наблюдаемый участок: модель, проверка статуса и создание заявки"] --> E
 end
 B --> C
 B --> D
@@ -353,9 +285,9 @@ A["Изменение кода, подсказки или политики"] -->
 B --> C["Регрессионные шлюзы"]
 C --> D["Поэтапный выпуск"]
 end
-subgraph R2["После выпуска"]
+subgraph R2[" "]
 direction LR
-D --> E["Онлайн-оценки и трассы"]
+D --> E["После выпуска: онлайн-оценки и трассы"]
 E --> F["Анализ сбоев"]
 F --> G["Новый сценарий и исправление"]
 end
@@ -363,19 +295,9 @@ G --> A""",
     },
     14: {
         "mermaid": """flowchart LR
-subgraph R1["Требование → контроль"]
-direction TB
-A["Требование политики"] --> B["Оценочный сценарий"]
-B --> C["Проваленная трасса"]
-C --> D["Переносимая контрольная точка"]
-end
-subgraph R2["Проверка → решение"]
-direction TB
-E["Повторная оценка"]
-E --> F["Промышленный сигнал"]
-F --> G["Решение о выпуске"]
-end
-D --> E""",
+A["Требование политики;\\nоценочный сценарий"] --> C["Проваленная трасса;\\nпереносимая контрольная точка"]
+C --> E["Повторная оценка;\\nпромышленный сигнал"]
+E --> G["Решение о выпуске"]""",
     },
     15: {
         "mermaid": """flowchart TB
@@ -384,9 +306,9 @@ direction LR
 A["Платформенная команда"] --> B["Среда исполнения, политики, наблюдаемость и шлюзы"]
 B --> E["Поддерживаемый стандартный путь"]
 end
-subgraph D1["Продуктовый слой"]
+subgraph D1[" "]
 direction LR
-E --> C["Продуктовые команды"]
+E --> C["Продуктовый слой: команды"]
 C --> D["Рабочие процессы, доменная логика и пользовательские исходы"]
 end
 D --> F["Обратная связь продукта"]
@@ -394,48 +316,22 @@ F --> A""",
     },
     17: {
         "mermaid": """flowchart TB
-subgraph C1["Разработка и проверка"]
-direction LR
-A["Требования"] --> B["Проектирование"]
+A["Разработка: требования"] --> B["Проектирование"]
 B --> C["Реализация"]
-end
-subgraph C2["Работа системы"]
-direction LR
-D["Тестирование"] --> E["Выпуск"]
+C --> D["Работа системы: тестирование"]
+D --> E["Выпуск"]
 E --> G["Эксплуатация"]
-end
-subgraph C3["Завершение"]
-direction LR
-H["Вывод из эксплуатации"]
-end
-C --> D
-G --> H
+G --> H["Завершение: вывод из эксплуатации"]
 X["Сквозной контроль: модель, инструкции, политики, память, инструменты и оценки"] -.-> A
 X -.-> G
 X -.-> H""",
     },
     21: {
-        "mermaid": """flowchart TB
-subgraph R1["Цель и контроль"]
-direction LR
-A["Цель: быстро передать обращение"] --> B["Предложение create_ticket v2"]
-B --> C["Решение политики"]
-end
-subgraph R2["Разрешенный путь"]
-direction LR
-D["Замороженное намерение и отпечаток"] --> E["Подтверждение человеком"]
-E --> F["Исполнение выделенной идентичностью"]
-end
-subgraph R3["Доказательства"]
-direction LR
-G["Сверка внешнего эффекта"] --> H["Завершение с полной трассой"]
-end
-C -->|"Требуется подтверждение"| D
-F --> G
-C -.-> X["Попытка обхода старым маршрутом"]
-X --> M["Независимая проверка"]
-M --> N["Заморозка возможности"]
-N --> O["Контур заверения"]""",
+        "mermaid": """flowchart LR
+A["Цель и контроль:\\nбыстро передать обращение;\\nпредложить create_ticket v2"] --> C{"Политика"}
+C -->|"Требуется подтверждение"| D["Разрешенный путь:\\nзаморозить намерение и отпечаток;\\nподтвердить человеком;\\nисполнить выделенной идентичностью"]
+D --> G["Доказательства:\\nсверить внешний эффект;\\nзавершить с полной трассой"]
+C -.->|"Обход"| X["Попытка обхода старым маршрутом:\\nнезависимая проверка;\\nзаморозка возможности;\\nконтур заверения"]""",
     },
     22: {
         "mermaid": """flowchart TB
@@ -445,9 +341,9 @@ A["Соревновательное тестирование и инцидент
 B --> C["Правила обнаружения и наблюдение"]
 C --> D["Действия реагирования"]
 end
-subgraph R2["Исправление и обучение"]
+subgraph R2[" "]
 direction LR
-D --> E["Исправление"]
+D --> E["Исправление и обучение"]
 E --> F["Обновленные политики, оценки и правила выпуска"]
 end
 F --> A""",
@@ -477,46 +373,31 @@ A["Код, сборка и артефакты модели"]
 B["Инструкции, политики и контракты возможностей"]
 C["Среда исполнения, данные и отчеты оценки"]
 end
-subgraph R2["Проверка и решение"]
+subgraph R2[" "]
 direction LR
-V["Проверка происхождения и целостности"] --> G["Проверенный пакет выпуска"]
+V["Проверка и решение: происхождение и целостность"] --> G["Проверенный пакет выпуска"]
 G --> H["Решение выпускного шлюза"]
 end
-A --> V["Проверка происхождения и целостности"]
+A --> V
 B --> V
 C --> V""",
     },
     24: {
-        "mermaid": """flowchart TB
-subgraph R1["Сужение рабочей поверхности"]
-direction LR
-A["Заморозить поэтапный выпуск"] --> B["Отключить рискованные возможности"]
-B --> C["Отключить записи и фоновые задачи"]
-end
-subgraph R2["Закрытие полномочий и доказательств"]
-direction LR
-C --> D["Отозвать исходящий доступ и принципалы"]
-D --> E["Архивировать контрольный след и состояние памяти"]
-E --> F["Пометить систему как выведенную"]
-end""",
+        "mermaid": """flowchart LR
+A["1. Сужение рабочей поверхности: заморозить выпуск, рискованные возможности, записи и фоновые задачи"] --> D["2. Закрытие полномочий: отозвать исходящий доступ и принципалы"]
+D --> E["3. Сохранение доказательств и завершение: архивировать след и память, пометить систему как выведенную"]""",
     },
     25: {
         "mermaid": """flowchart TB
-subgraph R1["Решение"]
-direction LR
 A["Вход, контекст, предварительная политика и память"] --> E["Шаг модели"]
 E --> F{"Нужен инструмент?"}
-end
-subgraph R2["Результат шага"]
-direction LR
-H["Исполнение и проверка результата инструмента"] --> E
-G["Выходные фильтры и ответ пользователю"]
-end
-F -->|"Да"| H
-F -->|"Нет"| G
-T["Телеметрия и аудит"] -.-> A
-T -.-> H
-T -.-> G""",
+F -->|"Да"| H["Исполнение и проверка результата инструмента"]
+H --> V["Проверенный результат инструмента"]
+V --> E
+F -->|"Нет"| G["Выходные фильтры и ответ пользователю"]
+A -.-> T["Телеметрия и аудит"]
+H -.-> T
+G -.-> T""",
     },
     26: {
         "mermaid": """flowchart LR
@@ -532,17 +413,12 @@ R --> A""",
     27: {
         "mermaid": """flowchart TB
 A["Предложение модели"] --> D{"Политика"}
-subgraph C["Исполнение и ответ"]
-direction LR
-E["Инструмент"] --> G["Проверка ответа"]
-G --> R["Ответ агенту"]
-end
-D -->|"Разрешить"| E
-D -->|"Запретить"| F["Структурированный отказ"]
-D -->|"Подтверждение"| P["Замороженное намерение"]
-P --> H{"Решение человека"}
+D -->|"Разрешить"| E["Инструмент"]
+E --> G["Проверить ответ\\nи вернуть агенту"]
+D -->|"Запретить"| F1["Отказ политики"]
+D -->|"Подтверждение"| H{"Решение человека\\nпо замороженному намерению"}
 H -->|"Подтвердить"| E
-H -->|"Отклонить"| F
+H -->|"Отклонить"| F2["Отказ подтверждения"]
 I["Аудит пути"] -.-> G""",
     },
     28: {
@@ -552,32 +428,25 @@ direction LR
 A["Идентичность"] --> B["Реестр"]
 B --> C["Шлюз"]
 end
-subgraph R2["Исполнение и проверка"]
+subgraph R2[" "]
 direction LR
-C --> D["Политика"]
+C --> D["Исполнение: политика"]
 D --> E["Песочница"]
 E --> F["Оценки"]
 end
-subgraph R3["Эксплуатационное решение"]
+subgraph R3[" "]
 direction LR
-F --> G["Контроль стоимости"]
+F --> G["Эксплуатационное решение: контроль стоимости"]
 G --> H["Аудит"]
 H --> I["Решение о выпуске"]
 end""",
     },
     29: {
         "mermaid": """flowchart TB
-subgraph R1["Независимые контуры готовности"]
-direction LR
-A["Архитектура, безопасность и возможности"]
-B["Наблюдаемость, оценки, SLO и реагирование"]
-C["Владелец, откат и решение о выпуске"]
-A ~~~ B ~~~ C
-end
-G{"Все обязательные условия выполнены?"} --> H["Готовность к промышленной среде"]
-A --> G{"Все обязательные условия выполнены?"}
-B --> G
-C --> G""",
+A["Три независимых контура:\\nархитектура и безопасность;\\nнаблюдаемость и оценки;\\nвладелец, откат и выпуск"] --> G{"Все обязательные условия выполнены?"}
+G -->|"Да"| H["Готовность к промышленной среде"]
+G -->|"Нет"| R["Закрыть пробелы и повторить проверку"]
+R --> G""",
     },
 }
 
@@ -2063,6 +1932,119 @@ LISTING_SPECS = (
 # Use the legacy shape only to recover that fragment's boundaries; replacement
 # content still comes from the current electronic chapter.
 LEGACY_LISTING_MATCH_SOURCES = {
+    "class ToolRequest": """from dataclasses import dataclass
+
+
+@dataclass
+class ToolRequest:
+    tool_name: str
+    actor_id: str
+    risk_class: str
+    payload: dict
+
+
+def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway):
+    decision = policy_engine.evaluate(request)
+    if not decision.allowed:
+        raise PermissionError(decision.reason)
+
+    if decision.requires_approval:
+        approval_service.require_human_signoff(request, decision)
+
+    return gateway.call(request.tool_name, request.payload)""",
+    "def dispatch_capability": """from dataclasses import dataclass
+
+
+@dataclass
+class CapabilitySpec:
+    name: str
+    transport: str
+    mode: str
+    timeout_seconds: int
+
+
+def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
+    if spec.transport == "mcp":
+        return {"status": "success", "transport": "mcp", "capability": spec.name}
+    if spec.transport == "sandboxed_exec" and spec.mode == "high_risk":
+        return {"status": "approval_required", "capability": spec.name}
+    return {"status": "validation_failure", "reason": "unsupported capability profile"}""",
+    "def classify_run_health": '''from dataclasses import dataclass
+
+
+@dataclass
+class RunHealth:
+    successful: bool
+    latency_ms: int
+    policy_violated: bool
+    cost_usd: float
+
+
+def classify_run_health(run: RunHealth) -> str:
+    if run.policy_violated:
+        return "safety_failure"
+    if not run.successful:
+        return "task_failure"
+    if run.latency_ms > 12_000:
+        return "slow_success"
+    if run.cost_usd > 0.12:
+        return "expensive_success"
+    return "healthy"''',
+    "def emergency_action": '''from dataclasses import dataclass
+
+
+@dataclass
+class AssuranceSignal:
+    unsafe_egress_detected: bool = False
+    memory_poisoning_suspected: bool = False
+    approval_bypass_detected: bool = False
+    paused_approval_saturation: bool = False
+    capability_session_expiry_regression: bool = False
+    reinit_control_drift: bool = False
+    stale_background_runs: bool = False
+    contract_drift_detected: bool = False
+
+
+def emergency_action(signal: AssuranceSignal) -> str:
+    if signal.unsafe_egress_detected:
+        return "restrict_egress"
+    if signal.approval_bypass_detected:
+        return "require_approval"
+    if signal.capability_session_expiry_regression or signal.reinit_control_drift:
+        return "freeze_reinitialization"
+    if signal.paused_approval_saturation:
+        return "expire_paused_runs"
+    if signal.stale_background_runs:
+        return "suspend_background_route"
+    if signal.contract_drift_detected:
+        return "disable_capability"
+    if signal.memory_poisoning_suspected:
+        return "disable_memory_write"
+    return "observe"''',
+    "def start_run": """from dataclasses import dataclass
+
+
+@dataclass
+class RunHandle:
+    run_id: str
+    status: str
+
+
+def start_run(request: RunRequest) -> RunHandle:
+    run_id = create_run_record(request)
+    enqueue_run(run_id)
+    return RunHandle(run_id=run_id, status="queued")
+
+
+def continue_run(run_id: str):
+    run = load_run(run_id)
+    if run.status in {"canceled", "completed", "failed"}:
+        return run
+
+    update_status(run_id, "in_progress")
+    result = execute_run_steps(run)
+    update_status(run_id, result.status)
+    return result""",
     "def traced_step": """from dataclasses import dataclass
 from time import monotonic
 
@@ -14615,9 +14597,7 @@ def ready_for_replacement(state: ReplacementState) -> bool:
         ),
     }
     for filename, takeaway in visual_takeaways.items():
-        image_pattern = re.compile(
-            rf"(?m)^!\[[^\n]*\]\(visuals/{re.escape(filename)}\)$"
-        )
+        image_pattern = re.compile(rf"(?m)^!\[[^\n]*\]\(visuals/{re.escape(filename)}\)$")
         matches = list(image_pattern.finditer(text))
         if len(matches) != 1:
             raise ValueError(
@@ -14793,8 +14773,7 @@ def _apply_required_print_width_replacements(text: str) -> str:
             "    ):"
         ),
         "  Несанкционированный путь записи create_ticket во время вводного прогона": (
-            "  Несанкционированный путь записи create_ticket\n"
-            "  во время вводного прогона"
+            "  Несанкционированный путь записи create_ticket\n  во время вводного прогона"
         ),
     }
     for old, new in exact_replacements.items():
@@ -14929,7 +14908,10 @@ def apply_technical_book_polish_2026_08_02(text: str) -> str:
             "Простой шаблон показывает требуемую структуру события:",
         ),
         ("Каталог ниже нужно читать", "Этот каталог нужно читать"),
-        ("Ниже не «канонические» числа, а пример дисциплины:", "Это не «канонические» числа, а пример дисциплины:"),
+        (
+            "Ниже не «канонические» числа, а пример дисциплины:",
+            "Это не «канонические» числа, а пример дисциплины:",
+        ),
         ("Ниже очень рабочий каркас:", "Практический каркас:"),
         ("Ниже очень простой каркас:", "Практический минимальный каркас:"),
         (
@@ -14977,7 +14959,10 @@ def apply_technical_book_polish_2026_08_02(text: str) -> str:
             "Для одного подозрительного запуска оператор должен быстро ответить на все вопросы ниже:",
             "Для одного подозрительного запуска оператор должен быстро ответить на следующие вопросы:",
         ),
-        ("Ниже каркас, который показывает саму идею:", "Следующий каркас показывает основную идею:"),
+        (
+            "Ниже каркас, который показывает саму идею:",
+            "Следующий каркас показывает основную идею:",
+        ),
         (
             "Ниже приведена авторская рабочая шкала 0–3 для четырех измерений.",
             "В главе используется авторская рабочая шкала 0–3 для четырех измерений.",
@@ -15094,7 +15079,9 @@ def apply_technical_book_polish_2026_08_02(text: str) -> str:
         "#### Поверхность инструментов — это не то же самое, что управляемая поверхность возможностей",
         "**Видимая поверхность инструментов не равна управляемой поверхности возможностей.**",
     )
-    text = _replace_editorial_anchor(text, extract_chapter(text, 5), chapter_five, "chapter 5 developmental edit")
+    text = _replace_editorial_anchor(
+        text, extract_chapter(text, 5), chapter_five, "chapter 5 developmental edit"
+    )
 
     chapter_eleven = extract_chapter(text, 11)
     old_outcomes = """* разводить контракт MCP и границу безопасного исполнения;
@@ -15129,7 +15116,9 @@ def apply_technical_book_polish_2026_08_02(text: str) -> str:
         "#### Не все возможности требуют одинаковый уровень изоляции",
         "**Профиль изоляции следует за риском возможности.**",
     )
-    text = _replace_editorial_anchor(text, extract_chapter(text, 11), chapter_eleven, "chapter 11 developmental edit")
+    text = _replace_editorial_anchor(
+        text, extract_chapter(text, 11), chapter_eleven, "chapter 11 developmental edit"
+    )
 
     chapter_fifteen = extract_chapter(text, 15)
     duplicate_audit_intro = (
@@ -15152,7 +15141,12 @@ def apply_technical_book_polish_2026_08_02(text: str) -> str:
     if chapter_fifteen.count(duplicate_audit_intro) != 1:
         raise ValueError("Chapter 15 duplicate eval-audit intro must occur once")
     chapter_fifteen = chapter_fifteen.replace(duplicate_audit_intro, consolidated_audit_intro)
-    text = _replace_editorial_anchor(text, extract_chapter(text, 15), chapter_fifteen, "chapter 15 evaluation audit consolidation")
+    text = _replace_editorial_anchor(
+        text,
+        extract_chapter(text, 15),
+        chapter_fifteen,
+        "chapter 15 evaluation audit consolidation",
+    )
 
     chapter_twenty_four = extract_chapter(text, 24)
     chapter_twenty_four, count = re.subn(
@@ -15186,7 +15180,9 @@ def apply_technical_book_polish_2026_08_02(text: str) -> str:
         "#### Поиск критического шага, а не удобного объяснения",
         "**Ищите критический шаг, а не удобное объяснение.**",
     )
-    text = _replace_editorial_anchor(text, extract_chapter(text, 24), chapter_twenty_four, "chapter 24 developmental edit")
+    text = _replace_editorial_anchor(
+        text, extract_chapter(text, 24), chapter_twenty_four, "chapter 24 developmental edit"
+    )
 
     chapter_twenty_six = extract_chapter(text, 26)
     old_actor_opening = """#### Именованный агент как отдельная топология
@@ -15209,10 +15205,2298 @@ Cloudflare Agents SDK показывает другую полезную баз�
         "#### Параллельные сессии инструментов",
         "**Параллельные сессии инструментов.**",
     )
-    text = _replace_editorial_anchor(text, extract_chapter(text, 26), chapter_twenty_six, "chapter 26 developmental edit")
+    text = _replace_editorial_anchor(
+        text, extract_chapter(text, 26), chapter_twenty_six, "chapter 26 developmental edit"
+    )
 
     text = reflow_code_blocks_for_print(text)
     return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def _replace_final_quality_anchor(text: str, old: str, new: str, label: str) -> str:
+    count = text.count(old)
+    if count != 1:
+        raise ValueError(f"Final quality anchor {label!r} must occur once; found {count}")
+    return text.replace(old, new, 1)
+
+
+def _replace_final_quality_anchors(
+    text: str,
+    replacements: Sequence[tuple[str, str, str]],
+) -> str:
+    for old, new, label in replacements:
+        text = _replace_final_quality_anchor(text, old, new, label)
+    return text
+
+
+def _replace_final_quality_listing(text: str, number: int, code: str) -> str:
+    pattern = re.compile(
+        rf"(\*\*Листинг {number}\. .*?\n\n"
+        rf"\*\*Как читать листинг\.\*\*.*?\n\n```python\n)"
+        rf".*?(\n```)",
+        flags=re.DOTALL,
+    )
+    revised, count = pattern.subn(
+        lambda match: match.group(1) + code.strip("\n") + match.group(2),
+        text,
+        count=1,
+    )
+    if count != 1:
+        raise ValueError(f"Listing {number} must occur once; found {count}")
+    return revised
+
+
+def _renumber_final_quality_tables(text: str) -> str:
+    existing_captions = re.findall(r"^Таблица (\d+)\.", text, flags=re.MULTILINE)
+    if existing_captions != [str(number) for number in range(1, 12)]:
+        raise ValueError(f"Unexpected table numbering before final pass: {existing_captions}")
+    text = re.sub(
+        r"^Таблица (\d+)\.",
+        lambda match: f"Таблица {int(match.group(1)) + 1}.",
+        text,
+        flags=re.MULTILINE,
+    )
+    return text.replace("Таблица 1 задает исходный выбор", "Таблица 2 задает исходный выбор")
+
+
+def _replace_final_quality_figure_leads(text: str, leads: dict[int, str]) -> str:
+    for number, instruction in leads.items():
+        pattern = rf"^На рисунке {number} представлена схема «[^»]+»\.$"
+        replacement = f"На рисунке {number} {instruction}."
+        text, count = re.subn(pattern, replacement, text, count=1, flags=re.MULTILINE)
+        if count != 1:
+            raise ValueError(f"Figure {number} lead must occur once; found {count}")
+    return text
+
+
+def _insert_final_quality_table_leads(text: str, leads: dict[int, str]) -> str:
+    for number, lead in leads.items():
+        caption = rf"^Таблица {number}\."
+        match = re.search(caption, text, flags=re.MULTILINE)
+        if match is None:
+            raise ValueError(f"Table {number} caption is missing")
+        text = text[: match.start()] + lead + "\n\n" + text[match.start() :]
+    return text
+
+
+def apply_final_quality_pass_2026_08_03(text: str) -> str:
+    """Close technical, learning-design, and editorial gaps found in final QA."""
+
+    def replace_once(old: str, new: str, label: str) -> None:
+        nonlocal text
+        text = _replace_final_quality_anchor(text, old, new, label)
+
+    def replace_listing(number: int, code: str) -> None:
+        nonlocal text
+        text = _replace_final_quality_listing(text, number, code)
+
+    replace_listing(
+        4,
+        """
+from dataclasses import dataclass
+
+
+@dataclass
+class ToolRequest:
+    tool_name: str
+    actor_id: str
+    risk_class: str
+    payload: dict
+
+
+def execute_tool(request: ToolRequest, policy_engine, approval_service, gateway):
+    decision = policy_engine.evaluate(request)
+    if decision.action == "deny":
+        raise PermissionError(decision.reason)
+    if decision.action == "approval_required":
+        return approval_service.request_pause(request, decision)
+    if decision.action != "allow":
+        raise RuntimeError(f"Unknown policy action: {decision.action}")
+    return gateway.call(request.tool_name, request.payload)
+""",
+    )
+    replace_once(
+        "Смысл здесь один: модель может предложить действие, но право на исполнение живет не в модели, а в шлюзе инструментов и слое политик.",
+        "Смысл здесь один: модель может предложить действие, но право на "
+        "исполнение живет не в модели. Решение `approval_required` возвращает "
+        "долговечную паузу; до отдельного возобновления шлюз инструмента не "
+        "вызывается.",
+        "listing 4 approval pause",
+    )
+
+    replace_listing(
+        14,
+        """
+from dataclasses import dataclass
+
+
+@dataclass
+class CapabilitySpec:
+    name: str
+    transport: str
+    mode: str
+    timeout_seconds: int
+
+
+def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
+    if spec.mode == "high_risk":
+        return {"status": "approval_required", "capability": spec.name}
+    if spec.transport == "mcp":
+        return {
+            "status": "success",
+            "transport": "mcp",
+            "capability": spec.name,
+        }
+    if spec.transport == "sandboxed_exec":
+        return {
+            "status": "success",
+            "transport": "sandboxed_exec",
+            "capability": spec.name,
+        }
+    return {
+        "status": "validation_failure",
+        "reason": "unsupported capability profile",
+    }
+""",
+    )
+    replace_once(
+        "Это простой пример, но он закрепляет правильную мысль: способ исполнения задается платформой, а не придумывается моделью каждый раз заново.",
+        "Сначала проверяется риск, затем выбирается транспорт. Поэтому "
+        "высокорисковая MCP-возможность не сможет пройти по ранней ветке успеха: "
+        "она остановится на подтверждении до обращения к адаптеру.",
+        "listing 14 risk before transport",
+    )
+
+    replace_listing(
+        19,
+        """
+from dataclasses import dataclass
+
+
+@dataclass
+class RunHealth:
+    successful: bool
+    latency_ms: int
+    policy_violated: bool
+    cost_usd: float
+    external_effect_known: bool
+    required_controls_passed: bool
+
+
+def classify_run_health(run: RunHealth) -> str:
+    if run.policy_violated:
+        return "safety_failure"
+    if not run.required_controls_passed:
+        return "control_failure"
+    if not run.external_effect_known:
+        return "unknown_external_effect"
+    if not run.successful:
+        return "task_failure"
+    if run.latency_ms > 12_000:
+        return "slow_success"
+    if run.cost_usd > 0.12:
+        return "expensive_success"
+    return "healthy"
+""",
+    )
+
+    replace_listing(
+        27,
+        """
+from dataclasses import dataclass
+from datetime import UTC, datetime
+import hashlib
+import hmac
+import json
+
+
+def compute_action_digest(**fields: object) -> str:
+    payload = json.dumps(
+        fields,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+@dataclass(frozen=True)
+class TicketAction:
+    capability_name: str
+    arguments: dict
+    tenant_id: str
+    agent_id: str
+    session_id: str
+    principal_id: str
+    authorization_mode: str
+    delegated_principal_id: str
+    delegated_scope: str
+    policy_version: str
+    capability_version: str
+    expires_at: str
+    nonce: str
+    route: str
+    tool_principal: str
+    approval_id: str
+    idempotency_key: str
+    trace_id: str
+
+
+@dataclass(frozen=True)
+class Approval:
+    approval_id: str
+    action_digest: str
+    status: str
+    requested_by: str
+    reviewer: str
+    expires_at: str
+
+
+def may_execute(action: TicketAction, approval: Approval) -> bool:
+    expected_digest = compute_action_digest(
+        capability_name=action.capability_name,
+        arguments=action.arguments,
+        tenant_id=action.tenant_id,
+        agent_id=action.agent_id,
+        session_id=action.session_id,
+        idempotency_key=action.idempotency_key,
+        principal_id=action.principal_id,
+        authorization_mode=action.authorization_mode,
+        delegated_principal_id=action.delegated_principal_id,
+        delegated_scope=action.delegated_scope,
+        policy_version=action.policy_version,
+        capability_version=action.capability_version,
+        expires_at=action.expires_at,
+        nonce=action.nonce,
+    )
+    expires_at = datetime.fromisoformat(
+        approval.expires_at.replace("Z", "+00:00")
+    )
+    return all(
+        (
+            approval.status == "approved",
+            approval.reviewer != approval.requested_by,
+            approval.expires_at == action.expires_at,
+            datetime.now(UTC) < expires_at,
+            action.approval_id == approval.approval_id,
+            hmac.compare_digest(expected_digest, approval.action_digest),
+            action.capability_version == "v2",
+            action.route == "support_gateway_v2",
+            action.tool_principal == "support-ticket-writer-v2",
+            bool(action.idempotency_key),
+            bool(action.trace_id),
+            consume_nonce_once(action.nonce, action.approval_id),
+        )
+    )
+""",
+    )
+    replace_once(
+        "В рабочей системе отпечаток рассчитывается по канонической форме параметров, подтверждение подписывается и имеет срок действия, а запрет применяется самим исполнителем, а не кодом, который агент способен обойти.",
+        "В рабочей системе отпечаток рассчитывается по канонической форме "
+        "параметров, а подписанный срок совпадает со сроком проверяемого действия. "
+        "Вызов `consume_nonce_once` обозначает атомарную транзакцию хранилища: "
+        "один `nonce` допускает ровно одно исполнение. Пример не реализует "
+        "криптографическую подпись или конкурентное хранилище; эти свойства "
+        "должен принудительно обеспечивать исполнитель.",
+        "listing 27 limitations",
+    )
+
+    replace_listing(
+        28,
+        """
+from dataclasses import dataclass
+
+
+@dataclass
+class AssuranceSignal:
+    unsafe_egress_detected: bool = False
+    memory_poisoning_suspected: bool = False
+    approval_bypass_detected: bool = False
+    paused_approval_saturation: bool = False
+    capability_session_expiry_regression: bool = False
+    reinit_control_drift: bool = False
+    stale_background_runs: bool = False
+    contract_drift_detected: bool = False
+
+
+@dataclass(frozen=True)
+class EmergencyDecision:
+    action: str
+    owner: str
+    evidence_event: str
+
+
+def emergency_action(signal: AssuranceSignal) -> EmergencyDecision:
+    owner = "runtime-assurance-on-call"
+    event = "assurance_response_decision"
+    if signal.unsafe_egress_detected:
+        return EmergencyDecision("restrict_egress", owner, event)
+    if signal.approval_bypass_detected:
+        return EmergencyDecision("require_approval", owner, event)
+    if (
+        signal.capability_session_expiry_regression
+        or signal.reinit_control_drift
+    ):
+        return EmergencyDecision("freeze_reinitialization", owner, event)
+    if signal.paused_approval_saturation:
+        return EmergencyDecision("expire_paused_runs", owner, event)
+    if signal.stale_background_runs:
+        return EmergencyDecision("suspend_background_route", owner, event)
+    if signal.contract_drift_detected:
+        return EmergencyDecision("disable_capability", owner, event)
+    if signal.memory_poisoning_suspected:
+        return EmergencyDecision("disable_memory_write", owner, event)
+    return EmergencyDecision("observe", owner, event)
+""",
+    )
+
+    replace_listing(
+        31,
+        """
+from dataclasses import dataclass
+
+
+@dataclass
+class RunHandle:
+    run_id: str
+    status: str
+
+
+def start_run(request: RunRequest) -> RunHandle:
+    run_id = create_run_record(request)
+    enqueue_run(run_id)
+    return RunHandle(run_id=run_id, status="queued")
+
+
+def continue_run(run_id: str, worker_id: str):
+    run = claim_run(
+        run_id,
+        worker_id=worker_id,
+        eligible_statuses={"queued", "waiting"},
+        lease_seconds=30,
+    )
+    if run is None:
+        return load_run(run_id)
+
+    result = execute_run_steps(run, idempotency_scope=run.run_id)
+    return complete_run(
+        run_id,
+        result=result,
+        expected_version=run.version,
+    )
+""",
+    )
+    replace_once(
+        "Смысл здесь не в усложнении. Смысл в том, чтобы длинная работа была достаточно явной: операторы могли ее наблюдать, клиенты могли ее опрашивать, а среда исполнения могла ее продолжать или отменять без догадок.",
+        "`claim_run` атомарно захватывает аренду и меняет версию записи. Каждый "
+        "внешний шаг использует область идемпотентности запуска, а "
+        "`expected_version` отклоняет устаревшее завершение. Поэтому два "
+        "исполнителя не продолжат один запуск одновременно. Долгая работа "
+        "остается наблюдаемой, возобновляемой и отменяемой без догадок.",
+        "listing 31 lease and cas",
+    )
+
+    text = replace_between(
+        text,
+        "Скопируйте и выполните следующий POSIX-shell-блок целиком. Он создает полную временную копию конфигураций, структурированно отключает оба средства управления",
+        "**Наблюдение.** Машинный ответ содержит",
+        """Запустите сопровождающий сценарий. Он создает временную копию конфигураций,
+отключает подтверждение и идемпотентность, выполняет проверку и удаляет копию.
+Отслеживаемые файлы репозитория не изменяются.
+
+```console
+uv run python docs/companion/examples/run_lab_negative_scenario.py \\
+  ticket-controls-disabled --output \\
+  artifacts/lab-02/ticket-controls-disabled.json
+```""",
+    )
+    text = replace_between(
+        text,
+        "Скопируйте и выполните следующий POSIX-shell-блок целиком. Он создает полную временную копию конфигураций, удаляет из нее только роль `platform-owner`",
+        "**Наблюдение.** Машинный ответ содержит",
+        """Запустите сопровождающий сценарий. Он создает временную копию конфигураций,
+удаляет только роль `platform-owner`, выполняет проверку и удаляет копию.
+
+```console
+uv run python docs/companion/examples/run_lab_negative_scenario.py \\
+  platform-owner-removed --output \\
+  artifacts/lab-06/platform-owner-removed.json
+```""",
+    )
+
+    replace_once(
+        "uv run python -m agent_runtime_ref replay-run --input artifacts/trace-demo.jsonl",
+        "uv run python -m agent_runtime_ref replay-run --input \\\n"
+        "  artifacts/trace-demo.jsonl --user-input \\\n"
+        '  "Please create a ticket for this onboarding issue."',
+        "replay command input",
+    )
+    replace_once(
+        "`dump-events`, `inspect-trace`, `export-events` и `replay-run` сохраняют связи",
+        "Экспорт по умолчанию не сохраняет исходный текст запроса. Поэтому "
+        "`replay-run` получает его явно и сверяет с сохраненным отпечатком. "
+        "`dump-events`, `inspect-trace`, `export-events` и `replay-run` сохраняют связи",
+        "replay redaction explanation",
+    )
+
+    replace_once(
+        "Финальное упражнение собирает все предыдущие артефакты в объяснимое решение `go`, `hold` или `rollback`.",
+        "Финальное упражнение собирает предыдущие артефакты в решение `hold`, "
+        "`limited_wave` или `expand`. Действия `freeze` и `rollback` относятся "
+        "к управлению уже начатым выпуском, а не к его вердикту.",
+        "release decision vocabulary",
+    )
+    replace_once(
+        "Для каждого блокера выберите `hold`, `freeze` или `rollback` и укажите доказательство, которое позволит пересмотреть решение.",
+        "Для каждого блокера выберите выпускное решение `hold`; отдельно "
+        "укажите управляющее действие `freeze` или `rollback`, если трафик уже "
+        "идет, и доказательство для перехода к `limited_wave`.",
+        "lab 8 decision vocabulary",
+    )
+    replace_once(
+        "**Накопительный артефакт.** Сохраните результат в `artifacts/lab-08/release-decision.json` и добавьте в `artifacts/evidence-manifest.yaml` путь, SHA-256, идентификаторы сценария и наблюдаемый вердикт.",
+        """**Накопительный артефакт.** Сохраните результат в
+`artifacts/lab-08/release-decision.json`, затем замкните манифест:
+
+**Команда для обновления манифеста.**
+
+```console
+uv run python docs/companion/examples/build_lab_evidence_manifest.py \\
+  --artifacts-dir artifacts --through 8
+```
+
+Проверьте, что запись `lab-08` ссылается на решение первой волны и его SHA-256.""",
+        "lab 8 cumulative manifest",
+    )
+
+    replace_once(
+        "Итоговый проект не требует объявить учебный стенд промышленно готовым. Его\nзадача — пройти полный путь доказательств и принять обоснованное решение о\nпервой волне. Работайте в каталоге `artifacts/capstone` и сохраняйте вывод\nкаждой команды.",
+        """Итоговый проект не требует объявить учебный стенд промышленно готовым. Его
+задача — пройти полный путь доказательств и принять обоснованное решение о
+первой волне. Сначала соберите оцененный эталон:
+
+**Команда для эталонного прогона.**
+
+```console
+uv run python docs/companion/examples/build_capstone_reference.py \\
+  --output-dir artifacts/capstone
+```
+
+Команда создает `artifacts/capstone/release-decision.json`, две трассы,
+контракт сверки, оценочный пакет и проверяемый манифест. Затем повторите этапы
+вручную и объясните каждое расхождение с эталоном.""",
+        "capstone executable entry",
+    )
+
+    approval_old = (
+        "Очередь подтверждений в памяти процесса и демонстрационная форма паузы. "
+        "Она вычисляет канонический отпечаток действия, хранит сводку полезной "
+        "нагрузки, срок действия и одноразовое значение и отклоняет несовпадающий "
+        "ожидаемый отпечаток. Долговечное возобновление, применение срока действия, "
+        "аутентификация подтверждающего, запрет самоодобрения, одноразовое "
+        "потребление решения и повторная авторизация перед действием не реализованы."
+    )
+    approval_new = (
+        "Логика очереди вычисляет канонический отпечаток действия, хранит сводку "
+        "полезной нагрузки, срок и одноразовое значение. Метод разрешения "
+        "отклоняет самоодобрение и решение с несовпадающим отпечатком; отдельно "
+        "он отклоняет просроченное решение. "
+        "Необязательный файловый адаптер сохраняет учебную очередь между "
+        "процессами. Не реализованы аутентифицированная идентичность проверяющего, "
+        "транзакционное конкурентное хранилище, атомарное одноразовое потребление "
+        "и единый долговечный путь `approval → resume → execute → audit`."
+    )
+    replace_once(approval_old, approval_new, "approval module map")
+
+    replace_once(
+        "Коммит фиксирует согласованную версию печатного издания, кода и лабораторных работ.",
+        "Коммит фиксирует версию сопроводительного кода и лабораторных работ; "
+        "редакционная фиксация рукописи может быть более поздней.",
+        "practical commit scope",
+    )
+    replace_once(
+        "SHA-идентификатор коммита фиксирует согласованную версию кода, лабораторных работ и\nрукописи:",
+        "SHA-идентификатор коммита фиксирует версию сопроводительного кода и\n"
+        "лабораторных работ; редакция рукописи проверяется отдельно:",
+        "appendix commit scope",
+    )
+
+    reader_section = """### Для кого эта книга и где проходят ее границы
+
+Основной читатель — инженер или архитектор, которому нужно провести агента с
+внешними действиями от прототипа до ограниченного промышленного выпуска.
+Разработчик получает исполняемые контракты и отрицательные проверки, архитектор
+— границы компонентов, специалист по безопасности — точки принудительного
+контроля, а владелец продукта или платформы — язык риска и ответственности.
+
+Книга предполагает умение запускать Python-проект, читать YAML и отличать
+прикладной API от инфраструктурного контроля. Она не привязана к одному
+поставщику моделей и намеренно не содержит рейтинга моделей, универсального
+программного каркаса, юридического заключения, готовой отраслевой политики или
+обещания семантики «ровно один раз» (`exactly-once`) для произвольной внешней
+системы. Такие свойства организация доказывает в собственной инфраструктуре."""
+    text = replace_between(
+        text,
+        "### Для кого эта книга",
+        "### Один исполняемый сценарий и два сценария переноса",
+        reader_section,
+    )
+
+    text = _renumber_final_quality_tables(text)
+
+    state_matrix = """### Четыре словаря состояния и отдельное управляющее действие
+
+Один статус не может одновременно описать право на действие, жизнь запуска,
+результат возможности и внешний эффект. Таблица 1 разделяет эти области;
+управляющее действие остается реакцией на факт, а не дополнительным состоянием.
+
+Таблица 1. Области состояния и управляющее действие
+
+| Область | Примеры значений | На какой вопрос отвечает |
+| :------ | :--------------- | :----------------------- |
+| Решение политики | `allow`, `deny`, `approval_required` | Имеет ли запрос право перейти к исполнению? |
+| Управляющее действие | `monitor_only`, `pause_and_review`, `quarantine_session`, `escalate_incident` | Как контур управления реагирует на наблюдаемый факт? |
+| Состояние запуска | `success`, `waiting_for_approval`, `denied`, `failed`, `blocked_on_reconciliation` | Может ли весь запуск завершиться или продолжиться? |
+| Исход возможности | `success`, `approval_required`, `permission_denied`, `validation_failure`, `retryable_failure`, `side_effect_unknown`, `partial_side_effect` | Чем закончилось одно обращение к возможности? |
+| Состояние внешнего эффекта | `not_executed`, `applied`, `side_effect_unknown`, `partial_side_effect` | Что известно об изменении внешней системы? |
+
+Соответствие строится явно. `approval_required` переводит запуск в
+`waiting_for_approval` и оставляет эффект в `not_executed`. Предварительный
+запрет дает `permission_denied` без эффекта. Тайм-аут после отправки записи дает
+`side_effect_unknown` и `blocked_on_reconciliation`. Такой запуск нельзя
+сворачивать в общий `failed`: сначала требуется сверка, и только затем политика
+может разрешить повтор. Отказ на предварительной проверке запуска переводит
+весь запуск в `denied`. При отказе повторной авторизации состояние уже начатого
+запуска может остаться `failed` ради совместимости, но исход остается
+`permission_denied`, а эффект — `not_executed`."""
+    text = replace_between(
+        text,
+        "### Четыре словаря состояния и отдельное управляющее действие",
+        "На рисунке 1 представлена схема",
+        state_matrix,
+    )
+
+    memory_boundary = """В этой главе различаются два процесса. **Сжатие активного контекста**
+уменьшает представление текущего запуска и обязано сохранять управляющие поля,
+происхождение и ссылки на доказательства. **Фоновое уплотнение памяти**
+перестраивает долговременное хранилище между запусками: объединяет ревизии,
+удаляет истекшие записи и не получает права менять политику. Сводка контекста
+не становится памятью автоматически, а уплотненная память не переносит
+полномочия в следующий запуск."""
+    replace_once(
+        "**Артефакт главы:** манифест контекста с источниками, оценкой свежести и причиной отбора.",
+        "**Артефакт главы:** манифест контекста с источниками, оценкой свежести и причиной отбора.\n\n"
+        + memory_boundary,
+        "context versus memory compaction",
+    )
+
+    walking_skeleton = """### Перед практикой: путь одного запроса по эталонному пакету
+
+Перед изменением конфигурации проследите один «скелетный» путь. Команда
+`inspect-agent` показывает идентичность и каталог; `policy.py` выдает одно из
+трех решений; `approvals.py` материализует паузу; `execution.py` представляет
+границу внешнего эффекта; `telemetry.py` связывает результат с трассой.
+
+```console
+uv run python -m agent_runtime_ref inspect-agent
+uv run python -m agent_runtime_ref inspect-approvals --trace-id \\
+  trace-walking-skeleton --session-id session-walking-skeleton
+uv run python -m agent_runtime_ref dump-events
+```
+
+На первом проходе не изучайте реализацию модулей. Найдите в выводе субъект,
+возможность, решение политики, состояние запуска, исход возможности и состояние
+эффекта. Следующие главы разберут каждую границу отдельно."""
+    replace_once(
+        "## Практическое упражнение части II\n",
+        "## Практическое упражнение части II\n\n"
+        "Упражнение связывает каталог, политику и подтверждение в одном пути.\n\n"
+        + walking_skeleton
+        + "\n",
+        "walking skeleton before lab 2",
+    )
+
+    part_closures = (
+        (
+            "* Артефактом части является решение о минимальной достаточной форме исполнения.",
+            "**Готовый результат.** Архитектурное решение фиксирует форму, владельца и остановку.\n\n"
+            "**Проверка переноса.** Примените те же критерии к внутреннему ассистенту знаний и объясните, почему ему не нужна более высокая автономность.\n\n"
+            "**Вопрос дальше.** Как принудительно ограничить уже выбранную форму исполнения?",
+        ),
+        (
+            "* Неизвестный или неполный атрибут закрывает путь до внешнего эффекта.",
+            "**Готовый результат.** Контракт возможности, решение политики и подтверждение образуют один проверяемый путь.\n\n"
+            "**Проверка переноса.** Замените создание заявки на отправку уведомления об инциденте и заново определите субъект, отпечаток и точку паузы.\n\n"
+            "**Вопрос дальше.** Какие данные разрешено переносить между запусками?",
+        ),
+        (
+            "* Фоновая запись не получает исключения из политики и аудита.",
+            "**Готовый результат.** Матрица памяти и манифест контекста разделяют запись, чтение и происхождение.\n\n"
+            "**Проверка переноса.** Для ассистента знаний докажите отрицательным запросом, что запись другого арендатора не попадает в контекст.\n\n"
+            "**Вопрос дальше.** Как те же ограничения применить к внешнему действию?",
+        ),
+        (
+            "* Повтор, компенсация и остановка выбираются по классу результата.",
+            "**Готовый результат.** Контракт исполнения задает транспорт, идемпотентность, сверку и границу отката.\n\n"
+            "**Проверка переноса.** Постройте автомат тайм-аута для уведомления об инциденте и запретите повтор до сверки получателей.\n\n"
+            "**Вопрос дальше.** Какими событиями доказать, что восстановление сработало?",
+        ),
+        (
+            "* Выпуск открывают доказательства, а не переданный процессу булев флаг.",
+            "**Готовый результат.** Трасса, SLO, оценка и решение о выпуске связаны идентификаторами и версиями.\n\n"
+            "**Проверка переноса.** Добавьте сценарий устаревшего источника ассистента знаний и сформулируйте блокирующий выпускной сигнал.\n\n"
+            "**Вопрос дальше.** Кто владеет сигналом, исключением и исправлением?",
+        ),
+        (
+            "* Изменение допускается к выпуску только как связанный набор доверенных артефактов.",
+            "**Готовый результат.** Реестр, владельцы и пакет изменения образуют одну цепочку допуска.\n\n"
+            "**Проверка переноса.** Добавьте в реестр координатора инцидентов и обнаружьте осиротевшую возможность по фактической телеметрии.\n\n"
+            "**Вопрос дальше.** Как найти обход контроля уже после выпуска?",
+        ),
+        (
+            "* Вывод из эксплуатации завершен только после отзыва полномочий и сохранения доказательств.",
+            "**Готовый результат.** Сигнал риска проходит сдерживание, расследование, регрессию и отзыв полномочий.\n\n"
+            "**Проверка переноса.** Проведите настольное учение для отравленной записи памяти и назовите критерий доказанного закрытия.\n\n"
+            "**Вопрос дальше.** Какие из контрактов эталонный код действительно материализует?",
+        ),
+        (
+            "* Текущий итоговый маршрут заканчивается проверяемым решением `hold`.",
+            "**Готовый результат.** Воспроизводимый пакет заканчивается честным решением `hold` и перечисляет недостающие аттестации.\n\n"
+            "**Проверка переноса.** Замените пишущую возможность и повторите рубрику, не меняя словари решения и управляющего действия.\n\n"
+            "**Открытый вопрос.** Какие промышленные доказательства позволят перейти к `limited_wave`?",
+        ),
+    )
+    text = _replace_final_quality_anchors(
+        text,
+        tuple(
+            (anchor, anchor + "\n\n" + closure, f"part closure: {anchor[:40]}")
+            for anchor, closure in part_closures
+        ),
+    )
+
+    text = re.sub(
+        r"\n\*\*Что изменилось после этой главы\.\*\*[^\n]*(?:\n(?!\n)[^\n]*)*\n",
+        "\n",
+        text,
+    )
+
+    terminology = (
+        ("одноагентный цикл", "одиночный агентный цикл"),
+        ("одноагентной форме", "форме одиночного агента"),
+        ("проверочные ворота политики", "шлюз политики"),
+        (
+            "Краткосрочная, долгосрочная и профильная память",
+            "Краткосрочная, долговременная и профильная память",
+        ),
+        (
+            "краткосрочную, долгосрочную и профильную память",
+            "краткосрочную, долговременную и профильную память",
+        ),
+        (
+            "краткосрочная, долгосрочная и профильная память",
+            "краткосрочная, долговременная и профильная память",
+        ),
+        ("долгосрочная память", "долговременная память"),
+        ("долгосрочной истины", "долговременной истины"),
+        ("### Исполняющая среда агента", "### Среда исполнения агента"),
+        ("Исполняющая среда агента:", "Среда исполнения агента:"),
+        ("### Как это связано со справочным пакетом", "### Как это связано с эталонным пакетом"),
+        ("### Связь со справочным пакетом", "### Связь с эталонным пакетом"),
+        ("фоновое сжатие контекста", "фоновое уплотнение памяти"),
+    )
+    for old, new in terminology:
+        text = text.replace(old, new)
+
+    text = text.replace("##### ", "#### ")
+    text = text.replace(
+        "#### Полномочия и идентичность",
+        "**Полномочия и идентичность.**",
+    )
+    text = text.replace(
+        "политика выбирает не только возможность, но и исполнительный контур",
+        "#### Политика выбирает не только возможность, но и исполнительный контур",
+    )
+    text = text.replace(
+        "Маршрут по задаче в предыдущем разделе помогает войти в книгу с нужного места.",
+        "Маршрут «С чего начать, если вы пришли с задачей» помогает войти в книгу с нужного места.",
+    )
+    text = text.replace(
+        "Листинг не реализует долговечные контрольные точки; следующий раздел объясняет, какие состояния нужно добавить для перезапуска.",
+        "Листинг не реализует долговечные контрольные точки; подраздел «Минимальный каркас для фоновой и возобновляемой работы» показывает необходимые состояния перезапуска.",
+    )
+    text = text.replace(
+        "#### Очередь работ как операторский контур\n\n>",
+        "#### Очередь работ как операторский контур\n\n"
+        "Оператору нужна очередь, где задача видна как отдельный управляемый объект, "
+        "а не как еще одна вкладка диалога.\n\n>",
+    )
+
+    checklist_titles = (
+        (19, "### Проверка живого реестра"),
+        (20, "#### Проверка управляемого изменения"),
+        (21, "### Проверка происхождения пакета"),
+        (23, "### Проверка обходных путей и полномочий"),
+        (24, "#### Проверка замкнутого контура заверения"),
+    )
+    for chapter_number, title in checklist_titles:
+        chapter = extract_chapter(text, chapter_number)
+        chapter, count = re.subn(
+            r"^(?:###|####) Практический проверочный список$",
+            title,
+            chapter,
+            count=1,
+            flags=re.MULTILINE,
+        )
+        if count != 1:
+            raise ValueError(
+                f"Chapter {chapter_number} practical checklist must occur once; found {count}"
+            )
+        text = _replace_editorial_anchor(
+            text,
+            extract_chapter(text, chapter_number),
+            chapter,
+            f"chapter {chapter_number} checklist title",
+        )
+    text = text.replace(
+        "**Практический проверочный список.**",
+        "**Проверка перехода ADLC.**",
+    )
+
+    chapter_thirteen = extract_chapter(text, 13)
+    chapter_thirteen = replace_between(
+        chapter_thirteen,
+        "Для `tool_policy_decision` минимальный контракт включает",
+        "**Что уже умеет пакет.**",
+        """Точный каталог полей храните в машинной схеме, а в главе проверяйте
+причинную цепочку. Для решения политики нужны возможность, вердикт, причина,
+риск и исполнитель. Для действия добавляются подтверждение, ключ
+идемпотентности и состояние внешнего эффекта. Для доказательства — версия
+проверяющего, ссылки на входы и полнота пакета.
+
+Например, `tool_policy_decision` должен предшествовать `tool_execution`, а
+тайм-аут записывающей операции обязан завершаться `side_effect_unknown` и
+`verification_result`, а не общим успехом. Полные поля и ограниченные словари
+находятся в `docs/companion/runtime-reference/traces-and-events.md`.""",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        extract_chapter(text, 13),
+        chapter_thirteen,
+        "chapter 13 field catalog",
+    )
+
+    chapter_eleven = extract_chapter(text, 11)
+    chapter_eleven = chapter_eleven.replace(
+        "#### Псевдокод диспетчеризации возможностей",
+        "**Псевдокод диспетчеризации возможностей.**",
+        1,
+    )
+    chapter_eleven = chapter_eleven.replace(
+        "#### Как это выглядит в зрелой архитектуре",
+        "**Как это выглядит в зрелой архитектуре.**",
+        1,
+    )
+    chapter_eleven = chapter_eleven.replace(
+        "### Ключевые выводы",
+        "Ядро MCP остается без состояния. Прикладной дескриптор, задача, "
+        "повтор вызова и новый запрос ввода имеют разные контракты. Сеть "
+        "агентов требует явных пределов распространения риска.\n\n"
+        "### Ключевые выводы",
+        1,
+    )
+    text = _replace_editorial_anchor(
+        text,
+        extract_chapter(text, 11),
+        chapter_eleven,
+        "chapter 11 bridge merged into conclusions",
+    )
+
+    chapter_twenty_four = extract_chapter(text, 24)
+    for heading in (
+        "Компактная запись гипотезы",
+        "Типичные ошибки причинного разбора",
+        "Откат или локальное исправление",
+    ):
+        chapter_twenty_four = chapter_twenty_four.replace(
+            f"#### {heading}",
+            f"**{heading}.**",
+            1,
+        )
+    repeated_assurance = """Контур заверения — это постоянный рабочий контур поиска слабых мест, обнаружения новых угроз, расследования и проверяемого закрытия находок. Он продолжается после выпуска и возвращает результаты в проектирование.
+
+В агентной системе этот контур объединяет соревновательное тестирование, управление уязвимостями, обнаружение, реагирование и исправление. Полученные уроки возвращаются в проектирование и правила поэтапного выпуска.
+
+Google Research (см. источник **S074**) формулирует главную мысль: заверение безопасности для генеративных систем должно быть непрерывной способностью, а не разовой проверкой."""
+    concise_assurance = """Контур заверения непрерывно связывает соревновательное тестирование,
+обнаружение, реагирование, исправление и проверяемое закрытие. Его уроки
+возвращаются в проектирование и правила выпуска; именно непрерывность, а не
+разовая проверка, является устойчивым принципом (см. источник **S074**)."""
+    if chapter_twenty_four.count(repeated_assurance) != 1:
+        raise ValueError("Chapter 24 repeated assurance definition must occur once")
+    chapter_twenty_four = chapter_twenty_four.replace(
+        repeated_assurance,
+        concise_assurance,
+    )
+    text = _replace_editorial_anchor(
+        text,
+        extract_chapter(text, 24),
+        chapter_twenty_four,
+        "chapter 24 assurance consolidation",
+    )
+
+    chapter_twenty_eight = extract_chapter(text, 28)
+    concise_readiness_opening = """Команда уже построила архитектуру, политики, память, трассы и защиту от
+слепого повтора. Теперь ей нужно ответить на проверяемый вопрос: можно ли
+открыть первую волну трафика?
+
+Работающий демонстрационный путь недостаточен. Решение требует обычного и
+неуспешного сценариев, владельцев, испытанного отката и честной оценки
+реалистичности среды. Добрые заглушки, мгновенные ответы и отсутствие
+частичных ошибок проверяют идеальный мир, поэтому могут открыть только
+следующий, более реалистичный слой испытаний, но не промышленный выпуск."""
+    chapter_twenty_eight = replace_between(
+        chapter_twenty_eight,
+        "Команда уже прошла длинный путь:",
+        "### Выпускной шлюз должен проверять не только успешный путь",
+        concise_readiness_opening,
+    )
+    text = _replace_editorial_anchor(
+        text,
+        extract_chapter(text, 28),
+        chapter_twenty_eight,
+        "chapter 28 readiness opening",
+    )
+
+    figure_leads = {
+        1: "увидьте четыре перехода от выбора формы исполнения к завершению жизненного цикла",
+        2: "сопоставьте рост автономности с новыми обязанностями контроля",
+        3: "проследите путь запроса через решения, исполнение и доказательства",
+        4: "найдите границы, на которых недоверенные данные меняют область риска",
+        5: "проверьте, как локальный интерфейс становится поверхностью управления",
+        6: "проследите, как намерение связывается с контрактом до внешнего эффекта",
+        7: "сопоставьте поля возможности с точками принудительного контроля",
+        8: "найдите паузу, проверку неизменности и разрешенное возобновление",
+        9: "разделите решение о записи, карантин, фиксацию и удаление памяти",
+        10: "проследите фильтры арендатора, доверия, свежести и происхождения",
+        11: "сопоставьте протокольную границу MCP с ограничениями песочницы",
+        12: "найдите проверки происхождения до вызова MCP-возможности",
+        13: "выберите ветку восстановления по известности внешнего эффекта",
+        14: "сравните уровни реалистичности симуляции перед выпуском",
+        15: "проследите происхождение вердикта проверяющего",
+        16: "найдите разрыв, который сделает выпускное решение невоспроизводимым",
+        17: "сопоставьте изменение поведения с этапом ADLC и доказательством",
+        18: "проследите путь находки до закрытия полномочий",
+        19: "найдите переходы от сигнала к сдерживанию и восстановлению",
+        20: "отделите программный каркас от испытательного и исполнительного контуров",
+        21: "проверьте, какие состояния переживают перезапуск процесса",
+        22: "разделите перезапускаемое мышление, управляемые действия и сессию",
+        23: "сопоставьте заглушку, симулятор и песочницу по доказуемому риску",
+        24: "найдите независимые сигналы, которые удерживают расширение волны",
+        25: "проследите непрерывность итогового пакета от запроса до решения",
+    }
+    text = _replace_final_quality_figure_leads(text, figure_leads)
+
+    table_leads = {
+        2: "В таблице 2 сравните основания для усложнения формы исполнения.",
+        3: "В таблице 3 проверьте, почему полезность записи не отменяет доверие.",
+        4: "В таблице 4 свяжите группу полей с вопросом расследования.",
+        5: "В таблице 5 проследите переход от требования к промышленному сигналу.",
+        6: "В таблице 6 разделите ответственность платформы и продукта.",
+        7: "В таблице 7 сопоставьте поверхность доверия с выпускным доказательством.",
+        8: "В таблице 8 оцените прирост опасной возможности по наблюдаемым признакам.",
+        9: "В таблице 9 выберите действие реагирования по классу находки.",
+        10: "В таблице 10 проследите этапы безопасной записывающей операции.",
+        11: "В таблице 11 отделите жесткий блокер от ограничения охвата.",
+        12: "В таблице 12 используйте якоря рубрики, а не общее впечатление.",
+    }
+    text = _insert_final_quality_table_leads(text, table_leads)
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def apply_editorial_structure_pass_2026_08_03(text: str) -> str:
+    """Reduce concept overlap and make the final manuscript easier to scan."""
+
+    def replace_exact(block: str, old: str, new: str, label: str) -> str:
+        count = block.count(old)
+        if count != 1:
+            raise ValueError(f"Editorial structure anchor {label!r} must occur once; found {count}")
+        return block.replace(old, new, 1)
+
+    chapter_five = extract_chapter(text, 5)
+    revised_chapter_five = chapter_five
+    chapter_five_replacements = (
+        (
+            "Он последовательно отвечает, можно ли запустить сценарий, прочитать контекст, вызвать возможность, записать результат в память и вернуть его наружу. Для рискованного действия тот же слой определяет необходимость подтверждения, а для выпуска — каким контрактам проверяющего можно доверять, если решение зависит от оцененных доказательств.",
+            "Он последовательно отвечает, можно ли запустить сценарий, прочитать "
+            "контекст, вызвать возможность, записать результат в память и вернуть "
+            "его наружу. Для рискованного действия тот же слой определяет "
+            "необходимость подтверждения, а для выпуска — обязательность "
+            "независимого оценочного доказательства.",
+            "chapter 5 policy questions",
+        ),
+        (
+            "* каким контрактам проверяющего можно доверять для оценки тех же высокорисковых путей, если поэтапный выпуск или заверение зависят от выхода проверяющего.",
+            "* какое независимое оценочное доказательство требуется перед выпуском высокорискового пути.",
+            "chapter 5 approval policy list",
+        ),
+        (
+            "* доверенные контракты проверяющего или требования к ним для высокорисковых путей;",
+            "* требования к оценочному доказательству для высокорисковых путей;",
+            "chapter 5 decision fields",
+        ),
+        (
+            "По мере того как управление с учетом проверяющего становится частью промышленной модели, такая же явность нужна и для доверия к проверяющему. Высокорисковые пути не должны зависеть от «любого доступного проверяющего». Слой политик должен уметь сказать, какие контракты проверяющего считаются доверенными, когда они обязательны и что происходит, если в путь выпуска попадает недоверенный контракт проверяющего.",
+            "Для высокорискового выпуска политика может требовать независимое "
+            "оценочное доказательство и закрывать путь при его отсутствии. Здесь "
+            "достаточно зафиксировать это требование; полный контракт проверяющего "
+            "и правила доверия к нему определены в главе 15.",
+            "chapter 5 verifier forward reference",
+        ),
+        (
+            "* ожидания относительно доверенных контрактов проверяющего для оценок высокого риска и доказательств поэтапного выпуска.",
+            "* требования к независимым оценочным доказательствам для высокорискового выпуска.",
+            "chapter 5 policy bundle fields",
+        ),
+        (
+            "Важно удержать границу между минимальным контрактом и расширенным промышленным каталогом. Минимальный контракт нужен каждому читателю: владелец, режим действия, транспорт, вход и выход, подтверждение, идемпотентность, аудит и жизненный цикл. Расширенные поля нужны тогда, когда появляются сессионные MCP-возможности, делегирование, проверяющие высокого риска, песочница, отзыв авторизации и теневые пути доступа.",
+            "Важно удержать границу между минимальным контрактом и расширенным "
+            "промышленным каталогом. Минимальный контракт нужен каждому читателю: "
+            "владелец, режим действия, транспорт, вход и выход, подтверждение, "
+            "идемпотентность, аудит и жизненный цикл. Расширенные поля появляются "
+            "для сессионных MCP-возможностей, делегирования, независимой оценки "
+            "высокого риска, песочницы, отзыва авторизации и теневых путей доступа.",
+            "chapter 5 industrial catalogue scope",
+        ),
+        (
+            "* политика контрактов проверяющего описывает, каким контрактам проверяющего вообще можно доверять для оценивания высокого риска, доказательств поэтапного выпуска и решений по заверению.",
+            "* требование к оценочному доказательству связывает высокорисковый путь с выпускным шлюзом; подробный контракт задает глава 15.",
+            "chapter 5 contract ownership summary",
+        ),
+    )
+    for old, new, label in chapter_five_replacements:
+        revised_chapter_five = replace_exact(revised_chapter_five, old, new, label)
+    text = _replace_editorial_anchor(
+        text,
+        chapter_five,
+        revised_chapter_five,
+        "chapter 5 concept ownership",
+    )
+
+    chapter_eleven = extract_chapter(text, 11)
+    revised_chapter_eleven = replace_exact(
+        chapter_eleven,
+        "В этой главе границы безопасности MCP, поверхности отравления инструментов и модель доверия A2A рассматриваются через конкретные контракты и проверяемые свойства. Глава также отделяет ядро MCP без состояния от прикладного состояния, длительных задач и повторного ввода и показывает, как ограничивать распространение риска в сети агентов.",
+        "Глава сосредоточена на песочнице, MCP и границе доверия внешней "
+        "возможности. A2A используется только как короткий контраст: передача "
+        "задачи самостоятельной роли требует отдельного делегирования и пределов "
+        "распространения риска. Глава также отделяет ядро MCP без состояния от "
+        "прикладной работы и показывает, как ограничивать распространение риска "
+        "в сети агентов.",
+        "chapter 11 scope",
+    )
+    revised_chapter_eleven = replace_between(
+        revised_chapter_eleven,
+        "**Короткое правило.**",
+        "#### Когда действительно нужен A2A",
+        """**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как
+управляемую возможность. A2A передает задачу самостоятельной операционной роли
+с собственными владельцем, политикой и жизненным циклом.
+
+Если сущность предоставляет поиск, API или запись, выбирайте MCP или обычный
+шлюз возможностей. A2A оправдан только там, где вместе с задачей действительно
+передаются ответственность и ограниченные полномочия.""",
+    )
+    revised_chapter_eleven = replace_between(
+        revised_chapter_eleven,
+        "**Как это выглядит в зрелой архитектуре.**",
+        "**Минимальный кодовый эскиз.**",
+        """MCP и A2A дополняют друг друга, а не заменяют
+
+![MCP и A2A дополняют друг друга, а не заменяют](visuals/ru-inline-diagram-09.png)
+
+Вызов MCP возвращает результат возможности; передача A2A возвращает результат
+работы другой ответственной роли. Политика и аудит покрывают оба направления,
+но не смешивают их идентичности, полномочия и атрибуцию сбоя.""",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eleven,
+        revised_chapter_eleven,
+        "chapter 11 MCP and A2A scope",
+    )
+
+    chapter_fifteen = extract_chapter(text, 15)
+    revised_chapter_fifteen = replace_between(
+        chapter_fifteen,
+        "Устойчивый слой здесь — дисциплина оценки.",
+        "### Начнем с вопроса: как не выпустить тот же сбой второй раз",
+        """Оценочный набор, контракт проверяющего и регрессионный шлюз отвечают на
+одно выпускное решение: продолжить изменение, остановить его или передать
+неопределенность человеку. Трассы и SLO дают входные доказательства, но не
+заменяют этого решения.
+
+> **Срез практики. Июль 2026 года.** Быстрее всего меняются сервисы оценки,
+> модели-судьи, тесты памяти, поведенческие проверки и механизмы онлайн-оценок.
+>
+> **Граница переносимости.** Конкретные сервисы уточняют практику; устойчивым
+> остается связь оценки с доказательствами и решением о выпуске.""",
+    )
+    revised_chapter_fifteen = replace_exact(
+        revised_chapter_fifteen,
+        "Практический контракт проверяющего поэтому стоит описывать явно, а не оставлять внутри подсказки судьи. Минимальный контракт должен включать:",
+        "Минимальный контракт проверяющего должен включать:",
+        "chapter 15 verifier definition",
+    )
+    revised_chapter_fifteen = replace_between(
+        revised_chapter_fifteen,
+        "### Лучшая связка — это не «офлайн или онлайн», а оба контура сразу",
+        "Контур оценки полезно мыслить как постоянный процесс",
+        """### Офлайн- и онлайн-оценки образуют один выпускной контур
+
+Офлайн-набор блокирует известную регрессию до выпуска, а управляемая онлайн-
+выборка обнаруживает новые режимы отказа после него. Трассы дают материал для
+проверки, SLO задают операционную рамку, а регрессионный шлюз принимает одно
+машиночитаемое решение.""",
+    )
+    revised_chapter_fifteen = replace_between(
+        revised_chapter_fifteen,
+        "### Практические правила для контура оценки",
+        "### От требования политики к промышленному сигналу",
+        "",
+    )
+    revised_chapter_fifteen = replace_exact(
+        revised_chapter_fifteen,
+        "Практика в репозитории. Экспортируйте полный набор командой `uv run python -m agent_runtime_ref export-eval-dataset --output artifacts/eval-dataset.json`. В `support_ticket` проверьте `sandbox_profile_reviewed=true`, а в `failed_run_timeout` — правило `duplicate_ticket_guard`. Затем выполните `uv run python -m agent_runtime_ref check-rollout --signal duplicate_ticket_eval_passed=false`; ожидаемый результат — `ready=false`. Поле `*_passed` в экспортированной спецификации является ожидаемым исходом, а не результатом запущенного проверяющего.",
+        """**Практика в репозитории.** Экспортируйте оценочный набор и передайте
+отрицательный сигнал выпускному шлюзу:
+
+**Команды для воспроизведения.**
+
+```console
+uv run python -m agent_runtime_ref export-eval-dataset \\
+  --output artifacts/eval-dataset.json
+uv run python -m agent_runtime_ref check-rollout \\
+  --signal duplicate_ticket_eval_passed=false
+```
+
+В `support_ticket` проверьте `sandbox_profile_reviewed=true`, а в
+`failed_run_timeout` — правило `duplicate_ticket_guard`. Ожидаемый результат
+второй команды: `ready=false`. Поле `*_passed` в экспортированной спецификации
+задает ожидаемый исход, а не результат уже запущенного проверяющего.""",
+        "chapter 15 repository practice",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_fifteen,
+        revised_chapter_fifteen,
+        "chapter 15 release decision focus",
+    )
+
+    chapter_eighteen = extract_chapter(text, 18)
+    revised_chapter_eighteen = replace_between(
+        chapter_eighteen,
+        "Если ответа нет, происходит знакомый сценарий:",
+        "### Поддерживаемый стандартный путь должен быть путем по умолчанию",
+        """Без готового пути каждая команда создает собственную обертку среды
+исполнения, точки политик, адаптеры, способ выкладки и формат телеметрии. Общая
+операционная модель при этом остается на бумаге, а организация получает набор
+похожих, но несовместимых систем.""",
+    )
+    heading_replacements = (
+        (
+            "### Почему даже хорошая орг-модель без инженерных шаблонов быстро расползается",
+            "**Почему организационной модели нужны инженерные шаблоны.**",
+        ),
+        (
+            "### Общие шлюзы нужны, чтобы не размножать критичные ошибки по всей организации",
+            "**Общие шлюзы не дают размножать критичные ошибки.**",
+        ),
+        (
+            "### Переиспользуемый шаблон должен задавать позицию, а не быть абстрактным",
+            "**Переиспользуемый шаблон должен задавать позицию.**",
+        ),
+        (
+            "### Что стоит измерять, если вы действительно боретесь с зоопарком",
+            "**Что измерять при борьбе с платформенным зоопарком.**",
+        ),
+    )
+    for old, new in heading_replacements:
+        revised_chapter_eighteen = replace_exact(
+            revised_chapter_eighteen,
+            old,
+            new,
+            f"chapter 18 heading: {old}",
+        )
+    revised_chapter_eighteen = replace_between(
+        revised_chapter_eighteen,
+        "### Общие шлюзы хороши не только для безопасности, но и для скорости эволюции",
+        "Ошибки здесь обычно не технические, а продуктовые:",
+        """**Почему общая граница ускоряет изменения.** Централизованный путь
+позволяет один раз обновить контракт, аудит и защитные ограничения для всех
+пользующихся им продуктов. Скорость появляется только тогда, когда стандартный
+маршрут остается удобнее локального обхода.""",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_eighteen,
+        revised_chapter_eighteen,
+        "chapter 18 standard path consolidation",
+    )
+
+    chapter_twenty_four = extract_chapter(text, 24)
+    revised_chapter_twenty_four = replace_between(
+        chapter_twenty_four,
+        "Устойчивый слой здесь — рабочий контур заверения:",
+        "### От сигнала риска к находке",
+        """Рабочий цикл начинается с наблюдаемого сигнала и заканчивается не
+отчетом, а доказанным изменением системы: находка должна получить владельца,
+серьезность, временное сдерживание, регрессионный сценарий и критерий закрытия.
+
+> **Срез практики. Июль 2026 года.** Быстрее всего меняются техники соревновательного тестирования, генераторы сценариев и автоматизированные каркасы атак.
+>
+> **Граница переносимости.** Инструменты меняются; неизменной остается связь
+> сигнала, владельца, сдерживания, исправления и проверяемого закрытия.
+
+В главе 23 произошел наблюдаемый обход требования `create_ticket.v2` через оставленный маршрут `v1`: агент сохранил цель и добился того же внешнего
+эффекта. Здесь этот сигнал становится находкой с владельцем, временным
+сдерживанием, исправлением и критерием закрытия. Дубль заявки остается
+регрессионной проверкой пишущего пути: закрытие должно одновременно остановить
+обход и исключить повтор эффекта.""",
+    )
+    for old, new in (
+        (
+            "#### После выпуска начинается контур заверения",
+            "**После выпуска начинается непрерывная проверка.**",
+        ),
+        (
+            "#### Пользовательские сообщения и инциденты должны становиться частью контура заверения",
+            "**Пользовательские сообщения и инциденты тоже становятся входом.**",
+        ),
+        (
+            "#### Что чаще всего ломается в контуре заверения",
+            "**Что чаще всего ломает рабочий цикл.**",
+        ),
+    ):
+        revised_chapter_twenty_four = replace_exact(
+            revised_chapter_twenty_four,
+            old,
+            new,
+            f"chapter 24 run-in heading: {old}",
+        )
+    revised_chapter_twenty_four = replace_exact(
+        revised_chapter_twenty_four,
+        "Поэтому заверение здесь стоит читать как функцию реагирования, а не как каталог сигналов обнаружения. Ее задача — сократить время между сигналом и безопасным сдерживанием.",
+        "Здесь важна функция реагирования: сократить время между правдоподобным "
+        "сигналом и безопасным сдерживанием, не подменяя расследование каталогом "
+        "метрик.",
+        "chapter 24 response ownership",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_four,
+        revised_chapter_twenty_four,
+        "chapter 24 assurance consolidation",
+    )
+
+    chapter_twenty_six = extract_chapter(text, 26)
+    revised_chapter_twenty_six = replace_between(
+        chapter_twenty_six,
+        "#### Зачем нужна эталонная схема среды исполнения, если у вас уже есть архитектура",
+        "#### Минимально взрослая среда исполнения уже состоит не из одной модели",
+        """Архитектурный аргумент становится проверяемым только после материализации
+в компонентах, контрактах и наблюдаемых переходах. Эталонная схема не навязывает
+единственную реализацию: она показывает обязательные границы одного запуска и
+отделяет их от необязательных расширений.
+
+В сценарии поддержки это означает, что политика, память, инструментальный
+шлюз, повтор и телеметрия перестают быть локальной логикой одного обработчика.
+Команда получает форму, которую можно остановить, возобновить и расследовать.""",
+    )
+    revised_chapter_twenty_six = replace_between(
+        revised_chapter_twenty_six,
+        "#### Длинные запуски — не необязательная надстройка, а часть базового контура",
+        "#### Долговечное состояние запуска",
+        """#### Длинные запуски требуют явного состояния
+
+Ожидание подтверждения, внешнего ввода или медленного инструмента не помещается
+в один синхронный запрос. Фоновый режим (см. источник **S057**) поэтому нужно
+считать обычной формой исполнения, а не обходом ограничения времени.
+
+Среда исполнения различает синхронный, фоновый и возобновляемый запуск. Для
+каждого она хранит курсор продолжения, версии политики и возможности, ключ
+идемпотентности, состояние внешнего эффекта и границу допустимого повторного
+проигрывания. Контрольные точки LangGraph (см. источник **S033**) иллюстрируют
+тот же переносимый принцип: уже зафиксированный шаг нельзя незаметно выполнить
+повторно после сбоя.
+
+Модельное резюме не заменяет управляющее состояние. После возобновления
+полномочия проверяются заново, а неизвестный внешний эффект сначала сверяется.""",
+    )
+    revised_chapter_twenty_six = replace_between(
+        revised_chapter_twenty_six,
+        "#### Именованный агент как отдельная топология",
+        "#### Разделение программного каркаса, испытательного контура и среды исполнения",
+        """#### Именованный агент как отдельная топология
+
+Устойчивый архитектурный контракт здесь — стабильная идентичность экземпляра,
+изолированное долговечное состояние, управляемые пробуждения и связь каждого
+изменения с запуском и трассой.
+
+> **Пример реализации, а не универсальный контракт.** Cloudflare Agents SDK
+> материализует именованный экземпляр поверх Durable Object. Детали продукта
+> меняются; переносимыми остаются идентичность, состояние, расписание,
+> соединение и аудит.
+
+`agent_instance_id` живет дольше отдельного `run_id` и транспортного
+`session_id`. Локально допустимы курсор работы, метаданные расписания и
+пересобираемый кэш. Профильная память, знания арендатора, секреты, политики и
+аудит остаются в управляемых хранилищах с происхождением и сроками хранения.
+
+Расписание оформляется долговечной контрольной записью с владельцем, полезной
+нагрузкой, ключом идемпотентности и ссылкой на трассу. Состояние соединения
+также отделяется от состояния агента, чтобы повторное подключение не переносило
+чужие полномочия или приватный контекст.""",
+    )
+    for old, new in (
+        (
+            "#### Минимально взрослая среда исполнения уже состоит не из одной модели",
+            "**Среда исполнения состоит не из одной модели.**",
+        ),
+        (
+            "#### Как выглядит базовый поток одного запуска",
+            "**Базовый поток одного запуска.**",
+        ),
+        (
+            "#### Какие модули полезно держать отдельными сразу",
+            "**Модули, которые стоит разделить сразу.**",
+        ),
+        (
+            "#### Что важно встроить в базовый контур с самого начала",
+            "**Что нужно встроить с самого начала.**",
+        ),
+        (
+            "#### Пример конфигурации среды исполнения",
+            "**Пример конфигурации среды исполнения.**",
+        ),
+    ):
+        revised_chapter_twenty_six = replace_exact(
+            revised_chapter_twenty_six,
+            old,
+            new,
+            f"chapter 26 run-in heading: {old}",
+        )
+    revised_chapter_twenty_six = replace_exact(
+        revised_chapter_twenty_six,
+        r"""agent\_runtime/
+
+`orchestrator.py`
+
+`policy.py`
+
+`memory.py`
+
+`catalog.py`
+
+`execution.py`
+
+`telemetry.py`
+
+`models.py`
+
+`background.py`""",
+        """**Тип фрагмента:** структура каталогов и модулей.
+
+```text
+agent_runtime/
+  orchestrator.py
+  policy.py
+  memory.py
+  catalog.py
+  execution.py
+  telemetry.py
+  models.py
+  background.py
+```""",
+        "chapter 26 project structure",
+    )
+    revised_chapter_twenty_six = replace_exact(
+        revised_chapter_twenty_six,
+        "Практика в репозитории. Последовательно выполните четыре команды: `simulate-run`, `dump-events`, `export-events --output artifacts/trace-demo.jsonl` и `inspect-trace --input artifacts/trace-demo.jsonl`. Запускайте каждую через `uv run python -m agent_runtime_ref`. Цель — увидеть, где в коде живут границы выполнения, след политики, состояние сессии и доказательства для расследования.",
+        """**Практика в репозитории.** Проследите один запуск четырьмя командами:
+
+```console
+uv run python -m agent_runtime_ref simulate-run
+uv run python -m agent_runtime_ref dump-events
+uv run python -m agent_runtime_ref export-events \\
+  --output artifacts/trace-demo.jsonl
+uv run python -m agent_runtime_ref inspect-trace \\
+  --input artifacts/trace-demo.jsonl
+```
+
+В выводе найдите границу исполнения, решение политики, состояние сессии и
+доказательства для расследования.""",
+        "chapter 26 repository practice",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_six,
+        revised_chapter_twenty_six,
+        "chapter 26 runtime scope",
+    )
+
+    chapter_twenty_seven = extract_chapter(text, 27)
+    revised_chapter_twenty_seven = replace_exact(
+        chapter_twenty_seven,
+        "Начните с `agent_runtime_ref/configs/capabilities.yaml`, `agent_runtime_ref/configs/policy.yaml`, `agent_runtime_ref/configs/approvals.yaml` и `agent_runtime_ref/configs/agent.yaml`. Затем выполните `inspect-agent` для проверки инвентаря, `simulate-run` для остановки на подтверждении, `inspect-approvals` и `resolve-approval` для человеческого решения, `dump-events` для событий политики и `check-controls --signal registry_reviewed=false` для демонстрации блокирующего контроля.",
+        """Сначала сопоставьте четыре конфигурации: `capabilities.yaml`, `policy.yaml`,
+`approvals.yaml` и `agent.yaml` в каталоге `agent_runtime_ref/configs`. Затем
+выполните путь проверки:
+
+**Команды для воспроизведения.**
+
+```console
+uv run python -m agent_runtime_ref inspect-agent
+uv run python -m agent_runtime_ref simulate-run
+uv run python -m agent_runtime_ref inspect-approvals
+uv run python -m agent_runtime_ref dump-events
+uv run python -m agent_runtime_ref check-controls \\
+  --signal registry_reviewed=false
+```
+
+Для принятого человеческого решения используйте `resolve-approval`, сохраняя
+идентификаторы запроса, подтверждения и трассы.""",
+        "chapter 27 repository practice",
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_twenty_seven,
+        revised_chapter_twenty_seven,
+        "chapter 27 command presentation",
+    )
+
+    text = text.replace(
+        "> **Граница переносимости.** Конкретные сервисы уточняют практику; устойчивым\n"
+        "> остается связь оценки с доказательствами и решением о выпуске.",
+        "> **Граница переносимости.** Конкретные сервисы уточняют практику; устойчивой\n"
+        "> остается связь оценки с доказательствами и решением о выпуске.",
+    )
+    text = text.replace("управляемая онлайн-\nвыборка", "управляемая онлайн-выборка")
+    text = text.replace(
+        "контракт возврата.\n**Почему общая граница",
+        "контракт возврата.\n\n**Почему общая граница",
+    )
+    text = text.replace(
+        "дрейф без повторного определения платформенного шаблона.\n### Порог",
+        "дрейф без повторного определения платформенного шаблона.\n\n### Порог",
+    )
+
+    run_in_pattern = re.compile(
+        r"(?m)^\*\*(?P<label>[^*\n]{2,140})\*\*\n\n"
+        r"(?P<body>(?!(?:#{1,6}\s|```|[*+-]\s|\d+[.)]\s|>|\\>|!\[|\|))[^\n]+)"
+    )
+
+    def make_run_in(match: re.Match[str]) -> str:
+        label = match.group("label")
+        if not re.search(r"[.:?!]$", label):
+            label += "."
+        return f"**{label}** {match.group('body')}"
+
+    text = run_in_pattern.sub(make_run_in, text)
+    text = re.sub(
+        r"(?m)^\*\*[^*\n]{2,140}\*\* (?=\*\*Листинг \d+\.)",
+        "",
+        text,
+    )
+    text = re.sub(
+        r"(?m)^(\*\*[^*\n]{2,140}\*\*) \*\*Тип фрагмента:\*\* ",
+        r"\1 Тип фрагмента: ",
+        text,
+    )
+
+    text = re.sub(
+        r"(?m)^(\*\*S\d{3}\.\*\*[^\n]+)\n(?=\*\*S\d{3}\.\*\*)",
+        r"\1\n\n",
+        text,
+    )
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def apply_reader_flow_and_online_delta_pass_2026_08_06(text: str) -> str:
+    """Reduce list fatigue and attach executable proofs for the latest contracts."""
+
+    replacements = (
+        (
+            """Есть и еще одно практическое правило:
+
+* если команда не может в одном абзаце объяснить, зачем здесь нужен именно агент, скорее всего, он пока не нужен;
+* если команда не может объяснить, зачем здесь нужна именно многоагентная схема, она почти наверняка преждевременна.""",
+            """Есть и еще одно практическое правило. Если команда не может в одном абзаце объяснить, зачем здесь нужен именно агент, вероятно, он пока не нужен. Если тем более не удается объяснить необходимость многоагентной схемы, такое усложнение почти наверняка преждевременно.""",
+            "chapter 2 agent necessity rule",
+        ),
+        (
+            """**Что такое координационный подход.** Координационный подход означает, что у вас есть один центральный координатор, который:
+
+* держит общую цель запуска;
+* решает, какого специалиста вызвать;
+* получает результаты обратно;
+* собирает финальный ответ или следующий план.
+
+Это похоже на модель «менеджер вызывает специалистов как инструменты».
+
+Плюсы координационного подхода:
+
+* единая точка контроля;
+* проще держать глобальную политику;
+* удобнее вести журнал аудита;
+* легче ограничивать бюджет и максимальное число шагов.
+
+Минусы:
+
+* координатор быстро превращается в узкое место;
+* в нем скапливается слишком много контекста;
+* система может стать хрупкой, если координатор ошибается в логике маршрутизации.""",
+            """**Что такое координационный подход.** Один центральный координатор удерживает общую цель запуска, выбирает специалиста, принимает его результат и собирает следующий план или итоговый ответ. Это модель «менеджер вызывает специалистов как инструменты»: точка контроля, глобальная политика, аудит и бюджет остаются в одном месте.
+
+Цена такой ясности — концентрация риска. Координатор может стать узким местом, накопить лишний контекст и сделать весь путь хрупким, если ошибется в маршрутизации. Поэтому его удобство нужно оценивать вместе с радиусом отказа, а не отдельно от него.""",
+            "chapter 2 coordinator trade-offs",
+        ),
+        (
+            """Плюсы передачи управления:
+
+* чище разделяются роли и владение;
+* проще изолировать контекст;
+* легче строить поведение для отдельных доменов;
+* меньше риск, что один центральный оркестратор станет перегруженным.
+
+Минусы:
+
+* сложнее видеть глобальную картину запуска;
+* сложнее строить единый аудиторский рассказ;
+* границы передачи управления нужно проектировать очень аккуратно;
+* выше риск потерять состояние, намерение или ограничения при передаче.
+
+**Самый полезный практический принцип.** Если коротко, то:
+
+* координационный подход лучше, когда вам нужен единый координационный центр;
+* передача управления лучше, когда задача естественно переходит между разными ролями или доменами.""",
+            """Передача управления чище разделяет роли, владение и контекст отдельных доменов и снимает нагрузку с центрального оркестратора. Одновременно глобальная картина и единый аудиторский рассказ становятся сложнее, а плохо спроектированная граница может потерять состояние, намерение или ограничение политики.
+
+**Самый полезный практический принцип.** Координационный подход выбирайте, когда нужен единый центр управления. Передачу управления выбирайте, когда сама работа естественно переходит между подотчетными ролями или доменами.""",
+            "chapter 2 handoff trade-offs",
+        ),
+        (
+            """Проблема здесь не в одном плохом ответе. Проблема в другом:
+
+* старая запись пережила исходный запуск;
+* ошибка превратилась в устойчивое поведение;
+* команда уже не сразу понимает, откуда вообще взялось это решение;
+* последствия всплывают позже и в другом контексте.""",
+            """Проблема здесь не в одном плохом ответе. Старая запись пережила исходный запуск, ошибка превратилась в устойчивое поведение, а ее происхождение стало неочевидным для команды. Последствия проявились позже и уже в другом контексте, где исходную причину труднее восстановить.""",
+            "chapter 7 memory failure narrative",
+        ),
+        (
+            """Без нее тот же агент поддержки быстро начинает раздражать и пользователей, и команду:
+
+* каждый раз заново спрашивает уже известные детали;
+* не помнит, что минуту назад уже проверял статус заявки;
+* плохо продолжает прерванный процесс;
+* повторно тянет одни и те же факты и увеличивает стоимость запуска.
+
+Развилка здесь не в духе «память нужна или нет». Развилка другая:
+
+* либо память делает систему полезнее и аккуратнее;
+* либо память превращает ее в менее предсказуемую, менее безопасную и более дорогую в сопровождении систему.""",
+            """Без памяти тот же агент поддержки каждый раз заново спрашивает известные детали, забывает недавно проверенный статус заявки и плохо продолжает прерванный процесс. Повторное извлечение одних и тех же фактов одновременно ухудшает опыт пользователя и увеличивает стоимость запуска.
+
+Поэтому развилка проходит не между наличием и отсутствием памяти. Хорошо спроектированная память делает систему полезнее и аккуратнее; бесконтрольная память делает ее менее предсказуемой, менее безопасной и более дорогой в сопровождении.""",
+            "chapter 7 memory value trade-off",
+        ),
+        (
+            """Когда команда говорит «добавим память», обычно смешиваются сразу несколько разных вещей:
+
+* краткоживущий контекст текущего запуска;
+* контекст сессии, который нужен только в пределах одной сессии;
+* профильная память с устойчивыми предпочтениями;
+* проверенные факты о пользователе или бизнес-сущности;
+* сводки прошлых сессий;
+* артефакты исполнения вроде результатов инструментов или заметок трассы.""",
+            """Когда команда говорит «добавим память», она часто смешивает краткоживущий контекст запуска, состояние сессии, устойчивые предпочтения, проверенные факты, сводки прошлых сессий и артефакты исполнения. У этих данных разные сроки жизни, владельцы и правила доверия, поэтому общее хранилище стирает именно те различия, которые затем нужны для контроля.""",
+            "chapter 7 memory classes",
+        ),
+        (
+            """В нашем сквозном сценарии поддержки это выглядит очень конкретно. После запуска у команды может появиться соблазн сохранить сразу все подряд:
+
+* промежуточные шаги проверки;
+* временная сводка сценария;
+* язык общения пользователя;
+* случайные наблюдения, которые вообще не должны пережить один запуск.""",
+            """В сквозном сценарии поддержки соблазн выглядит безобидно: сохранить промежуточные шаги проверки, временную сводку, язык общения пользователя и случайные наблюдения одним пакетом. Но часть этих данных нужна только сейчас, часть может жить дольше, а часть вообще не должна пережить запуск.""",
+            "chapter 8 memory scenario",
+        ),
+        (
+            """На практике у вас почти всегда есть как минимум три разных слоя:
+
+* краткосрочная память для текущего запуска или короткой серии шагов;
+* долговременная память для устойчивых знаний, сводок и фактов;
+* профильная память для предпочтений, ролей и привычек конкретного пользователя или аккаунта.""",
+            """На практике это как минимум три слоя. Краткосрочная память обслуживает текущий запуск или короткую серию шагов, долговременная хранит устойчивые знания, сводки и факты, а профильная описывает предпочтения, роли и привычки конкретного пользователя или аккаунта.""",
+            "chapter 8 memory layers",
+        ),
+        (
+            """Если эти слои не развести, агент начинает:
+
+* возвращать в подсказку слишком много старого шума;
+* путать предпочтения пользователя с фактами о мире;
+* сохранять временные наблюдения как долговременную истину;
+* ломать объяснимость, потому что уже непонятно, откуда взялся тот или иной кусок контекста.""",
+            """Если слои не развести, старый шум возвращается в подсказку, предпочтения пользователя смешиваются с фактами о мире, а временное наблюдение превращается в долговременную истину. Объяснимость ломается следом: команда больше не видит, из какого класса памяти пришел фрагмент и по какому правилу его выбрали.""",
+            "chapter 8 mixed memory consequences",
+        ),
+        (
+            """**Хорошая архитектура задает для каждого слоя свой вопрос.** Это очень помогает при проектировании:
+
+* краткосрочная память: что нужно помнить прямо сейчас, чтобы не потерять задачу?
+* долговременная память: что стоит сохранить, потому что это пригодится позже?
+* профильная память: что про этого пользователя или аккаунт действительно стабильно и полезно?""",
+            """**Хорошая архитектура задает для каждого слоя свой вопрос.** Краткосрочный слой отвечает, что нужно помнить прямо сейчас, чтобы не потерять задачу. Долговременный — что достаточно устойчиво и полезно для будущих запусков. Профильный — какие свойства пользователя или аккаунта действительно стабильны и оправдывают отдельное хранение.""",
+            "chapter 8 memory design questions",
+        ),
+        (
+            """**Шаг 2. Оценка политики определяет границы допустимого.** Слой политик определяет:
+
+* разрешена ли эта возможность для данного арендатора и действующего лица;
+* можно ли выполнять поиск по внутренним знаниям;
+* требует ли создание заявки подтверждения;
+* допустима ли делегированная авторизация;
+* нужен ли контракт проверяющего для обработки высокого риска.""",
+            """**Шаг 2. Оценка политики определяет границы допустимого.** Слой политик решает, разрешена ли возможность этому арендатору и действующему лицу, можно ли искать по внутренним знаниям и требует ли создание заявки подтверждения. Здесь же проверяются делегированная авторизация и необходимость контракта проверяющего для обработки высокого риска.""",
+            "chapter 16 policy decision prose",
+        ),
+        (
+            """Здесь глава 13 становится видимой как слой сырого набора доказательств. Запуск должен порождать структурированные события, по которым оператор потом увидит:
+
+* какие входные данные были приняты или отклонены;
+* какие вызовы инструментов были сделаны;
+* были ли повторы;
+* ставилась ли сессия на паузу;
+* редактировался ли вывод;
+* какая конкретная причина сбоя, например в поле `failure_reason`, сохранилась для деградировавших путей, показывалась ли она в описании для оператора вроде `latest_failure_reason` в момент проверки и продолжал ли этот запуск учитываться как `traceable_failed_runs` на уровне проверки сессии;
+* где именно система остановилась до побочных эффектов.""",
+            """Здесь глава 13 становится видимой как слой сырого набора доказательств. Структурированные события показывают, какие входы были приняты или отклонены, какие инструменты вызывались, происходили ли повторы, паузы и редактирование вывода. Для деградировавшего пути конкретная причина сохраняется в `failure_reason`, попадает в операторское описание `latest_failure_reason` и оставляет запуск в счетчике `traceable_failed_runs`; по той же цепочке видно, где система остановилась относительно внешнего эффекта.""",
+            "chapter 16 structured evidence prose",
+        ),
+        (
+            """Этот раздел не заменяет соседние главы:
+
+* глава 13 по-прежнему отвечает за сбор сырых доказательств;
+* глава 15 по-прежнему отвечает за проверяемое суждение;
+* глава 27 по-прежнему отвечает за политики в управляемой среде исполнения;
+* глава 23 по-прежнему отвечает за модель несоответствия целей и внутреннего риска;
+* глава 24 по-прежнему отвечает за реагирование, сдерживание и рекомендацию по готовности к выпуску;
+* глава 21 по-прежнему отвечает за происхождение, линию происхождения артефактов и доказательственный каркас.""",
+            """Этот раздел не заменяет соседние главы, а соединяет их. Глава 13 собирает сырые доказательства, глава 15 превращает их в проверяемое суждение, а глава 27 материализует политики в управляемой среде исполнения. Модель внутреннего риска остается в главе 23, реагирование и сдерживание — в главе 24, происхождение и доказательственный каркас артефактов — в главе 21.""",
+            "chapter 16 responsibility bridge",
+        ),
+        (
+            """Как только первые системы с ИИ-агентами доказывают полезность, в организации обычно начинается одна и та же история:
+
+* одна команда делает агента поддержки;
+* другая делает внутреннего агента знаний;
+* третья добавляет ассистента рабочего процесса;
+* четвертая быстро собирает узкоспециализированного агента под локальную задачу.
+
+Сами по себе эти решения могут быть разумными. Проблема начинается позже, когда никто уже не может быстро ответить:
+
+* сколько агентов вообще существует;
+* какие из них работают в промышленной среде, а какие «временные»;
+* кто их владелец;
+* какие возможности у них есть;
+* какие идентичности, соединители и принципалы инструментов они используют;
+* какие из них вообще еще живы;
+* какие из них все еще держат приостановленные подтверждения, фоновые маршруты, устаревшие пути контрактов или устаревшие контракты проверяющего.""",
+            """Как только первые системы с ИИ-агентами доказывают полезность, одна команда делает агента поддержки, другая — внутреннего агента знаний, третья добавляет ассистента рабочего процесса, а четвертая быстро собирает узкоспециализированное решение. Каждая инициатива по отдельности выглядит разумно; общая поверхность риска становится заметна позднее.
+
+Проблема начинается, когда никто не может быстро назвать число агентов, отделить промышленные системы от «временных» и установить их владельцев. Одновременно теряется связь с возможностями, идентичностями, соединителями и принципалами инструментов. Самые опасные экземпляры продолжают держать приостановленные подтверждения, фоновые маршруты или устаревшие версии контрактов уже после того, как команда перестала считать их живыми.""",
+            "chapter 19 registry sprawl narrative",
+        ),
+        (
+            """Но на практике разрастание быстро превращается в усилитель риска:
+
+* осиротевшие агенты продолжают жить без владельца;
+* устаревшие агенты сохраняют доступ к системам и данным;
+* разные команды по-разному трактуют подтверждения и границы политик;
+* покрытие наблюдаемостью становится фрагментарным;
+* дрейф инвентаря делает шлюзы выпуска и разбор инцидентов менее надежными.""",
+            """Так разрастание превращается в усилитель риска. Осиротевшие агенты живут без владельца, устаревшие сохраняют доступ к системам и данным, а разные команды по-разному трактуют подтверждения и границы политик. Фрагментарная наблюдаемость и дрейф инвентаря затем ослабляют шлюзы выпуска и расследование инцидентов.""",
+            "chapter 19 sprawl risks",
+        ),
+        (
+            """Чтобы контракт не превращался в свалку полей, его полезно держать как пять групп сигналов:
+
+1. Идентичность и область действия: кто действует, от чьего имени и в какой области клиента и запроса.
+2. Доказательства контроля: какие решения политик, подтверждения, квоты и сессии возможностей ограничивали запуск.
+3. Состояние исполнения: какая схема оркестрации выбрана, где запуск приостановлен, фоновый или делегированный и как он возобновлялся.
+4. Доказательства качества: какие выходы проверяющего, оценочные вердикты и атрибуция отказа связаны с результатом.
+5. Контекст выпуска и артефактов: какой набор, версия контракта и волна поэтапного выпуска поддерживали этот запуск.
+
+То есть трассы должны рассказывать не только «что упало», но и:
+
+* кто действовал;
+* через какой слой управления;
+* с какими правами;
+* по каким правилам;
+* в рамках какого набора артефактов;
+* с каким внешним действием.""",
+            """Чтобы контракт не превращался в свалку полей, держите пять смысловых групп. **Идентичность и область действия** показывают, кто действует и от чьего имени; **доказательства контроля** связывают политики, подтверждения, квоты и сессии возможностей. **Состояние исполнения** описывает оркестрацию, паузу, фон и возобновление, **доказательства качества** — выходы проверяющего и атрибуцию отказа, а **контекст выпуска** — набор артефактов, версию контракта и волну.
+
+Поэтому трасса должна объяснять не только «что упало», но и кто действовал, через какой слой управления, с какими правами и по каким правилам. Она же связывает внешний эффект с набором артефактов, который поддерживал запуск.""",
+            "chapter 22 telemetry signal groups",
+        ),
+        (
+            """Это значит, что телеметрия уже годится для:
+
+* расследования;
+* корреляции;
+* обнаружения злоупотреблений;
+* проверки контуров управления.
+
+Практически это означает:
+
+* единые идентификаторы;
+* стабильные схемы;
+* правила маскирования;
+* политику хранения;
+* связи между трассами, подтверждениями, решениями политик, состояниями управления средой исполнения, событиями сессии возможности, событиями схемы оркестрации, доказательствами проверяющего, идентичностью, контрактом проверяющего и артефактами жизненного цикла.""",
+            """Такая телеметрия пригодна одновременно для расследования, корреляции, обнаружения злоупотреблений и проверки контуров управления. Для этого нужны единые идентификаторы, стабильные схемы, правила маскирования и политика хранения.
+
+Главное требование — сохранить связи между трассами, подтверждениями, решениями политик и состояниями среды исполнения. К той же цепочке относятся события сессии возможности и оркестрации, доказательства и контракт проверяющего, идентичность выпуска и артефакты жизненного цикла.""",
+            "chapter 22 telemetry uses",
+        ),
+    )
+    for old, new, label in replacements:
+        text = _replace_editorial_anchor(text, old, new, label)
+
+    demoted_headings = (
+        (4, "Политика превращает идентичность в проверяемое решение"),
+        (4, "Каталог возможностей нужен не как реестр имен, а как контрактный слой"),
+        (4, "Что полезно хранить в каталоге возможностей"),
+        (4, "Политика выбирает не только возможность, но и исполнительный контур"),
+        (4, "Песочница — это не обязательно контейнер, а прежде всего режим ограничений"),
+        (4, "Нельзя считать внешнюю интеграцию просто функцией"),
+        (4, "Контракт сервера и граница доверия"),
+        (4, "Сокращенная поверхность инструментов для больших API"),
+        (4, "Эфемерная изоляция"),
+        (4, "Почему здесь вообще нужно вспоминать классический SDLC"),
+        (4, "Что сохраняется из классического SDLC"),
+        (4, "Где классический процесс становится недостаточным"),
+        (4, "ADLC как расширение инженерного цикла"),
+        (4, "Хороший ADLC начинается не с выпуска, а с приема инициативы и архитектурной проверки"),
+        (
+            4,
+            "Соревновательное тестирование нужно не для презентации, а для реальных режимов отказа",
+        ),
+        (4, "Уязвимости нужно вести как список работ, а не как впечатления"),
+        (4, "Обнаружение должно смотреть шире, чем частота ошибок"),
+        (3, "Корректность среды исполнения"),
+        (3, "Готовность безопасности и политик"),
+        (3, "Готовность возможностей"),
+        (3, "Готовность наблюдаемости и оценок"),
+        (3, "Готовность пути подтверждения"),
+        (3, "Операционная готовность"),
+    )
+    for level, heading in demoted_headings:
+        marker = f"{'#' * level} {heading}\n\n"
+        if text.count(marker) != 1:
+            raise ValueError(
+                f"Reader-flow heading {heading!r} must occur once; found {text.count(marker)}"
+            )
+        text = text.replace(marker, f"**{heading}.** ", 1)
+
+    insertions = (
+        (
+            "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: на уровне отдельного адаптера и на уровне всего ландшафта MCP.",
+            """**Отрицательная проверка в репозитории.** Безопасный транспорт сам по себе не понижает риск возможности. Сценарий создает критическую возможность с `sandboxed_exec`, пропускает запрос через настоящий слой политик эталонной среды и проверяет, что выполнение не началось.
+
+**Команда.** Запустите отрицательный сценарий из корня репозитория:
+
+```console
+uv run python docs/companion/examples/run_lab_negative_scenario.py \\
+  high-risk-safe-transport
+```
+
+**Ожидаемый результат.** Решение и исход остаются `approval_required`, внешний эффект не начат:
+
+**Вывод программы.** Существенные поля результата:
+
+```json
+{
+  "decision": "approval_required",
+  "status": "approval_required",
+  "transport": "sandboxed_exec",
+  "execution_started": false,
+  "effect_state": "not_executed"
+}
+```
+
+Эта проверка отделяет два разных утверждения. Песочница ограничивает способ исполнения, а политика решает, разрешено ли вообще переходить к исполнению. Замена шлюза на песочницу не может неявно отменить подтверждение.""",
+            "chapter 11 transport risk proof",
+        ),
+        (
+            "**Что чаще всего ломает рабочий цикл.** Проблемы обычно довольно типовые:",
+            """**Отрицательная проверка в репозитории.** Даже корректное действие `freeze_reinitialization` нельзя считать готовым к исполнению, если у решения нет владельца. Сценарий удаляет владельца после формирования структурированного решения и запускает проверку полноты доказательства.
+
+**Команда.** Запустите отрицательный сценарий из корня репозитория:
+
+```console
+uv run python docs/companion/examples/run_lab_negative_scenario.py \\
+  assurance-owner-missing
+```
+
+**Ожидаемый результат.** Решение блокируется, но тип события сохраняется для расследования:
+
+**Вывод программы.** Существенные поля результата:
+
+```json
+{
+  "ready": false,
+  "action": "freeze_reinitialization",
+  "evidence_event": "assurance_response_decision",
+  "missing_fields": ["owner"],
+  "blocking_findings": ["assurance_decision_owner_missing"]
+}
+```
+
+Такой отказ важнее автоматической подстановки дежурной команды: система не должна притворяться, что ответственность назначена, если реального владельца решения установить нельзя.""",
+            "chapter 24 missing owner proof",
+        ),
+        (
+            "**Что можно не усложнять в первой эталонной версии.** На старте не обязательно сразу добавлять:",
+            """**Отрицательная проверка в репозитории.** Сценарий моделирует истечение аренды: исполнитель `worker-a` получает версию 2, после перехвата запуска `worker-b` запись переходит к версии 3, а первый исполнитель пытается завершить работу со старым `expected_version`.
+
+**Команда.** Запустите отрицательный сценарий из корня репозитория:
+
+```console
+uv run python docs/companion/examples/run_lab_negative_scenario.py \\
+  stale-run-completion
+```
+
+**Ожидаемый результат.** Устаревшее завершение отвергается до фиксации эффекта, а область идемпотентности остается связанной с исходным запуском:
+
+**Вывод программы.** Существенные поля результата:
+
+```json
+{
+  "accepted": false,
+  "reason": "expected_version_mismatch",
+  "stale_worker": "worker-a",
+  "lease_owner": "worker-b",
+  "expected_version": 2,
+  "current_version": 3,
+  "idempotency_scope": "run-lease-demo",
+  "effect_state": "not_executed"
+}
+```
+
+Проверка не доказывает промышленную надежность хранилища, но делает видимым ключевой инвариант: право старого исполнителя завершить работу исчезает вместе с его версией аренды.""",
+            "chapter 26 stale lease proof",
+        ),
+    )
+    for anchor, block, label in insertions:
+        text = _replace_editorial_anchor(text, anchor, f"{block}\n\n{anchor}", label)
+
+    text = _replace_editorial_anchor(
+        text,
+        "    # Production adds policy checks, a gateway, and typed adapters\n"
+        "    # before this call.",
+        "    # В промышленной среде перед этим вызовом добавляются проверки\n"
+        "    # политик, шлюз и типизированные адаптеры.",
+        "chapter 10 English code comment",
+    )
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def apply_publication_readiness_pass_2026_08_14(text: str) -> str:
+    """Expose the live companion and make the recurring case read as one story."""
+
+    companion_intro_anchor = "ложной уверенности и делает практику переносимой между платформами."
+    companion_intro = f"""{companion_intro_anchor}
+
+Для актуальных машинных контрактов, команд и загружаемых примеров используйте
+[Online Companion]({ONLINE_COMPANION_URL}). Он дополняет печатное объяснение,
+но не заменяет закрепленную ниже ревизию репозитория.
+
+![QR-код Online Companion для практических материалов книги](visuals/ru-online-companion-qr.png)
+
+QR-код ведет на стабильную читательскую страницу, откуда доступны конфигурации,
+команды, каталоги событий и наборы для оценки."""
+    text = _replace_editorial_anchor(
+        text,
+        companion_intro_anchor,
+        companion_intro,
+        "online companion reader entry",
+    )
+
+    appendix_anchor = (
+        "Маршрут приложения последовательный: сначала воспроизведите быстрый запуск, "
+        "затем сопоставьте результат с картой модулей, выполните положительные и "
+        "отрицательные проверки, разберите контрактные примеры и завершите "
+        "самопроверкой. Точки входа во все машинные материалы собраны в "
+        "`docs/companion/index.md`."
+    )
+    appendix_replacement = f"""Маршрут приложения последовательный: сначала воспроизведите быстрый запуск, затем сопоставьте результат с картой модулей, выполните положительные и отрицательные проверки, разберите контрактные примеры и завершите самопроверкой. Электронная точка входа — [Online Companion]({ONLINE_COMPANION_URL}); исходная карта материалов находится в `docs/companion/index.md`."""
+    text = _replace_editorial_anchor(
+        text,
+        appendix_anchor,
+        appendix_replacement,
+        "online companion appendix entry",
+    )
+
+    reference_links = (
+        (
+            "Полный машинный контракт приведен в `docs/companion/runtime-reference/configs.md`.",
+            f"Полный машинный контракт приведен в [справочнике конфигураций]({ONLINE_COMPANION_URL}runtime-reference/configs/); исходный файл — `docs/companion/runtime-reference/configs.md`.",
+            "companion configs link",
+        ),
+        (
+            "Формат ответа приведен в `docs/companion/runtime-reference/cli.md`.",
+            f"Формат ответа приведен в [справочнике команд]({ONLINE_COMPANION_URL}runtime-reference/cli/); исходный файл — `docs/companion/runtime-reference/cli.md`.",
+            "companion cli link",
+        ),
+        (
+            "Машинная форма приведена в `docs/companion/runtime-reference/eval-datasets.md`; здесь важен инвариант, а не каталог имен.",
+            f"Машинная форма приведена в [справочнике наборов для оценки]({ONLINE_COMPANION_URL}runtime-reference/eval-datasets/); исходный файл — `docs/companion/runtime-reference/eval-datasets.md`. Здесь важен инвариант, а не каталог имен.",
+            "companion eval datasets link",
+        ),
+        (
+            "Машинная схема событий, типы полей и проверки приведены в `docs/companion/runtime-reference/traces-and-events.md`.",
+            f"Машинная схема событий, типы полей и проверки приведены в [справочнике трасс и событий]({ONLINE_COMPANION_URL}runtime-reference/traces-and-events/); исходный файл — `docs/companion/runtime-reference/traces-and-events.md`.",
+            "companion traces link",
+        ),
+    )
+    for old, new, label in reference_links:
+        text = _replace_editorial_anchor(text, old, new, label)
+
+    chapter_thirteen = extract_chapter(text, 13)
+    recurring_case = """Продолжим тот же сценарий поддержки.
+
+Пользователь пишет:
+
+\\> Я уже третий день жду активации доступа. Проверьте статус и создайте срочную заявку, если заявка застряла.
+
+Агент отвечает пользователю, что заявка создана. Через десять минут оператор видит в системе поддержки уже две одинаковые заявки на одну и ту же проблему."""
+    callback = """Вернемся к запросу об активации доступа из главы 10. Там агент должен был проверить статус и создать срочную заявку только для застрявшего процесса. Теперь предположим, что он сообщил об успехе, а через десять минут оператор увидел в системе поддержки две одинаковые заявки на одну и ту же проблему."""
+    revised_chapter_thirteen = _replace_editorial_anchor(
+        chapter_thirteen,
+        recurring_case,
+        callback,
+        "chapter 13 recurring case callback",
+    )
+    revised_chapter_thirteen = revised_chapter_thirteen.replace(
+        "до того, как среда исполнения увидел ошибку",
+        "до того, как среда исполнения увидела ошибку",
+        1,
+    )
+    text = _replace_editorial_anchor(
+        text,
+        chapter_thirteen,
+        revised_chapter_thirteen,
+        "chapter 13 callback",
+    )
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def apply_technical_book_polish_2026_08_17(text: str) -> str:
+    """Tighten the remaining prose and make code-reading outcomes explicit."""
+
+    replacements = (
+        (
+            "* есть логирование.",
+            "* есть ведение журналов.",
+            "chapter 4 Russian-first journal terminology",
+        ),
+        (
+            "Шлюз модели не завершает границу доверия. За ним находится отдельный `model_provider` или собственный контур размещения модели. Для каждого маршрута фиксируйте допустимые классы данных, регион, хранение, использование данных для обучения и мониторинга злоупотреблений, изоляцию арендаторов, версию модели, аутентификацию и условия резервного маршрута; резервный маршрут не должен расширять эти условия.",
+            "Шлюз модели не завершает границу доверия. За ним находится отдельный `model_provider` или собственный контур размещения модели. Для каждого маршрута фиксируйте допустимые классы данных, регион, хранение, использование данных для обучения и мониторинга злоупотреблений, изоляцию арендаторов, версию модели и аутентификацию. Условия резервного маршрута проверяются отдельно. Он не должен расширять ограничения основного пути.",
+            "chapter 4 model route sentence",
+        ),
+        (
+            "**Видимая поверхность инструментов не равна управляемой поверхности возможностей.** Материал OpenAI по инструментам (см. источник **S058**) полезен тем, что проводит различие, которое на практике размывают многие команды: модель может видеть инструменты, серверы MCP, размещенные возможности или локальные функции, но среда исполнения все равно должна решать, к какой поверхности управления все это относится.\n\nЭто различие важно.",
+            "**Видимая поверхность инструментов не равна управляемой поверхности возможностей.** Материал OpenAI по инструментам (см. источник **S058**) проводит различие, которое на практике размывают многие команды: модель может видеть инструменты, серверы MCP, размещенные возможности или локальные функции, но среда исполнения все равно решает, к какой поверхности управления все это относится.\n\nОт этого различия зависит точка принудительного контроля: видимость помогает модели выбрать действие, а право на исполнение выдает только слой политик.",
+            "chapter 5 capability surface transition",
+        ),
+        (
+            "Это не только безопасность. Это еще и контроль радиуса поражения.",
+            "Песочница одновременно защищает границу исполнения и ограничивает радиус ущерба.",
+            "chapter 11 sandbox transition",
+        ),
+        (
+            "Вот здесь и начинается контур оценки. В этой книге его нужно читать узко и предметно: как оценочный слой, который решает, заслуживает ли изменение доверия до расширения поэтапного выпуска.",
+            "Контур оценки отвечает на этот вопрос выпускным решением: заслуживает ли изменение доверия до расширения поэтапного выпуска. В этой главе нас интересует именно эта инженерная роль, а не каталог инструментов оценки.",
+            "chapter 15 evaluation opening",
+        ),
+        (
+            "После выпуска сигнал должен получить владельца, статус, доказательства и срок устранения.\n\n**После выпуска начинается непрерывная проверка.**",
+            "**После выпуска начинается непрерывная проверка.**",
+            "chapter 24 duplicate signal transition",
+        ),
+        (
+            "Это слабый подход.",
+            "Разовая демонстрация не проверяет устойчивость контроля.",
+            "chapter 24 adversarial testing transition",
+        ),
+        (
+            "Идея здесь очень простая: даже базовая среда исполнения уже должна явно показывать проверки политик, извлечение, исполнение инструментов и фоновые обновления как отдельные этапы.",
+            "Листинг делает четыре контрольные точки наблюдаемыми: проверку политики, извлечение контекста, исполнение инструмента и постановку фонового обновления.",
+            "chapter 26 orchestrator explanation",
+        ),
+        (
+            "Для агентной платформы обычно есть как минимум семь обязательных блоков:",
+            "Для агентной платформы обычно есть как минимум восемь обязательных блоков:",
+            "chapter 28 checklist count",
+        ),
+        (
+            "Нужны артефакты поэтапного выпуска? Если вам нужен проверяемый слой поверх текста главы, смотрите схему проверки изменений и шлюза поэтапного выпуска и схему артефактов жизненного цикла.",
+            "Проверяемый слой над текстом главы дают схема проверки изменений, шлюз поэтапного выпуска и схема артефактов жизненного цикла.",
+            "chapter 28 artifact transition",
+        ),
+        (
+            "У этого фрагмента есть важная граница. Возврат `approval_required` означает паузу, а не успех задачи. Производственная среда должна сохранить состояние, дождаться решения, повторно проверить полномочия и продолжить тот же запуск. Учебная реализация показывает контракт запроса и решения, но не является долговечным механизмом возобновления.",
+            "**Ожидаемый результат листинга 32.** Решение `deny` завершает путь до адаптера, а `approval_required` создает запрос подтверждения и ставит тот же запуск на паузу. Только `allow` достигает `execute_tool`.\n\n**Признак ошибки в листинге 32.** Прямой переход к `execute_tool`, успешный статус для `approval_required` или продолжение без повторной проверки полномочий означают обход точки принудительного контроля.\n\n**Архитектурный смысл листинга 32.** Политика управляет переходом состояния, а не комментирует уже выполненное действие. Учебная реализация показывает контракт запроса и решения, но не является долговечным механизмом возобновления.",
+            "chapter 27 listing 32 explanation",
+        ),
+        (
+            "Каждая ветка обязана вернуть результат в агентный цикл. Если перехватчик запроса не смог проверить токен, политика отказала, инструмент завершился по тайм-ауту или перехватчик ответа заблокировал утечку, модель получает типизированное наблюдение с безопасной причиной. Это сохраняет причинность и не подталкивает модель угадывать, был ли вызов выполнен.",
+            "**Ожидаемый результат листинга 33.** Каждая ветка обязана вернуть в агентный цикл типизированный исход с безопасной причиной и известным состоянием внешнего эффекта либо явным требованием сверки.\n\n**Признак ошибки в листинге 33.** Вызов шлюза до `allow`, необработанный ответ как резерв после сбоя перехватчика или потеря `side_effect_status` разрывают причинность и заставляют модель угадывать, был ли вызов выполнен.\n\n**Архитектурный смысл листинга 33.** Симметричные перехватчики защищают обе стороны побочного эффекта: запрос получает доверенный контекст до авторизации, а ответ проходит санитарную обработку до возврата модели.",
+            "chapter 27 listing 33 explanation",
+        ),
+        (
+            "При изменении значимого поля требуется новое решение. Это защищает не только от атаки, но и от обычной гонки состояний, когда оператор подтверждал одну заявку, а среда исполнения уже собирается отправить другую.",
+            "**Ожидаемый результат листинга 34.** Одинаковое каноническое действие дает тот же отпечаток в пределах срока решения; изменение любого значимого поля дает новый отпечаток и требует нового подтверждения.\n\n**Признак ошибки в листинге 34.** Если измененные аргументы, субъект, область делегирования, версия политики, срок или одноразовое значение сохраняют прежний отпечаток, подтверждение можно применить к другому действию.\n\n**Архитектурный смысл листинга 34.** Отпечаток связывает человеческое решение с неизменным намерением и закрывает как намеренную подмену, так и обычную гонку состояний.",
+            "chapter 27 listing 34 explanation",
+        ),
+    )
+    for old, new, label in replacements:
+        text = _replace_editorial_anchor(text, old, new, label)
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def _sync_trajectory_policy_chapter(
+    text: str,
+    heading: str,
+    section: str,
+    local_source: str,
+) -> str:
+    chapter = extract_chapter(text, 27)
+    heading_count = len(re.findall(rf"(?m)^{re.escape(heading)}$", chapter))
+    if heading_count > 1:
+        raise ValueError("Chapter 27 contains duplicate trajectory-policy sections")
+    if heading_count == 0:
+        anchor = "### Минимальный путь запроса в коде"
+        if chapter.count(anchor) != 1:
+            raise ValueError("Chapter 27 trajectory-policy insertion anchor must occur once")
+        revised_chapter = chapter.replace(
+            anchor,
+            section + "\n\n" + anchor,
+            1,
+        )
+        text = text.replace(chapter, revised_chapter, 1)
+        chapter = revised_chapter
+    else:
+        section_start = chapter.index(heading)
+        section_tail = chapter[section_start + len(heading) :]
+        section_end_match = re.search(r"(?m)^### ", section_tail)
+        section_end = (
+            section_start + len(heading) + section_end_match.start()
+            if section_end_match is not None
+            else len(chapter)
+        )
+        existing_section = chapter[section_start:section_end].strip()
+        if existing_section != section:
+            revised_chapter = (
+                chapter[:section_start] + section + "\n\n" + chapter[section_end:].lstrip()
+            )
+            text = text.replace(chapter, revised_chapter, 1)
+            chapter = revised_chapter
+
+    local_sources = re.findall(r"(?m)^\*\*S123\.\*\*.*$", chapter)
+    if len(local_sources) > 1:
+        raise ValueError("Chapter 27 contains duplicate S123 source entries")
+    if local_sources:
+        if local_sources[0] != local_source:
+            revised_chapter = chapter.replace(local_sources[0], local_source, 1)
+            text = text.replace(chapter, revised_chapter, 1)
+    else:
+        revised_chapter = chapter.rstrip() + "\n\n" + local_source
+        text = text.replace(chapter, revised_chapter, 1)
+    return text
+
+
+def _sync_trajectory_policy_bibliography(text: str, full_source: str) -> str:
+    appendix_start = text.index("## Приложение 4\\. Источники и дополнительные онлайн-материалы")
+    additional_reading_start = text.index("### Дополнительное чтение", appendix_start)
+    cited_sources = text[appendix_start:additional_reading_start]
+    source_entries = re.findall(r"(?m)^\*\*S123\.\*\*.*$", cited_sources)
+    if len(source_entries) > 1:
+        raise ValueError("Bibliography contains duplicate S123 source entries")
+    if source_entries:
+        if source_entries[0] != full_source:
+            revised_sources = cited_sources.replace(source_entries[0], full_source, 1)
+            text = text[:appendix_start] + revised_sources + text[additional_reading_start:]
+    else:
+        text = (
+            text[:additional_reading_start].rstrip()
+            + "\n\n"
+            + full_source
+            + "\n\n"
+            + text[additional_reading_start:]
+        )
+    return text
+
+
+def apply_trajectory_policy_sync_2026_08_23(text: str) -> str:
+    """Add the trajectory-policy contract and its source apparatus once."""
+
+    heading = "### Политика последовательности проверяет всю траекторию"
+    section = f"""{heading}
+
+Проверка каждого вызова по отдельности не закрывает риск всей последовательности. Чтение счета и перевод могут быть разрешены сами по себе, но перевод на реквизиты, не совпадающие с результатом чтения, должен быть запрещен. Несколько покупок могут по отдельности укладываться в порог подтверждения, но вместе превысить бюджет. Допустимый повтор может стать опасным циклом, если накопленный расход уже исчерпан (см. источник **S123**).
+
+Политика последовательности оценивает траекторию перед очередным внешним действием. Кроме текущих субъекта, действия, ресурса и контекста она проверяет выполненные предварительные шаги, нормализованные отпечатки значимых значений, накопленные счетчики, окно времени, состояние подтверждения и версию политики. Эта история решений хранится вне контекста модели и вне сжатой сводки. Модель может предложить следующий шаг, но не может переписать доказательство того, что уже произошло.
+
+Решение записывается отдельным событием `trajectory_policy_decision`: правило, наблюдаемая последовательность, счетчики, причина и итоговое решение. Ограничения частоты дополняют этот контракт, но не заменяют его. Они ограничивают частоту, токены или длительность соединения, а политика последовательности проверяет смысл порядка и накопленного эффекта.
+
+Листинг 32 ниже показывает контроль только одного вызова. Исполняемый пример политики траектории находится в `docs/companion/examples/run_trajectory_policy_scenarios.py`. Эталонный вычислитель решений намеренно не реализует распределенное долговечное хранилище истории, блокировки или сравнение и обмен (`compare-and-swap`, `CAS`), атомарную фиксацию действия вместе со счетчиком и восстановление после сбоя. Эти механизмы остаются обязательной частью промышленной границы."""
+
+    local_source = "**S123.** AWS, Control agent behaviors and cost beyond a single action."
+    text = _sync_trajectory_policy_chapter(text, heading, section, local_source)
+
+    source_url = (
+        "https://aws.amazon.com/blogs/machine-learning/"
+        "control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-"
+        "in-amazon-bedrock-agentcore/"
+    )
+    full_source = (
+        "**S123.** [AWS, Control agent behaviors and cost beyond a single action: "
+        f"New capabilities in Amazon Bedrock AgentCore]({source_url}), "
+        "дата обращения: 20 августа 2026 года."
+    )
+    text = _sync_trajectory_policy_bibliography(text, full_source)
+
+    if text.count(source_url) != 1:
+        raise ValueError("Publisher manuscript must contain the S123 URL exactly once")
+    return text
+
+
+def apply_reader_listing_polish_2026_08_23(text: str) -> str:
+    """Make selected listings easier to identify, verify, and revisit."""
+
+    def replace_or_verify(current: str, old: str, new: str, label: str) -> str:
+        old_count = current.count(old)
+        new_count = current.count(new)
+        if old_count == 1 and new_count == 0:
+            return current.replace(old, new, 1)
+        if old_count == 0 and new_count == 1:
+            return current
+        raise ValueError(
+            f"Editorial anchor {label!r} has invalid old/new counts: "
+            f"{old_count}/{new_count}"
+        )
+
+    replacements = (
+        (
+            "**Листинг 12. Важно различать инструменты чтения и инструменты записи.**",
+            "**Листинг 12. Контракты инструментов чтения и записи.**",
+            "listing 12 caption",
+        ),
+        (
+            "**Листинг 16. Хороший контракт выполнения хранит операционную семантику явно.**",
+            "**Листинг 16. Операционная семантика `create_ticket` и `send_email`.**",
+            "listing 16 caption",
+        ),
+        (
+            "**Листинг 21. Зачем нужен отдельный слой схем.**",
+            "**Листинг 21. Запись проверки высокорискового изменения.**",
+            "listing 21 caption",
+        ),
+        (
+            "**Листинг 25. Куда исследовательская повестка двигает наблюдаемость дальше.**",
+            "**Листинг 25. Политика покрытия наблюдаемостью и блокирующих слепых зон.**",
+            "listing 25 caption",
+        ),
+        (
+            "**Листинг 36. Как запустить.**",
+            "**Листинг 36. Ожидаемое состояние запуска с обязательным подтверждением.**",
+            "listing 36 caption",
+        ),
+        (
+            "**Листинг 37. Контрактные примеры.**",
+            "**Листинг 37. Минимальный профиль песочницы.**",
+            "listing 37 caption",
+        ),
+        (
+            "### Что Викулин поставил правильно, и чего сегодня уже недостаточно",
+            "### Что Викулин поставил правильно и какие ограничения остаются",
+            "durable Viculin heading",
+        ),
+        (
+            "Разбор Anthropic про многоагентную исследовательскую систему (см. источник **S020**) полезен именно тем, что показывает не демо, а экономику промышленного применения такого выбора.",
+            "Разбор Anthropic про многоагентную исследовательскую систему (см. источник **S020**) показывает не демонстрацию, а экономику промышленного применения такого выбора.",
+            "chapter 2 direct source framing",
+        ),
+        (
+            "Материал OpenAI по структурированным ответам (см. источник **S059**) полезен и для слоя политик.",
+            "Материал OpenAI по структурированным ответам (см. источник **S059**) применим и к слою политик.",
+            "chapter 5 direct source framing",
+        ),
+        (
+            "**Как читать листинг.** Обратите внимание на фиксированный план: специалисты не получают право самовольно менять порядок шагов или бюджет выполнения.",
+            "**Как читать листинг.** Обратите внимание на фиксированный порядок трех вызовов и передачу накопленных результатов; бюджеты, тайм-ауты и отмена в этом псевдокоде еще не заданы.",
+            "listing 2 reading guide",
+        ),
+        (
+            "**Как читать листинг.** Проследите версионирование схемы и ссылки на доказательства, без которых декларативная запись остается непроверяемым описанием.",
+            "**Как читать листинг.** Проследите связь изменения, владельца, уровня риска, обязательных проверок и оценок; затем отметьте, что промышленному контракту еще нужны версия схемы и ссылки на доказательства.",
+            "listing 21 reading guide",
+        ),
+        (
+            "**Как читать листинг.** Сопоставьте конфигурации между собой и найдите связи идентичности, политики, памяти, изоляции и выпускного решения.",
+            "**Как читать листинг.** Проследите четыре границы одного профиля: рабочие материалы, возможности, разрешения и состояние; затем проверьте, как окружающие конфигурации связывают его с идентичностью, политикой и выпускным решением.",
+            "listing 37 reading guide",
+        ),
+        (
+            "**Пять опор эксплуатационной платформы.** Свежие материалы Google Cloud полезны тем, что предлагают еще одну удобную рамку: не «один умный агент», а пять опор эксплуатационной платформы.",
+            "**Пять опор эксплуатационной платформы.** Материалы Google Cloud предлагают еще одну удобную рамку: не «один умный агент», а пять опор эксплуатационной платформы.",
+            "durable Google Cloud framing",
+        ),
+        (
+            "Свежие исследовательские статьи по наблюдаемости для агентов идут еще дальше: они пытаются превратить трассы из удобного журнала событий в слой причинной диагностики.",
+            "Исследования наблюдаемости для агентов развивают эту идею дальше: трассы становятся не только журналом событий, но и слоем причинной диагностики.",
+            "durable observability research framing",
+        ),
+        (
+            "Свежие материалы о промышленных агентных системах сходятся в одной практической границе: прикладной каркас, испытательно-управляющий контур и среду исполнения нельзя смешивать.",
+            "Материалы о промышленных агентных системах сходятся в одной практической границе: прикладной каркас, испытательно-управляющий контур и среду исполнения нельзя смешивать.",
+            "durable production systems framing",
+        ),
+        (
+            "Одна из самых практичных мыслей из свежих Google-материалов состоит в том, что память надо мыслить как управляемую подсистему, а не как «просто хранилище для контекста».",
+            "Одна из самых практичных мыслей из материалов Google состоит в том, что память надо мыслить как управляемую подсистему, а не как «просто хранилище для контекста».",
+            "durable Google memory framing",
+        ),
+        (
+            "В свежей архитектурной рамке это формулируется жестче: память и извлечение являются отдельными управляемыми подсистемами, а не удобным приложением к подсказке.",
+            "В архитектурной рамке это формулируется жестче: память и извлечение являются отдельными управляемыми подсистемами, а не удобным приложением к подсказке.",
+            "durable memory architecture framing",
+        ),
+        (
+            "Свежие исследовательские работы по памяти подталкивают архитектуру еще дальше: не просто хранить записи и иногда их сжимать, а постепенно перестраивать слой памяти под реальные подходы использования.",
+            "Исследования памяти развивают архитектуру дальше: предлагается не просто хранить записи и иногда их сжимать, а постепенно перестраивать слой памяти под реальные подходы использования.",
+            "durable adaptive memory framing",
+        ),
+        (
+            "Свежие работы по сценариям отказов инструментов усиливают еще одну мысль: путь восстановления почти никогда не стоит оставлять как импровизацию слоя выполнения.",
+            "Исследования сценариев отказов инструментов усиливают еще одну мысль: путь восстановления почти никогда не стоит оставлять как импровизацию слоя выполнения.",
+            "durable tool recovery framing",
+        ),
+        (
+            "Полезное уточнение из свежих работ по проектированию проверяющего состоит в том, что офлайн-оценки не стоит завязывать только на бинарной метке успеха.",
+            "Исследования проектирования проверяющего уточняют, что офлайн-оценки не стоит завязывать только на бинарной метке успеха.",
+            "durable verifier research framing",
+        ),
+        (
+            "Еще один полезный сигнал свежих работ: агент может выглядеть разумно в коротком сценарии и при этом постепенно входить в противоречие с самим собой в длинном контуре взаимодействия.",
+            "Исследования многоходовой согласованности показывают: агент может выглядеть разумно в коротком сценарии и при этом постепенно входить в противоречие с самим собой в длинном контуре взаимодействия.",
+            "durable multi-turn consistency framing",
+        ),
+        (
+            "Исследовательский фронтир: свежие статьи про память, наблюдаемость, проектирование проверяющих и надежность многоагентных систем.",
+            "Исследовательский фронтир: статьи о памяти, наблюдаемости, проектировании проверяющих и надежности многоагентных систем.",
+            "durable research appendix framing",
+        ),
+        (
+            "Если нужна текущая инженерная практика, смотрите платформенные документы и свежие исследования, но всегда учитывайте дату публикации.",
+            "Для инженерной практики смотрите платформенные документы и исследования, всегда учитывая дату публикации.",
+            "durable source guidance",
+        ),
+        (
+            "Быстро меняющийся слой: инструменты оценивания, проектирование проверяющих, управление реестром, свежие исследования и свежие сценарии.",
+            "Практический слой: инструменты оценивания, проектирование проверяющих, управление реестром, исследования и сценарии.",
+            "durable source layer framing",
+        ),
+    )
+    for old, new, label in replacements:
+        text = replace_or_verify(text, old, new, label)
+
+    old_path = "approval → resume → execute → audit"
+    new_path = "approval -> resume -> execute -> audit"
+    old_path_count = text.count(old_path)
+    new_path_count = text.count(new_path)
+    if old_path_count == 3 and new_path_count == 0:
+        text = text.replace(old_path, new_path)
+    elif old_path_count != 0 or new_path_count != 3:
+        raise ValueError(
+            "Durable approval path has invalid old/new counts: "
+            f"{old_path_count}/{new_path_count}"
+        )
+
+    explanations = (
+        (
+            "Здесь координатор не «умничает» бесконечно. Он держит план, вызывает специалистов и собирает результат.",
+            """**Ожидаемый результат листинга 2.** Координатор вызывает `research`, `draft` и `review` в фиксированном порядке и возвращает словарь результатов каждого этапа.
+
+**Признак ошибки в листинге 2.** Если при адаптации рабочие этапы смогут добавлять новые шаги, менять порядок или работать без лимита времени и стоимости, фиксированный список `plan` уже не ограничит выполнение.
+
+**Архитектурный смысл листинга 2.** Координатор централизует порядок и сбор доказательств, но промышленный контракт должен отдельно добавить бюджеты, отмену и условия остановки для каждого рабочего этапа.""",
+            "listing 2 outcome explanation",
+        ),
+        (
+            "Даже такой простой код уже задает правильную форму для телеметрии, потоков подтверждения в интерфейсе и расследований.",
+            """**Ожидаемый результат листинга 6.** Читающая возможность получает `allow`, записывающая — `approval_required`, а неизвестная — `deny`; каждое решение сохраняет причину и идентификатор политики.
+
+**Признак ошибки в листинге 6.** Логическое значение без причины, версии правила и отдельного состояния подтверждения нельзя надежно связать с интерфейсом, трассой и расследованием.
+
+**Архитектурный смысл листинга 6.** Типизированное решение отделяет предложение модели от права на исполнение и превращает политику в проверяемую точку перехода состояния.""",
+            "listing 6 outcome explanation",
+        ),
+        (
+            "Это выглядит прозаично. И это хорошо. Чем меньше магии в контрактном слое, тем устойчивее инструментальная часть системы.",
+            """**Ожидаемый результат листинга 12.** Контракт отличает чтение с низким риском от записи с высоким риском и требует для `create_ticket` ключ идемпотентности вместе с ограниченной схемой аргументов.
+
+**Признак ошибки в листинге 12.** Описание `kind: write` или `idempotent: true` само по себе ничего не исполняет: прямой вызов адаптера без политики, подтверждения и сверки внешнего эффекта остается обходом контроля.
+
+**Архитектурный смысл листинга 12.** Каталог описывает допустимую возможность, а слой выполнения принудительно применяет ее риск, подтверждение, идемпотентность и правила обработки неопределенного результата.""",
+            "listing 12 outcome explanation",
+        ),
+    )
+    for old, new, label in explanations:
+        text = replace_or_verify(text, old, new, label)
+
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
+def link_print_chapters_to_companion_map_2026_08_23(text: str) -> str:
+    """Give print readers one stable route from chapters to online practice."""
+
+    anchor = f"""Для актуальных машинных контрактов, команд и загружаемых примеров используйте
+[Online Companion]({ONLINE_COMPANION_URL}). Он дополняет печатное объяснение,
+но не заменяет закрепленную ниже ревизию репозитория."""
+    replacement = f"""{anchor}
+Карта «печатная глава → онлайн-раздел → практика» доступна
+[на той же странице]({ONLINE_COMPANION_URL}#chapter-map)."""
+    old_count = text.count(anchor)
+    new_count = text.count(replacement)
+    if old_count == 1 and new_count == 0:
+        return text.replace(anchor, replacement, 1)
+    if new_count == 1:
+        return text
+    raise ValueError(
+        "Front matter companion chapter-map anchor has invalid old/new counts: "
+        f"{old_count}/{new_count}"
+    )
 
 
 def revise(source: Path, output: Path, manifest_path: Path) -> None:
@@ -15330,6 +17614,14 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_editorial_pass_2026_08_01(text)
     text = apply_reader_experience_pass_2026_08_01(text)
     text = apply_technical_book_polish_2026_08_02(text)
+    text = apply_final_quality_pass_2026_08_03(text)
+    text = apply_editorial_structure_pass_2026_08_03(text)
+    text = apply_reader_flow_and_online_delta_pass_2026_08_06(text)
+    text = apply_publication_readiness_pass_2026_08_14(text)
+    text = apply_technical_book_polish_2026_08_17(text)
+    text = apply_trajectory_policy_sync_2026_08_23(text)
+    text = apply_reader_listing_polish_2026_08_23(text)
+    text = link_print_chapters_to_companion_map_2026_08_23(text)
     text = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
 
     output.parent.mkdir(parents=True, exist_ok=True)

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 import shutil
 import struct
@@ -157,6 +156,167 @@ def test_required_occurrence_replacements_are_ordered_and_fail_closed() -> None:
             "alpha",
             (("beta", "gamma", 1),),
         )
+
+
+def test_final_quality_replacement_helpers_preserve_order_and_counts() -> None:
+    replacements = (
+        ("alpha", "beta", "first"),
+        ("beta", "gamma", "second"),
+    )
+    assert revision_tool._replace_final_quality_anchors("alpha\n", replacements) == "gamma\n"
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Final quality anchor 'first' must occur once; found 2$",
+    ):
+        revision_tool._replace_final_quality_anchors("alpha alpha\n", replacements)
+
+    listing = "**Листинг 4. Demo.**\n\n**Как читать листинг.** Read it.\n\n```python\nold\n```\n"
+    duplicated = listing + "\n" + listing
+    revised = revision_tool._replace_final_quality_listing(duplicated, 4, "\nnew\n")
+    assert revised.count("\nnew\n```") == 1
+    assert revised.count("\nold\n```") == 1
+    assert revised.endswith("\n")
+
+    with pytest.raises(ValueError, match=r"^Listing 5 must occur once; found 0$"):
+        revision_tool._replace_final_quality_listing(listing, 5, "new")
+
+
+def test_final_quality_layout_helpers_keep_validation_and_insertion_order() -> None:
+    captions = "".join(f"Таблица {number}. Caption {number}\n" for number in range(1, 12))
+    renumbered = revision_tool._renumber_final_quality_tables(
+        captions + "Таблица 1 задает исходный выбор\n"
+    )
+    assert renumbered.startswith("Таблица 2. Caption 1\nТаблица 3. Caption 2\n")
+    assert "Таблица 12. Caption 11\n" in renumbered
+    assert renumbered.endswith("Таблица 2 задает исходный выбор\n")
+
+    with pytest.raises(
+        ValueError,
+        match=r"^Unexpected table numbering before final pass: \['1', '2'\]$",
+    ):
+        revision_tool._renumber_final_quality_tables("Таблица 1. First\nТаблица 2. Second\n")
+
+    figure_text = "На рисунке 1 представлена схема «Demo».\n"
+    assert (
+        revision_tool._replace_final_quality_figure_leads(
+            figure_text,
+            {1: "проследите границу"},
+        )
+        == "На рисунке 1 проследите границу.\n"
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^Figure 2 lead must occur once; found 0$",
+    ):
+        revision_tool._replace_final_quality_figure_leads(
+            figure_text,
+            {2: "проследите границу"},
+        )
+
+    assert (
+        revision_tool._insert_final_quality_table_leads(
+            "Таблица 2. Demo\n",
+            {2: "Читайте таблицу."},
+        )
+        == "Читайте таблицу.\n\nТаблица 2. Demo\n"
+    )
+    with pytest.raises(ValueError, match=r"^Table 3 caption is missing$"):
+        revision_tool._insert_final_quality_table_leads(
+            "Таблица 2. Demo\n",
+            {3: "Читайте таблицу."},
+        )
+
+
+def test_trajectory_policy_chapter_helper_preserves_error_order_and_idempotency() -> None:
+    heading = "### Canonical trajectory policy"
+    section = heading + "\n\nCanonical body."
+    local_source = "**S123.** Canonical local source."
+    manuscript = (
+        "## Глава 27\\. Policy\n\n"
+        f"{heading}\n\nStale body.\n\n"
+        "### Next section\n\nBody.\n\n"
+        "**S123.** Stale local source.\n\n"
+        "## Глава 28\\. Next\n"
+    )
+
+    once = revision_tool._sync_trajectory_policy_chapter(
+        manuscript,
+        heading,
+        section,
+        local_source,
+    )
+    twice = revision_tool._sync_trajectory_policy_chapter(
+        once,
+        heading,
+        section,
+        local_source,
+    )
+    chapter = revision_tool.extract_chapter(once, 27)
+    assert section in chapter
+    assert chapter.count(local_source) == 1
+    assert twice == once
+    assert once.endswith("\n")
+
+    duplicate_heading = manuscript.replace(
+        "### Next section",
+        heading,
+        1,
+    ).replace(
+        "**S123.** Stale local source.",
+        "**S123.** First.\n\n**S123.** Second.",
+        1,
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 27 contains duplicate trajectory-policy sections$",
+    ):
+        revision_tool._sync_trajectory_policy_chapter(
+            duplicate_heading,
+            heading,
+            section,
+            local_source,
+        )
+
+    duplicate_source = once.replace(local_source, local_source + "\n\n" + local_source, 1)
+    with pytest.raises(
+        ValueError,
+        match=r"^Chapter 27 contains duplicate S123 source entries$",
+    ):
+        revision_tool._sync_trajectory_policy_chapter(
+            duplicate_source,
+            heading,
+            section,
+            local_source,
+        )
+
+
+def test_trajectory_policy_bibliography_helper_is_exact_and_idempotent() -> None:
+    full_source = "**S123.** Canonical bibliography source."
+    manuscript = (
+        "Preface.\n\n"
+        "## Приложение 4\\. Источники и дополнительные онлайн-материалы\n\n"
+        "**S123.** Stale bibliography source.\n\n"
+        "### Дополнительное чтение\n\nTail.\n"
+    )
+
+    once = revision_tool._sync_trajectory_policy_bibliography(manuscript, full_source)
+    twice = revision_tool._sync_trajectory_policy_bibliography(once, full_source)
+    assert once.count(full_source) == 1
+    assert "Stale bibliography source" not in once
+    assert twice == once
+    assert once.endswith("\n")
+
+    duplicate = manuscript.replace(
+        "**S123.** Stale bibliography source.",
+        "**S123.** First.\n\n**S123.** Second.",
+        1,
+    )
+    with pytest.raises(
+        ValueError,
+        match=r"^Bibliography contains duplicate S123 source entries$",
+    ):
+        revision_tool._sync_trajectory_policy_bibliography(duplicate, full_source)
 
 
 def test_print_width_helpers_keep_exact_missing_errors_and_temp_split() -> None:
@@ -1078,6 +1238,28 @@ def test_reference_package_quickstart_matches_runtime_contract() -> None:
         assert stale_value not in appendix
 
 
+def test_pinned_practical_revision_contains_closed_failure_scenarios() -> None:
+    result = subprocess.run(
+        [
+            "git",
+            "show",
+            f"{revision_tool.PRACTICAL_REPOSITORY_REF}:"
+            "docs/companion/examples/run_lab_negative_scenario.py",
+        ],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+
+    for scenario in (
+        "high-risk-safe-transport",
+        "stale-run-completion",
+        "assurance-owner-missing",
+    ):
+        assert scenario in result.stdout
+
+
 def test_revision_has_clean_reader_facing_structure() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -1117,7 +1299,10 @@ def test_revision_has_clean_reader_facing_structure() -> None:
     assert len(re.findall(r"^### Ключевые выводы$", text, re.MULTILINE)) == 28
     assert text.count("**Задача части.**") == 8
     assert len(re.findall(r"Рисунок \d+\\?\.", text)) == 25
-    assert len(re.findall(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)) == 25
+    assert not re.search(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)
+    assert len(re.findall(r"^На рисунке \d+ ", text, re.MULTILINE)) == 25
+    assert len(re.findall(r"^Таблица \d+\.", text, re.MULTILINE)) == 12
+    assert len(re.findall(r"^В таблице \d+ ", text, re.MULTILINE)) == 11
     assert len(re.findall(r"Лабораторная работа \d+\\?\.", text)) == 8
     for pseudo_table_header in (
         "| Ситуация | Что чаще лучше |",
@@ -1146,7 +1331,7 @@ def test_revision_has_clean_reader_facing_structure() -> None:
 def test_memory_examples_filter_before_ranking_without_isolation_overclaim() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     routing = text[
-        text.index("**Листинг 10.") : text.index("**Частые ошибки**", text.index("**Листинг 10."))
+        text.index("**Листинг 10.") : text.index("**Частые ошибки.**", text.index("**Листинг 10."))
     ]
     ranking = text[
         text.index("**Листинг 11.") : text.index(
@@ -1369,8 +1554,8 @@ def test_bookcraft_readability_pass_removes_markdown_heading_artifacts() -> None
         "### Именованный агент как отдельная топология",
         "### Очередь работ как операторский контур",
         "### Проверяемое завершение",
-        "**Что изменилось после этой главы.** Выбор формы исполнения теперь можно защитить",
-        "**Что изменилось после этой главы.** У читателя теперь есть не просто список модулей",
+        "**Готовый результат.** Архитектурное решение фиксирует форму",
+        "**Готовый результат.** Воспроизводимый пакет заканчивается честным решением",
     ):
         assert expected in text
 
@@ -1389,35 +1574,19 @@ def test_bookcraft_readability_pass_removes_markdown_heading_artifacts() -> None
 def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_sections() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
-    chapter_bridges = {
-        5: "Возможность теперь рассматривается не как имя функции",
-        11: "MCP, песочница и A2A теперь образуют разные",
-        15: "Оценивание теперь связано с выпуском",
-        16: "Цепочка доказательств теперь проходит",
-        20: "ADLC теперь выглядит не как новое название",
-        24: "Инцидент теперь заканчивается не отчетом",
-        28: "Готовность к запуску теперь можно доказать",
-    }
-    for number, expected in chapter_bridges.items():
-        chapter = text.split(f"## Глава {number}\\.", 1)[1]
-        if number < 28:
-            chapter = chapter.split(f"## Глава {number + 1}\\.", 1)[0]
-        assert chapter.count("**Что изменилось после этой главы.**") == 1
-        assert expected in chapter
+    assert "**Что изменилось после этой главы.**" not in text
+    assert text.count("**Готовый результат.**") == 8
+    assert text.count("**Проверка переноса.**") == 8
 
     for heading in (
         "### MCP как граница безопасности",
         "### Матрица угроз MCP",
-        "### Сокращенная поверхность инструментов для больших API",
         "### Управляемая MCP-поверхность платформы",
         "### Корпоративный контур управления MCP",
         "### Теневые серверы и фактическая поверхность доступа",
         "### Симуляция пользователя и среды",
         "### От оценки к выпускному действию",
         "### Проверяемые условия завершения запуска",
-        "### Что сохраняется из классического SDLC",
-        "### Где классический процесс становится недостаточным",
-        "### ADLC как расширение инженерного цикла",
         "### Заверение безопасности и цепочка поставки",
         "### От событий к причинной гипотезе",
         "### Три сквозных сценария инцидентов",
@@ -1428,6 +1597,14 @@ def test_advanced_bookcraft_pass_adds_reader_bridges_and_breaks_up_dense_section
         "### Агент и рабочий процесс как разные границы",
     ):
         assert heading in text
+
+    for run_in in (
+        "**Сокращенная поверхность инструментов для больших API.**",
+        "**Что сохраняется из классического SDLC.**",
+        "**Где классический процесс становится недостаточным.**",
+        "**ADLC как расширение инженерного цикла.**",
+    ):
+        assert run_in in text
 
     dense_headings = (
         "MCP как граница безопасности",
@@ -1792,6 +1969,77 @@ def test_listing_introductions_set_a_specific_reading_task() -> None:
     assert all(len(guide.split()) >= 12 for guide in guides)
 
 
+def test_reader_polish_gives_generic_listings_specific_captions_and_outcomes() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    expected_captions = (
+        "**Листинг 12. Контракты инструментов чтения и записи.**",
+        "**Листинг 16. Операционная семантика `create_ticket` и `send_email`.**",
+        "**Листинг 21. Запись проверки высокорискового изменения.**",
+        "**Листинг 25. Политика покрытия наблюдаемостью и блокирующих слепых зон.**",
+        "**Листинг 36. Ожидаемое состояние запуска с обязательным подтверждением.**",
+        "**Листинг 37. Минимальный профиль песочницы.**",
+    )
+    for caption in expected_captions:
+        assert text.count(caption) == 1
+
+    for obsolete_caption in (
+        "Листинг 12. Важно различать инструменты чтения и инструменты записи.",
+        "Листинг 16. Хороший контракт выполнения хранит операционную семантику явно.",
+        "Листинг 21. Зачем нужен отдельный слой схем.",
+        "Листинг 25. Куда исследовательская повестка двигает наблюдаемость дальше.",
+        "Листинг 36. Как запустить.",
+        "Листинг 37. Контрактные примеры.",
+    ):
+        assert obsolete_caption not in text
+
+    for listing_number in (2, 6, 12):
+        assert text.count(f"**Ожидаемый результат листинга {listing_number}.**") == 1
+        assert text.count(f"**Признак ошибки в листинге {listing_number}.**") == 1
+        assert text.count(f"**Архитектурный смысл листинга {listing_number}.**") == 1
+
+    assert "возвращает словарь результатов каждого этапа" in text
+    assert "бюджеты, тайм-ауты и отмена в этом псевдокоде еще не заданы" in text
+    assert "промышленному контракту еще нужны версия схемы и ссылки на доказательства" in text
+    assert "Проследите четыре границы одного профиля" in text
+    assert "Свежие материалы Google Cloud" not in text
+    assert "Свежие исследовательские статьи" not in text
+    assert "Свежие материалы о промышленных агентных системах" not in text
+    for obsolete in (
+        "свежих Google-материалов",
+        "В свежей архитектурной рамке",
+        "Свежие исследовательские работы по памяти",
+        "Свежие работы по сценариям отказов инструментов",
+        "свежих работ по проектированию проверяющего",
+        "полезный сигнал свежих работ",
+        "свежие статьи про память",
+        "платформенные документы и свежие исследования",
+        "свежие исследования и свежие сценарии",
+    ):
+        assert obsolete not in text
+
+    assert "### Что Викулин поставил правильно и какие ограничения остаются" in text
+    assert "чего сегодня уже недостаточно" not in text
+
+    once = revision_tool.apply_reader_listing_polish_2026_08_23(text)
+    twice = revision_tool.apply_reader_listing_polish_2026_08_23(once)
+    assert once == text
+    assert twice == once
+
+
+def test_front_matter_points_to_the_print_chapter_companion_map() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    url = "https://agent-axiom.github.io/agent-arch/companion/#chapter-map"
+
+    assert text.count(url) == 1
+    assert "печатная глава → онлайн-раздел → практика" in text
+
+    once = revision_tool.link_print_chapters_to_companion_map_2026_08_23(text)
+    twice = revision_tool.link_print_chapters_to_companion_map_2026_08_23(once)
+    assert once == text
+    assert twice == once
+
+
 def test_repeated_diagnostic_formula_is_replaced_with_chapter_specific_prose() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     assert "Если большинство этих условий не выполняется" not in text
@@ -1891,9 +2139,9 @@ def test_parts_and_dense_chapters_have_editorial_navigation() -> None:
 
     assert text.count("**Маршрут части.**") == 8
     for marker in (
-        "#### Полномочия и идентичность",
-        "#### Контракт сервера и граница доверия",
-        "#### Два взаимодополняющих контура",
+        "**Полномочия и идентичность.**",
+        "**Контракт сервера и граница доверия.**",
+        "### Офлайн- и онлайн-оценки образуют один выпускной контур",
         "### Долговечное состояние запуска",
         "### От событий к причинной гипотезе",
     ):
@@ -2263,9 +2511,9 @@ def test_reader_route_is_honest_and_part_conclusions_are_explicit() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     introduction = text.split("# Часть I.", 1)[0]
 
-    assert "### Основной читатель и границы книги" in introduction
-    assert "**Основной читатель.**" in introduction
-    assert "**В книгу намеренно не входит.**" in introduction
+    assert "### Для кого эта книга и где проходят ее границы" in introduction
+    assert "Основной читатель — инженер или архитектор" in introduction
+    assert "не содержит рейтинга моделей" in introduction
     assert "### Один исполняемый сценарий и два сценария переноса" in introduction
     assert "### Три сквозных сценария" not in introduction
     assert "### Четыре словаря состояния и отдельное управляющее действие" in introduction
@@ -2391,8 +2639,7 @@ def test_submission_readiness_pass_orders_front_matter_and_adds_prerequisite_che
 
     ordered_headings = (
         "### Какую проблему решает книга",
-        "### Для кого эта книга",
-        "### Основной читатель и границы книги",
+        "### Для кого эта книга и где проходят ее границы",
         "### Один исполняемый сценарий и два сценария переноса",
         "### Как читать книгу",
         "### Самопроверка перед практическим маршрутом",
@@ -2434,7 +2681,7 @@ def test_submission_readiness_pass_consolidates_chapter_21_provenance_lists() ->
     text = EXPECTED.read_text(encoding="utf-8")
     chapter = revision_tool.extract_chapter(text, 21)
 
-    assert "Таблица 6. Поверхности доверия и доказательства выпуска" in chapter
+    assert "Таблица 7. Поверхности доверия и доказательства выпуска" in chapter
     assert (
         "| Поверхность | Что версионировать и чье происхождение сохранять | "
         "Доказательство перед выпуском |"
@@ -2819,12 +3066,22 @@ def test_inline_diagrams_are_publisher_ready() -> None:
         assert png[25] == 2  # Truecolor RGB without an alpha channel.
 
 
+def test_inline_diagram_manifest_matches_generator_overrides() -> None:
+    diagrams = {
+        item["number"]: item["mermaid"]
+        for item in json.loads(MANIFEST.read_text(encoding="utf-8"))["diagrams"]
+    }
+
+    for number, override in revision_tool.INLINE_DIAGRAM_OVERRIDES.items():
+        assert override["mermaid"] == diagrams[number]
+
+
 def test_revision_uses_explicit_unique_visual_assets_and_caption_order() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     image_paths = re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", text, re.MULTILINE)
 
-    assert len(image_paths) == 56
-    assert len(set(image_paths)) == 56
+    assert len(image_paths) == 57
+    assert len(set(image_paths)) == 57
     assert [path for path in image_paths if "/ru-figure-" in path] == NUMBERED_FIGURE_PATHS
     assert [path for path in image_paths if "/ru-inline-diagram-" in path] == [
         f"visuals/ru-inline-diagram-{number:02d}.png" for number in range(1, 30)
@@ -2858,17 +3115,17 @@ def test_diagram_semantics_preserve_safety_invariants_and_russian_terminology() 
     for residue in ("\\+", "backoff", "Span ", "baseline", '|"allow"|', '|"deny'):
         assert residue not in combined
 
-    assert "Контролируемое чтение" in diagrams[5]["mermaid"]
-    assert "Политика записи" in diagrams[5]["mermaid"]
+    assert "контролируемое чтение" in diagrams[5]["mermaid"].lower()
+    assert "Сохранять результат?" in diagrams[5]["mermaid"]
     assert "Эффекта нет" in diagrams[10]["mermaid"]
-    assert "По-прежнему неизвестен" in diagrams[10]["mermaid"]
+    assert "Остановить и передать человеку" in diagrams[10]["mermaid"]
     assert 'B["Успешность"] --> A["Здоровье агента поддержки"]' in diagrams[12]["mermaid"]
     assert diagrams[13]["caption"] == "Контур изменения, оценки, выпуска и обратной связи"
     assert "Поддерживаемый стандартный путь" in diagrams[15]["mermaid"]
     assert "Обратная связь продукта" in diagrams[15]["mermaid"]
-    assert "Требования" in diagrams[17]["mermaid"]
+    assert "Разработка: требования" in diagrams[17]["mermaid"]
     assert "Сквозной контроль" in diagrams[17]["mermaid"]
-    assert "Проверка происхождения и целостности" in diagrams[19]["mermaid"]
+    assert "Проверка и решение: происхождение и целостность" in diagrams[19]["mermaid"]
     assert "Попытка обхода старым маршрутом" in diagrams[21]["mermaid"]
     assert "Обнаружение и сдерживание" in diagrams[22]["mermaid"]
     assert "Наблюдаемый причинный путь" in diagrams[23]["mermaid"]
@@ -2890,17 +3147,17 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
 
     assert data["expected_count"] == 25
     assert set(diagrams) == set(range(1, 26))
-    assert "Часть VI" in diagrams[1]["mermaid"]
-    assert "Часть VII" in diagrams[1]["mermaid"]
-    assert "Часть VIII" in diagrams[1]["mermaid"]
-    assert "Риск растет только при расширении полномочий" in diagrams[2]["mermaid"]
+    assert "VI. операционная модель" in diagrams[1]["mermaid"]
+    assert "VII. заверение" in diagrams[1]["mermaid"]
+    assert "VIII. эталонная реализация" in diagrams[1]["mermaid"]
+    assert "Расширяете полномочия?" in diagrams[2]["mermaid"]
     assert "Неизменное намерение и ключ идемпотентности" in diagrams[6]["mermaid"]
     assert '|"Разрешить"|' in diagrams[8]["mermaid"]
     assert '|"Запретить"|' in diagrams[8]["mermaid"]
     assert '|"Требуется подтверждение"|' in diagrams[8]["mermaid"]
-    assert "Карантин" in diagrams[10]["mermaid"]
-    assert "Политика исходящих соединений" in diagrams[11]["mermaid"]
-    assert "Сверка внешнего состояния" in diagrams[13]["mermaid"]
+    assert "карантин" in diagrams[10]["mermaid"].lower()
+    assert "Исходящий маршрут разрешен?" in diagrams[11]["mermaid"]
+    assert "Сверка состояния" in diagrams[13]["mermaid"]
     assert "Поэтапный выпуск и наблюдение" in diagrams[17]["mermaid"]
     assert "Логическое И" in diagrams[24]["mermaid"]
     assert "РАСШИРИТЬ" in diagrams[25]["mermaid"]
@@ -2925,7 +3182,7 @@ def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
 
     assert len(source_diagrams) == 56
     assert len(set(source_filenames)) == 56
-    assert set(source_filenames) == set(manuscript_filenames)
+    assert set(source_filenames) == set(manuscript_filenames) - {"ru-online-companion-qr.png"}
 
     for filename in source_filenames:
         svg = ET.fromstring((VISUALS / filename).with_suffix(".svg").read_bytes())
@@ -2989,12 +3246,13 @@ def test_final_technical_book_copyedit_is_applied() -> None:
         "трассы можно обогащать метаданными из реестра;",
         "не сверяется с реальным покрытием телеметрии;",
         "показать, какой набор политик и какой режим подтверждения относятся к данному агенту;",
-        "кто действовал;",
         "среда исполнения или модель устарели;",
         "что архивировать;",
         "устаревшая среда исполнения;",
     ):
         assert f"* {item}" in text
+
+    assert "не только «что упало», но и кто действовал" in prose
 
     assert "наблюдаемость одновременно поддерживает отладку среды исполнения" in text
     assert "активный принципал и соединитель все еще дают доступ" in text
@@ -3174,9 +3432,9 @@ def test_every_manuscript_table_has_a_numbered_caption() -> None:
     captions = re.findall(r"^Таблица (\d+)\. .+$", text, re.MULTILINE)
     tables = re.findall(r"^\|.+\|\n\|\s*:?-+", text, re.MULTILINE)
 
-    assert captions == [str(number) for number in range(1, 12)]
-    assert len(tables) == 11
-    for number in range(1, 12):
+    assert captions == [str(number) for number in range(1, 13)]
+    assert len(tables) == 12
+    for number in range(1, 13):
         assert re.search(
             rf"^Таблица {number}\. .+\n\n\|.+\|$",
             text,
@@ -3432,10 +3690,10 @@ def test_final_reader_copyedit_makes_definitions_scannable_and_dates_snapshots()
     text = EXPECTED.read_text(encoding="utf-8")
 
     for vocabulary in (
-        "**Решение политики.**",
-        "**Состояние запуска.**",
-        "**Исход возможности.**",
-        "**Состояние внешнего эффекта.**",
+        "| Решение политики |",
+        "| Состояние запуска |",
+        "| Исход возможности |",
+        "| Состояние внешнего эффекта |",
     ):
         assert vocabulary in text
 
@@ -3575,7 +3833,7 @@ def test_source_appendix_separates_cited_sources_from_further_reading() -> None:
 
     assert cited_ids == used_ids
     assert cited_ids.isdisjoint(further_ids)
-    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 123)}
+    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 124)}
 
 
 def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
@@ -3585,11 +3843,25 @@ def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
     assert "Книга использует один словарь машинных состояний" not in introduction
     assert "### Четыре словаря состояния и отдельное управляющее действие" in introduction
 
+    matrix = introduction.split("Таблица 1. Области состояния", 1)[1].split(
+        "На рисунке 1",
+        1,
+    )[0]
     paragraphs = {
-        "policy": introduction.split("**Решение политики.**", 1)[1].split("\n\n", 1)[0],
-        "run": introduction.split("**Состояние запуска.**", 1)[1].split("\n\n", 1)[0],
-        "outcome": introduction.split("**Исход возможности.**", 1)[1].split("\n\n", 1)[0],
-        "effect": introduction.split("**Состояние внешнего эффекта.**", 1)[1].split("\n\n", 1)[0],
+        "policy": next(
+            line for line in matrix.splitlines() if line.startswith("| Решение политики |")
+        ),
+        "run": next(
+            line for line in matrix.splitlines() if line.startswith("| Состояние запуска |")
+        ),
+        "outcome": next(
+            line for line in matrix.splitlines() if line.startswith("| Исход возможности |")
+        ),
+        "effect": next(
+            line
+            for line in matrix.splitlines()
+            if line.startswith("| Состояние внешнего эффекта |")
+        ),
     }
     expected = {
         "policy": {"allow", "deny", "approval_required"},
@@ -3620,14 +3892,19 @@ def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
         for value in values:
             assert f"`{value}`" in paragraphs[vocabulary], (vocabulary, value)
 
+    normalized_introduction = re.sub(r"\s+", " ", introduction)
     assert (
-        "Такой запуск нельзя сворачивать в общий `failed`: сначала требуется сверка" in introduction
+        "Такой запуск нельзя сворачивать в общий `failed`: сначала требуется сверка"
+        in normalized_introduction
     )
     assert (
-        "Отказ на предварительной проверке запуска переводит весь запуск в `denied`" in introduction
+        "Отказ на предварительной проверке запуска переводит весь запуск в `denied`"
+        in normalized_introduction
     )
-    assert "уже начатого запуска может остаться `failed` ради совместимости" in introduction
-    assert "исход остается `permission_denied`" in introduction
+    assert (
+        "уже начатого запуска может остаться `failed` ради совместимости" in normalized_introduction
+    )
+    assert "исход остается `permission_denied`" in normalized_introduction
 
 
 def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
@@ -3710,7 +3987,7 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
             assert marker in chapter, (number, marker)
 
     chapter_eleven = revision_tool.extract_chapter(text, 11)
-    closure = chapter_eleven.index("**Что изменилось после этой главы.**")
+    closure = chapter_eleven.index("### Ключевые выводы")
     assert (
         chapter_eleven.index("#### Повтор вызова не равен продолжению прикладной работы") < closure
     )
@@ -3730,10 +4007,7 @@ def test_online_sync_adds_new_memory_mcp_eval_and_runtime_contracts() -> None:
     for marker in (
         "* проектировать MCP-вызов как границу доверия",
         "* задавать профиль песочницы, исходящего доступа",
-        (
-            "* отделять ядро MCP без состояния от прикладной работы, Tasks и "
-            "делегирования A2A."
-        ),
+        ("* отделять ядро MCP без состояния от прикладной работы, Tasks и делегирования A2A."),
     ):
         assert marker in outcomes
 
@@ -3818,90 +4092,15 @@ def test_labs_two_six_and_seven_have_executable_negative_checks() -> None:
         1,
     )[0]
 
-    for marker in (
-        "(\nset -eu",
-        'LAB_PREFIX="${TMPDIR:-/tmp}/agent-arch-lab-02."',
-        'if ! LAB_CONFIG=$(mktemp -d "${LAB_PREFIX}XXXXXX"); then',
-        'case "$LAB_CONFIG" in',
-        '"$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
-        "trap cleanup_lab_config 0",
-        "trap 'on_signal 129' HUP",
-        'rm -rf "${LAB_CONFIG:?}"',
-        "printf '%s\\n' 'Не удалось создать временный каталог.'",
-        'cp -R agent_runtime_ref/configs/. "$LAB_CONFIG/"',
-        'create_ticket["approval"] = "none"',
-        'create_ticket["idempotency_key_required"] = False',
-        'create_ticket_policy["decision"] = "allow"',
-        "yaml.safe_load",
-        "yaml.safe_dump",
-        'check-controls --config-dir "$LAB_CONFIG"',
-        "--signal create_ticket_approval_required=true",
-        "--signal create_ticket_idempotency_key_required=true",
-        '"healthy": false',
-        'missing_controls=["create_ticket_approval_required", '
-        '"create_ticket_idempotency_key_required"]',
-        "`blocking_findings=[]`",
-        "`inventory_drift.has_drift=false`",
-        "`healthy=true`",
-        "`missing_controls`",
-    ):
-        assert marker in lab_two
-    assert "--config-dir agent_runtime_ref/configs" not in lab_two
-    assert 'rm -rf "$LAB_CONFIG"' not in lab_two
-    assert '"$LAB_PREFIX"??????)' not in lab_two
-    assert "записывающая возможность остается разрешенной" not in lab_two
-    lab_two_step = lab_two.split(
-        "#### Шаг 4. Докажите, что флаги CLI не скрывают снятый контроль",
-        1,
-    )[1].split("**Наблюдение.**", 1)[0]
-    assert len(re.findall(r"```sh\n.*?\n```", lab_two_step, re.DOTALL)) == 1
+    assert "run_lab_negative_scenario.py ticket-controls-disabled" in lab_two
+    assert "artifacts/lab-02/ticket-controls-disabled.json" in lab_two
+    assert '"healthy": false' in lab_two
+    assert "mktemp -d" not in lab_two
 
-    for marker in (
-        "(\nset -eu",
-        'LAB_PREFIX="${TMPDIR:-/tmp}/agent-arch-lab-06."',
-        'if ! LAB_CONFIG=$(mktemp -d "${LAB_PREFIX}XXXXXX"); then',
-        'case "$LAB_CONFIG" in',
-        '"$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])',
-        "trap cleanup_lab_config 0",
-        "trap 'on_signal 129' HUP",
-        'rm -rf "${LAB_CONFIG:?}"',
-        "printf '%s\\n' 'Не удалось создать временный каталог.'",
-        'cp -R agent_runtime_ref/configs/. "$LAB_CONFIG/"',
-        'data["change"]["approval_roles"].remove("platform-owner")',
-        "yaml.safe_load",
-        "yaml.safe_dump",
-        'check-change --config-dir "$LAB_CONFIG"',
-        '"ready": false',
-        '`approval_roles=["security-reviewer"]`',
-        '`required_approval_roles=["platform-owner", "security-reviewer"]`',
-        '`missing_approval_roles=["platform-owner"]`',
-        "`missing_signals=[]`",
-    ):
-        assert marker in lab_six
-    assert "--config-dir agent_runtime_ref/configs" not in lab_six
-    assert 'rm -rf "$LAB_CONFIG"' not in lab_six
-    assert '"$LAB_PREFIX"??????)' not in lab_six
-    negative_check = lab_six.split(
-        'check-change --config-dir "$LAB_CONFIG"',
-        1,
-    )[1].split("```", 1)[0]
-    assert "--signal" not in negative_check
-    lab_six_step = lab_six.split(
-        "#### Шаг 3. Удалите обязательного владельца",
-        1,
-    )[1].split("**Наблюдение.**", 1)[0]
-    assert len(re.findall(r"```sh\n.*?\n```", lab_six_step, re.DOTALL)) == 1
-    for lab in (lab_two, lab_six):
-        assert (
-            "Очистка выполняется при нормальном выходе, ошибке shell и "
-            "обработанных сигналах HUP, INT и TERM." in lab
-        )
-        assert (
-            "SIGKILL, SIGSTOP и потеря системы не позволяют shell выполнить "
-            "trap; временный каталог после них может остаться" in lab
-        )
-        assert "при любом завершении" not in lab
-        assert "при нормальном завершении, ошибке или сигнале" not in lab
+    assert "run_lab_negative_scenario.py platform-owner-removed" in lab_six
+    assert "artifacts/lab-06/platform-owner-removed.json" in lab_six
+    assert '"ready": false' in lab_six
+    assert "mktemp -d" not in lab_six
 
     for step in (
         "freeze_rollout=true",
@@ -3918,102 +4117,6 @@ def test_labs_two_six_and_seven_have_executable_negative_checks() -> None:
     assert '"ready": false' in lab_seven
     assert '"evidence_mode": "declared"' in lab_seven
     assert '`missing_steps=["revoke_egress"]`' in lab_seven
-
-
-@pytest.mark.parametrize(
-    ("lab_number", "step_heading", "expected"),
-    (
-        (
-            2,
-            "#### Шаг 4. Докажите, что флаги CLI не скрывают снятый контроль",
-            {
-                "healthy": False,
-                "missing_controls": [
-                    "create_ticket_approval_required",
-                    "create_ticket_idempotency_key_required",
-                ],
-            },
-        ),
-        (
-            6,
-            "#### Шаг 3. Удалите обязательного владельца",
-            {
-                "ready": False,
-                "required_approval_roles": [
-                    "platform-owner",
-                    "security-reviewer",
-                ],
-                "missing_approval_roles": ["platform-owner"],
-                "missing_signals": [],
-            },
-        ),
-    ),
-)
-def test_negative_lab_block_runs_once_and_always_cleans_up(
-    tmp_path: Path,
-    lab_number: int,
-    step_heading: str,
-    expected: dict[str, object],
-) -> None:
-    chapter = EXPECTED.read_text(encoding="utf-8").split(
-        f"### Лабораторная работа {lab_number}\\.",
-        1,
-    )[1]
-    step = chapter.split(step_heading, 1)[1].split("**Наблюдение.**", 1)[0]
-    blocks = re.findall(r"```sh\n(.*?)\n```", step, re.DOTALL)
-    assert len(blocks) == 1
-
-    environment = os.environ.copy()
-    environment["TMPDIR"] = str(tmp_path)
-    completed = subprocess.run(
-        ["sh"],
-        input=blocks[0],
-        cwd=ROOT,
-        env=environment,
-        text=True,
-        capture_output=True,
-        check=False,
-        timeout=60,
-    )
-
-    assert completed.returncode == 0, completed.stderr
-    payload = json.loads(completed.stdout)
-    for field, value in expected.items():
-        assert payload[field] == value
-    assert list(tmp_path.glob(f"agent-arch-lab-{lab_number:02d}.*")) == []
-
-
-def test_negative_lab_block_cleans_up_after_command_failure(tmp_path: Path) -> None:
-    chapter = EXPECTED.read_text(encoding="utf-8").split(
-        "### Лабораторная работа 2\\.",
-        1,
-    )[1]
-    step = chapter.split(
-        "#### Шаг 4. Докажите, что флаги CLI не скрывают снятый контроль",
-        1,
-    )[1].split("**Наблюдение.**", 1)[0]
-    block = re.findall(r"```sh\n(.*?)\n```", step, re.DOTALL)[0]
-    block = block.replace(
-        "uv run python -m agent_runtime_ref check-controls",
-        "false\nuv run python -m agent_runtime_ref check-controls",
-        1,
-    )
-
-    environment = os.environ.copy()
-    environment["TMPDIR"] = str(tmp_path)
-    completed = subprocess.run(
-        ["sh"],
-        input=block,
-        cwd=ROOT,
-        env=environment,
-        text=True,
-        capture_output=True,
-        check=False,
-        timeout=60,
-    )
-
-    assert completed.returncode != 0
-    assert list(tmp_path.glob("agent-arch-lab-02.*")) == []
 
 
 def test_lab_two_negative_check_matches_runtime_json(tmp_path: Path) -> None:
@@ -4152,7 +4255,7 @@ def test_developmental_polish_uses_direct_openings_and_one_assurance_definition(
     assert chapter_twenty_three.count("В 09:07") == 1
 
     assert "Я бы определял контур заверения" not in chapter_twenty_four
-    assert chapter_twenty_four.count("постоянный рабочий контур") == 1
+    assert chapter_twenty_four.count("Контур заверения непрерывно связывает") == 1
     assert chapter_twenty_four.count("находка должна получить владельца") == 1
 
 
@@ -4165,7 +4268,7 @@ def test_reader_rhythm_and_fast_moving_callouts_are_consistent() -> None:
         "\\> Я уже третий день жду активации доступа. Проверьте статус и создайте "
         "срочную заявку, если заявка застряла."
     )
-    assert text.count(repeated_request) == 2
+    assert text.count(repeated_request) == 1
 
     snapshots = re.findall(
         r"^> \*\*Срез практики\. (?:Июнь|Июль) 2026 года\.\*\* .+$",
@@ -4244,6 +4347,19 @@ def test_editorial_packet_builder_is_reproducible(tmp_path: Path) -> None:
     assert review_packet.read_bytes() == HUMAN_REVIEW_PACKET.read_bytes()
 
 
+def test_learning_outcome_map_exposes_coverage_and_acceptance_for_every_chapter() -> None:
+    text = LEARNING_OUTCOME_MAP.read_text(encoding="utf-8")
+
+    assert text.count("**Статус покрытия:**") == 28
+    assert text.count("**Критерий приемки:**") == 28
+    for number in (3, 11, 14):
+        chapter = text.split(f"## Глава {number}.", 1)[1]
+        if number < 28:
+            chapter = chapter.split(f"## Глава {number + 1}.", 1)[0]
+        assert "Статус покрытия" in chapter
+        assert "Критерий приемки" in chapter
+
+
 def test_august_online_delta_is_integrated_as_reader_sized_contracts() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     chapter_ten = revision_tool.extract_chapter(text, 10)
@@ -4287,6 +4403,7 @@ def test_august_online_delta_is_integrated_as_reader_sized_contracts() -> None:
     ):
         assert marker in chapter_seventeen
 
+
 def test_august_mcp_contract_uses_stateless_core_and_explicit_state() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     chapter_eleven = revision_tool.extract_chapter(text, 11)
@@ -4311,16 +4428,18 @@ def test_august_mcp_contract_uses_stateless_core_and_explicit_state() -> None:
     assert "AgentCore Gateway extended MCP support" not in chapter_eleven
     assert "vendor-specific" not in chapter_eleven
 
+
 def test_policy_decision_is_separate_from_control_disposition() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     introduction = text.split("## Часть I", 1)[0]
     chapter_five = revision_tool.extract_chapter(text, 5)
 
-    assert "**Управляющее действие.**" in introduction
+    assert "| Управляющее действие |" in introduction
     assert "`monitor_only`" in introduction
     assert "`quarantine_session`" in introduction
     assert "`control_action`" in chapter_five
     assert "Политика выполнения возвращает не только `allow` или `deny`" not in chapter_five
+
 
 def test_august_editorial_pass_aligns_examples_and_reference_terms() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
@@ -4337,12 +4456,13 @@ def test_august_editorial_pass_aligns_examples_and_reference_terms() -> None:
     assert "### Реестр агентов" in glossary
     assert "### Реестр утвержденных платформенных компонентов" in glossary
 
+
 def test_capstone_rubric_has_observable_score_anchors() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     capstone = text.split("## Итоговый проект", 1)[1].split("## Послесловие", 1)[0]
 
     for marker in (
-        "Таблица 11. Аналитическая рубрика итогового проекта",
+        "Таблица 12. Аналитическая рубрика итогового проекта",
         "0 баллов",
         "2 балла",
         "4 балла",
@@ -4350,6 +4470,7 @@ def test_capstone_rubric_has_observable_score_anchors() -> None:
         "Оцененный эталон",
     ):
         assert marker in capstone
+
 
 def test_august_sources_are_local_and_bibliographically_complete() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
@@ -4494,7 +4615,7 @@ def test_reader_experience_pass_keeps_visuals_explained_before_the_next_heading(
     lines = text.splitlines()
     images = [index for index, line in enumerate(lines) if re.match(r"^!\[.*\]\([^)]*\)$", line)]
 
-    assert len(images) == 56
+    assert len(images) == 57
     for image_index in images:
         prose: list[str] = []
         for line in lines[image_index + 1 :]:
@@ -4519,7 +4640,8 @@ def test_reader_experience_pass_repairs_practical_evidence_boundaries() -> None:
     assert "recommended_action=collect_missing_evidence" in text
     assert "связность — 2" in text
     assert "итого 16 из 20" in text
-    assert "единый долговечный путь `approval → resume → execute → audit`" in text
+    assert "единый долговечный путь `approval -> resume -> execute -> audit`" in text
+    assert "approval → resume → execute → audit" not in text
     assert "def manifest_integrity_verified(" in text
     assert "Проверка структурной целостности манифеста" in text
     assert 'status="blocked_response"' not in text
@@ -4541,8 +4663,8 @@ def test_technical_book_polish_repairs_facts_and_positional_references() -> None
     ):
         assert residue not in text
 
-    assert "SHA-идентификатор коммита фиксирует согласованную версию" in text
-    assert "Коммит фиксирует согласованную версию печатного издания" in text
+    assert "SHA-идентификатор коммита фиксирует версию сопроводительного кода" in text
+    assert "Коммит фиксирует версию сопроводительного кода" in text
 
 
 def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
@@ -4550,8 +4672,10 @@ def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
     chapter_five = revision_tool.extract_chapter(text, 5)
     chapter_eleven = revision_tool.extract_chapter(text, 11)
     chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_twenty = revision_tool.extract_chapter(text, 20)
     chapter_twenty_four = revision_tool.extract_chapter(text, 24)
     chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+    chapter_twenty_eight = revision_tool.extract_chapter(text, 28)
 
     outcomes = chapter_eleven.split("**После главы вы сможете:**", 1)[1].split(
         "**Артефакт главы:**",
@@ -4567,19 +4691,19 @@ def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
     ):
         assert microheading not in chapter_eleven
     assert (
-        "#### MCP-шлюз, приватная достижимость и браузер как поверхность действия"
-        in chapter_eleven
+        "#### MCP-шлюз, приватная достижимость и браузер как поверхность действия" in chapter_eleven
     )
     assert "#### Явное прикладное состояние поверх ядра без состояния" in chapter_eleven
-    assert len(re.findall(r"^#### ", chapter_five, re.MULTILINE)) <= 13
-    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 17
+    assert len(re.findall(r"^#### ", chapter_five, re.MULTILINE)) <= 10
+    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 12
+    assert len(re.findall(r"^#### ", chapter_twenty, re.MULTILINE)) <= 14
 
     assert chapter_fifteen.count("рядом с `verifier_outputs` полезен `eval_audit_record`") == 0
     assert chapter_fifteen.count("рядом с `verifier_outputs` нужен `eval_audit_record`") == 1
 
     assert "**Контур заверения как рабочий цикл.**" in chapter_twenty_four
     assert "**Ищите критический шаг, а не удобное объяснение.**" in chapter_twenty_four
-    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 16
+    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 10
 
     assert "#### Усечение не должно уничтожать доказательства" not in chapter_twenty_six
     assert "#### Параллельные сессии инструментов" not in chapter_twenty_six
@@ -4587,6 +4711,7 @@ def test_technical_book_polish_consolidates_dense_chapter_structure() -> None:
     chapter_twenty_six_lower = chapter_twenty_six.lower()
     assert "устойчивый архитектурный контракт" in chapter_twenty_six_lower
     assert "пример реализации, а не универсальный контракт" in chapter_twenty_six_lower
+    assert len(re.findall(r"^### ", chapter_twenty_eight, re.MULTILINE)) <= 10
 
 
 def test_technical_book_polish_keeps_code_within_print_width() -> None:
@@ -4602,3 +4727,326 @@ def test_technical_book_polish_keeps_code_within_print_width() -> None:
             oversized.append((number, len(line), line))
 
     assert not oversized
+
+
+def test_final_quality_pass_keeps_approval_and_transport_examples_fail_closed() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    listing_four_prose = text.split("**Листинг 4.", 1)[1].split("### ", 1)[0]
+    listing_four_code = listing_four_prose.split("```python", 1)[1].split("```", 1)[0]
+    assert 'decision.action == "deny"' in listing_four_code
+    assert 'decision.action == "approval_required"' in listing_four_code
+    assert "return approval_service.request_pause" in listing_four_code
+    assert listing_four_code.index('decision.action == "approval_required"') < (
+        listing_four_code.index("gateway.call")
+    )
+    assert "require_human_signoff" not in listing_four_code
+
+    listing_fourteen = text.split("**Листинг 14.", 1)[1].split("### ", 1)[0]
+    listing_fourteen_code = listing_fourteen.split("```python", 1)[1].split("```", 1)[0]
+    assert listing_fourteen_code.index('spec.mode == "high_risk"') < (
+        listing_fourteen_code.index('spec.transport == "mcp"')
+    )
+
+
+def test_editorial_structure_pass_assigns_each_dense_concept_one_home() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_five = revision_tool.extract_chapter(text, 5)
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_eighteen = revision_tool.extract_chapter(text, 18)
+    chapter_twenty_four = revision_tool.extract_chapter(text, 24)
+    chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+
+    assert chapter_five.count("контракт проверяющего") <= 2
+    assert "Минимальный контракт проверяющего должен включать" in chapter_fifteen
+    assert "Читайте главу через одно выпускное решение" not in chapter_fifteen
+    assert "### Лучшая связка" not in chapter_fifteen
+    assert "#### Два взаимодополняющих контура" not in chapter_fifteen
+    assert "### Практические правила для контура оценки" not in chapter_fifteen
+
+    assert "**Как это выглядит в зрелой архитектуре.**" not in chapter_eleven
+    assert "**Когда A2A лучше не использовать.**" not in chapter_eleven
+    assert "#### Когда действительно нужен A2A" in chapter_eleven
+    assert "#### Угрозы сети агентов" in chapter_eleven
+
+    chapter_eighteen_headings = re.findall(r"^### ", chapter_eighteen, re.MULTILINE)
+    assert len(chapter_eighteen_headings) <= 8
+    assert "### Общие шлюзы хороши не только" not in chapter_eighteen
+    assert "### Общий шлюз ИИ как контур управления" in chapter_eighteen
+
+    assert chapter_twenty_four.count("Контур заверения непрерывно связывает") == 1
+    assert len(re.findall(r"^#### ", chapter_twenty_four, re.MULTILINE)) <= 13
+
+    assert "Вот тут и нужна эталонная схема среды исполнения" not in chapter_twenty_six
+    assert len(re.findall(r"^#### ", chapter_twenty_six, re.MULTILINE)) <= 12
+
+
+def test_editorial_structure_pass_uses_run_in_heads_and_scannable_sources() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapters = text.split("## Глава 1\\.", 1)[1].split("## Итоговый проект", 1)[0]
+
+    standalone_bold_leads = re.findall(
+        r"^\*\*[^*\n]{2,140}\*\*$",
+        chapters,
+        flags=re.MULTILINE,
+    )
+    assert len(standalone_bold_leads) <= 130
+    assert not re.search(
+        r"^\*\*S\d{3}\.\*\*.*\n(?=\*\*S\d{3}\.\*\*)",
+        text,
+        flags=re.MULTILINE,
+    )
+
+
+def test_editorial_structure_pass_separates_prose_commands_and_expected_results() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    for residue in (
+        "Практика в репозитории. Экспортируйте полный набор командой `uv run",
+        "Практика в репозитории. Последовательно выполните четыре команды:",
+        "Начните с `agent_runtime_ref/configs/capabilities.yaml`",
+    ):
+        assert residue not in text
+
+    for command in (
+        "uv run python -m agent_runtime_ref export-eval-dataset",
+        "uv run python -m agent_runtime_ref simulate-run",
+        "uv run python -m agent_runtime_ref inspect-agent",
+    ):
+        assert command in text
+
+
+def test_final_quality_pass_materializes_every_claim_made_by_key_listings() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    listing_nineteen = text.split("**Листинг 19.", 1)[1].split("### ", 1)[0]
+    for field in ("external_effect_known", "required_controls_passed"):
+        assert field in listing_nineteen
+
+    listing_twenty_seven = text.split("**Листинг 27.", 1)[1].split("### ", 1)[0]
+    assert "approval.expires_at == action.expires_at" in listing_twenty_seven
+    assert "consume_nonce_once" in listing_twenty_seven
+
+    listing_twenty_eight = text.split("**Листинг 28.", 1)[1].split("#### ", 1)[0]
+    for field in ("class EmergencyDecision", "owner:", "evidence_event:"):
+        assert field in listing_twenty_eight
+
+    listing_thirty_one = text.split("**Листинг 31.", 1)[1].split("#### ", 1)[0]
+    for marker in ("claim_run", "expected_version", "idempotency_scope"):
+        assert marker in listing_thirty_one
+
+
+def test_online_delta_contracts_have_executable_negative_proofs() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_eleven = text.split("## Глава 11\\.", 1)[1].split("## Глава 12\\.", 1)[0]
+    chapter_twenty_four = text.split("## Глава 24\\.", 1)[1].split(
+        "## Глава 25\\.",
+        1,
+    )[0]
+    chapter_twenty_six = text.split("## Глава 26\\.", 1)[1].split(
+        "## Глава 27\\.",
+        1,
+    )[0]
+
+    assert "high-risk-safe-transport" in chapter_eleven
+    assert '"execution_started": false' in chapter_eleven
+    assert "assurance-owner-missing" in chapter_twenty_four
+    assert '"assurance_decision_owner_missing"' in chapter_twenty_four
+    assert "stale-run-completion" in chapter_twenty_six
+    assert '"expected_version_mismatch"' in chapter_twenty_six
+
+
+def test_final_quality_pass_documents_an_executable_reader_path() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    appendix = text.split("## Приложение 1\\.", 1)[1]
+    replay_block = appendix.split("replay-run", 1)[1].split("```", 1)[0]
+    assert "--user-input" in replay_block
+
+    lab_two = text.split("### Лабораторная работа 2", 1)[1].split("# Часть III.", 1)[0]
+    lab_six = text.split("### Лабораторная работа 6", 1)[1].split("# Часть VII.", 1)[0]
+    for lab in (lab_two, lab_six):
+        assert "run_lab_negative_scenario.py" in lab
+        assert "mktemp -d" not in lab
+
+    laboratory_eight = text.split("### Лабораторная работа 8", 1)[1].split(
+        "## Итоговый проект",
+        1,
+    )[0]
+    assert "--through 8" in laboratory_eight
+
+    capstone = text.split("## Итоговый проект", 1)[1].split("# Заключение", 1)[0]
+    assert "build_capstone_reference.py" in capstone
+    assert "artifacts/capstone/release-decision.json" in capstone
+
+
+def test_final_quality_pass_uses_one_decision_vocabulary_and_honest_approval_map() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    assert "`hold`, `limited_wave` или `expand`" in text
+    assert "Для каждого блокера выберите `hold`, `freeze` или `rollback`" not in text
+    assert "Необязательный файловый адаптер" in text
+    assert "отклоняет самоодобрение" in text
+    assert "отклоняет просроченное решение" in text
+
+
+def test_final_quality_pass_normalizes_reader_facing_terminology_and_navigation() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    for residue in (
+        "одноагентный цикл",
+        "проверочные ворота политики",
+        "#### Справочный пакет",
+        "### Справочный пакет",
+        "Исполняющая среда агента",
+        "долгосрочная память",
+        "##### ",
+        "На рисунке 1 представлена схема",
+    ):
+        assert residue not in text
+
+    assert "одиночный агентный цикл" in text
+    assert "долговременная память" in text
+    assert "сжатие активного контекста" in text.lower()
+    assert "фоновое уплотнение памяти" in text.lower()
+
+
+def test_publication_pass_exposes_the_online_companion_to_print_readers() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    companion_url = "https://agent-axiom.github.io/agent-arch/companion/"
+
+    assert text.count(companion_url) >= 2
+    assert "visuals/ru-online-companion-qr.png" in text
+    qr_path = VISUALS / "ru-online-companion-qr.png"
+    assert qr_path.read_bytes().startswith(b"\x89PNG\r\n\x1a\n")
+
+    for route in (
+        "runtime-reference/configs/",
+        "runtime-reference/cli/",
+        "runtime-reference/eval-datasets/",
+        "runtime-reference/traces-and-events/",
+    ):
+        assert companion_url + route in text
+
+
+def test_publication_pass_marks_the_recurring_support_case_as_a_callback() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    prompt = (
+        "Я уже третий день жду активации доступа. Проверьте статус и создайте "
+        "срочную заявку, если заявка застряла."
+    )
+    chapter_thirteen = revision_tool.extract_chapter(text, 13)
+
+    assert text.count(prompt) == 1
+    assert "Вернемся к запросу об активации доступа из главы 10" in chapter_thirteen
+
+
+def test_technical_book_polish_2026_08_17_repairs_remaining_prose_and_logic() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_four = revision_tool.extract_chapter(text, 4)
+    chapter_five = revision_tool.extract_chapter(text, 5)
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    chapter_fifteen = revision_tool.extract_chapter(text, 15)
+    chapter_twenty_four = revision_tool.extract_chapter(text, 24)
+    chapter_twenty_six = revision_tool.extract_chapter(text, 26)
+    chapter_twenty_eight = revision_tool.extract_chapter(text, 28)
+
+    assert "* есть ведение журналов." in chapter_four
+    assert "* есть логирование." not in chapter_four
+    assert "Условия резервного маршрута проверяются отдельно." in chapter_four
+    assert "Это различие важно." not in chapter_five
+    assert "От этого различия зависит точка принудительного контроля" in chapter_five
+    assert "Песочница одновременно защищает границу исполнения" in chapter_eleven
+    assert "Контур оценки отвечает на этот вопрос выпускным решением" in chapter_fifteen
+    assert "Это слабый подход." not in chapter_twenty_four
+    assert "Разовая демонстрация не проверяет устойчивость контроля." in chapter_twenty_four
+    assert "Идея здесь очень простая" not in chapter_twenty_six
+    assert "Листинг делает четыре контрольные точки наблюдаемыми" in chapter_twenty_six
+    assert "как минимум восемь обязательных блоков" in chapter_twenty_eight
+    assert "как минимум семь обязательных блоков" not in chapter_twenty_eight
+
+
+def test_technical_book_polish_2026_08_17_explains_chapter_27_listings() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter = revision_tool.extract_chapter(text, 27)
+    listing_thirty_three = chapter.split("**Листинг 33.", 1)[1].split(
+        "### Подтверждение",
+        1,
+    )[0]
+
+    assert listing_thirty_three.count("credential_ref=request.scoped_credential_ref") == 1
+    for marker in (
+        "**Ожидаемый результат листинга 32.**",
+        "**Признак ошибки в листинге 32.**",
+        "**Архитектурный смысл листинга 32.**",
+        "**Ожидаемый результат листинга 33.**",
+        "**Признак ошибки в листинге 33.**",
+        "**Архитектурный смысл листинга 33.**",
+        "**Ожидаемый результат листинга 34.**",
+        "**Признак ошибки в листинге 34.**",
+        "**Архитектурный смысл листинга 34.**",
+    ):
+        assert marker in chapter
+
+
+def test_technical_book_polish_2026_08_17_refreshes_editorial_packets() -> None:
+    for packet in (INDEX_TERMS, LEARNING_OUTCOME_MAP):
+        assert "Дата сборки: 2026-08-17." in packet.read_text(encoding="utf-8")
+
+    review_packet = HUMAN_REVIEW_PACKET.read_text(encoding="utf-8")
+    assert "Дата подготовки: 2026-08-17." in review_packet
+    assert "agent-arch-ru-google-doc-technical-book-polish-2026-08-17.docx" in review_packet
+    assert "agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx" in review_packet
+
+
+def test_august_20_manuscript_has_one_trajectory_level_policy_invariant() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter = revision_tool.extract_chapter(text, 27)
+
+    heading = "### Политика последовательности проверяет всю траекторию"
+    heading_pattern = re.compile(rf"^{re.escape(heading)}$", re.MULTILINE)
+    assert len(heading_pattern.findall(text)) == 1
+
+    chapter_heading_matches = list(heading_pattern.finditer(chapter))
+    assert len(chapter_heading_matches) == 1
+
+    section = re.split(
+        r"^###[ \t]+",
+        chapter[chapter_heading_matches[0].end() :],
+        maxsplit=1,
+        flags=re.MULTILINE,
+    )[0]
+    assert section.count("`trajectory_policy_decision`") == 1
+    assert section.count("**S123**") == 1
+
+
+def test_august_20_trajectory_policy_source_apparatus_and_pass_are_idempotent() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter = revision_tool.extract_chapter(text, 27)
+    appendix = text.split(
+        "## Приложение 4\\. Источники и дополнительные онлайн-материалы",
+        1,
+    )[1]
+    source_url = (
+        "https://aws.amazon.com/blogs/machine-learning/"
+        "control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-"
+        "in-amazon-bedrock-agentcore/"
+    )
+
+    short_source = "**S123.** AWS, Control agent behaviors and cost beyond a single action."
+    assert chapter.count(short_source) == 1
+    assert appendix.count("**S123.**") == 1
+    assert appendix.count(source_url) == 1
+
+    once = revision_tool.apply_trajectory_policy_sync_2026_08_23(text)
+    twice = revision_tool.apply_trajectory_policy_sync_2026_08_23(once)
+    assert once == text
+    assert twice == once
+
+    tampered = text.replace(
+        "проверяет смысл порядка и накопленного эффекта.",
+        "проверяет только число шагов.",
+        1,
+    ).replace(
+        short_source,
+        "**S123.** Неканоническая локальная запись.",
+        1,
+    )
+    assert revision_tool.apply_trajectory_policy_sync_2026_08_23(tampered) == text

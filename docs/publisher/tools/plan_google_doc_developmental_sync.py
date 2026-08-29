@@ -75,6 +75,8 @@ class TargetRun:
     bold: bool | None
     italic: bool | None
     font_name: str | None
+    link_url: str | None = None
+    link_fragment: str | None = None
 
 
 @dataclass(frozen=True)
@@ -151,31 +153,38 @@ def load_docx_paragraphs(path: Path) -> list[TargetParagraph]:
 
         run_offset = 0
         runs: list[TargetRun] = []
-        for run in paragraph.runs:
-            run_text = run.text
-            if not run_text:
-                continue
-            start = run_offset
-            end = start + utf16_length(run_text)
-            runs.append(
-                TargetRun(
-                    start=start,
-                    end=end,
-                    bold=run.bold,
-                    italic=run.italic,
-                    font_name=run.font.name,
+        for item in paragraph.iter_inner_content():
+            item_runs = item.runs if type(item).__name__ == "Hyperlink" else (item,)
+            link_url = getattr(item, "url", None) or None
+            link_fragment = getattr(item, "fragment", None) or None
+            for run in item_runs:
+                run_text = run.text
+                if not run_text:
+                    continue
+                start = run_offset
+                end = start + utf16_length(run_text)
+                runs.append(
+                    TargetRun(
+                        start=start,
+                        end=end,
+                        bold=run.bold,
+                        italic=run.italic,
+                        font_name=run.font.name,
+                        link_url=link_url,
+                        link_fragment=link_fragment,
+                    )
                 )
-            )
-            run_offset = end
+                run_offset = end
+
+        if run_offset != utf16_length(paragraph.text):
+            raise ValueError(f"Run offsets do not cover paragraph text: {paragraph.text[:120]!r}")
 
         result.append(
             TargetParagraph(
                 text=text,
                 normalized=normalize(text),
                 named_style=docs_named_style(paragraph.style.name),
-                page_break_before=bool(
-                    paragraph.paragraph_format.page_break_before
-                ),
+                page_break_before=bool(paragraph.paragraph_format.page_break_before),
                 list_kind=list_kind,
                 nesting_level=nesting_level,
                 runs=tuple(runs),
@@ -188,9 +197,7 @@ def load_docx_paragraphs(path: Path) -> list[TargetParagraph]:
 def load_outline(path: Path, tab_id: str) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     payload = json.loads(path.read_text(encoding="utf-8"))
     all_paragraphs = [p for p in payload["paragraphs"] if p["tabId"] == tab_id]
-    body_paragraphs = [
-        p for p in all_paragraphs if normalize(p["text"]) and p.get("table") is None
-    ]
+    body_paragraphs = [p for p in all_paragraphs if normalize(p["text"]) and p.get("table") is None]
     return all_paragraphs, body_paragraphs
 
 
@@ -389,6 +396,9 @@ def _text_style_requests(
         if run.font_name:
             text_style["weightedFontFamily"] = {"fontFamily": run.font_name}
             fields.append("weightedFontFamily")
+        if run.link_url:
+            text_style["link"] = {"url": run.link_url}
+            fields.append("link")
         if fields and run.end > run.start:
             requests.append(
                 {
@@ -485,6 +495,30 @@ def style_requests(
     return requests
 
 
+def selected_opcodes(
+    opcodes: list[tuple[str, int, int, int, int]], skip_numbers: list[int]
+) -> tuple[list[tuple[int, tuple[str, int, int, int, int]]], list[int]]:
+    """Return numbered opcodes to apply and the protected opcodes left for manual sync."""
+    skipped = set(skip_numbers)
+    selected = [
+        (number, opcode) for number, opcode in enumerate(opcodes, start=1) if number not in skipped
+    ]
+    return selected, sorted(skipped.intersection(range(1, len(opcodes) + 1)))
+
+
+def replacement_text(paragraphs: list[TargetParagraph], preserve_trailing_break: bool) -> str:
+    """Build replacement text without duplicating a table-adjacent paragraph break."""
+    if not paragraphs:
+        return ""
+    value = "\n".join(paragraph.text for paragraph in paragraphs) + "\n"
+    return value[:-1] if preserve_trailing_break else value
+
+
+def replacement_delete_end(end: int, preserve_trailing_break: bool) -> int:
+    """Keep the final paragraph mark when it is also the boundary of a native table."""
+    return end - 1 if preserve_trailing_break else end
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--outline", type=Path, required=True)
@@ -494,6 +528,16 @@ def main() -> None:
     parser.add_argument("--tab-id", default="t.0")
     parser.add_argument("--revision-id", required=True)
     parser.add_argument("--allow-inline-index", type=int, action="append", default=[])
+    parser.add_argument(
+        "--skip-opcode",
+        type=int,
+        action="append",
+        default=[],
+        help=(
+            "Exclude a numbered diff opcode from the automatic plan so protected "
+            "tables or images can be updated separately."
+        ),
+    )
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
 
@@ -525,9 +569,15 @@ def main() -> None:
         for paragraph in all_live
         if paragraph.get("table") is not None
     ]
+    table_start_indexes = {
+        paragraph["table"]["tableStartIndex"]
+        for paragraph in all_live
+        if paragraph.get("table") is not None
+    }
 
     operations: list[dict[str, Any]] = []
-    for number, opcode in enumerate(opcodes, start=1):
+    selected, skipped_opcodes = selected_opcodes(opcodes, args.skip_opcode)
+    for number, opcode in selected:
         tag, old_start, old_end, new_start, new_end = opcode
         start, end, anchors = resolve_live_range(opcode, alignment, live, old_norm)
         if start != end:
@@ -553,6 +603,7 @@ def main() -> None:
                 "new_range": [new_start, new_end],
                 "startIndex": start,
                 "endIndex": end,
+                "preserveTrailingParagraphBreak": end in table_start_indexes,
                 "anchors": anchors,
                 "paragraphs": new[new_start:new_end],
             }
@@ -561,9 +612,7 @@ def main() -> None:
     operations.sort(key=lambda operation: operation["startIndex"], reverse=True)
     for previous, current in zip(operations, operations[1:]):
         if current["endIndex"] > previous["startIndex"]:
-            raise ValueError(
-                f"Overlapping operations {previous['number']} and {current['number']}"
-            )
+            raise ValueError(f"Overlapping operations {previous['number']} and {current['number']}")
 
     requests: list[dict[str, Any]] = []
     audit: list[dict[str, Any]] = []
@@ -571,6 +620,7 @@ def main() -> None:
         request_start = len(requests)
         start = operation["startIndex"]
         end = operation["endIndex"]
+        preserve_trailing_break = operation["preserveTrailingParagraphBreak"]
         paragraphs = operation.pop("paragraphs")
         if end > start:
             requests.append(
@@ -578,19 +628,18 @@ def main() -> None:
                     "deleteContentRange": {
                         "range": {
                             "startIndex": start,
-                            "endIndex": end,
+                            "endIndex": replacement_delete_end(end, preserve_trailing_break),
                             "tabId": args.tab_id,
                         }
                     }
                 }
             )
         if paragraphs:
-            inserted_text = "\n".join(paragraph.text for paragraph in paragraphs) + "\n"
             requests.append(
                 {
                     "insertText": {
                         "location": {"index": start, "tabId": args.tab_id},
-                        "text": inserted_text,
+                        "text": replacement_text(paragraphs, preserve_trailing_break),
                     }
                 }
             )
@@ -627,6 +676,7 @@ def main() -> None:
             "inlineObjectsProtected": len(inline_indexes),
             "inlineObjectsExplicitlyRelocated": sorted(args.allow_inline_index),
             "tableParagraphRangesProtected": len(table_ranges),
+            "skippedOpcodes": skipped_opcodes,
         },
         "audit": audit,
         "requests": requests,

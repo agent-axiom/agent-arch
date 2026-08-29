@@ -1,0 +1,17 @@
+{
+  "base_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-unified-visuals-2026-08-02.docx",
+  "bookmarks": 110,
+  "code_lines": 2003,
+  "headings": 612,
+  "images": 57,
+  "internal_hyperlinks": 214,
+  "list_items": 3057,
+  "lists": 660,
+  "manuscript": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+  "output_bytes": 22395892,
+  "output_docx": "docs/publisher/artifacts/agent-arch-ru-google-doc-publication-readiness-2026-08-14.docx",
+  "output_sha256": "efb4da624853d69d0b6e7d3bb6deb7814599f88bcaf622b5bc2d2782230070de",
+  "page_breaks": 30,
+  "paragraphs": 8314,
+  "tables": 12
+}

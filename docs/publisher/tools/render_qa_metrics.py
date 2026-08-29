@@ -20,12 +20,13 @@ def page_number(path: Path) -> int:
     return int(match.group(1))
 
 
-def density(path: Path) -> float:
+def page_metrics(path: Path) -> tuple[float, tuple[int, int], tuple[int, int, int, int] | None]:
     image = Image.open(path).convert("RGB")
     white = Image.new("RGB", image.size, (255, 255, 255))
     diff = ImageChops.difference(image, white).convert("L")
     stat = ImageStat.Stat(diff)
-    return float(stat.mean[0]) / 255.0
+    ink_mask = diff.point(lambda value: 255 if value > 4 else 0)
+    return float(stat.mean[0]) / 255.0, image.size, ink_mask.getbbox()
 
 
 def make_contact_sheet(paths: list[Path], output: Path, thumb_width: int = 320) -> None:
@@ -51,9 +52,27 @@ def make_contact_sheet(paths: list[Path], output: Path, thumb_width: int = 320) 
 
 def collect(render_dir: Path, contact_sheet: Path | None) -> dict[str, object]:
     pages = sorted(render_dir.glob("page-*.png"), key=page_number)
-    scored = [(page_number(path), density(path), path) for path in pages]
+    measured = [
+        (page_number(path), *page_metrics(path), path)
+        for path in pages
+    ]
+    scored = [(page, score, path) for page, score, _, _, path in measured]
     blank_like = [page for page, score, _ in scored if score < 0.0005]
     lowest = sorted(scored, key=lambda item: item[1])[:10]
+
+    page_size_counts: dict[tuple[int, int], int] = {}
+    edge_touch_pages: list[int] = []
+    ink_margins: list[tuple[int, int, int, int]] = []
+    for page, _, size, bounds, _ in measured:
+        page_size_counts[size] = page_size_counts.get(size, 0) + 1
+        if bounds is None:
+            continue
+        left, top, right, bottom = bounds
+        width, height = size
+        margins = (left, top, width - right, height - bottom)
+        ink_margins.append(margins)
+        if min(margins) <= 0:
+            edge_touch_pages.append(page)
 
     selected_numbers = []
     if scored:
@@ -68,9 +87,18 @@ def collect(render_dir: Path, contact_sheet: Path | None) -> dict[str, object]:
         "render_dir": str(render_dir),
         "pages": len(pages),
         "blank_like_pages": blank_like,
-        "lowest_density_pages": [
-            {"page": page, "density": score} for page, score, _ in lowest
+        "page_sizes": [
+            {"width": width, "height": height, "count": count}
+            for (width, height), count in sorted(page_size_counts.items())
         ],
+        "edge_touch_pages": edge_touch_pages,
+        "minimum_ink_margins_pixels": {
+            "left": min((item[0] for item in ink_margins), default=None),
+            "top": min((item[1] for item in ink_margins), default=None),
+            "right": min((item[2] for item in ink_margins), default=None),
+            "bottom": min((item[3] for item in ink_margins), default=None),
+        },
+        "lowest_density_pages": [{"page": page, "density": score} for page, score, _ in lowest],
         "contact_sheet": str(contact_sheet) if contact_sheet is not None else None,
     }
 

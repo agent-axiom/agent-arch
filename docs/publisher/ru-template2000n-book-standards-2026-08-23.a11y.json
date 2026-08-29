@@ -1,0 +1,28 @@
+{
+  "file": "docs/publisher/artifacts/agent-arch-ru-template2000n-book-standards-2026-08-23.docx",
+  "counts": {
+    "high": 0,
+    "medium": 0,
+    "low": 2
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://agent-axiom.github.io/agent-arch/companion/#chapter-map"
+      }
+    },
+    {
+      "severity": "low",
+      "kind": "hyperlink_raw_url",
+      "message": "Hyperlink display text is a raw URL (often less accessible)",
+      "context": {
+        "part": "word/document.xml",
+        "text": "https://github.com/agent-axiom/agent-arch.git"
+      }
+    }
+  ]
+}

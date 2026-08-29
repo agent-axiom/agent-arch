@@ -1,0 +1,914 @@
+{
+  "visual_style": "agent-arch-book-v1",
+  "rendered": 56,
+  "minimum_effective_font_pt": 8.5,
+  "minimum_viewbox_aspect_ratio": 0.279,
+  "minimum_cluster_title_gap_px": 14,
+  "cluster_title_violations": [],
+  "cluster_title_edge_violations": [],
+  "node_label_violations": [],
+  "aspect_ratio_warnings": [
+    "ru-inline-diagram-03.png: manual review: viewBox aspect 0.648 is below 0.72",
+    "ru-inline-diagram-05.png: manual review: viewBox aspect 0.688 is below 0.72",
+    "ru-inline-diagram-08.png: manual review: viewBox aspect 0.281 is below 0.72",
+    "ru-inline-diagram-09.png: manual review: viewBox aspect 0.665 is below 0.72",
+    "ru-inline-diagram-11.png: manual review: viewBox aspect 0.584 is below 0.72",
+    "ru-inline-diagram-13.png: manual review: viewBox aspect 0.317 is below 0.72",
+    "ru-inline-diagram-15.png: manual review: viewBox aspect 0.347 is below 0.72",
+    "ru-inline-diagram-17.png: manual review: viewBox aspect 0.333 is below 0.72",
+    "ru-inline-diagram-22.png: manual review: viewBox aspect 0.385 is below 0.72",
+    "ru-inline-diagram-25.png: manual review: viewBox aspect 0.711 is below 0.72",
+    "ru-inline-diagram-28.png: manual review: viewBox aspect 0.279 is below 0.72",
+    "ru-inline-diagram-29.png: manual review: viewBox aspect 0.495 is below 0.72",
+    "ru-figure-04-capability-contract-path.png: manual review: viewBox aspect 0.701 is below 0.72",
+    "ru-figure-07-sandbox-mcp.png: manual review: viewBox aspect 0.675 is below 0.72",
+    "ru-figure-21-mcp-gateway.png: manual review: viewBox aspect 0.582 is below 0.72",
+    "ru-figure-20-eval-integrity.png: manual review: viewBox aspect 0.409 is below 0.72",
+    "ru-figure-10-adlc-lifecycle.png: manual review: viewBox aspect 0.701 is below 0.72",
+    "ru-figure-14-brain-hands-session.png: manual review: viewBox aspect 0.444 is below 0.72",
+    "ru-figure-12-launch-readiness.png: manual review: viewBox aspect 0.462 is below 0.72",
+    "ru-figure-25-memory-write-lifecycle.png: manual review: viewBox aspect 0.719 is below 0.72",
+    "ru-figure-15-eval-audit-record-flow.png: manual review: viewBox aspect 0.445 is below 0.72",
+    "ru-figure-09-evidence-chain.png: manual review: viewBox aspect 0.653 is below 0.72",
+    "ru-figure-17-rollout-simulation-fidelity.png: manual review: viewBox aspect 0.426 is below 0.72",
+    "ru-editorial-diagram-02-registry-reconciliation.png: manual review: viewBox aspect 0.677 is below 0.72"
+  ],
+  "violations": [],
+  "results": [
+    {
+      "number": 1,
+      "filename": "ru-inline-diagram-01.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-01.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-01.png",
+      "effective_font_pt": 10.38,
+      "viewbox_aspect_ratio": 5.86,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 2,
+      "filename": "ru-inline-diagram-02.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-02.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-02.png",
+      "effective_font_pt": 11.6,
+      "viewbox_aspect_ratio": 0.85,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 3,
+      "filename": "ru-inline-diagram-03.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-03.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-03.png",
+      "effective_font_pt": 12.27,
+      "viewbox_aspect_ratio": 0.648,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-03-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.648 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 4,
+      "filename": "ru-inline-diagram-04.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-04.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-04.png",
+      "effective_font_pt": 12.78,
+      "viewbox_aspect_ratio": 0.951,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 5,
+      "filename": "ru-inline-diagram-05.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-05.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-05.png",
+      "effective_font_pt": 8.83,
+      "viewbox_aspect_ratio": 0.688,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.688 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 6,
+      "filename": "ru-inline-diagram-06.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-06.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-06.png",
+      "effective_font_pt": 10.18,
+      "viewbox_aspect_ratio": 2.468,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 7,
+      "filename": "ru-inline-diagram-07.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-07.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-07.png",
+      "effective_font_pt": 13.63,
+      "viewbox_aspect_ratio": 2.497,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 8,
+      "filename": "ru-inline-diagram-08.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-08.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-08.png",
+      "effective_font_pt": 11.05,
+      "viewbox_aspect_ratio": 0.281,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.281 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 9,
+      "filename": "ru-inline-diagram-09.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-09.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-09.png",
+      "effective_font_pt": 11.77,
+      "viewbox_aspect_ratio": 0.665,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-09-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.665 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 10,
+      "filename": "ru-inline-diagram-10.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-10.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-10.png",
+      "effective_font_pt": 8.5,
+      "viewbox_aspect_ratio": 0.758,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 11,
+      "filename": "ru-inline-diagram-11.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-11.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-11.png",
+      "effective_font_pt": 10.96,
+      "viewbox_aspect_ratio": 0.584,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-11-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.584 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 12,
+      "filename": "ru-inline-diagram-12.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-12.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-12.png",
+      "effective_font_pt": 13.95,
+      "viewbox_aspect_ratio": 1.633,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 13,
+      "filename": "ru-inline-diagram-13.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-13.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-13.png",
+      "effective_font_pt": 8.82,
+      "viewbox_aspect_ratio": 0.317,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-13-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.317 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 14,
+      "filename": "ru-inline-diagram-14.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-14.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-14.png",
+      "effective_font_pt": 10.23,
+      "viewbox_aspect_ratio": 4.978,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 15,
+      "filename": "ru-inline-diagram-15.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-15.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-15.png",
+      "effective_font_pt": 8.53,
+      "viewbox_aspect_ratio": 0.347,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-15-P",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.347 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 16,
+      "filename": "ru-inline-diagram-16.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-16.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-16.png",
+      "effective_font_pt": 13.46,
+      "viewbox_aspect_ratio": 2.226,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 17,
+      "filename": "ru-inline-diagram-17.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-17.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-17.png",
+      "effective_font_pt": 8.88,
+      "viewbox_aspect_ratio": 0.333,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.333 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 18,
+      "filename": "ru-inline-diagram-18.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-18.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-18.png",
+      "effective_font_pt": 10,
+      "viewbox_aspect_ratio": 2.165,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 19,
+      "filename": "ru-inline-diagram-19.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-19.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-19.png",
+      "effective_font_pt": 12.07,
+      "viewbox_aspect_ratio": 0.945,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-19-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 20,
+      "filename": "ru-inline-diagram-20.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-20.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-20.png",
+      "effective_font_pt": 13.2,
+      "viewbox_aspect_ratio": 1.57,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 21,
+      "filename": "ru-inline-diagram-21.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-21.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-21.png",
+      "effective_font_pt": 9.25,
+      "viewbox_aspect_ratio": 1.55,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 22,
+      "filename": "ru-inline-diagram-22.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-22.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-22.png",
+      "effective_font_pt": 10.27,
+      "viewbox_aspect_ratio": 0.385,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-22-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.385 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 23,
+      "filename": "ru-inline-diagram-23.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-23.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-23.png",
+      "effective_font_pt": 9.47,
+      "viewbox_aspect_ratio": 1.385,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-23-C",
+          "gap_px": 14,
+          "opaque_background": true
+        },
+        {
+          "cluster": "ru-inline-diagram-23-O",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 24,
+      "filename": "ru-inline-diagram-24.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-24.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-24.png",
+      "effective_font_pt": 13.95,
+      "viewbox_aspect_ratio": 2.009,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 25,
+      "filename": "ru-inline-diagram-25.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-25.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-25.png",
+      "effective_font_pt": 10.55,
+      "viewbox_aspect_ratio": 0.711,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.711 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 26,
+      "filename": "ru-inline-diagram-26.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-26.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-26.png",
+      "effective_font_pt": 9.94,
+      "viewbox_aspect_ratio": 2.342,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 27,
+      "filename": "ru-inline-diagram-27.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-27.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-27.png",
+      "effective_font_pt": 9.15,
+      "viewbox_aspect_ratio": 0.908,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 28,
+      "filename": "ru-inline-diagram-28.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-28.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-28.png",
+      "effective_font_pt": 8.87,
+      "viewbox_aspect_ratio": 0.279,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-inline-diagram-28-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.279 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 29,
+      "filename": "ru-inline-diagram-29.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-29.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-inline-diagram-29.png",
+      "effective_font_pt": 10.14,
+      "viewbox_aspect_ratio": 0.495,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.495 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 1,
+      "filename": "ru-figure-01-book-map.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-01-book-map.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-01-book-map.png",
+      "effective_font_pt": 16.49,
+      "viewbox_aspect_ratio": 0.829,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 2,
+      "filename": "ru-figure-13-autonomy-ladder.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-13-autonomy-ladder.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-13-autonomy-ladder.png",
+      "effective_font_pt": 9.51,
+      "viewbox_aspect_ratio": 3.594,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 6,
+      "filename": "ru-figure-04-capability-contract-path.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-04-capability-contract-path.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-04-capability-contract-path.png",
+      "effective_font_pt": 9.12,
+      "viewbox_aspect_ratio": 0.701,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.701 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 7,
+      "filename": "ru-figure-16-capability-endpoint-contract.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-16-capability-endpoint-contract.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-16-capability-endpoint-contract.png",
+      "effective_font_pt": 10.91,
+      "viewbox_aspect_ratio": 0.868,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-figure-16-capability-endpoint-contract-R1",
+          "gap_px": 53,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 8,
+      "filename": "ru-figure-06-approval-gateway.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-06-approval-gateway.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-06-approval-gateway.png",
+      "effective_font_pt": 8.78,
+      "viewbox_aspect_ratio": 1.049,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 10,
+      "filename": "ru-figure-05-memory-retrieval.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-05-memory-retrieval.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-05-memory-retrieval.png",
+      "effective_font_pt": 9.32,
+      "viewbox_aspect_ratio": 0.72,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-figure-05-memory-retrieval-R1",
+          "gap_px": 33.5,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 11,
+      "filename": "ru-figure-07-sandbox-mcp.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-07-sandbox-mcp.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-07-sandbox-mcp.png",
+      "effective_font_pt": 8.54,
+      "viewbox_aspect_ratio": 0.675,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.675 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 12,
+      "filename": "ru-figure-21-mcp-gateway.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-21-mcp-gateway.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-21-mcp-gateway.png",
+      "effective_font_pt": 10.61,
+      "viewbox_aspect_ratio": 0.582,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.582 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 13,
+      "filename": "ru-figure-08-idempotency-recovery.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-08-idempotency-recovery.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-08-idempotency-recovery.png",
+      "effective_font_pt": 11.22,
+      "viewbox_aspect_ratio": 0.834,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 14,
+      "filename": "ru-figure-20-eval-integrity.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-20-eval-integrity.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-20-eval-integrity.png",
+      "effective_font_pt": 8.55,
+      "viewbox_aspect_ratio": 0.409,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.409 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 17,
+      "filename": "ru-figure-10-adlc-lifecycle.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-10-adlc-lifecycle.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-10-adlc-lifecycle.png",
+      "effective_font_pt": 8.7,
+      "viewbox_aspect_ratio": 0.701,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.701 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 21,
+      "filename": "ru-figure-22-durable-workflow-fiber.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-22-durable-workflow-fiber.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-22-durable-workflow-fiber.png",
+      "effective_font_pt": 8.61,
+      "viewbox_aspect_ratio": 3.691,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 22,
+      "filename": "ru-figure-14-brain-hands-session.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-14-brain-hands-session.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-14-brain-hands-session.png",
+      "effective_font_pt": 8.84,
+      "viewbox_aspect_ratio": 0.444,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.444 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 24,
+      "filename": "ru-figure-12-launch-readiness.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-12-launch-readiness.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-12-launch-readiness.png",
+      "effective_font_pt": 9.04,
+      "viewbox_aspect_ratio": 0.462,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-figure-12-launch-readiness-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.462 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 25,
+      "filename": "ru-figure-24-capstone-evidence-package.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-24-capstone-evidence-package.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-24-capstone-evidence-package.png",
+      "effective_font_pt": 8.69,
+      "viewbox_aspect_ratio": 3.988,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 3,
+      "filename": "ru-figure-03-reference-architecture.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-03-reference-architecture.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-03-reference-architecture.png",
+      "effective_font_pt": 15.22,
+      "viewbox_aspect_ratio": 0.837,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 4,
+      "filename": "ru-figure-02-trust-boundaries.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-02-trust-boundaries.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-02-trust-boundaries.png",
+      "effective_font_pt": 14.67,
+      "viewbox_aspect_ratio": 0.895,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 5,
+      "filename": "ru-figure-19-localhost-control-plane.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-19-localhost-control-plane.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-19-localhost-control-plane.png",
+      "effective_font_pt": 10.2,
+      "viewbox_aspect_ratio": 2.145,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 9,
+      "filename": "ru-figure-25-memory-write-lifecycle.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-25-memory-write-lifecycle.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-25-memory-write-lifecycle.png",
+      "effective_font_pt": 8.77,
+      "viewbox_aspect_ratio": 0.719,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-figure-25-memory-write-lifecycle-R2",
+          "gap_px": 14,
+          "opaque_background": true
+        },
+        {
+          "cluster": "ru-figure-25-memory-write-lifecycle-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.719 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 15,
+      "filename": "ru-figure-15-eval-audit-record-flow.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-15-eval-audit-record-flow.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-15-eval-audit-record-flow.png",
+      "effective_font_pt": 9.3,
+      "viewbox_aspect_ratio": 0.445,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.445 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 16,
+      "filename": "ru-figure-09-evidence-chain.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-09-evidence-chain.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-09-evidence-chain.png",
+      "effective_font_pt": 8.56,
+      "viewbox_aspect_ratio": 0.653,
+      "cluster_title_gaps": [
+        {
+          "cluster": "ru-figure-09-evidence-chain-R2",
+          "gap_px": 14,
+          "opaque_background": true
+        },
+        {
+          "cluster": "ru-figure-09-evidence-chain-R1",
+          "gap_px": 14,
+          "opaque_background": true
+        }
+      ],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.653 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 18,
+      "filename": "ru-figure-11-assurance-incident-registry.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-11-assurance-incident-registry.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-11-assurance-incident-registry.png",
+      "effective_font_pt": 16.09,
+      "viewbox_aspect_ratio": 1.04,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 19,
+      "filename": "ru-figure-23-incident-response-state.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-23-incident-response-state.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-23-incident-response-state.png",
+      "effective_font_pt": 11.29,
+      "viewbox_aspect_ratio": 0.851,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 20,
+      "filename": "ru-figure-18-runtime-stack.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-18-runtime-stack.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-18-runtime-stack.png",
+      "effective_font_pt": 10.23,
+      "viewbox_aspect_ratio": 1.956,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 23,
+      "filename": "ru-figure-17-rollout-simulation-fidelity.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-17-rollout-simulation-fidelity.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-figure-17-rollout-simulation-fidelity.png",
+      "effective_font_pt": 8.76,
+      "viewbox_aspect_ratio": 0.426,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.426 is below 0.72"
+      ],
+      "violations": []
+    },
+    {
+      "number": 1,
+      "filename": "ru-editorial-diagram-01-execution-form-decision.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-editorial-diagram-01-execution-form-decision.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-editorial-diagram-01-execution-form-decision.png",
+      "effective_font_pt": 9.34,
+      "viewbox_aspect_ratio": 1.657,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [],
+      "violations": []
+    },
+    {
+      "number": 2,
+      "filename": "ru-editorial-diagram-02-registry-reconciliation.png",
+      "svg": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-editorial-diagram-02-registry-reconciliation.svg",
+      "png": "/Users/if/PycharmProjects/agent-axiom/agent-arch/.worktrees/ru-manuscript-book-standards-2026-08-23/docs/publisher/visuals/ru-editorial-diagram-02-registry-reconciliation.png",
+      "effective_font_pt": 8.97,
+      "viewbox_aspect_ratio": 0.677,
+      "cluster_title_gaps": [],
+      "cluster_title_edge_intersections": [],
+      "node_label_overflows": [],
+      "warnings": [
+        "manual review: viewBox aspect 0.677 is below 0.72"
+      ],
+      "violations": []
+    }
+  ]
+}

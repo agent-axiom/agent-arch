@@ -7,7 +7,8 @@ import argparse
 import re
 from pathlib import Path
 
-PUBLICATION_DATE = "2026-08-01"
+PUBLICATION_DATE = "2026-08-17"
+HUMAN_REVIEW_DATE = "2026-08-17"
 
 INDEX_ENTRIES = (
     (
@@ -481,6 +482,26 @@ def build_learning_map(chapters: list[dict[str, object]]) -> str:
             lines.append(
                 f"- Независимая проверка: лабораторная работа «{'; '.join(chapter['labs'])}»."
             )
+        if chapter["labs"]:
+            coverage = "артефакт, объяснение и независимая лабораторная проверка"
+        elif chapter["listings"] and chapter["tables"]:
+            coverage = "артефакт, исполняемый или проверяемый листинг и структурированное сравнение"
+        elif chapter["listings"]:
+            coverage = "артефакт и исполняемый или проверяемый листинг"
+        elif chapter["tables"]:
+            coverage = "артефакт и структурированное сравнение"
+        else:
+            coverage = "артефакт и действие переноса в практическом шаге"
+        lines.extend(
+            [
+                "",
+                f"**Статус покрытия:** {coverage}.",
+                "",
+                "**Критерий приемки:** читатель создал заявленный артефакт, "
+                "воспроизвел практический шаг и может связать наблюдаемый "
+                "результат с каждым обещанием главы.",
+            ]
+        )
         lines.append("")
     return "\n".join(lines).rstrip() + "\n"
 
@@ -488,7 +509,7 @@ def build_learning_map(chapters: list[dict[str, object]]) -> str:
 def build_human_review_packet() -> str:
     return f"""# Пакет человеческой проверки русской рукописи
 
-Дата подготовки: {PUBLICATION_DATE}.
+Дата подготовки: {HUMAN_REVIEW_DATE}.
 
 **Статус человеческой проверки: не выполнена.**
 
@@ -501,8 +522,15 @@ def build_human_review_packet() -> str:
 
 - каноническая рукопись:
   `docs/publisher/ru-manuscript-editorial-2026-07-13.md`;
-- издательская DOCX-производная и PDF текущей контрольной точки;
+- Google-ориентированная издательская пара:
+  `docs/publisher/artifacts/agent-arch-ru-google-doc-technical-book-polish-2026-08-17.docx`
+  и одноименный PDF;
+- издательская пара `Template2000n`:
+  `docs/publisher/artifacts/agent-arch-ru-template2000n-technical-book-polish-2026-08-17.docx`
+  и одноименный PDF;
 - репозиторий с примерами, схемами, тестами и воспроизводимыми сборщиками;
+- читательская точка входа:
+  <https://agent-axiom.github.io/agent-arch/companion/>;
 - карта результатов обучения:
   `docs/publisher/ru-learning-outcome-map-2026-07-27.md`;
 - рабочий словник предметного указателя:
@@ -586,6 +614,11 @@ def build_human_review_packet() -> str:
   авторских подсказок, сверить наблюдаемый отказ с указанным предикатом и
   подтвердить, что снятие обязательного контроля не маскируется параметром
   командной строки или успешным завершением соседнего шага.
+- **Три новые закрытые ветви.** Отдельно воспроизвести
+  `high-risk-safe-transport`, `assurance-owner-missing` и
+  `stale-run-completion`. Подтвердить соответственно, что безопасный транспорт
+  не понижает риск, решение без владельца не готово к исполнению, а устаревший
+  исполнитель не может завершить перехваченный запуск.
 
 Результат каждого сценария: `[пройден / не пройден / неприменим с обоснованием]`
 

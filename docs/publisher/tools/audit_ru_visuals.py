@@ -19,6 +19,7 @@ from PIL import Image, ImageChops, ImageDraw
 MIN_CONTENT_FILL_WIDTH = 0.88
 MIN_CONTENT_FILL_HEIGHT = 0.78
 MAX_PRINT_IMAGE_HEIGHT_INCHES = 6.35
+QR_ASSET_NAMES = {"ru-online-companion-qr.png"}
 
 if __package__:
     from .sync_ru_docx_visuals import (
@@ -77,13 +78,24 @@ def audit_assets(visuals: list[VisualRecord]) -> list[dict[str, object]]:
         with Image.open(path) as image:
             width, height = image.size
             has_alpha = "A" in image.mode or "transparency" in image.info
+            colors = image.convert("RGB").getcolors(maxcolors=3)
         fill_width, fill_height = content_fill(path)
         if has_alpha:
             raise ValueError(f"Visual has an alpha channel: {path}")
-        if (
-            fill_width < MIN_CONTENT_FILL_WIDTH
-            or fill_height < MIN_CONTENT_FILL_HEIGHT
-        ):
+        is_qr = path.name in QR_ASSET_NAMES
+        if is_qr:
+            allowed_colors = {(0, 0, 0), (255, 255, 255)}
+            actual_colors = {color for _, color in colors or []}
+            if width != height or width < 300:
+                raise ValueError(f"QR visual must be square and at least 300 px: {path}")
+            if not colors or not actual_colors <= allowed_colors:
+                raise ValueError(f"QR visual must be strictly black and white: {path}")
+            if not (0.78 <= fill_width <= 0.90 and 0.78 <= fill_height <= 0.90):
+                raise ValueError(
+                    f"QR visual has an invalid quiet zone: {path} "
+                    f"({fill_width:.3f}, {fill_height:.3f})"
+                )
+        elif fill_width < MIN_CONTENT_FILL_WIDTH or fill_height < MIN_CONTENT_FILL_HEIGHT:
             raise ValueError(
                 f"Visual has excessive whitespace: {path} ({fill_width:.3f}, {fill_height:.3f})"
             )
@@ -95,6 +107,7 @@ def audit_assets(visuals: list[VisualRecord]) -> list[dict[str, object]]:
                 "height_px": height,
                 "content_fill_width": round(fill_width, 4),
                 "content_fill_height": round(fill_height, 4),
+                "kind": "qr" if is_qr else "diagram",
                 "sha256": payload_hash(path.read_bytes()),
             }
         )

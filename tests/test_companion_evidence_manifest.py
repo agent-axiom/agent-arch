@@ -56,3 +56,24 @@ def test_partial_manifest_requires_only_completed_laboratory_files(tmp_path: Pat
     )
 
     assert [item["id"] for item in payload["artifacts"]] == ["lab-01"]
+
+
+def test_manifest_includes_the_release_decision_from_laboratory_eight(
+    tmp_path: Path,
+) -> None:
+    for _laboratory, _artifact_id, relative_path in LAB_ARTIFACTS:
+        artifact = tmp_path / relative_path
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_text(f"evidence:{relative_path}\n", encoding="utf-8")
+
+    payload = build_manifest(
+        tmp_path,
+        through=8,
+        subject="support-triage-ref@test",
+        measured_at="2026-08-01T12:00:00Z",
+    )
+
+    artifact_ids = [item["id"] for item in payload["artifacts"]]
+    assert artifact_ids[-1] == "lab-08"
+    assert payload["artifacts"][-1]["path"] == "lab-08/release-decision.json"
+    assert payload["signals"]["lab_08_observed"]["value"] is True

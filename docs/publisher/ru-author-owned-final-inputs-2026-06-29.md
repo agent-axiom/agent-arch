@@ -16,7 +16,7 @@ explicitly omitted by the author before final publisher submission.
 | Verified experience | Cannot be inferred safely. | Add specific, checkable experience claims. |
 | Public projects | Must be safe and approved to mention. | Add or explicitly omit. |
 | Public links | Must be stable and intentional. | Add GitHub/site/blog/profile links. |
-| Companion URL | Depends on publication/release decision. | Fill final public URL or release-candidate URL. |
+| Companion URL | Public route is now fixed in the manuscript. | Resolved: `https://agent-axiom.github.io/agent-arch/companion/`. |
 | Companion version | Must match the book edition. | Fill version/changelog/errata route. |
 | Title/subtitle/cover copy | Publisher-facing positioning. | Approve final wording. |
 | Legal/compliance disclaimer | Depends on author and publisher policy. | Approve exact disclaimer. |
@@ -78,3 +78,23 @@ fields are filled, explicitly omitted or delegated to the publisher/editor.
 Do not run the final publisher DOCX export as a final artifact until these
 author-owned fields are either filled, explicitly omitted or moved to a
 separate publisher questionnaire.
+
+## 2026-08-06 current manuscript snapshot
+
+The current canonical manuscript keeps all author-owned facts in the opening
+`Об авторе` block. Before final publisher submission, the author must supply or
+explicitly omit:
+
+- the public byline;
+- a 50-70 word short biography and a 120-150 word extended biography;
+- the current role or independent positioning;
+- one or two verifiable experience statements;
+- intentional public links and the publisher contact;
+- cover or catalogue copy;
+- acknowledgements;
+- publisher-approved wording for the AI-use disclosure.
+
+The working statement that the author created `agent-axiom/agent-arch` may stay
+only after the author confirms the public wording. No private client, NDA-bound
+project, unpublished metric or inferred credential should be added during
+technical or literary editing.
