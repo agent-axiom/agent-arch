@@ -470,7 +470,7 @@ GitHub Copilot agentic harness 给了一个很有用的生产信号：agent qual
 
     Benchmark 刻意把两个问题分开：activation 与 deliberately applied response behavior。Activation suite 检查 agent host 是否应该为某个请求选择 `if`；response suite 绕过 automatic selection，主动施加每个 comparison arm。四个 arms 分别是 `baseline`、完全一致的指令 `Answer concisely.`、按字节固定的 Caveman fixture，以及 `skills/if/SKILL.md` 的 exact bytes。不同 arms 之间的 model、user prompt、generation settings、tool availability 和 instruction placement 保持不变；只有 comparison instruction 改变。
 
-    Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行，因此失败的 answer 不能只因为更短就获胜。每次 run 都保留 runner version、完整 case hash、prompt 与 instruction hashes、attempt/retry lineage、judge provenance，以及 append-only raw artifacts。这样，hypothesis 才是可审查、可证伪的。
+    Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行，因此失败的 answer 不能只因为更短就获胜。每次 run 都保留 runner version、完整 case hash、prompt 与 instruction hashes、attempt/retry lineage，以及 append-only raw artifacts；只有使用 semantic judging 时才保留 judge provenance。这样，hypothesis 才是可审查、可证伪的。
 
     在该固定 revision 上，仓库尚无公开 benchmark 结果。Smoke/replay fixtures 只验证 evaluation path；它们不能证明 `if` 节省 token、优于另一条 arm，或在不同 agent hosts 上表现一致。这里成立的是 contract 与 evaluation discipline，而不是一个有利结果。
 

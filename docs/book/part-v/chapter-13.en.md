@@ -470,7 +470,7 @@ The practical lesson: when a team changes the harness, context strategy, or mode
 
     The benchmark deliberately separates two questions: activation and deliberately applied response behavior. The activation suite asks whether an agent host should select `if` for a request; the response suite bypasses automatic selection and deliberately applies each comparison arm. The four arms are `baseline`, the exact instruction `Answer concisely.`, a byte-pinned Caveman fixture, and the exact bytes of `skills/if/SKILL.md`. Across arms, the model, user prompt, generation settings, tool availability, and instruction placement remain fixed; only the comparison instruction changes.
 
-    The hard gate and optional blind semantic gate run before paired brevity metrics, so a failed answer cannot win merely by being shorter. A run retains runner-version provenance, the complete case hash, prompt and instruction hashes, attempt/retry lineage, judge provenance, and append-only raw artifacts. That makes the hypothesis inspectable and falsifiable.
+    The hard gate and optional blind semantic gate run before paired brevity metrics, so a failed answer cannot win merely by being shorter. A run retains runner-version provenance, the complete case hash, prompt and instruction hashes, attempt/retry lineage, and append-only raw artifacts; it retains judge provenance only when semantic judging is used. That makes the hypothesis inspectable and falsifiable.
 
     At the pinned revision, the repository has no public benchmark result yet. Smoke/replay fixtures validate the evaluation path; they do not prove token savings, superiority over another arm, or uniform behavior across agent hosts. The evidence here is the contract and evaluation discipline, not a favorable result.
 
