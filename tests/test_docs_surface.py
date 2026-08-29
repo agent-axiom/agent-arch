@@ -22720,5 +22720,5 @@ def test_laconian_author_sources_are_transparent_and_pinned() -> None:
         for url in pinned_urls:
             assert url in first_item, (path, url)
         assert text.count(disclosure) == 1, (path, disclosure)
-        assert "https://github.com/agent-axiom/laconian/blob/main/" not in text, path
-        assert "https://github.com/agent-axiom/laconian/tree/main/" not in text, path
+        assert "https://github.com/agent-axiom/laconian/blob/main" not in text, path
+        assert "https://github.com/agent-axiom/laconian/tree/main" not in text, path
