@@ -71,9 +71,7 @@ def test_online_companion_maps_every_print_chapter_to_stable_routes(
     relative_targets = re.findall(r"\]\((?!https?://)([^)#]+)(?:#[^)]+)?\)", section)
     assert relative_targets
     missing = [
-        target
-        for target in relative_targets
-        if not (path.parent / target).resolve().is_file()
+        target for target in relative_targets if not (path.parent / target).resolve().is_file()
     ]
     assert not missing
 
@@ -10055,10 +10053,7 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
     source_urls = (
         "https://albumentations.ai/docs/integrations/mcp/",
         "https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1",
-        (
-            "https://github.com/dKosarevsky/albu-mcp/tree/"
-            "171e2ca44830a16c363c8e3614825f2a0d2215b8"
-        ),
+        ("https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8"),
     )
     footnote_references = ("[^albu-mcp-guide]", "[^albu-mcp-project]")
     footnote_definitions = ("[^albu-mcp-guide]:", "[^albu-mcp-project]:")
