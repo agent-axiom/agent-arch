@@ -22510,21 +22510,42 @@ def test_laconian_skill_eval_case_is_documented() -> None:
     markers_by_file = {
         "docs/book/part-v/chapter-13.md": (
             "Laconian — открытый проект автора этой книги",
+            "без scripts, dependencies, permissions, assets, network calls и tool-specific instructions",
+            "correctness and safety; требования пользователя, нужные подробности, формат и тон",
+            "Код, команды, ошибки, числа, версии, URL, идентификаторы, схемы, обязательные ключи, порядок и формат сохраняются буквально",
+            "Сжатие останавливается до того, как следующее удаление ослабит корректность, безопасность, охват требований, полноту, полезность, ясность или тон",
             "Benchmark намеренно разделяет два вопроса: activation и deliberately applied response behavior",
+            "model, user prompt, generation settings, tool availability и instruction placement",
             "Hard gate и optional blind semantic gate выполняются до paired brevity metrics",
+            "provenance версии runner, полного case hash, prompt и instruction hashes, цепочки attempts/retries, judge и append-only raw artifacts",
             "в репозитории пока нет публичного результата benchmark",
+            "Smoke/replay fixtures проверяют evaluation path, но не доказывают экономию токенов, превосходство `if` над другой arm или одинаковое поведение на разных agent hosts",
         ),
         "docs/book/part-v/chapter-13.en.md": (
             "Laconian is an open-source project by the author of this book",
+            "with no scripts, dependencies, permissions, assets, network calls, or tool-specific instructions",
+            "correctness and safety; the user's requirements, requested detail, format, and tone",
+            "Code, commands, errors, numbers, versions, URLs, identifiers, schemas, required keys, order, and format remain exact",
+            "Compression stops before the next deletion would weaken correctness, safety, requirement coverage, completeness, usefulness, clarity, or tone",
             "The benchmark deliberately separates two questions: activation and deliberately applied response behavior",
+            "model, user prompt, generation settings, tool availability, and instruction placement",
             "The hard gate and optional blind semantic gate run before paired brevity metrics",
+            "runner-version provenance, the complete case hash, prompt and instruction hashes, attempt/retry lineage, judge provenance, and append-only raw artifacts",
             "the repository has no public benchmark result yet",
+            "Smoke/replay fixtures validate the evaluation path; they do not prove token savings, superiority over another arm, or uniform behavior across agent hosts",
         ),
         "docs/book/part-v/chapter-13.zh.md": (
             "Laconian 是本书作者的开源项目",
+            "不包含 scripts、dependencies、permissions、assets、network calls 或 tool-specific instructions",
+            "correctness and safety；用户要求、所需细节、format 与 tone",
+            "Code、commands、errors、numbers、versions、URLs、identifiers、schemas、required keys、order 和 format 在精确形式承载意义时必须保持不变",
+            "一旦下一次删除会削弱 correctness、safety、requirement coverage、completeness、usefulness、clarity 或 tone，压缩就应该停止",
             "Benchmark 刻意把两个问题分开：activation 与 deliberately applied response behavior",
+            "model、user prompt、generation settings、tool availability 和 instruction placement",
             "Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行",
+            "runner version、完整 case hash、prompt 与 instruction hashes、attempt/retry lineage、judge provenance，以及 append-only raw artifacts",
             "仓库尚无公开 benchmark 结果",
+            "Smoke/replay fixtures 只验证 evaluation path；它们不能证明 `if` 节省 token、优于另一条 arm，或在不同 agent hosts 上表现一致",
         ),
     }
     revision = "669c45e849f75c99f81af19561d09cf24664e935"
@@ -22547,6 +22568,9 @@ def test_laconian_skill_eval_case_is_documented() -> None:
         "`Answer concisely.`",
         "Caveman",
         "`skills/if/SKILL.md`",
+        "append-only raw artifacts",
+        "Smoke/replay fixtures",
+        "evaluation path",
     )
     for path, localized_markers in markers_by_file.items():
         text = _read(path)
@@ -22555,6 +22579,8 @@ def test_laconian_skill_eval_case_is_documented() -> None:
         assert section_71 and section_72, path
         for marker in (*common_markers, *localized_markers):
             assert marker in case, (path, marker)
+        assert "[^laconian-case]" in case, path
+        assert text.count("[^laconian-case]:") == 1, path
         for url in pinned_urls:
             assert url in text, (path, url)
     _assert_files_contain_none(
