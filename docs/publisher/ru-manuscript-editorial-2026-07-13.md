@@ -4987,9 +4987,7 @@ uv run python docs/companion/examples/run_lab_negative_scenario.py \
 
 Эта проверка отделяет два разных утверждения. Песочница ограничивает способ исполнения, а политика решает, разрешено ли вообще переходить к исполнению. Замена шлюза на песочницу не может неявно отменить подтверждение.
 
-**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: на уровне отдельного адаптера и на уровне всего ландшафта MCP.
-
-Типовые проблемы очень повторяемы:
+**Частые ошибки.**
 
 * возможность получает больше сетевого доступа, чем нужно;
 * секреты доступны слишком широкому набору адаптеров;
@@ -5000,13 +4998,11 @@ uv run python docs/companion/examples/run_lab_negative_scenario.py \
 
 Именно поэтому песочница не должна быть галочкой в проверочном списке. Она должна быть частью модели выполнения.
 
-**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как
-управляемую возможность. A2A передает задачу самостоятельной операционной роли
-с собственными владельцем, политикой и жизненным циклом.
+**Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент.** AlbumentationsX MCP — open-source community-интеграция, разработанная автором этой книги; она не является официальным продуктом AlbumentationsX и не заменяет Python API (см. источники **S124**, **S125**). Сервер даёт MCP-хосту типизированный путь для проверки конвейеров аугментации, ограниченных локальных превью, сравнения вариантов, обратной связи и воспроизводимого экспорта.
 
-Если сущность предоставляет поиск, API или запись, выбирайте MCP или обычный
-шлюз возможностей. A2A оправдан только там, где вместе с задачей действительно
-передаются ответственность и ограниченные полномочия.
+Это возможность, а не самостоятельная операционная роль: она не владеет целью или политикой и не обучает модель. Чтение ограничивается настроенным `allowed-root`, запись — отдельным каталогом артефактов; до рендеринга проверяются запрос и лимиты, а seed, манифесты, трассы, профили возможностей, снапшоты контрактов и golden evals делают поведение наблюдаемым.
+
+Граница доказательств тоже явна: узкий корень нужно настроить, принятие превью не является жёсткой авторизацией, а молодой проект не доказывает широкое промышленное внедрение.
 
 #### Когда действительно нужен A2A
 
@@ -5100,6 +5096,8 @@ OBO-обмен сохраняет исходного субъекта и суж�
 **S116.** Model Context Protocol, Specification 2026-07-28.
 
 **S117.** Model Context Protocol Blog, The 2026-07-28 MCP Specification Release Candidate.
+**S124.** Albumentations, AlbumentationsX MCP integration.
+**S125.** GitHub, dKosarevsky/albu-mcp v1.21.1 and source snapshot 171e2ca.
 
 ## Глава 12\. Идемпотентность, повторы, лимиты и границы отката
 
@@ -13677,6 +13675,11 @@ status: open
 **S122.** [GitHub, Better tools made Copilot code review worse. Here is how we actually improved it](https://github.blog/ai-and-ml/github-copilot/better-tools-made-copilot-code-review-worse-heres-how-we-actually-improved-it/), дата обращения: 1 августа 2026 года.
 
 **S123.** [AWS, Control agent behaviors and cost beyond a single action: New capabilities in Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/control-agent-behaviors-and-cost-beyond-a-single-action-new-capabilities-in-amazon-bedrock-agentcore/), дата обращения: 20 августа 2026 года.
+
+#### Авторский кейс AlbumentationsX MCP
+
+**S124.** [Albumentations, AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/), дата обращения: 30 августа 2026 года.
+**S125.** [GitHub, dKosarevsky/albu-mcp v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) и [снимок исходного кода 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8), дата обращения: 30 августа 2026 года.
 
 ### Дополнительное чтение
 

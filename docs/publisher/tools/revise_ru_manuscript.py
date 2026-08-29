@@ -17499,6 +17499,64 @@ def link_print_chapters_to_companion_map_2026_08_23(text: str) -> str:
     )
 
 
+def apply_albumentationsx_mcp_author_case_2026_08_30(text: str) -> str:
+    """Add the disclosed author case without increasing Chapter 11 density."""
+
+    text = _replace_once_in_chapter(
+        text,
+        11,
+        "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: на уровне "
+        "отдельного адаптера и на уровне всего ландшафта MCP.\n\n"
+        "Типовые проблемы очень повторяемы:\n\n",
+        "**Частые ошибки.**\n\n",
+        "duplicate Chapter 11 common-problems lead-in",
+    )
+
+    author_case = """**Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент.** AlbumentationsX MCP — open-source community-интеграция, разработанная автором этой книги; она не является официальным продуктом AlbumentationsX и не заменяет Python API (см. источники **S124**, **S125**). Сервер даёт MCP-хосту типизированный путь для проверки конвейеров аугментации, ограниченных локальных превью, сравнения вариантов, обратной связи и воспроизводимого экспорта.
+
+Это возможность, а не самостоятельная операционная роль: она не владеет целью или политикой и не обучает модель. Чтение ограничивается настроенным `allowed-root`, запись — отдельным каталогом артефактов; до рендеринга проверяются запрос и лимиты, а seed, манифесты, трассы, профили возможностей, снапшоты контрактов и golden evals делают поведение наблюдаемым.
+
+Граница доказательств тоже явна: узкий корень нужно настроить, принятие превью не является жёсткой авторизацией, а молодой проект не доказывает широкое промышленное внедрение."""
+    old_generic_block = """**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как
+управляемую возможность. A2A передает задачу самостоятельной операционной роли
+с собственными владельцем, политикой и жизненным циклом.
+
+Если сущность предоставляет поиск, API или запись, выбирайте MCP или обычный
+шлюз возможностей. A2A оправдан только там, где вместе с задачей действительно
+передаются ответственность и ограниченные полномочия.
+
+"""
+    text = _replace_once_in_chapter(
+        text,
+        11,
+        old_generic_block,
+        author_case + "\n\n",
+        "AlbumentationsX MCP author case",
+    )
+
+    bibliography = """#### Авторский кейс AlbumentationsX MCP
+
+**S124.** [Albumentations, AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/), дата обращения: 30 августа 2026 года.
+**S125.** [GitHub, dKosarevsky/albu-mcp v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) и [снимок исходного кода 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8), дата обращения: 30 августа 2026 года.
+
+"""
+    text = _replace_editorial_anchor(
+        text,
+        "### Дополнительное чтение",
+        bibliography + "### Дополнительное чтение",
+        "sources S124-S125",
+    )
+    text = _append_unique_chapter_sources(
+        text,
+        11,
+        (
+            "**S124.** Albumentations, AlbumentationsX MCP integration.",
+            "**S125.** GitHub, dKosarevsky/albu-mcp v1.21.1 and source snapshot 171e2ca.",
+        ),
+    )
+    return re.sub(r"\n{4,}", "\n\n", text).rstrip() + "\n"
+
+
 def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = source.read_text(encoding="utf-8")
     text = replace_front_matter_and_introduction(text)
@@ -17622,6 +17680,7 @@ def revise(source: Path, output: Path, manifest_path: Path) -> None:
     text = apply_trajectory_policy_sync_2026_08_23(text)
     text = apply_reader_listing_polish_2026_08_23(text)
     text = link_print_chapters_to_companion_map_2026_08_23(text)
+    text = apply_albumentationsx_mcp_author_case_2026_08_30(text)
     text = "\n".join(line.rstrip() for line in text.splitlines()) + "\n"
 
     output.parent.mkdir(parents=True, exist_ok=True)
