@@ -493,6 +493,18 @@ GitHub Copilot agentic harness дает хороший практический 
 
 Практический вывод: если команда меняет harness, context strategy или model routing, ей нужен harness-level release gate. Иначе можно ошибочно решить, что "модель стала лучше" или "модель стала хуже", хотя реальная причина лежит в orchestration layer.
 
+!!! example "Открытый проект автора книги: Laconian как проверяемый skill"
+
+    Laconian — открытый проект автора этой книги, а `if` — переносимый skill внутри него.[^laconian-case] Вся устанавливаемая часть — один поведенческий Markdown-файл `skills/if/SKILL.md`: без scripts, dependencies, permissions, assets, network calls и tool-specific instructions. Это прозрачно раскрытый авторский кейс, а не независимая сторонняя валидация.
+
+    Контракт `if` не требует краткости любой ценой. Его порядок приоритетов таков: correctness and safety; требования пользователя, нужные подробности, формат и тон; существенные факты, ограничения, предупреждения и неопределенность; практическая достаточность; ясность и естественный язык; и только затем brevity. Код, команды, ошибки, числа, версии, URL, идентификаторы, схемы, обязательные ключи, порядок и формат сохраняются буквально, когда их точная форма несет смысл. Сжатие останавливается до того, как следующее удаление ослабит корректность, безопасность, охват требований, полноту, полезность, ясность или тон.
+
+    Benchmark намеренно разделяет два вопроса: activation и deliberately applied response behavior. Activation suite проверяет, должен ли agent host выбрать `if` для данного запроса; response suite обходит automatic selection и намеренно применяет каждую comparison arm. Четыре arms — `baseline`, точная инструкция `Answer concisely.`, байтово зафиксированный Caveman fixture и точные байты `skills/if/SKILL.md`. Между arms неизменными остаются model, user prompt, generation settings, tool availability и instruction placement; меняется только сравниваемая инструкция.
+
+    Hard gate и optional blind semantic gate выполняются до paired brevity metrics, поэтому неудачный ответ не может выиграть лишь за счет меньшей длины. Run сохраняет provenance версии runner, полного case hash, prompt и instruction hashes, цепочки attempts/retries, judge и append-only raw artifacts. Благодаря этому гипотеза остается проверяемой и опровержимой.
+
+    На зафиксированной ревизии в репозитории пока нет публичного результата benchmark. Smoke/replay fixtures проверяют evaluation path, но не доказывают экономию токенов, превосходство `if` над другой arm или одинаковое поведение на разных agent hosts. Предмет этого примера — дисциплина контракта и оценки, а не благоприятный результат.
+
 ### 7.2. Quality regression может жить в продуктовой обвязке
 
 Постмортем Anthropic по Claude Code quality reports показывает ту же проблему в более болезненном виде.[^anthropic-claude-code-quality-reports] Пользователи видели деградацию Claude Code, Claude Agent SDK и Claude Cowork, хотя API и inference layer не были причиной. Три изменения лежали в продуктовой обвязке: default reasoning effort был снижен ради latency, stale-session optimization начала repeatedly pruning older thinking, а system prompt instruction для меньшей verbose output ухудшила coding quality.
@@ -808,3 +820,4 @@ rollout_judgment:
 [^anthropic-claude-code-quality-reports]: Anthropic, [An update on recent Claude Code quality reports](https://www.anthropic.com/engineering/april-23-postmortem), 23 April 2026.
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
+[^laconian-case]: Первичные материалы Laconian, открытого проекта автора книги, на зафиксированной ревизии `669c45e849f75c99f81af19561d09cf24664e935`: [README](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md), [контракт skill `if`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md), [граница skill и evaluation harness](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md), [обоснование fidelity-before-compression](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md) и [методология benchmark](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md).
