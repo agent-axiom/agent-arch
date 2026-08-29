@@ -151,7 +151,9 @@ def sample_inventory() -> dict[str, object]:
     }
 
 
-def reviewed_ledger(status: str = "pass") -> tuple[dict[str, object], dict[str, object]]:
+def reviewed_ledger(
+    status: str = "pass",
+) -> tuple[dict[str, object], layout_v2.ReviewLedger]:
     inventory = sample_inventory()
     ledger = layout_v2.build_review_ledger(inventory, fresh=True)
     entry = ledger["entries"][0]
