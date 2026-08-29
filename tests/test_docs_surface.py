@@ -10008,36 +10008,48 @@ def test_practical_mcp_a2a_threads_three_canonical_cases() -> None:
 
 
 def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
-    required_by_file = {
+    localized_cases = {
         "docs/book/part-iv/practical-mcp-a2a.md": (
+            "Именно здесь `MCP` ложится естественно.",
             "### 2.1. Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент",
-            "разработанная автором этой книги",
-            "не является официальным продуктом AlbumentationsX",
-            "ограничивается настроенным `allowed-root`",
-            "не жёстким шлюзом авторизации",
-            "молодой проект",
-            "не доказывает широкое промышленное внедрение",
-            "честную границу доказательств",
+            "## 3. Когда тебе действительно нужен A2A",
+            (
+                "разработанная автором этой книги",
+                "не является официальным продуктом AlbumentationsX",
+                "ограничивается настроенным `allowed-root`",
+                "не жёстким шлюзом авторизации",
+                "молодой проект",
+                "не доказывает широкое промышленное внедрение",
+                "честную границу доказательств",
+            ),
         ),
         "docs/book/part-iv/practical-mcp-a2a.en.md": (
+            "That is where `MCP` fits naturally.",
             "### 2.1. Author Case: AlbumentationsX MCP Is a Capability, Not a Separate Agent",
-            "developed by this book's author",
-            "not an official AlbumentationsX product",
-            "restricted to the configured `allowed-root`",
-            "not a hard authorization gate",
-            "a young project",
-            "does not demonstrate broad production adoption",
-            "an honest evidence boundary",
+            "## 3. When You Actually Need A2A",
+            (
+                "developed by this book's author",
+                "not an official AlbumentationsX product",
+                "restricted to the configured `allowed-root`",
+                "not a hard authorization gate",
+                "a young project",
+                "does not demonstrate broad production adoption",
+                "an honest evidence boundary",
+            ),
         ),
         "docs/book/part-iv/practical-mcp-a2a.zh.md": (
+            "这正是 `MCP` 最合适的位置。",
             "### 2.1. 作者案例：AlbumentationsX MCP 是一种能力，而不是独立智能体",
-            "由本书作者开发",
-            "并非 AlbumentationsX 官方产品",
-            "限制在已配置的 `allowed-root`",
-            "并不是硬性的授权门",
-            "年轻项目",
-            "不能证明已经得到广泛的生产采用",
-            "诚实的证据边界",
+            "## 3. 什么情况下你才真的需要 A2A",
+            (
+                "由本书作者开发",
+                "并非 AlbumentationsX 官方产品",
+                "限制在已配置的 `allowed-root`",
+                "并不是硬性的授权门",
+                "年轻项目",
+                "不能证明已经得到广泛的生产采用",
+                "诚实的证据边界",
+            ),
         ),
     }
     source_urls = (
@@ -10048,17 +10060,29 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
             "171e2ca44830a16c363c8e3614825f2a0d2215b8"
         ),
     )
+    footnote_references = ("[^albu-mcp-guide]", "[^albu-mcp-project]")
+    footnote_definitions = ("[^albu-mcp-guide]:", "[^albu-mcp-project]:")
+    case_sections = {}
 
-    for path, markers in required_by_file.items():
+    for path, (natural_fit, case_heading, section_3_heading, markers) in localized_cases.items():
         text = _read(path)
-        for marker in (*markers, *source_urls):
-            assert marker in text, (path, marker)
+        case_start = text.index(case_heading)
+        case_end = text.index(section_3_heading, case_start)
+        case = text[case_start:case_end]
+        case_sections[path] = case
 
-    russian = _read("docs/book/part-iv/practical-mcp-a2a.md")
-    case_start = russian.index("### 2.1. Авторский кейс:")
-    case_end = russian.index("## 3.", case_start)
-    case = russian[case_start:case_end]
-    assert 180 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", case)) <= 220
+        assert text[:case_start].rstrip().endswith(natural_fit), path
+        for marker in markers:
+            assert marker in case, (path, marker)
+        for reference in footnote_references:
+            assert reference in case, (path, reference)
+        for source_url in source_urls:
+            assert source_url in text, (path, source_url)
+        for definition in footnote_definitions:
+            assert definition in text, (path, definition)
+
+    russian_case = case_sections["docs/book/part-iv/practical-mcp-a2a.md"]
+    assert 180 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", russian_case)) <= 220
 
     _assert_files_contain_all(
         (
