@@ -4500,6 +4500,56 @@ def test_august_sources_are_local_and_bibliographically_complete() -> None:
         assert expected_ids <= source_ids
 
 
+def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    appendix = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
+
+    case_heading = (
+        "**Авторский кейс: AlbumentationsX MCP — возможность, "
+        "а не отдельный агент.**"
+    )
+    case_start = chapter_eleven.index(case_heading)
+    case_end = chapter_eleven.index("#### Когда действительно нужен A2A", case_start)
+    author_case = chapter_eleven[case_start:case_end]
+
+    for marker in (
+        "разработанная автором этой книги",
+        "не является официальным продуктом AlbumentationsX",
+        "настроенным `allowed-root`",
+        "не является жёсткой авторизацией",
+        "молодой проект",
+        "не доказывает широкое промышленное внедрение",
+        "**S124**",
+        "**S125**",
+    ):
+        assert marker in author_case
+
+    assert 120 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", author_case)) <= 160
+    assert "**Короткое правило.**" not in chapter_eleven
+    assert "**Выбор протокола.**" not in chapter_eleven
+    assert "Типовые проблемы очень повторяемы:" not in chapter_eleven
+    assert "**Частые ошибки.**\n\n* возможность" in chapter_eleven
+
+    expected_urls = {
+        "S124": "https://albumentations.ai/docs/integrations/mcp/",
+        "S125-release": "https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1",
+        "S125-source": (
+            "https://github.com/dKosarevsky/albu-mcp/tree/"
+            "171e2ca44830a16c363c8e3614825f2a0d2215b8"
+        ),
+    }
+    for url in expected_urls.values():
+        assert appendix.count(url) == 1
+
+    chapter_sources = chapter_eleven.split("### Источники главы", 1)[1]
+    for source_id in ("S124", "S125"):
+        assert chapter_sources.count(f"**{source_id}.**") == 1
+
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter_eleven)) <= 4985
+    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 17
+
+
 def test_reader_experience_pass_adds_one_task_oriented_entry_route() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
     introduction = text.split("# Часть I.", 1)[0]
