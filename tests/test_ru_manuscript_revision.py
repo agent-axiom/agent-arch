@@ -4525,6 +4525,10 @@ def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -
         "разработанная автором этой книги",
         "не является официальным продуктом AlbumentationsX",
         "не заменяет Python API",
+        "сторонняя интеграция с открытым исходным кодом",
+        "начальные значения генератора",
+        "снимки контрактов",
+        "эталонные оценки",
         "настроенным `allowed-root`",
         "не является жёсткой авторизацией",
         "молодой проект",
@@ -4535,6 +4539,13 @@ def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -
         assert marker in author_case
 
     assert 120 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", author_case)) <= 160
+    for mixed_language_phrase in (
+        "open-source community-интеграция",
+        "seed",
+        "снапшоты контрактов",
+        "golden evals",
+    ):
+        assert mixed_language_phrase not in author_case
     assert "**Короткое правило.**" not in chapter_eleven
     assert chapter_eleven.count("**Выбор протокола.**") == 1
     assert chapter_eleven.index("**Выбор протокола.**") < case_start
@@ -4564,6 +4575,42 @@ def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -
 
     assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter_eleven)) <= 4985
     assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 17
+
+
+def test_albumentationsx_mcp_author_case_fails_loudly_on_interior_drift() -> None:
+    protocol_choice = (
+        "**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как\n"
+        "управляемую возможность. A2A передает задачу самостоятельной операционной роли\n"
+        "с собственными владельцем, политикой и жизненным циклом.\n\n"
+        "Если сущность предоставляет поиск, API или запись, выбирайте MCP или обычный\n"
+        "шлюз возможностей. A2A оправдан только там, где вместе с задачей действительно\n"
+        "передаются ответственность и ограниченные полномочия.\n\n"
+    )
+    old_generic_block = (
+        "Именно поэтому песочница не должна быть галочкой в проверочном "
+        "списке. Она должна быть частью модели выполнения.\n\n"
+        f"{protocol_choice}"
+    )
+    mutated_block = old_generic_block.replace(
+        "передаются ответственность и ограниченные полномочия.",
+        "Неожиданный редакционный абзац нельзя удалять молча.\n\n"
+        "передаются ответственность и ограниченные полномочия.",
+    )
+    synthetic = (
+        "## Глава 11\\. Test\n\n"
+        "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: на уровне "
+        "отдельного адаптера и на уровне всего ландшафта MCP.\n\n"
+        "Типовые проблемы очень повторяемы:\n\n"
+        f"{mutated_block}"
+        "#### Когда действительно нужен A2A\n\n"
+        "### Источники главы\n\n"
+        "**S001.** Existing.\n\n"
+        "## Глава 12\\. Next\n\n"
+        "### Дополнительное чтение\n"
+    )
+
+    with pytest.raises(ValueError, match="AlbumentationsX MCP author case"):
+        revision_tool.apply_albumentationsx_mcp_author_case_2026_08_30(synthetic)
 
 
 def test_reader_experience_pass_adds_one_task_oriented_entry_route() -> None:
