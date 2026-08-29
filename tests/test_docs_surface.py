@@ -22681,3 +22681,44 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
             assert url in footnote_definition, (path, url)
         assert "agent-axiom/laconian/blob/main" not in footnote_definition, path
         assert "agent-axiom/laconian/tree/main" not in footnote_definition, path
+
+
+def test_laconian_author_sources_are_transparent_and_pinned() -> None:
+    revision = "669c45e849f75c99f81af19561d09cf24664e935"
+    pinned_urls = (
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/README.md",
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/skills/if/SKILL.md",
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/docs/design.md",
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/docs/philosophy.md",
+        f"https://github.com/agent-axiom/laconian/blob/{revision}/benchmarks/methodology.md",
+    )
+    locales = {
+        "docs/appendix/sources.md": (
+            "## Архитектура агентных систем и платформенные паттерны",
+            "Laconian — открытый проект автора этой книги",
+            "публичных результатов бенчмарка еще нет; smoke-тесты проверяют оценочный путь, а не производительность",
+        ),
+        "docs/appendix/sources.en.md": (
+            "## Agent Architecture and Platform Patterns",
+            "Laconian — an open-source project by the author of this book",
+            "no public benchmark result is available; smoke fixtures validate the evaluation path rather than performance",
+        ),
+        "docs/appendix/sources.zh.md": (
+            "## 智能体架构与平台模式",
+            "Laconian——本书作者的开源项目",
+            "尚无公开 benchmark 结果；smoke fixtures 只验证 evaluation path，不证明 performance",
+        ),
+    }
+
+    for path, (heading, disclosure, caveat) in locales.items():
+        text = _read(path)
+        section = text.split(heading, maxsplit=1)[1].split("\n## ", maxsplit=1)[0]
+        first_item = next(line for line in section.splitlines() if line.startswith("- "))
+
+        assert disclosure in first_item, (path, disclosure)
+        assert caveat in first_item, (path, caveat)
+        for url in pinned_urls:
+            assert url in first_item, (path, url)
+        assert text.count(disclosure) == 1, (path, disclosure)
+        assert "https://github.com/agent-axiom/laconian/blob/main/" not in text, path
+        assert "https://github.com/agent-axiom/laconian/tree/main/" not in text, path
