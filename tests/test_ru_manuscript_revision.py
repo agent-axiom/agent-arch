@@ -321,23 +321,18 @@ def test_trajectory_policy_bibliography_helper_is_exact_and_idempotent() -> None
 
 def test_print_width_helpers_keep_exact_missing_errors_and_temp_split() -> None:
     first_print_anchor = (
-        "Escalate when approval is required or when the outcome of a write action "
-        "is uncertain."
+        "Escalate when approval is required or when the outcome of a write action is uncertain."
     )
     with pytest.raises(
         ValueError,
         match=(
-            r"^Print-width code anchor is missing: "
-            + re.escape(repr(first_print_anchor))
-            + r"$"
+            r"^Print-width code anchor is missing: " + re.escape(repr(first_print_anchor)) + r"$"
         ),
     ):
         revision_tool._apply_required_print_width_replacements("no print anchors")
 
     four_space_guard = (
-        '    "$LAB_PREFIX"'
-        "[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]"
-        "[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])"
+        '    "$LAB_PREFIX"[A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9][A-Za-z0-9])'
     )
     two_space_guard = four_space_guard[2:]
     revised = revision_tool._split_temp_directory_guard_patterns(
@@ -499,9 +494,10 @@ def test_post_audit_driver_preserves_stage_order(monkeypatch: pytest.MonkeyPatch
 def test_stacked_heading_bridge_is_exact_and_rejects_already_bridged_input() -> None:
     bridges = (("## Parent", "### Child", "Bridge."),)
 
-    assert revision_tool._insert_stacked_heading_bridges(
-        "## Parent\n\n### Child\n", bridges
-    ) == "## Parent\n\nBridge.\n\n### Child\n"
+    assert (
+        revision_tool._insert_stacked_heading_bridges("## Parent\n\n### Child\n", bridges)
+        == "## Parent\n\nBridge.\n\n### Child\n"
+    )
     with pytest.raises(
         ValueError,
         match=(
@@ -582,11 +578,14 @@ def test_world_class_shell_wrap_keeps_quoted_tokens_and_language_boundaries() ->
 def test_required_world_class_replacements_replace_all_and_reject_current_only() -> None:
     replacements = (("legacy", "current"),)
 
-    assert revision_tool._replace_all_required(
-        "legacy + legacy",
-        replacements,
-        missing_prefix="World-class copyedit anchor missing",
-    ) == "current + current"
+    assert (
+        revision_tool._replace_all_required(
+            "legacy + legacy",
+            replacements,
+            missing_prefix="World-class copyedit anchor missing",
+        )
+        == "current + current"
+    )
     with pytest.raises(
         ValueError,
         match=r"^World-class copyedit anchor missing: legacy$",
@@ -600,16 +599,12 @@ def test_required_world_class_replacements_replace_all_and_reject_current_only()
 
 def test_create_ticket_risk_normalization_is_global_and_fail_closed() -> None:
     medium = "  create_ticket:\n    risk: medium\n"
-    assert revision_tool._normalize_create_ticket_risk(medium * 2).count(
-        "risk: high"
-    ) == 2
+    assert revision_tool._normalize_create_ticket_risk(medium * 2).count("risk: high") == 2
     with pytest.raises(
         ValueError,
         match=r"^create_ticket risk classification still drifts$",
     ):
-        revision_tool._normalize_create_ticket_risk(
-            "create_ticket:\n      risk: medium\n"
-        )
+        revision_tool._normalize_create_ticket_risk("create_ticket:\n      risk: medium\n")
 
 
 def test_world_class_driver_preserves_stage_order(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -737,9 +732,7 @@ def test_command_restoration_rejects_unclosed_fence() -> None:
         revision_tool.fence_remaining_commands_and_json("```console\nuv run test\n")
 
 
-MCP_SECURITY_URL = (
-    "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
-)
+MCP_SECURITY_URL = "https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices"
 
 
 def _synthetic_source_appendix(urls: list[str]) -> str:
@@ -776,9 +769,7 @@ def _synthetic_source_document(
         )
         source_section = ""
         if number not in omitted:
-            source_lines = "\n".join(
-                f"* [{title}]({url})." for title, url in sources
-            )
+            source_lines = "\n".join(f"* [{title}]({url})." for title, url in sources)
             source_section = f"\n### Источники главы\n\n{source_lines}\n"
         chapters.append(
             f"## Глава {number}\\. Заголовок\n\n"
@@ -786,21 +777,15 @@ def _synthetic_source_document(
             f"{source_section}"
         )
     return (
-        "\n".join(chapters)
-        + "\n# Заключение\n\n"
-        + _synthetic_source_appendix(bibliography_urls)
+        "\n".join(chapters) + "\n# Заключение\n\n" + _synthetic_source_appendix(bibliography_urls)
     )
 
 
 def test_source_appendix_ids_follow_encounter_order_and_normalize_literal_escapes() -> None:
     escaped_url = "https://example.test/path\\_one\\-1"
-    urls = [escaped_url] + [
-        f"https://example.test/source-{index}" for index in range(2, 91)
-    ]
+    urls = [escaped_url] + [f"https://example.test/source-{index}" for index in range(2, 91)]
 
-    revised, source_ids = revision_tool._number_source_appendix(
-        _synthetic_source_appendix(urls)
-    )
+    revised, source_ids = revision_tool._number_source_appendix(_synthetic_source_appendix(urls))
 
     assert source_ids["https://example.test/path_one-1"] == "S001"
     assert source_ids["https://example.test/source-2"] == "S002"
@@ -817,10 +802,7 @@ def test_source_appendix_rejects_duplicate_normalized_urls_with_exact_error() ->
 
     with pytest.raises(
         ValueError,
-        match=(
-            "^Duplicate bibliography URL before numbering: "
-            "https://example\\.test/path_one-1$"
-        ),
+        match=("^Duplicate bibliography URL before numbering: https://example\\.test/path_one-1$"),
     ):
         revision_tool._number_source_appendix(_synthetic_source_appendix(urls))
 
@@ -845,8 +827,7 @@ def test_mcp_security_source_is_inserted_before_cloud_anchor() -> None:
 def test_mcp_security_source_is_unchanged_when_normalized_url_exists() -> None:
     escaped_url = MCP_SECURITY_URL.replace("_", "\\_")
     appendix = _synthetic_source_appendix(
-        [escaped_url]
-        + [f"https://example.test/source-{index}" for index in range(2, 91)]
+        [escaped_url] + [f"https://example.test/source-{index}" for index in range(2, 91)]
     )
 
     assert revision_tool._ensure_mcp_security_source(appendix) == appendix
@@ -886,9 +867,7 @@ def test_source_rebuild_validates_chapters_in_reverse_order() -> None:
 
 def test_claim_citation_prefers_stable_claim_and_strips_all_trailing_periods() -> None:
     body = (
-        "* Устойчивые утверждения: основной тезис...\n\n"
-        "### Ключевые выводы\n\n"
-        "* запасной тезис.\n"
+        "* Устойчивые утверждения: основной тезис...\n\n### Ключевые выводы\n\n* запасной тезис.\n"
     )
 
     start, end, claim = revision_tool._claim_citation_span(body, 7)
@@ -1036,9 +1015,7 @@ def test_technical_block_label_rejects_unclosed_fence() -> None:
 
 def _synthetic_micro_heading_document() -> str:
     fourth_level = "\n\n".join(f"#### Микрораздел {number}" for number in range(100))
-    short_sections = "\n\n".join(
-        f"### Короткий раздел {number}\n\nслово" for number in range(80)
-    )
+    short_sections = "\n\n".join(f"### Короткий раздел {number}\n\nслово" for number in range(80))
     words_69 = " ".join(f"слово{number}" for number in range(69))
     words_70 = " ".join(f"слово{number}" for number in range(70))
     fenced_words = " ".join(f"код{number}" for number in range(20))
@@ -3637,6 +3614,14 @@ def test_final_reader_copyedit_repairs_language_and_assembly_residue() -> None:
 
 def test_final_reader_copyedit_uses_russian_first_terminology() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
+    allowed_author_case_labels = (
+        "Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент.",
+        "Авторский кейс AlbumentationsX MCP",
+    )
+    terminology_text = text
+    for label in allowed_author_case_labels:
+        assert terminology_text.count(label) == 1
+        terminology_text = terminology_text.replace(label, "")
 
     for residue in (
         r"\bрелиз[а-яё-]*\b",
@@ -3649,7 +3634,7 @@ def test_final_reader_copyedit_uses_russian_first_terminology() -> None:
         r"\bкомплаенс[а-яё-]*\b",
         r"\bkeyed HMAC\b",
     ):
-        assert not re.search(residue, text, re.IGNORECASE)
+        assert not re.search(residue, terminology_text, re.IGNORECASE)
 
     for preferred in (
         "координационный подход",
@@ -3833,7 +3818,7 @@ def test_source_appendix_separates_cited_sources_from_further_reading() -> None:
 
     assert cited_ids == used_ids
     assert cited_ids.isdisjoint(further_ids)
-    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 124)}
+    assert cited_ids | further_ids == {f"S{number:03d}" for number in range(1, 126)}
 
 
 def test_online_sync_uses_four_orthogonal_machine_vocabularies() -> None:
@@ -4498,6 +4483,107 @@ def test_august_sources_are_local_and_bibliographically_complete() -> None:
         sources = revision_tool.extract_chapter(text, number).split("### Источники главы", 1)[1]
         source_ids = set(re.findall(r"^\*\*(S\d{3})\.\*\*", sources, re.MULTILINE))
         assert expected_ids <= source_ids
+
+
+def test_albumentationsx_mcp_author_case_is_transparent_in_publisher_chapter() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    chapter_eleven = revision_tool.extract_chapter(text, 11)
+    appendix = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
+
+    case_heading = "**Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент.**"
+    case_start = chapter_eleven.index(case_heading)
+    case_end = chapter_eleven.index("#### Когда действительно нужен A2A", case_start)
+    author_case = chapter_eleven[case_start:case_end]
+
+    for marker in (
+        "разработанная автором этой книги",
+        "не является официальным продуктом AlbumentationsX",
+        "не заменяет Python API",
+        "сторонняя интеграция с открытым исходным кодом",
+        "начальные значения генератора",
+        "снимки контрактов",
+        "эталонные оценки",
+        "настроенным `allowed-root`",
+        "не является жёсткой авторизацией",
+        "молодой проект",
+        "не доказывает широкое промышленное внедрение",
+        "**S124**",
+        "**S125**",
+    ):
+        assert marker in author_case
+
+    assert 120 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", author_case)) <= 160
+    for mixed_language_phrase in (
+        "open-source community-интеграция",
+        "seed",
+        "снапшоты контрактов",
+        "golden evals",
+    ):
+        assert mixed_language_phrase not in author_case
+    assert "**Короткое правило.**" not in chapter_eleven
+    assert chapter_eleven.count("**Выбор протокола.**") == 1
+    assert chapter_eleven.index("**Выбор протокола.**") < case_start
+    assert chapter_eleven.count("Теперь типовые проблемы повторяются уже на двух уровнях:") == 1
+    assert "Типовые проблемы очень повторяемы:" not in chapter_eleven
+    assert (
+        "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: "
+        "на уровне отдельного адаптера и на уровне всего ландшафта MCP.\n\n"
+        "* возможность"
+    ) in chapter_eleven
+    assert "Именно поэтому песочница не должна быть галочкой" not in chapter_eleven
+
+    expected_urls = {
+        "S124": "https://albumentations.ai/docs/integrations/mcp/",
+        "S125-release": "https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1",
+        "S125-source": (
+            "https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8"
+        ),
+    }
+    for url in expected_urls.values():
+        assert appendix.count(url) == 1
+
+    chapter_sources = chapter_eleven.split("### Источники главы", 1)[1]
+    for source_id in ("S124", "S125"):
+        assert chapter_sources.count(f"**{source_id}.**") == 1
+
+    assert len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", chapter_eleven)) <= 4985
+    assert len(re.findall(r"^#### ", chapter_eleven, re.MULTILINE)) <= 17
+
+
+def test_albumentationsx_mcp_author_case_fails_loudly_on_interior_drift() -> None:
+    protocol_choice = (
+        "**Выбор протокола.** MCP подключает инструмент, ресурс или адаптер как\n"
+        "управляемую возможность. A2A передает задачу самостоятельной операционной роли\n"
+        "с собственными владельцем, политикой и жизненным циклом.\n\n"
+        "Если сущность предоставляет поиск, API или запись, выбирайте MCP или обычный\n"
+        "шлюз возможностей. A2A оправдан только там, где вместе с задачей действительно\n"
+        "передаются ответственность и ограниченные полномочия.\n\n"
+    )
+    old_generic_block = (
+        "Именно поэтому песочница не должна быть галочкой в проверочном "
+        "списке. Она должна быть частью модели выполнения.\n\n"
+        f"{protocol_choice}"
+    )
+    mutated_block = old_generic_block.replace(
+        "передаются ответственность и ограниченные полномочия.",
+        "Неожиданный редакционный абзац нельзя удалять молча.\n\n"
+        "передаются ответственность и ограниченные полномочия.",
+    )
+    synthetic = (
+        "## Глава 11\\. Test\n\n"
+        "**Частые ошибки.** Теперь типовые проблемы повторяются уже на двух уровнях: на уровне "
+        "отдельного адаптера и на уровне всего ландшафта MCP.\n\n"
+        "Типовые проблемы очень повторяемы:\n\n"
+        f"{mutated_block}"
+        "#### Когда действительно нужен A2A\n\n"
+        "### Источники главы\n\n"
+        "**S001.** Existing.\n\n"
+        "## Глава 12\\. Next\n\n"
+        "### Дополнительное чтение\n"
+    )
+
+    with pytest.raises(ValueError, match="AlbumentationsX MCP author case"):
+        revision_tool.apply_albumentationsx_mcp_author_case_2026_08_30(synthetic)
 
 
 def test_reader_experience_pass_adds_one_task_oriented_entry_route() -> None:

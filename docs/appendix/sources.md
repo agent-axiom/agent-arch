@@ -65,6 +65,8 @@
 - OpenAI, [From model to agent: Equipping the Responses API with a computer environment](https://openai.com/index/equip-responses-api-computer-environment/)
 - Model Context Protocol, [Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
 - Model Context Protocol, [Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
+- Albumentations, [AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/)
+- GitHub, [dKosarevsky/albu-mcp release v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) и [снимок исходного кода 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8)
 - Agent2Agent Protocol, [A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)

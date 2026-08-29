@@ -37,6 +37,14 @@ In that situation, the main goal is not to "build a society of agents," but to:
 
 That is where `MCP` fits naturally.
 
+### 2.1. Author Case: AlbumentationsX MCP Is a Capability, Not a Separate Agent
+
+AlbumentationsX MCP is an open-source community integration developed by this book's author. It is not an official AlbumentationsX product or a replacement for the Python API. Instead, it gives an MCP host a typed path for validating augmentation pipelines, rendering small local previews, comparing variants, recording concrete visual feedback, and exporting an accepted configuration.[^albu-mcp-guide][^albu-mcp-project]
+
+Architecturally, this is a capability rather than a separate agent. The server has no independent operational role, goal, or authority to change the training process. It does not train models, fetch remote images, overwrite datasets, or execute arbitrary user-supplied Python. Its capability boundary is explicit: reads are restricted to the configured `allowed-root`, outputs go to a separate artifact directory, and requests are validated before rendering and bounded by input and variant counts. Deterministic seeds, manifests, and applied-transform traces support reproduction; capability profiles reduce the visible tool surface; contract snapshots and golden evaluations detect interface drift.
+
+Those properties do not turn the project into a security guarantee. A narrow `allowed-root` must be configured explicitly; preview acceptance is a workflow rule, not a hard authorization gate; and a young project does not demonstrate broad production adoption. The transferable lesson is narrower and more useful: a good MCP server combines a focused domain contract, enforceable execution limits, reproducible artifacts, and an honest evidence boundary.
+
 ## 3. When You Actually Need A2A
 
 `A2A` makes sense when you no longer just have tools, but truly distinct agents with separate responsibility:
@@ -254,3 +262,5 @@ If those questions are hard to answer, it is usually safer to choose `MCP` first
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 [^google-multiagent]: [Google Cloud Architecture Center, Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
 [^a2a-spec]: [Agent2Agent Protocol, A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)
+[^albu-mcp-guide]: [Albumentations, AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/)
+[^albu-mcp-project]: [dKosarevsky/albu-mcp, release v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) and [source snapshot 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8)
