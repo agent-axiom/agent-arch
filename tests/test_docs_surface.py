@@ -10015,6 +10015,7 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
             "не является официальным продуктом AlbumentationsX",
             "ограничивается настроенным `allowed-root`",
             "не жёстким шлюзом авторизации",
+            "молодой проект",
             "не доказывает широкое промышленное внедрение",
             "честную границу доказательств",
         ),
@@ -10024,6 +10025,7 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
             "not an official AlbumentationsX product",
             "restricted to the configured `allowed-root`",
             "not a hard authorization gate",
+            "a young project",
             "does not demonstrate broad production adoption",
             "an honest evidence boundary",
         ),
@@ -10033,6 +10035,7 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
             "并非 AlbumentationsX 官方产品",
             "限制在已配置的 `allowed-root`",
             "并不是硬性的授权门",
+            "年轻项目",
             "不能证明已经得到广泛的生产采用",
             "诚实的证据边界",
         ),
@@ -10040,7 +10043,10 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
     source_urls = (
         "https://albumentations.ai/docs/integrations/mcp/",
         "https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1",
-        ("https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8"),
+        (
+            "https://github.com/dKosarevsky/albu-mcp/tree/"
+            "171e2ca44830a16c363c8e3614825f2a0d2215b8"
+        ),
     )
 
     for path, markers in required_by_file.items():
@@ -10049,7 +10055,9 @@ def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
             assert marker in text, (path, marker)
 
     russian = _read("docs/book/part-iv/practical-mcp-a2a.md")
-    case = russian.split("### 2.1. Авторский кейс:", 1)[1].split("## 3.", 1)[0]
+    case_start = russian.index("### 2.1. Авторский кейс:")
+    case_end = russian.index("## 3.", case_start)
+    case = russian[case_start:case_end]
     assert 180 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", case)) <= 220
 
     _assert_files_contain_all(
