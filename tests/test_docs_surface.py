@@ -22510,12 +22510,18 @@ def test_laconian_skill_eval_case_is_documented() -> None:
     markers_by_file = {
         "docs/book/part-v/chapter-13.md": (
             "Laconian — открытый проект автора этой книги",
+            "`if` — переносимый skill внутри него",
+            "один поведенческий Markdown-файл",
             "без scripts, dependencies, permissions, assets, network calls и tool-specific instructions",
             "correctness and safety; требования пользователя, нужные подробности, формат и тон",
+            "существенные факты, ограничения, предупреждения и неопределенность; практическая достаточность; ясность и естественный язык; и только затем brevity",
             "Код, команды, ошибки, числа, версии, URL, идентификаторы, схемы, обязательные ключи, порядок и формат сохраняются буквально",
             "Сжатие останавливается до того, как следующее удаление ослабит корректность, безопасность, охват требований, полноту, полезность, ясность или тон",
+            "не независимая сторонняя валидация",
             "Benchmark намеренно разделяет два вопроса: activation и deliberately applied response behavior",
+            "точная инструкция `Answer concisely.`, байтово зафиксированный Caveman fixture и точные байты `skills/if/SKILL.md`",
             "model, user prompt, generation settings, tool availability и instruction placement",
+            "меняется только сравниваемая инструкция",
             "Hard gate и optional blind semantic gate выполняются до paired brevity metrics",
             "provenance версии runner, полного case hash, prompt и instruction hashes, цепочки attempts/retries, judge и append-only raw artifacts",
             "в репозитории пока нет публичного результата benchmark",
@@ -22523,12 +22529,18 @@ def test_laconian_skill_eval_case_is_documented() -> None:
         ),
         "docs/book/part-v/chapter-13.en.md": (
             "Laconian is an open-source project by the author of this book",
+            "`if` is the portable skill inside it",
+            "one behavioral Markdown file",
             "with no scripts, dependencies, permissions, assets, network calls, or tool-specific instructions",
             "correctness and safety; the user's requirements, requested detail, format, and tone",
+            "material facts, constraints, warnings, and uncertainty; practical sufficiency; clarity and natural language; and only then brevity",
             "Code, commands, errors, numbers, versions, URLs, identifiers, schemas, required keys, order, and format remain exact",
             "Compression stops before the next deletion would weaken correctness, safety, requirement coverage, completeness, usefulness, clarity, or tone",
+            "not independent third-party validation",
             "The benchmark deliberately separates two questions: activation and deliberately applied response behavior",
+            "the exact instruction `Answer concisely.`, a byte-pinned Caveman fixture, and the exact bytes of `skills/if/SKILL.md`",
             "model, user prompt, generation settings, tool availability, and instruction placement",
+            "only the comparison instruction changes",
             "The hard gate and optional blind semantic gate run before paired brevity metrics",
             "runner-version provenance, the complete case hash, prompt and instruction hashes, attempt/retry lineage, judge provenance, and append-only raw artifacts",
             "the repository has no public benchmark result yet",
@@ -22536,12 +22548,18 @@ def test_laconian_skill_eval_case_is_documented() -> None:
         ),
         "docs/book/part-v/chapter-13.zh.md": (
             "Laconian 是本书作者的开源项目",
+            "`if` 是其中可移植的 skill",
+            "一个 behavioral Markdown file",
             "不包含 scripts、dependencies、permissions、assets、network calls 或 tool-specific instructions",
             "correctness and safety；用户要求、所需细节、format 与 tone",
+            "material facts、constraints、warnings 与 uncertainty；practical sufficiency；clarity and natural language；最后才是 brevity",
             "Code、commands、errors、numbers、versions、URLs、identifiers、schemas、required keys、order 和 format 在精确形式承载意义时必须保持不变",
             "一旦下一次删除会削弱 correctness、safety、requirement coverage、completeness、usefulness、clarity 或 tone，压缩就应该停止",
+            "不是独立第三方验证",
             "Benchmark 刻意把两个问题分开：activation 与 deliberately applied response behavior",
+            "完全一致的指令 `Answer concisely.`、按字节固定的 Caveman fixture，以及 `skills/if/SKILL.md` 的 exact bytes",
             "model、user prompt、generation settings、tool availability 和 instruction placement",
+            "只有 comparison instruction 改变",
             "Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行",
             "runner version、完整 case hash、prompt 与 instruction hashes、attempt/retry lineage、judge provenance，以及 append-only raw artifacts",
             "仓库尚无公开 benchmark 结果",
@@ -22581,8 +22599,11 @@ def test_laconian_skill_eval_case_is_documented() -> None:
             assert marker in case, (path, marker)
         assert "[^laconian-case]" in case, path
         assert text.count("[^laconian-case]:") == 1, path
+        footnote_definition = next(
+            line for line in text.splitlines() if line.startswith("[^laconian-case]:")
+        )
         for url in pinned_urls:
-            assert url in text, (path, url)
+            assert url in footnote_definition, (path, url)
     _assert_files_contain_none(
         tuple(markers_by_file),
         (
