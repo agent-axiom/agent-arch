@@ -22696,7 +22696,7 @@ def test_laconian_author_sources_are_transparent_and_pinned() -> None:
         "docs/appendix/sources.md": (
             "## Архитектура агентных систем и платформенные паттерны",
             "Laconian — открытый проект автора этой книги",
-            "публичных результатов бенчмарка еще нет; smoke-тесты проверяют оценочный путь, а не производительность",
+            "В зафиксированной ревизии публичных результатов бенчмарка ещё нет; smoke-тесты проверяют путь оценки, а не производительность",
         ),
         "docs/appendix/sources.en.md": (
             "## Agent Architecture and Platform Patterns",
@@ -22706,7 +22706,7 @@ def test_laconian_author_sources_are_transparent_and_pinned() -> None:
         "docs/appendix/sources.zh.md": (
             "## 智能体架构与平台模式",
             "Laconian——本书作者的开源项目",
-            "尚无公开 benchmark 结果；smoke fixtures 只验证 evaluation path，不证明 performance",
+            "截至该固定版本，尚无公开的基准测试结果；冒烟测试样例仅验证评测流程，不能证明性能",
         ),
     }
 
