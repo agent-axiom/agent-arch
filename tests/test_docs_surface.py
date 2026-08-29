@@ -22655,12 +22655,18 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
 
     for path, markers in localized_markers.items():
         text = _read(path)
-        _, start, after_start = text.partition("prompt/tool/skill layer")
-        runtime_boundary, end, _ = after_start.partition("AWS AgentCore")
-        assert start and end, path
+        formula_index = text.find("prompt/tool/skill layer")
+        assert formula_index >= 0, path
+        formula_end = text.find("\n\n", formula_index)
+        assert formula_end >= 0, path
+        after_formula = text[formula_end + 2 :]
+        boundary_paragraph, boundary_end, after_boundary = after_formula.partition("\n\n")
+        assert boundary_end, path
+        aws_paragraph, _, _ = after_boundary.partition("\n\n")
+        assert "AWS AgentCore" in aws_paragraph, path
         for marker in markers:
-            assert marker in runtime_boundary, (path, marker)
-        assert "[^laconian-runtime-boundary]" in runtime_boundary, path
+            assert marker in boundary_paragraph, (path, marker)
+        assert "[^laconian-runtime-boundary]" in boundary_paragraph, path
 
         footnote = re.search(
             r"(?m)^\[\^laconian-runtime-boundary\]:.*$", text
