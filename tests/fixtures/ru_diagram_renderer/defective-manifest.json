@@ -1,0 +1,40 @@
+{
+  "expected_count": 5,
+  "diagrams": [
+    {
+      "number": 1,
+      "caption": "Недопустимое сближение заголовка группы и узла",
+      "filename": "fixture-bad-cluster-title.png",
+      "fixture_expected_finding": "cluster_title_overlaps",
+      "mermaid": "flowchart TB\nsubgraph G[\"Критический контур\"]\nA[\"Узел внутри группы\"]\nend\nclassDef moved translate:0px -72px\nclass A moved"
+    },
+    {
+      "number": 2,
+      "caption": "Недопустимое пересечение связи и чужой подписи",
+      "filename": "fixture-bad-edge-text.png",
+      "fixture_expected_finding": "unrelated_edge_text_intersections",
+      "mermaid": "flowchart LR\nA[\"Начало\"] -->|\"Чужая подпись\"| B[\"Конец\"]\nC[\"Вторая ветка\"] --> D[\"Второй конец\"]\nlinkStyle 1 translate:0px -115px"
+    },
+    {
+      "number": 3,
+      "caption": "Недопустимый выход подписи за узел",
+      "filename": "fixture-bad-node-overflow.png",
+      "fixture_expected_finding": "node_label_overflows",
+      "mermaid": "flowchart LR\nA[\"Подпись должна выйти за фигуру\"] --> B[\"Конец\"]\nstyle A scale:0.25"
+    },
+    {
+      "number": 4,
+      "caption": "Недопустимые совпадающие маршруты",
+      "filename": "fixture-bad-duplicate-route.png",
+      "fixture_expected_finding": "duplicate_edge_routes",
+      "mermaid": "flowchart LR\nA[\"Источник\"] --> B[\"Приемник\"]\nA --> B\nlinkStyle 0,1 scale:0.01"
+    },
+    {
+      "number": 5,
+      "caption": "Недопустимый печатный кегль и узкая пропорция",
+      "filename": "fixture-bad-print-floor.png",
+      "fixture_expected_finding": "print_font_failures",
+      "mermaid": "flowchart TB\nA01[\"Шаг 01\"] --> A02[\"Шаг 02\"] --> A03[\"Шаг 03\"] --> A04[\"Шаг 04\"] --> A05[\"Шаг 05\"] --> A06[\"Шаг 06\"] --> A07[\"Шаг 07\"] --> A08[\"Шаг 08\"] --> A09[\"Шаг 09\"] --> A10[\"Шаг 10\"] --> A11[\"Шаг 11\"] --> A12[\"Шаг 12\"] --> A13[\"Шаг 13\"] --> A14[\"Шаг 14\"]"
+    }
+  ]
+}

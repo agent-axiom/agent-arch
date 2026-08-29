@@ -54,6 +54,7 @@ EDITORIAL_DIAGRAMS = ROOT / "docs/publisher/ru-editorial-diagrams-2026-07-16.jso
 LAYOUT_V2_INVENTORY = ROOT / "docs/publisher/ru-publisher-layout-v2-inventory.json"
 LAYOUT_V2_LEDGER = ROOT / "docs/publisher/ru-publisher-layout-v2-review-ledger.json"
 DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
+DIAGRAM_GEOMETRY_AUDIT = ROOT / "docs/publisher/tools/ru_diagram_svg_geometry.mjs"
 EXPECTED_TABLE_COUNT = 12
 EXPECTED_IMAGE_COUNT = 57
 
@@ -245,7 +246,9 @@ def test_mermaid_visuals_reserve_space_below_cluster_titles() -> None:
 
 
 def test_mermaid_renderer_rejects_hidden_edges_and_intrinsic_label_clipping() -> None:
-    source = DIAGRAM_RENDERER.read_text(encoding="utf-8")
+    source = DIAGRAM_RENDERER.read_text(encoding="utf-8") + (
+        DIAGRAM_GEOMETRY_AUDIT.read_text(encoding="utf-8")
+    )
 
     assert "if (crossedLabel.opaque_background) continue;" not in source
     assert "scrollWidth" in source

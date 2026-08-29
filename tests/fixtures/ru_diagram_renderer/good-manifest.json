@@ -1,0 +1,19 @@
+{
+  "expected_count": 2,
+  "diagrams": [
+    {
+      "number": 1,
+      "caption": "Простой поток",
+      "filename": "fixture-good-simple.png",
+      "mermaid": "flowchart LR\nA[\"Запрос\"] --> B[\"Проверка\"] --> C[\"Результат\"]"
+    },
+    {
+      "number": 2,
+      "caption": "Слоистая архитектура",
+      "filename": "fixture-good-layered.png",
+      "layout_class": "layered-architecture",
+      "connector_style": "orthogonal",
+      "mermaid": "flowchart LR\nsubgraph I[\"Вход\"]\nA[\"Запрос\"]\nend\nsubgraph C[\"Управление\"]\nB[\"Политика\"]\nend\nsubgraph R[\"Исполнение\"]\nD[\"Действие\"]\nend\nA --> B --> D"
+    }
+  ]
+}

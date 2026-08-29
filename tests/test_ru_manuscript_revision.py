@@ -34,6 +34,11 @@ INDEX_TERMS = ROOT / "docs/publisher/ru-index-terms-2026-07-27.md"
 HUMAN_REVIEW_PACKET = ROOT / "docs/publisher/ru-human-review-packet-2026-07-27.md"
 LEARNING_OUTCOME_MAP = ROOT / "docs/publisher/ru-learning-outcome-map-2026-07-27.md"
 EDITORIAL_PACKET_BUILDER = ROOT / "docs/publisher/tools/build_ru_editorial_packets.py"
+DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
+DIAGRAM_RENDERER_CONTRACT = ROOT / (
+    "docs/publisher/tools/ru_diagram_renderer_contract.mjs"
+)
+DIAGRAM_STYLE_GUIDE = ROOT / "docs/publisher/ru-visual-style-guide-2026-08-02.md"
 
 NUMBERED_FIGURE_PATHS = [
     "visuals/ru-figure-01-book-map.png",
@@ -2064,6 +2069,53 @@ def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
     for filename in source_filenames:
         svg = ET.fromstring((VISUALS / filename).with_suffix(".svg").read_bytes())
         assert svg.attrib["data-visual-style"] == "agent-arch-book-v1"
+
+
+def test_diagram_renderer_v2_contract_is_separate_from_asset_migration() -> None:
+    renderer = DIAGRAM_RENDERER.read_text(encoding="utf-8")
+    contract = DIAGRAM_RENDERER_CONTRACT.read_text(encoding="utf-8")
+
+    assert 'VISUAL_STYLE_ID = "agent-arch-book-v2"' in contract
+    assert "agent-arch-book-v1" not in renderer + contract
+    assert "root.append(label)" not in renderer
+    assert "font-size: 26px !important" not in renderer
+    assert 'curve: "basis"' not in renderer
+
+    production_style_ids = {
+        ET.fromstring(path.read_bytes()).attrib["data-visual-style"]
+        for path in VISUALS.glob("ru-*.svg")
+    }
+    assert production_style_ids == {"agent-arch-book-v1"}
+
+
+def test_diagram_visual_style_guide_defines_the_v2_review_contract() -> None:
+    guide = DIAGRAM_STYLE_GUIDE.read_text(encoding="utf-8")
+
+    for required in (
+        "agent-arch-book-v2",
+        "#1F2A3D",
+        "#EEF4FA",
+        "#355A7A",
+        "#EDF8F3",
+        "#FFF4CC",
+        "#9B7A14",
+        "#5E6B7D",
+        "#F7F9FC",
+        "#B7C4D6",
+        "9,5 пункта",
+        "10–11 пунктов",
+        "12 px",
+        "10 px",
+        "0,72",
+        "`simple-flow`",
+        "`layered-architecture`",
+        "`dagre`",
+        "`elk`",
+        "`connector_style`",
+        "`reviewed_feedback_loop`",
+        "`aspect_ratio_override`",
+    ):
+        assert required in guide
 
 
 def test_targeted_editorial_diagrams_cover_the_two_missing_decisions() -> None:

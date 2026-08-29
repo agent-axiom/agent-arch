@@ -1,0 +1,102 @@
+{
+  "good": {
+    "visible_text": [
+      {
+        "id": "text-cluster-title",
+        "role": "cluster-title",
+        "owner_id": "cluster-main",
+        "text": "Контур",
+        "bounds": {"x": 20, "y": 10, "width": 70, "height": 15}
+      },
+      {
+        "id": "text-node-a",
+        "role": "node-label",
+        "owner_id": "node-a",
+        "text": "Вход",
+        "bounds": {"x": 35, "y": 62, "width": 30, "height": 12}
+      },
+      {
+        "id": "text-node-b",
+        "role": "node-label",
+        "owner_id": "node-b",
+        "text": "Выход",
+        "bounds": {"x": 235, "y": 62, "width": 40, "height": 12}
+      }
+    ],
+    "nodes": [
+      {
+        "id": "node-a",
+        "bounds": {"x": 20, "y": 50, "width": 60, "height": 36},
+        "shape_bounds": {"x": 20, "y": 50, "width": 60, "height": 36},
+        "label_bounds": {"x": 35, "y": 62, "width": 30, "height": 12},
+        "intrinsic_clip": false
+      },
+      {
+        "id": "node-b",
+        "bounds": {"x": 220, "y": 50, "width": 70, "height": 36},
+        "shape_bounds": {"x": 220, "y": 50, "width": 70, "height": 36},
+        "label_bounds": {"x": 235, "y": 62, "width": 40, "height": 12},
+        "intrinsic_clip": false
+      }
+    ],
+    "cluster_frames": [
+      {
+        "id": "cluster-main",
+        "bounds": {"x": 5, "y": 5, "width": 300, "height": 96},
+        "contained_node_ids": ["node-a", "node-b"]
+      }
+    ],
+    "cluster_titles": [
+      {
+        "id": "cluster-title-main",
+        "cluster_id": "cluster-main",
+        "text_id": "text-cluster-title",
+        "bounds": {"x": 20, "y": 10, "width": 70, "height": 15}
+      }
+    ],
+    "edge_labels": [],
+    "edge_paths": [
+      {
+        "id": "edge-a-b",
+        "index": 0,
+        "visible": true,
+        "source_node_id": "node-a",
+        "target_node_id": "node-b",
+        "stroke_width_px": 2,
+        "bounds": {"x": 80, "y": 68, "width": 140, "height": 0},
+        "samples": [
+          {"x": 80, "y": 68},
+          {"x": 150, "y": 68},
+          {"x": 220, "y": 68}
+        ],
+        "comparison_samples": [
+          {"x": 80, "y": 68},
+          {"x": 115, "y": 68},
+          {"x": 150, "y": 68},
+          {"x": 185, "y": 68},
+          {"x": 220, "y": 68}
+        ]
+      }
+    ]
+  },
+  "cluster_title_overlap": {
+    "cluster_title_bounds": {"x": 20, "y": 10, "width": 70, "height": 15},
+    "node_bounds": {"x": 35, "y": 22, "width": 60, "height": 36}
+  },
+  "unrelated_edge_text_intersection": {
+    "text": {
+      "id": "text-unrelated-note",
+      "role": "text",
+      "owner_id": null,
+      "text": "Контроль",
+      "bounds": {"x": 130, "y": 61, "width": 40, "height": 14}
+    }
+  },
+  "node_label_overflow": {
+    "label_bounds": {"x": 12, "y": 54, "width": 80, "height": 28}
+  },
+  "duplicate_edge_route": {
+    "id": "edge-a-b-duplicate",
+    "index": 1
+  }
+}
