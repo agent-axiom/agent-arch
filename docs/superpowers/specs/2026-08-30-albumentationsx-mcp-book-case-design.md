@@ -8,6 +8,13 @@ domain capability. The case should teach architectural judgment, describe
 verifiable strengths, disclose the author's relationship to the project, and
 avoid reading like product promotion.
 
+> **Integration note (30 August 2026).** After rebasing onto the post-PR #57
+> manuscript pipeline, AWS remains `S123`; the AlbumentationsX evidence uses
+> `S124`/`S125`. The publisher transform runs after the 23 August passes and
+> preserves the newer protocol-choice bridge. The final print case is 123 words
+> inside a 4,985-word Chapter 11. Any older identifiers or pass ordering in the
+> historical implementation notes are superseded by this integrated contract.
+
 ## Editorial Decision
 
 Place the case in the practical MCP-versus-A2A section, immediately after the
