@@ -22619,9 +22619,10 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
         "docs/book/part-vii/chapter-16.md": (
             "Laconian — открытый проект автора этой книги",
             "`if` — поведенческий навык в одном Markdown-файле",
-            "не вызывает инструменты",
-            "не создает побочных эффектов",
-            "бенчмарка остается за пределами артефакта, загружаемого в среду исполнения",
+            "Сам устанавливаемый артефакт не содержит исполняемой или завязанной на инструменты логики",
+            "не производит внешних эффектов",
+            "использование инструментов и любые побочные эффекты принадлежат задаче и среде исполнения",
+            "бенчмарка остается за пределами загружаемого в неё артефакта",
             "противоположный край",
             "Cloudflare `security-audit`",
             "долговечный многостадийный рабочий процесс",
@@ -22629,9 +22630,10 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
         "docs/book/part-vii/chapter-16.en.md": (
             "Laconian, an open-source project by the author of this book",
             "`if` is a Markdown-only behavioral skill",
-            "neither invokes tools",
-            "nor creates side effects",
-            "benchmark machinery stays outside the artifact loaded into the runtime",
+            "installable artifact contains no executable or tool-specific logic",
+            "performs no external effects itself",
+            "tool use or side effects belong to the host task and runtime",
+            "benchmark machinery stays outside the artifact loaded into that runtime",
             "opposite end",
             "Cloudflare `security-audit`",
             "durable multi-stage workflow",
@@ -22639,9 +22641,10 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
         "docs/book/part-vii/chapter-16.zh.md": (
             "本书作者的开源项目 Laconian",
             "`if` 是 Markdown-only behavioral skill",
-            "不调用 tools",
-            "不产生 side effects",
-            "benchmark machinery 留在 runtime 所加载的 artifact 之外",
+            "可安装的 artifact 不包含 executable 或 tool-specific logic",
+            "不会自行产生 external effects",
+            "tool use 或 side effects 都属于 host task and runtime",
+            "benchmark machinery 留在该 runtime 所加载的 artifact 之外",
             "另一端",
             "Cloudflare `security-audit`",
             "durable multi-stage workflow",
@@ -22666,13 +22669,15 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
         assert "AWS AgentCore" in aws_paragraph, path
         for marker in markers:
             assert marker in boundary_paragraph, (path, marker)
-        assert "[^laconian-runtime-boundary]" in boundary_paragraph, path
+        assert boundary_paragraph.count("[^laconian-runtime-boundary]") == 1, path
 
         footnote = re.search(
             r"(?m)^\[\^laconian-runtime-boundary\]:.*$", text
         )
         assert footnote, path
+        assert text.count("[^laconian-runtime-boundary]:") == 1, path
+        footnote_definition = footnote.group(0)
         for url in pinned_urls:
-            assert url in footnote.group(0), (path, url)
-        assert "blob/main" not in text, path
-        assert "tree/main" not in text, path
+            assert url in footnote_definition, (path, url)
+        assert "agent-axiom/laconian/blob/main" not in footnote_definition, path
+        assert "agent-axiom/laconian/tree/main" not in footnote_definition, path
