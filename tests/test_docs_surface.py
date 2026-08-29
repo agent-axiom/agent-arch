@@ -22504,3 +22504,63 @@ def test_mcp_2026_07_28_stateless_core_is_localized() -> None:
             "2026-07-28-release-candidate",
         ),
     )
+
+
+def test_laconian_skill_eval_case_is_documented() -> None:
+    markers_by_file = {
+        "docs/book/part-v/chapter-13.md": (
+            "Laconian — открытый проект автора этой книги",
+            "Benchmark намеренно разделяет два вопроса: activation и deliberately applied response behavior",
+            "Hard gate и optional blind semantic gate выполняются до paired brevity metrics",
+            "в репозитории пока нет публичного результата benchmark",
+        ),
+        "docs/book/part-v/chapter-13.en.md": (
+            "Laconian is an open-source project by the author of this book",
+            "The benchmark deliberately separates two questions: activation and deliberately applied response behavior",
+            "The hard gate and optional blind semantic gate run before paired brevity metrics",
+            "the repository has no public benchmark result yet",
+        ),
+        "docs/book/part-v/chapter-13.zh.md": (
+            "Laconian 是本书作者的开源项目",
+            "Benchmark 刻意把两个问题分开：activation 与 deliberately applied response behavior",
+            "Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行",
+            "仓库尚无公开 benchmark 结果",
+        ),
+    }
+    revision = "669c45e849f75c99f81af19561d09cf24664e935"
+    pinned_root = f"https://github.com/agent-axiom/laconian/blob/{revision}"
+    pinned_urls = tuple(
+        f"{pinned_root}/{path}"
+        for path in (
+            "README.md",
+            "skills/if/SKILL.md",
+            "docs/design.md",
+            "docs/philosophy.md",
+            "benchmarks/methodology.md",
+        )
+    )
+    common_markers = (
+        '!!! example "',
+        "Laconian",
+        "`if`",
+        "`baseline`",
+        "`Answer concisely.`",
+        "Caveman",
+        "`skills/if/SKILL.md`",
+    )
+    for path, localized_markers in markers_by_file.items():
+        text = _read(path)
+        _, section_71, after_71 = text.partition("### 7.1.")
+        case, section_72, _ = after_71.partition("### 7.2.")
+        assert section_71 and section_72, path
+        for marker in (*common_markers, *localized_markers):
+            assert marker in case, (path, marker)
+        for url in pinned_urls:
+            assert url in text, (path, url)
+    _assert_files_contain_none(
+        tuple(markers_by_file),
+        (
+            "https://github.com/agent-axiom/laconian/blob/main/",
+            "https://github.com/agent-axiom/laconian/tree/main/",
+        ),
+    )
