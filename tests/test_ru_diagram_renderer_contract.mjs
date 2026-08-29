@@ -101,6 +101,52 @@ test("an unrelated edge within 10px of visible text is rejected", () => {
 });
 
 
+test("clearance rejects a closest approach between 2px sample endpoints", () => {
+  const sampleEndpointClearance = Math.hypot(0.95, 10.96) - 1;
+  assert.ok(sampleEndpointClearance >= MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX);
+
+  const findings = classifyGeometry({
+    precision_px: 0.01,
+    visible_text: [{
+      id: "text-between-samples",
+      role: "text",
+      owner_id: null,
+      text: "Контроль",
+      bounds: { x: 0, y: 0, width: 0.1, height: 1 },
+    }],
+    nodes: [],
+    cluster_frames: [],
+    cluster_titles: [],
+    edge_paths: [{
+      id: "edge-between-samples",
+      visible: true,
+      source_node_id: "source",
+      target_node_id: "target",
+      stroke_width_px: 2,
+      sample_step_px: 2,
+      samples: [
+        { x: -0.95, y: 11.96 },
+        { x: 1.05, y: 11.96 },
+      ],
+      comparison_samples: [
+        { x: -0.95, y: 11.96 },
+        { x: 1.05, y: 11.96 },
+      ],
+    }],
+  });
+
+  assert.equal(findings.unrelated_edge_text_intersections.length, 1);
+  assert.equal(
+    findings.unrelated_edge_text_intersections[0].edge_id,
+    "edge-between-samples",
+  );
+  assert.ok(
+    findings.unrelated_edge_text_intersections[0].clearance_px
+      < MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX,
+  );
+});
+
+
 test("a node label outside its shape is rejected", () => {
   const geometry = clone(CASES.good);
   geometry.nodes[0].label_bounds = CASES.node_label_overflow.label_bounds;
