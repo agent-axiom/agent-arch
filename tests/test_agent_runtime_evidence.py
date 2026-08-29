@@ -160,6 +160,123 @@ def test_rejects_duplicate_signal_ids_in_list_form(tmp_path: Path) -> None:
     assert "duplicate_signal_id" in _codes(result)
 
 
+@pytest.mark.parametrize(
+    ("signals", "message"),
+    [
+        ({}, "signals cannot be empty"),
+        ([], "signals cannot be empty"),
+        ("quality", "signals must be a mapping or list"),
+    ],
+)
+def test_rejects_empty_or_malformed_signal_collections(
+    tmp_path: Path, signals: object, message: str
+) -> None:
+    payload = _valid_manifest(tmp_path)
+    payload["signals"] = signals
+    manifest_path = _write_manifest(tmp_path, payload)
+
+    result = verify_evidence_manifest(manifest_path, root=tmp_path)
+
+    assert [
+        (diagnostic.code, diagnostic.location, diagnostic.message)
+        for diagnostic in result.diagnostics
+    ] == [("invalid_field", "signals", message)]
+
+
+def test_signal_validation_preserves_diagnostic_order_and_first_value(
+    tmp_path: Path,
+) -> None:
+    payload = _valid_manifest(tmp_path)
+    payload["signals"] = [
+        {
+            "id": " quality ",
+            "value": 0.99,
+            "artifact_refs": ["evaluation-report"],
+        },
+        {
+            "id": "quality",
+            "value": 1.0,
+            "artifact_refs": [None, "missing-report"],
+        },
+        {"id": "", "value": None, "artifact_refs": []},
+        "not-a-mapping",
+        {
+            "id": "missing-value",
+            "artifact_refs": ["", "missing-report", 7, "evaluation-report"],
+        },
+    ]
+    manifest_path = _write_manifest(tmp_path, payload)
+
+    result = verify_evidence_manifest(manifest_path, root=tmp_path)
+
+    assert result.signals == {"quality": 0.99}
+    assert [
+        (diagnostic.code, diagnostic.location, diagnostic.message)
+        for diagnostic in result.diagnostics
+    ] == [
+        (
+            "duplicate_signal_id",
+            "signals[1].id",
+            "Duplicate signal id: quality",
+        ),
+        (
+            "invalid_field",
+            "signals[1].artifact_refs[0]",
+            "Artifact reference must be a string",
+        ),
+        (
+            "unknown_artifact_ref",
+            "signals[1].artifact_refs[1]",
+            "Unknown artifact reference: missing-report",
+        ),
+        (
+            "invalid_field",
+            "signals[2].id",
+            "Signal id must be a non-empty string",
+        ),
+        (
+            "invalid_field",
+            "signals[2].value",
+            "Signal value cannot be null",
+        ),
+        (
+            "invalid_field",
+            "signals[2].artifact_refs",
+            "artifact_refs must be a non-empty list of artifact ids",
+        ),
+        (
+            "missing_field",
+            "signals[3].id",
+            "Required field is missing: signals[3].id",
+        ),
+        (
+            "invalid_field",
+            "signals[3]",
+            "Signal entry must be a mapping",
+        ),
+        (
+            "missing_field",
+            "signals[4].value",
+            "Required field is missing: signals[4].value",
+        ),
+        (
+            "invalid_field",
+            "signals[4].artifact_refs[0]",
+            "Artifact reference must be a string",
+        ),
+        (
+            "unknown_artifact_ref",
+            "signals[4].artifact_refs[1]",
+            "Unknown artifact reference: missing-report",
+        ),
+        (
+            "invalid_field",
+            "signals[4].artifact_refs[2]",
+            "Artifact reference must be a string",
+        ),
+    ]
+
+
 def test_rejects_unknown_artifact_reference(tmp_path: Path) -> None:
     payload = _valid_manifest(tmp_path)
     payload["signals"] = {"quality": {"value": 0.99, "artifact_refs": ["missing-report"]}}

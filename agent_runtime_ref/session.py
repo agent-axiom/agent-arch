@@ -355,6 +355,48 @@ def _merge_approval_status_counts(
     return merged
 
 
+def _normalize_eval_session_ids(value: object) -> tuple[str, ...]:
+    if not isinstance(value, Sequence) or isinstance(value, str):
+        raise TypeError("Session field entries must be a sequence: session_id")
+    normalized = tuple(
+        _read_required_string(session_id, field="session_id") for session_id in value
+    )
+    if len(set(normalized)) != len(normalized):
+        raise ValueError("Session field entries must be unique: session_id")
+    return normalized
+
+
+def _normalize_eval_specs(value: object) -> dict[str, dict[str, object]]:
+    normalized: dict[str, dict[str, object]] = {}
+    if value is None:
+        return normalized
+    if not isinstance(value, Mapping):
+        raise TypeError("Session eval specs must be a mapping")
+    for session_id, eval_spec in value.items():
+        normalized_session_id = _read_required_string(
+            session_id,
+            field="session_id",
+        )
+        if normalized_session_id in normalized:
+            raise ValueError("Session field entries must be unique: session_id")
+        normalized[normalized_session_id] = _read_eval_spec(eval_spec)
+    return normalized
+
+
+def _latest_failed_run(
+    store: SessionStore,
+    session_ids: tuple[str, ...],
+) -> RunRecord | None:
+    for session_id in reversed(session_ids):
+        latest_failed_run = next(
+            (run for run in reversed(store.runs_for_session(session_id)) if run.status == "failed"),
+            None,
+        )
+        if latest_failed_run is not None:
+            return latest_failed_run
+    return None
+
+
 class SessionStore:
     def __init__(self) -> None:
         self._sessions: dict[str, SessionRecord] = {}
@@ -552,25 +594,8 @@ class SessionStore:
         dataset_name = _read_required_string(dataset_name, field="dataset_name")
         destination = _read_session_output_path(output_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        if not isinstance(session_ids, Sequence) or isinstance(session_ids, str):
-            raise TypeError("Session field entries must be a sequence: session_id")
-        normalized_session_ids = tuple(
-            _read_required_string(session_id, field="session_id") for session_id in session_ids
-        )
-        if len(set(normalized_session_ids)) != len(normalized_session_ids):
-            raise ValueError("Session field entries must be unique: session_id")
-        normalized_eval_specs: dict[str, dict[str, object]] = {}
-        if eval_specs is not None:
-            if not isinstance(eval_specs, Mapping):
-                raise TypeError("Session eval specs must be a mapping")
-            for session_id, eval_spec in eval_specs.items():
-                normalized_session_id = _read_required_string(
-                    session_id,
-                    field="session_id",
-                )
-                if normalized_session_id in normalized_eval_specs:
-                    raise ValueError("Session field entries must be unique: session_id")
-                normalized_eval_specs[normalized_session_id] = _read_eval_spec(eval_spec)
+        normalized_session_ids = _normalize_eval_session_ids(session_ids)
+        normalized_eval_specs = _normalize_eval_specs(eval_specs)
         sessions = []
         for session_id in normalized_session_ids:
             payload = self._session_payload(session_id)
@@ -581,15 +606,7 @@ class SessionStore:
             summarize_session(session_id, self.runs_for_session(session_id))
             for session_id in normalized_session_ids
         ]
-        latest_failed_run = None
-        for session_id in reversed(normalized_session_ids):
-            runs = self.runs_for_session(session_id)
-            latest_failed_run = next(
-                (run for run in reversed(runs) if run.status == "failed"),
-                None,
-            )
-            if latest_failed_run is not None:
-                break
+        latest_failed_run = _latest_failed_run(self, normalized_session_ids)
         payload = {
             "dataset_name": dataset_name,
             "session_count": len(sessions),

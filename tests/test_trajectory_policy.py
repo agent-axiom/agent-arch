@@ -69,9 +69,7 @@ def _approval_record(
     state: str = "approved",
 ) -> ApprovalRecord:
     bound_request = request or _request()
-    bound_policy = policy or _policy(
-        RequiredApprovalRule("transfer-approval", "transfer")
-    )
+    bound_policy = policy or _policy(RequiredApprovalRule("transfer-approval", "transfer"))
     return ApprovalRecord(
         approval_id=approval_id,
         scope=scope,
@@ -90,9 +88,7 @@ def _snapshot(
     **overrides: object,
 ) -> TrajectorySnapshot:
     bound_request = request or _request()
-    bound_policy = policy or _policy(
-        RequiredApprovalRule("transfer-approval", "transfer")
-    )
+    bound_policy = policy or _policy(RequiredApprovalRule("transfer-approval", "transfer"))
     values: dict[str, object] = {
         "history_ref": bound_request.expected_history_ref,
         "history_version": bound_request.expected_history_version,
@@ -118,6 +114,15 @@ def _snapshot(
     }
     values.update(overrides)
     return TrajectorySnapshot(**values)  # type: ignore[arg-type]
+
+
+def test_evaluator_rejects_wrong_public_input_types() -> None:
+    policy = _policy(ValueBindingRule("destination-binding", "destination"))
+
+    with pytest.raises(TypeError, match="Trajectory request must be TrajectoryRequest"):
+        evaluate_trajectory_policy(object(), None, policy)
+    with pytest.raises(TypeError, match="Trajectory policy must be TrajectoryPolicy"):
+        evaluate_trajectory_policy(_request(), None, object())
 
 
 def test_destination_fingerprint_mismatch_is_denied_without_raw_values() -> None:
@@ -209,11 +214,7 @@ def test_cumulative_limit_uses_exact_arithmetic_under_low_global_precision() -> 
 def test_cumulative_total_outside_numeric_range_is_denied_as_arithmetic_error() -> None:
     decision = evaluate_trajectory_policy(
         _request(counters=(TrajectoryCounter("amount", Decimal("0.000001")),)),
-        _snapshot(
-            counters=(
-                TrajectoryCounter("amount", Decimal("999999999999.999999")),
-            )
-        ),
+        _snapshot(counters=(TrajectoryCounter("amount", Decimal("999999999999.999999")),)),
         _policy(
             CumulativeLimitRule(
                 "maximum-limit",
@@ -251,18 +252,12 @@ def test_counter_rejects_values_outside_numeric_contract(
     (
         (
             "fingerprints",
-            tuple(
-                Fingerprint(f"field-{index:02d}", DESTINATION_A)
-                for index in range(17)
-            ),
+            tuple(Fingerprint(f"field-{index:02d}", DESTINATION_A) for index in range(17)),
             "Trajectory fingerprints must contain at most 16 entries",
         ),
         (
             "counters",
-            tuple(
-                TrajectoryCounter(f"counter-{index:02d}", Decimal("1"))
-                for index in range(33)
-            ),
+            tuple(TrajectoryCounter(f"counter-{index:02d}", Decimal("1")) for index in range(33)),
             "Trajectory counters must contain at most 32 entries",
         ),
     ),
@@ -281,18 +276,12 @@ def test_request_rejects_collections_that_can_overflow_telemetry(
     (
         (
             "fingerprints",
-            tuple(
-                Fingerprint(f"field-{index:02d}", DESTINATION_A)
-                for index in range(17)
-            ),
+            tuple(Fingerprint(f"field-{index:02d}", DESTINATION_A) for index in range(17)),
             "Trajectory fingerprints must contain at most 16 entries",
         ),
         (
             "counters",
-            tuple(
-                TrajectoryCounter(f"counter-{index:02d}", Decimal("1"))
-                for index in range(33)
-            ),
+            tuple(TrajectoryCounter(f"counter-{index:02d}", Decimal("1")) for index in range(33)),
             "Trajectory counters must contain at most 32 entries",
         ),
     ),
@@ -313,8 +302,7 @@ def test_maximum_collection_sizes_still_produce_bounded_telemetry() -> None:
 
     request = _request(
         fingerprints=tuple(
-            Fingerprint(long_name("request", index), DESTINATION_A)
-            for index in range(16)
+            Fingerprint(long_name("request", index), DESTINATION_A) for index in range(16)
         ),
         counters=tuple(
             TrajectoryCounter(long_name("request-counter", index), Decimal("1"))
@@ -326,8 +314,7 @@ def test_maximum_collection_sizes_still_produce_bounded_telemetry() -> None:
         request=request,
         policy=policy,
         fingerprints=tuple(
-            Fingerprint(long_name("history", index), DESTINATION_B)
-            for index in range(16)
+            Fingerprint(long_name("history", index), DESTINATION_B) for index in range(16)
         ),
         counters=tuple(
             TrajectoryCounter(long_name("history-counter", index), Decimal("1"))
@@ -716,6 +703,83 @@ def test_matching_trusted_trajectory_is_allowed() -> None:
     assert decision.approval_state == "approved"
 
 
+def test_rules_stop_at_first_failure_and_keep_prior_counter_evidence() -> None:
+    decision = evaluate_trajectory_policy(
+        _request(fingerprints=(Fingerprint("destination", DESTINATION_B),)),
+        _snapshot(),
+        _policy(
+            CumulativeLimitRule("daily-amount-limit", "amount", Decimal("100")),
+            ValueBindingRule("destination-binding", "destination"),
+            RequiredPredecessorRule("unreached-predecessor", "review_transfer"),
+        ),
+    )
+
+    assert decision.decision == "deny"
+    assert decision.rule_id == "destination-binding"
+    assert decision.reason == "value_binding_mismatch"
+    assert decision.counters == "amount=within_limit"
+
+
+@pytest.mark.parametrize(
+    (
+        "request_overrides",
+        "snapshot_overrides",
+        "expected_rule_id",
+        "expected_reason",
+    ),
+    [
+        (
+            {},
+            {"status": "missing", "integrity": "corrupt"},
+            "trajectory.history_trust",
+            "history_missing",
+        ),
+        (
+            {"expected_history_ref": "trajectory://transfer/002"},
+            {"history_version": 8, "tenant_id": "tenant-beta"},
+            "trajectory.history_trust",
+            "history_ref_mismatch",
+        ),
+        (
+            {"sequence_number": 4},
+            {
+                "tenant_id": "tenant-beta",
+                "policy_version": "2026.08.24",
+                "window_id": "daily-2026-08-24",
+            },
+            "trajectory.identity",
+            "trajectory_identity_mismatch",
+        ),
+        (
+            {"sequence_number": 4, "window_id": "daily-2026-08-24"},
+            {},
+            "trajectory.sequence",
+            "observed_sequence_mismatch",
+        ),
+    ],
+    ids=(
+        "missing-before-corrupt",
+        "reference-before-version",
+        "identity-before-policy",
+        "sequence-before-window",
+    ),
+)
+def test_snapshot_validation_preserves_fail_closed_precedence(
+    request_overrides: dict[str, object],
+    snapshot_overrides: dict[str, object],
+    expected_rule_id: str,
+    expected_reason: str,
+) -> None:
+    decision = evaluate_trajectory_policy(
+        _request(**request_overrides),
+        _snapshot(**snapshot_overrides),
+        _policy(ValueBindingRule("destination-binding", "destination")),
+    )
+
+    assert decision.rule_id == expected_rule_id
+    assert decision.reason == expected_reason
+
+
 @pytest.mark.parametrize(
     ("integrity", "status", "reason"),
     [
@@ -838,6 +902,32 @@ def test_snapshot_is_deeply_immutable_and_requires_tuple_collections() -> None:
         snapshot.history_version = 8  # type: ignore[misc]
     with pytest.raises(TypeError, match="Trajectory fingerprints must be a tuple"):
         _snapshot(fingerprints=[Fingerprint("destination", DESTINATION_A)])
+
+
+@pytest.mark.parametrize(
+    ("factory", "message"),
+    [
+        (
+            lambda: _request(fingerprints=(object(),)),
+            "Trajectory fingerprints entries must be Fingerprint",
+        ),
+        (
+            lambda: _snapshot(approval_records=(object(),)),
+            "Trajectory approval_records entries must be ApprovalRecord",
+        ),
+        (
+            lambda: _policy(object()),
+            "Trajectory rules entries must be trajectory rule objects",
+        ),
+    ],
+    ids=("request-fingerprint", "snapshot-approval", "policy-rule"),
+)
+def test_typed_collections_reject_wrong_entry_types(
+    factory: Callable[[], object],
+    message: str,
+) -> None:
+    with pytest.raises(TypeError, match=message):
+        factory()
 
 
 def test_fingerprints_are_normalized_and_invalid_counter_types_are_rejected() -> None:

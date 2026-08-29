@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/ternaus/ruff-policy-hooks
+    rev: v0.4.0
+    hooks:
+      - id: check-ruff-suppressions
+        args: ["--protect=C901,PLR0912"]

@@ -448,14 +448,34 @@ def _validate_signals(
         _missing(diagnostics, "signals")
         return {}
 
-    raw_signals = payload["signals"]
+    entries = _normalize_signal_entries(payload["signals"], diagnostics)
+    normalized: dict[str, Any] = {}
+    seen_ids: set[str] = set()
+    for raw_id, raw_signal, location in entries:
+        normalized_entry = _validate_signal_entry(
+            raw_id,
+            raw_signal,
+            location,
+            artifact_ids,
+            seen_ids,
+            diagnostics,
+        )
+        if normalized_entry is not None:
+            signal_id, value = normalized_entry
+            normalized.setdefault(signal_id, value)
+
+    return normalized
+
+
+def _normalize_signal_entries(
+    raw: Any,
+    diagnostics: list[EvidenceDiagnostic],
+) -> list[tuple[Any, Any, str]]:
     entries: list[tuple[Any, Any, str]] = []
-    if isinstance(raw_signals, Mapping):
-        entries = [
-            (signal_id, signal, f"signals.{signal_id}") for signal_id, signal in raw_signals.items()
-        ]
-    elif isinstance(raw_signals, list):
-        for index, signal in enumerate(raw_signals):
+    if isinstance(raw, Mapping):
+        entries = [(signal_id, signal, f"signals.{signal_id}") for signal_id, signal in raw.items()]
+    elif isinstance(raw, list):
+        for index, signal in enumerate(raw):
             location = f"signals[{index}]"
             if not isinstance(signal, Mapping):
                 entries.append((None, signal, location))
@@ -464,66 +484,83 @@ def _validate_signals(
             entries.append((signal_mapping.get("id"), signal_mapping, location))
     else:
         _invalid(diagnostics, "signals", "signals must be a mapping or list")
-        return {}
+        return []
 
     if not entries:
         _invalid(diagnostics, "signals", "signals cannot be empty")
-        return {}
+    return entries
 
-    normalized: dict[str, Any] = {}
-    seen_ids: set[str] = set()
-    for raw_id, raw_signal, location in entries:
-        signal_id = _validate_signal_id(raw_id, location, diagnostics)
-        if signal_id is not None:
-            if signal_id in seen_ids:
-                diagnostics.append(
-                    EvidenceDiagnostic(
-                        code="duplicate_signal_id",
-                        location=f"{location}.id",
-                        message=f"Duplicate signal id: {signal_id}",
-                    )
+
+def _validate_signal_entry(
+    raw_id: Any,
+    raw_signal: Any,
+    location: str,
+    artifact_ids: set[str],
+    seen_ids: set[str],
+    diagnostics: list[EvidenceDiagnostic],
+) -> tuple[str, Any] | None:
+    signal_id = _validate_signal_id(raw_id, location, diagnostics)
+    if signal_id is not None:
+        if signal_id in seen_ids:
+            diagnostics.append(
+                EvidenceDiagnostic(
+                    code="duplicate_signal_id",
+                    location=f"{location}.id",
+                    message=f"Duplicate signal id: {signal_id}",
                 )
-            else:
-                seen_ids.add(signal_id)
-
-        if not isinstance(raw_signal, Mapping):
-            _invalid(diagnostics, location, "Signal entry must be a mapping")
-            continue
-
-        value_location = f"{location}.value"
-        if "value" not in raw_signal:
-            _missing(diagnostics, value_location)
-        elif raw_signal["value"] is None:
-            _invalid(diagnostics, value_location, "Signal value cannot be null")
-        elif signal_id is not None and signal_id not in normalized:
-            normalized[signal_id] = raw_signal["value"]
-
-        refs_location = f"{location}.artifact_refs"
-        if "artifact_refs" not in raw_signal:
-            _missing(diagnostics, refs_location)
-            continue
-        refs = raw_signal["artifact_refs"]
-        if not isinstance(refs, list) or not refs:
-            _invalid(
-                diagnostics,
-                refs_location,
-                "artifact_refs must be a non-empty list of artifact ids",
             )
-            continue
-        for ref_index, artifact_ref in enumerate(refs):
-            ref_location = f"{refs_location}[{ref_index}]"
-            if not isinstance(artifact_ref, str) or not artifact_ref.strip():
-                _invalid(diagnostics, ref_location, "Artifact reference must be a string")
-            elif artifact_ref not in artifact_ids:
-                diagnostics.append(
-                    EvidenceDiagnostic(
-                        code="unknown_artifact_ref",
-                        location=ref_location,
-                        message=f"Unknown artifact reference: {artifact_ref}",
-                    )
-                )
+        else:
+            seen_ids.add(signal_id)
 
-    return normalized
+    if not isinstance(raw_signal, Mapping):
+        _invalid(diagnostics, location, "Signal entry must be a mapping")
+        return None
+
+    normalized_entry: tuple[str, Any] | None = None
+    value_location = f"{location}.value"
+    if "value" not in raw_signal:
+        _missing(diagnostics, value_location)
+    elif raw_signal["value"] is None:
+        _invalid(diagnostics, value_location, "Signal value cannot be null")
+    elif signal_id is not None:
+        normalized_entry = (signal_id, raw_signal["value"])
+
+    _validate_signal_artifact_refs(raw_signal, location, artifact_ids, diagnostics)
+    return normalized_entry
+
+
+def _validate_signal_artifact_refs(
+    raw_signal: Mapping[Any, Any],
+    location: str,
+    artifact_ids: set[str],
+    diagnostics: list[EvidenceDiagnostic],
+) -> None:
+    refs_location = f"{location}.artifact_refs"
+    if "artifact_refs" not in raw_signal:
+        _missing(diagnostics, refs_location)
+        return
+
+    refs = raw_signal["artifact_refs"]
+    if not isinstance(refs, list) or not refs:
+        _invalid(
+            diagnostics,
+            refs_location,
+            "artifact_refs must be a non-empty list of artifact ids",
+        )
+        return
+
+    for ref_index, artifact_ref in enumerate(refs):
+        ref_location = f"{refs_location}[{ref_index}]"
+        if not isinstance(artifact_ref, str) or not artifact_ref.strip():
+            _invalid(diagnostics, ref_location, "Artifact reference must be a string")
+        elif artifact_ref not in artifact_ids:
+            diagnostics.append(
+                EvidenceDiagnostic(
+                    code="unknown_artifact_ref",
+                    location=ref_location,
+                    message=f"Unknown artifact reference: {artifact_ref}",
+                )
+            )
 
 
 def _validate_signal_id(
