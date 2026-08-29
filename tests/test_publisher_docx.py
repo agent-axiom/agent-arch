@@ -46,6 +46,9 @@ TEMPLATE_VISUAL_AUDIT = ROOT / (
 VISUAL_LAYOUT_AUDIT = ROOT / "docs/publisher/ru-visual-layout-audit-2026-08-24.json"
 INLINE_DIAGRAMS = ROOT / "docs/publisher/ru-inline-diagrams-2026-07-13.json"
 NUMBERED_DIAGRAMS = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
+EDITORIAL_DIAGRAMS = ROOT / "docs/publisher/ru-editorial-diagrams-2026-07-16.json"
+LAYOUT_V2_INVENTORY = ROOT / "docs/publisher/ru-publisher-layout-v2-inventory.json"
+LAYOUT_V2_LEDGER = ROOT / "docs/publisher/ru-publisher-layout-v2-review-ledger.json"
 DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
 EXPECTED_TABLE_COUNT = 12
 EXPECTED_IMAGE_COUNT = 57
@@ -57,6 +60,296 @@ DRAWING_NS = "http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDra
 DRAWINGML_NS = "http://schemas.openxmlformats.org/drawingml/2006/main"
 DC_NS = "http://purl.org/dc/elements/1.1/"
 CP_NS = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+
+
+def sha256_path(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def parse_layout_v2_code_blocks(manuscript: str) -> list[dict[str, object]]:
+    blocks: list[dict[str, object]] = []
+    lines = manuscript.splitlines()
+    opening_line = None
+    language = None
+    pending_listing = None
+    listing_pattern = re.compile(r"^\*\*Листинг (\d+)\. (.+?)\.\*\*")
+
+    for line_number, line in enumerate(lines, start=1):
+        if opening_line is None:
+            if match := listing_pattern.match(line):
+                pending_listing = {
+                    "number": int(match.group(1)),
+                    "title": match.group(2),
+                }
+            if line.startswith("```"):
+                opening_line = line_number
+                language = line[3:].strip()
+            continue
+
+        if line == "```":
+            blocks.append(
+                {
+                    "index": len(blocks) + 1,
+                    "language": language,
+                    "source_line_start": opening_line + 1,
+                    "source_line_end": line_number - 1,
+                    "line_count": line_number - opening_line - 1,
+                    "nearest_formal_listing": pending_listing,
+                }
+            )
+            opening_line = None
+            language = None
+            pending_listing = None
+
+    assert opening_line is None, "manuscript contains an unclosed code fence"
+    return blocks
+
+
+def parse_layout_v2_headings(manuscript: str) -> list[dict[str, object]]:
+    headings: list[dict[str, object]] = []
+    roman_numbers = {
+        "I": 1,
+        "II": 2,
+        "III": 3,
+        "IV": 4,
+        "V": 5,
+        "VI": 6,
+        "VII": 7,
+        "VIII": 8,
+    }
+    patterns = (
+        ("part", re.compile(r"^(#) (Часть ([IVX]+)\. .+)$")),
+        ("chapter", re.compile(r"^(##) (Глава (\d+)\\\. .+)$")),
+        ("conclusion", re.compile(r"^(#) (Заключение\. .+)$")),
+        ("appendices", re.compile(r"^(#) (Приложения)$")),
+        ("appendix", re.compile(r"^(##) (Приложение (\d+)\\\. .+)$")),
+    )
+    for line_number, line in enumerate(manuscript.splitlines(), start=1):
+        for kind, pattern in patterns:
+            if match := pattern.match(line):
+                if kind == "part":
+                    stable_id = f"heading-part-{roman_numbers[match.group(3)]:02d}"
+                elif kind in {"chapter", "appendix"}:
+                    stable_id = f"heading-{kind}-{int(match.group(3)):02d}"
+                else:
+                    stable_id = f"heading-{kind}"
+                headings.append(
+                    {
+                        "id": stable_id,
+                        "kind": kind,
+                        "level": len(match.group(1)),
+                        "title": match.group(2).replace("\\.", "."),
+                        "source_line": line_number,
+                    }
+                )
+                break
+    return headings
+
+
+def layout_v2_mermaid_counts(source: str) -> tuple[int, int]:
+    without_labels = re.sub(r'"(?:\\.|[^"\\])*"', '""', source)
+    subgraphs = set(re.findall(r"^\s*subgraph\s+([A-Za-z][\w-]*)", without_labels, re.M))
+    nodes = set(re.findall(r"\b([A-Za-z][\w-]*)\s*(?=\[|\{|\()", without_labels)) - subgraphs
+    edges = re.findall(r"-->|-\.->|~~~", without_labels)
+    return len(nodes), len(edges)
+
+
+def layout_v2_placed_sizes(docx_path: Path, image_names: list[str]) -> dict[str, dict[str, float]]:
+    with ZipFile(docx_path) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+    extents = document.findall(f".//{{{DRAWING_NS}}}extent")
+    assert len(extents) == len(image_names)
+    return {
+        image_name: {
+            "width": round(int(extent.attrib["cx"]) / sync_ru_docx_visuals.EMU_PER_INCH, 6),
+            "height": round(int(extent.attrib["cy"]) / sync_ru_docx_visuals.EMU_PER_INCH, 6),
+        }
+        for image_name, extent in zip(image_names, extents)
+    }
+
+
+def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
+    inventory = json.loads(LAYOUT_V2_INVENTORY.read_text(encoding="utf-8"))
+    manuscript = EDITORIAL_MANUSCRIPT.read_text(encoding="utf-8")
+
+    assert inventory["schema_version"] == 1
+    assert inventory["baseline_date"] == "2026-08-30"
+    assert inventory["base_commit"] == "8e125f1feeb0e8ea8a61e0ef3be7e0eb3c56398a"
+    assert inventory["source"] == {
+        "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+        "sha256": sha256_path(EDITORIAL_MANUSCRIPT),
+    }
+    assert inventory["google_doc"] == {
+        "document_id": "1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4",
+        "url": "https://docs.google.com/document/d/1LyY2Psy2yaobn7VLmOwLTWm4QVrhp2I-ylE2B7V4pp4/edit?tab=t.0",
+        "revision": (
+            "AIroW34Gzx-ZPpAtem_k8o2i17S0bE4PXlWUk3Nv_LGm1RyhlD1M4lve-"
+            "opHIHp2-4Yard_T0c8j8Xs8wRWGVjaU_ninLA-x-tlweCiMzQY"
+        ),
+    }
+
+    artifacts = {artifact["id"]: artifact for artifact in inventory["artifacts"]}
+    assert artifacts == {
+        "google-doc-book-standards": {
+            "id": "google-doc-book-standards",
+            "path": (
+                "docs/publisher/artifacts/agent-arch-ru-google-doc-book-standards-2026-08-23.docx"
+            ),
+            "sha256": sha256_path(CURRENT_RAW_DOCX),
+            "page_count": 539,
+            "page_count_report": (
+                "docs/publisher/ru-google-doc-book-standards-2026-08-23.render-qa.json"
+            ),
+        },
+        "template2000n-book-standards": {
+            "id": "template2000n-book-standards",
+            "path": (
+                "docs/publisher/artifacts/"
+                "agent-arch-ru-template2000n-book-standards-2026-08-23.docx"
+            ),
+            "sha256": sha256_path(CURRENT_TEMPLATE_DOCX),
+            "page_count": 380,
+            "page_count_report": (
+                "docs/publisher/ru-template2000n-book-standards-2026-08-23.render-qa.json"
+            ),
+        },
+    }
+    for artifact in artifacts.values():
+        report = json.loads((ROOT / artifact["page_count_report"]).read_text())
+        assert artifact["page_count"] == report["pages"]
+
+    code_blocks = parse_layout_v2_code_blocks(manuscript)
+    headings = parse_layout_v2_headings(manuscript)
+    diagram_sources = (
+        ("inline", INLINE_DIAGRAMS),
+        ("numbered", NUMBERED_DIAGRAMS),
+        ("editorial", EDITORIAL_DIAGRAMS),
+    )
+    expected_diagrams = {
+        diagram["filename"]: {
+            "id": f"diagram-{family}-{int(diagram['number']):02d}",
+            "family": family,
+            "caption": diagram["caption"],
+            "source_manifest": manifest.relative_to(ROOT).as_posix(),
+            "node_count": layout_v2_mermaid_counts(diagram["mermaid"])[0],
+            "edge_count": layout_v2_mermaid_counts(diagram["mermaid"])[1],
+        }
+        for family, manifest in diagram_sources
+        for diagram in json.loads(manifest.read_text(encoding="utf-8"))["diagrams"]
+    }
+    formal_listing_count = len(re.findall(r"^\*\*Листинг \d+\.", manuscript, re.M))
+    manuscript_image_names = [
+        Path(path).name
+        for path in re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.M)
+    ]
+    placed_sizes = {
+        "google-doc-book-standards": layout_v2_placed_sizes(
+            CURRENT_RAW_DOCX, manuscript_image_names
+        ),
+        "template2000n-book-standards": layout_v2_placed_sizes(
+            CURRENT_TEMPLATE_DOCX, manuscript_image_names
+        ),
+    }
+    expected_counts = {
+        "parts": 8,
+        "chapters": 28,
+        "appendices": 5,
+        "formal_listings": 37,
+        "fenced_code_blocks": 141,
+        "manuscript_images": 57,
+        "mermaid_diagrams": 56,
+        "inline_diagrams": 29,
+        "numbered_diagrams": 25,
+        "editorial_diagrams": 2,
+        "reader_facing_headings": 43,
+    }
+    assert inventory["counts"] == expected_counts
+    assert len(code_blocks) == expected_counts["fenced_code_blocks"]
+    assert formal_listing_count == expected_counts["formal_listings"]
+    assert len(manuscript_image_names) == expected_counts["manuscript_images"]
+    assert len(expected_diagrams) == expected_counts["mermaid_diagrams"]
+    assert len(headings) == expected_counts["reader_facing_headings"]
+    assert {
+        kind: sum(heading["kind"] == kind for heading in headings)
+        for kind in ("part", "chapter", "conclusion", "appendices", "appendix")
+    } == {
+        "part": expected_counts["parts"],
+        "chapter": expected_counts["chapters"],
+        "conclusion": 1,
+        "appendices": 1,
+        "appendix": expected_counts["appendices"],
+    }
+
+    diagrams = inventory["diagrams"]
+    assert len(diagrams) == expected_counts["mermaid_diagrams"]
+    assert len({item["id"] for item in diagrams}) == len(diagrams)
+    assert [item["filename"] for item in diagrams] == [
+        name for name in manuscript_image_names if name in expected_diagrams
+    ]
+    for item in diagrams:
+        assert {
+            key: item[key]
+            for key in (
+                "id",
+                "family",
+                "caption",
+                "source_manifest",
+                "node_count",
+                "edge_count",
+            )
+        } == expected_diagrams[item["filename"]]
+        assert item["node_count"] > 0
+        assert item["edge_count"] > 0
+        assert set(item["current_placed_size_inches"]) == set(artifacts)
+        for artifact_id, size in item["current_placed_size_inches"].items():
+            assert size["width"] > 0
+            assert size["height"] > 0
+            assert size == placed_sizes[artifact_id][item["filename"]]
+
+    assert len(inventory["code_blocks"]) == expected_counts["fenced_code_blocks"]
+    assert len({item["id"] for item in inventory["code_blocks"]}) == len(code_blocks)
+    for actual, expected in zip(inventory["code_blocks"], code_blocks):
+        assert actual == {"id": f"code-block-{expected['index']:03d}", **expected}
+    assert [
+        item["nearest_formal_listing"]["number"]
+        for item in inventory["code_blocks"]
+        if item["nearest_formal_listing"] is not None
+    ] == list(range(1, expected_counts["formal_listings"] + 1))
+
+    assert len(inventory["headings"]) == expected_counts["reader_facing_headings"]
+    assert len({item["id"] for item in inventory["headings"]}) == len(headings)
+    for actual, expected in zip(inventory["headings"], headings):
+        assert actual == expected
+
+
+def test_publisher_layout_v2_review_ledger_covers_inventory_once() -> None:
+    inventory = json.loads(LAYOUT_V2_INVENTORY.read_text(encoding="utf-8"))
+    ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
+
+    expected_items = {
+        item["id"]: item_type
+        for item_type, collection in (
+            ("diagram", inventory["diagrams"]),
+            ("code_block", inventory["code_blocks"]),
+            ("heading", inventory["headings"]),
+        )
+        for item in collection
+    }
+    assert ledger["schema_version"] == 1
+    assert ledger["inventory_path"] == ("docs/publisher/ru-publisher-layout-v2-inventory.json")
+    assert ledger["inventory_sha256"] == sha256_path(LAYOUT_V2_INVENTORY)
+    assert len(ledger["entries"]) == 240
+    assert len({entry["id"] for entry in ledger["entries"]}) == 240
+    assert {entry["inventory_id"] for entry in ledger["entries"]} == set(expected_items)
+    for entry in ledger["entries"]:
+        assert entry == {
+            "id": f"review-{entry['inventory_id']}",
+            "inventory_id": entry["inventory_id"],
+            "item_type": expected_items[entry["inventory_id"]],
+            "status": "pending",
+            "severity": None,
+            "notes": "",
+        }
 
 
 def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
