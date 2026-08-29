@@ -22512,62 +22512,147 @@ def test_laconian_skill_eval_case_is_documented() -> None:
             "Laconian — открытый проект автора этой книги",
             "`if` — переносимый навык в его составе",
             "одного Markdown-файла с поведенческими правилами",
-            "без скриптов, зависимостей, разрешений, ресурсов, сетевых вызовов и инструкций, привязанных к конкретным инструментам",
-            "корректность и безопасность; требования пользователя, необходимая подробность, формат и тон",
-            "существенные факты, ограничения, предупреждения и неопределенность; практическая достаточность; ясность и естественный язык; и лишь затем краткость",
-            "Код, команды, сообщения об ошибках, числа, версии, URL, идентификаторы, схемы, обязательные ключи, порядок и формат сохраняются без изменений",
-            "Сжатие прекращается, прежде чем следующее удаление ослабит корректность, безопасность, охват требований, полноту, полезность, ясность или тон",
+            (
+                "без скриптов, зависимостей, разрешений, ресурсов, сетевых "
+                "вызовов и инструкций, привязанных к конкретным инструментам"
+            ),
+            (
+                "корректность и безопасность; требования пользователя, "
+                "необходимая подробность, формат и тон"
+            ),
+            (
+                "существенные факты, ограничения, предупреждения и неопределенность; "
+                "практическая достаточность; ясность и естественный язык; "
+                "и лишь затем краткость"
+            ),
+            (
+                "Код, команды, сообщения об ошибках, числа, версии, URL, "
+                "идентификаторы, схемы, обязательные ключи, порядок и формат "
+                "сохраняются без изменений"
+            ),
+            (
+                "Сжатие прекращается, прежде чем следующее удаление ослабит "
+                "корректность, безопасность, охват требований, полноту, полезность, "
+                "ясность или тон"
+            ),
             "а не независимая сторонняя проверка",
-            "Оценка намеренно разделяет два вопроса: активацию и поведение ответа при намеренном применении инструкции",
+            (
+                "Оценка намеренно разделяет два вопроса: активацию и поведение "
+                "ответа при намеренном применении инструкции"
+            ),
             "точная инструкция `Answer concisely.`",
-            "зафиксированный на уровне байтов тестовый образ Caveman и точные байты `skills/if/SKILL.md`",
-            "модель, пользовательский запрос, настройки генерации, доступность инструментов и размещение инструкции",
+            (
+                "зафиксированный на уровне байтов тестовый образ Caveman и точные "
+                "байты `skills/if/SKILL.md`"
+            ),
+            (
+                "модель, пользовательский запрос, настройки генерации, доступность "
+                "инструментов и размещение инструкции"
+            ),
             "меняется только инструкция сравнения",
-            "Жесткий шлюз и необязательный слепой семантический шлюз выполняются до парных метрик краткости",
-            "сведения о версии исполнителя, полный хеш сценария, хеши промпта и инструкции, цепочку попыток и повторов, а также исходные артефакты в режиме только добавления",
+            (
+                "Жесткий шлюз и необязательный слепой семантический шлюз "
+                "выполняются до парных метрик краткости"
+            ),
+            (
+                "сведения о версии исполнителя, полный хеш сценария, хеши промпта "
+                "и инструкции, цепочку попыток и повторов, а также исходные "
+                "артефакты в режиме только добавления"
+            ),
             "сведения об оценщике сохраняются только при семантической оценке",
             "в репозитории пока нет публичных результатов бенчмарка",
-            "Дымовые проверки и сценарии повторного запуска проверяют путь оценки, но не доказывают экономию токенов, превосходство `if` над другим вариантом или одинаковое поведение на разных хостах агентов",
+            (
+                "Дымовые проверки и сценарии повторного запуска проверяют путь "
+                "оценки, но не доказывают экономию токенов, превосходство `if` "
+                "над другим вариантом или одинаковое поведение на разных хостах "
+                "агентов"
+            ),
         ),
         "docs/book/part-v/chapter-13.en.md": (
             "Laconian is an open-source project by the author of this book",
             "`if` is the portable skill inside it",
             "one behavioral Markdown file",
-            "with no scripts, dependencies, permissions, assets, network calls, or tool-specific instructions",
+            (
+                "with no scripts, dependencies, permissions, assets, network calls, "
+                "or tool-specific instructions"
+            ),
             "correctness and safety; the user's requirements, requested detail, format, and tone",
-            "material facts, constraints, warnings, and uncertainty; practical sufficiency; clarity and natural language; and only then brevity",
-            "Code, commands, errors, numbers, versions, URLs, identifiers, schemas, required keys, order, and format remain exact",
-            "Compression stops before the next deletion would weaken correctness, safety, requirement coverage, completeness, usefulness, clarity, or tone",
+            (
+                "material facts, constraints, warnings, and uncertainty; practical "
+                "sufficiency; clarity and natural language; and only then brevity"
+            ),
+            (
+                "Code, commands, errors, numbers, versions, URLs, identifiers, "
+                "schemas, required keys, order, and format remain exact"
+            ),
+            (
+                "Compression stops before the next deletion would weaken correctness, "
+                "safety, requirement coverage, completeness, usefulness, clarity, or tone"
+            ),
             "not independent third-party validation",
-            "The benchmark deliberately separates two questions: activation and deliberately applied response behavior",
-            "the exact instruction `Answer concisely.`, a byte-pinned Caveman fixture, and the exact bytes of `skills/if/SKILL.md`",
+            (
+                "The benchmark deliberately separates two questions: activation and "
+                "deliberately applied response behavior"
+            ),
+            (
+                "the exact instruction `Answer concisely.`, a byte-pinned Caveman "
+                "fixture, and the exact bytes of `skills/if/SKILL.md`"
+            ),
             "model, user prompt, generation settings, tool availability, and instruction placement",
             "only the comparison instruction changes",
             "The hard gate and optional blind semantic gate run before paired brevity metrics",
-            "runner-version provenance, the complete case hash, prompt and instruction hashes, attempt/retry lineage, and append-only raw artifacts",
+            (
+                "runner-version provenance, the complete case hash, prompt and "
+                "instruction hashes, attempt/retry lineage, and append-only raw artifacts"
+            ),
             "judge provenance only when semantic judging is used",
             "the repository has no public benchmark result yet",
-            "Smoke/replay fixtures validate the evaluation path; they do not prove token savings, superiority over another arm, or uniform behavior across agent hosts",
+            (
+                "Smoke/replay fixtures validate the evaluation path; they do not prove "
+                "token savings, superiority over another arm, or uniform behavior "
+                "across agent hosts"
+            ),
         ),
         "docs/book/part-v/chapter-13.zh.md": (
             "Laconian 是本书作者的开源项目",
             "`if` 是其中可移植的 skill",
             "一个 behavioral Markdown file",
-            "不包含 scripts、dependencies、permissions、assets、network calls 或 tool-specific instructions",
+            (
+                "不包含 scripts、dependencies、permissions、assets、network calls 或 "
+                "tool-specific instructions"
+            ),
             "correctness and safety；用户要求、所需细节、format 与 tone",
-            "material facts、constraints、warnings 与 uncertainty；practical sufficiency；clarity and natural language；最后才是 brevity",
-            "Code、commands、errors、numbers、versions、URLs、identifiers、schemas、required keys、order 和 format 在精确形式承载意义时必须保持不变",
-            "一旦下一次删除会削弱 correctness、safety、requirement coverage、completeness、usefulness、clarity 或 tone，压缩就应该停止",
+            (
+                "material facts、constraints、warnings 与 uncertainty；practical "
+                "sufficiency；clarity and natural language；最后才是 brevity"
+            ),
+            (
+                "Code、commands、errors、numbers、versions、URLs、identifiers、schemas、"
+                "required keys、order 和 format 在精确形式承载意义时必须保持不变"
+            ),
+            (
+                "一旦下一次删除会削弱 correctness、safety、requirement coverage、"
+                "completeness、usefulness、clarity 或 tone，压缩就应该停止"
+            ),
             "不是独立第三方验证",
             "Benchmark 刻意把两个问题分开：activation 与 deliberately applied response behavior",
-            "完全一致的指令 `Answer concisely.`、按字节固定的 Caveman fixture，以及 `skills/if/SKILL.md` 的 exact bytes",
+            (
+                "完全一致的指令 `Answer concisely.`、按字节固定的 Caveman fixture，"
+                "以及 `skills/if/SKILL.md` 的 exact bytes"
+            ),
             "model、user prompt、generation settings、tool availability 和 instruction placement",
             "只有 comparison instruction 改变",
             "Hard gate 与 optional blind semantic gate 先于 paired brevity metrics 执行",
-            "runner version、完整 case hash、prompt 与 instruction hashes、attempt/retry lineage，以及 append-only raw artifacts",
+            (
+                "runner version、完整 case hash、prompt 与 instruction hashes、"
+                "attempt/retry lineage，以及 append-only raw artifacts"
+            ),
             "只有使用 semantic judging 时才保留 judge provenance",
             "仓库尚无公开 benchmark 结果",
-            "Smoke/replay fixtures 只验证 evaluation path；它们不能证明 `if` 节省 token、优于另一条 arm，或在不同 agent hosts 上表现一致",
+            (
+                "Smoke/replay fixtures 只验证 evaluation path；它们不能证明 `if` "
+                "节省 token、优于另一条 arm，或在不同 agent hosts 上表现一致"
+            ),
         ),
     }
     revision = "669c45e849f75c99f81af19561d09cf24664e935"
@@ -22619,9 +22704,15 @@ def test_laconian_skill_runtime_boundary_is_documented() -> None:
         "docs/book/part-vii/chapter-16.md": (
             "Laconian — открытый проект автора этой книги",
             "`if` — поведенческий навык в одном Markdown-файле",
-            "Сам устанавливаемый артефакт не содержит исполняемой или завязанной на инструменты логики",
+            (
+                "Сам устанавливаемый артефакт не содержит исполняемой или "
+                "завязанной на инструменты логики"
+            ),
             "не производит внешних эффектов",
-            "использование инструментов и любые побочные эффекты принадлежат задаче и среде исполнения",
+            (
+                "использование инструментов и любые побочные эффекты принадлежат "
+                "задаче и среде исполнения"
+            ),
             "бенчмарка остается за пределами загружаемого в неё артефакта",
             "противоположный край",
             "Cloudflare `security-audit`",
@@ -22696,12 +22787,18 @@ def test_laconian_author_sources_are_transparent_and_pinned() -> None:
         "docs/appendix/sources.md": (
             "## Архитектура агентных систем и платформенные паттерны",
             "Laconian — открытый проект автора этой книги",
-            "В зафиксированной ревизии публичных результатов бенчмарка ещё нет; smoke-тесты проверяют путь оценки, а не производительность",
+            (
+                "В зафиксированной ревизии публичных результатов бенчмарка ещё нет; "
+                "smoke-тесты проверяют путь оценки, а не производительность"
+            ),
         ),
         "docs/appendix/sources.en.md": (
             "## Agent Architecture and Platform Patterns",
             "Laconian — an open-source project by the author of this book",
-            "no public benchmark result is available; smoke fixtures validate the evaluation path rather than performance",
+            (
+                "no public benchmark result is available; smoke fixtures validate "
+                "the evaluation path rather than performance"
+            ),
         ),
         "docs/appendix/sources.zh.md": (
             "## 智能体架构与平台模式",
