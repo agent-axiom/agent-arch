@@ -37,6 +37,14 @@
 
 这正是 `MCP` 最合适的位置。
 
+### 2.1. 作者案例：AlbumentationsX MCP 是一种能力，而不是独立智能体
+
+AlbumentationsX MCP 是由本书作者开发的开源 community integration。它并非 AlbumentationsX 官方产品，也不取代 Python API；它为 MCP host 提供一条类型化路径，用于验证数据增强 pipeline、生成小批量本地 preview、比较候选方案、记录具体的视觉反馈，并导出已经接受的配置。[^albu-mcp-guide][^albu-mcp-project]
+
+从架构上看，它是一种能力，而不是独立智能体。服务器没有自己的 operational role、目标，也无权自行改变训练流程。它不会训练模型、抓取远程图像、覆盖数据集或执行用户提供的任意 Python 代码。能力边界是明确的：读取被限制在已配置的 `allowed-root`，输出写入独立的 artifact directory，请求在渲染前接受验证，并受输入数和 variant 数限制。确定性 seed、manifest 和 applied-transform trace 支持复现；capability profile 缩小可见工具面；contract snapshot 与 golden eval 用于发现接口漂移。
+
+这些属性并不构成安全保证。狭窄的 `allowed-root` 必须显式配置；接受 preview 是工作流规则，并不是硬性的授权门；年轻项目也不能证明已经得到广泛的生产采用。更可迁移的结论是：好的 MCP server 应把聚焦的领域契约、可执行的运行限制、可复现的 artifact 和诚实的证据边界结合起来。
+
 ## 3. 什么情况下你才真的需要 A2A
 
 当系统里已经不只是工具，而是出现了真正独立的智能体，并且它们各自承担不同职责时，`A2A` 才合理：
@@ -254,3 +262,5 @@ def delegate_via_a2a(agent_name: str, task: dict) -> dict:
 [^google-mcp-a2a]: [Google Cloud, Building Connected Agents with MCP and A2A](https://cloud.google.com/blog/topics/developers-practitioners/building-connected-agents-with-mcp-and-a2a)
 [^google-multiagent]: [Google Cloud Architecture Center, Multi-agent AI system in Google Cloud](https://docs.cloud.google.com/architecture/multiagent-ai-system)
 [^a2a-spec]: [Agent2Agent Protocol, A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)
+[^albu-mcp-guide]: [Albumentations，AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/)
+[^albu-mcp-project]: [dKosarevsky/albu-mcp，v1.21.1 release](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) 与 [171e2ca 源码快照](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8)

@@ -10007,6 +10007,61 @@ def test_practical_mcp_a2a_threads_three_canonical_cases() -> None:
         _assert_files_contain_all((path,), required_markers)
 
 
+def test_albumentationsx_mcp_author_case_is_transparent_and_localized() -> None:
+    required_by_file = {
+        "docs/book/part-iv/practical-mcp-a2a.md": (
+            "### 2.1. Авторский кейс: AlbumentationsX MCP — возможность, а не отдельный агент",
+            "разработанная автором этой книги",
+            "не является официальным продуктом AlbumentationsX",
+            "ограничивается настроенным `allowed-root`",
+            "не жёстким шлюзом авторизации",
+            "не доказывает широкое промышленное внедрение",
+            "честную границу доказательств",
+        ),
+        "docs/book/part-iv/practical-mcp-a2a.en.md": (
+            "### 2.1. Author Case: AlbumentationsX MCP Is a Capability, Not a Separate Agent",
+            "developed by this book's author",
+            "not an official AlbumentationsX product",
+            "restricted to the configured `allowed-root`",
+            "not a hard authorization gate",
+            "does not demonstrate broad production adoption",
+            "an honest evidence boundary",
+        ),
+        "docs/book/part-iv/practical-mcp-a2a.zh.md": (
+            "### 2.1. 作者案例：AlbumentationsX MCP 是一种能力，而不是独立智能体",
+            "由本书作者开发",
+            "并非 AlbumentationsX 官方产品",
+            "限制在已配置的 `allowed-root`",
+            "并不是硬性的授权门",
+            "不能证明已经得到广泛的生产采用",
+            "诚实的证据边界",
+        ),
+    }
+    source_urls = (
+        "https://albumentations.ai/docs/integrations/mcp/",
+        "https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1",
+        ("https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8"),
+    )
+
+    for path, markers in required_by_file.items():
+        text = _read(path)
+        for marker in (*markers, *source_urls):
+            assert marker in text, (path, marker)
+
+    russian = _read("docs/book/part-iv/practical-mcp-a2a.md")
+    case = russian.split("### 2.1. Авторский кейс:", 1)[1].split("## 3.", 1)[0]
+    assert 180 <= len(re.findall(r"[A-Za-zА-Яа-яЁё0-9]+", case)) <= 220
+
+    _assert_files_contain_all(
+        (
+            "docs/appendix/sources.md",
+            "docs/appendix/sources.en.md",
+            "docs/appendix/sources.zh.md",
+        ),
+        ("AlbumentationsX MCP integration", *source_urls),
+    )
+
+
 def test_part_iv_index_surfaces_three_execution_case_routes() -> None:
     russian_markers = (
         "Маршруты канонических сценариев",
