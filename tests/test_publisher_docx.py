@@ -1,4 +1,5 @@
 import ast
+import copy
 import hashlib
 import json
 import os
@@ -12,8 +13,10 @@ from zipfile import ZipFile
 import pytest
 
 from docs.publisher.tools import (
+    build_ru_editorial_docx,
     generate_publisher_layout_v2,
     normalize_docx_figure_caption_order,
+    render_qa_metrics,
     sync_ru_docx_visuals,
 )
 
@@ -53,6 +56,11 @@ NUMBERED_DIAGRAMS = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
 EDITORIAL_DIAGRAMS = ROOT / "docs/publisher/ru-editorial-diagrams-2026-07-16.json"
 LAYOUT_V2_INVENTORY = ROOT / "docs/publisher/ru-publisher-layout-v2-inventory.json"
 LAYOUT_V2_LEDGER = ROOT / "docs/publisher/ru-publisher-layout-v2-review-ledger.json"
+FINAL_LAYOUT_DOCX = ROOT / (
+    "docs/publisher/artifacts/agent-arch-ru-template2000n-publisher-layout-v2-2026-08-30.docx"
+)
+FINAL_LAYOUT_RENDER_QA = ROOT / "docs/publisher/qa/layout-v2/final-docx/render-qa.json"
+FINAL_LAYOUT_VISUAL_AUDIT = ROOT / "docs/publisher/qa/layout-v2/final-docx/visual-audit.json"
 TASK_3A_QA_DIR = ROOT / "docs/publisher/qa/layout-v2/task-3a"
 TASK_3A_RENDERER_REPORT = TASK_3A_QA_DIR / "renderer-report.json"
 TASK_3A_CONTACT_SHEET = TASK_3A_QA_DIR / "contact-sheet.png"
@@ -65,11 +73,37 @@ TASK_3B1_CONTACT_SHEETS = (
     TASK_3B1_QA_DIR / "grayscale-contact-sheet-01.png",
     TASK_3B1_QA_DIR / "grayscale-contact-sheet-02.png",
 )
-TASK_3B1_PREVIEW_REPORT = TASK_3B1_QA_DIR / "preview-placement.json"
+TASK_3B1_STANDALONE_REVIEW = TASK_3B1_QA_DIR / "standalone-review.json"
+NUMBERED_DIAGRAM_MANIFEST = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
 DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
 DIAGRAM_GEOMETRY_AUDIT = ROOT / "docs/publisher/tools/ru_diagram_svg_geometry.mjs"
 EXPECTED_TABLE_COUNT = 12
 EXPECTED_IMAGE_COUNT = 57
+
+
+def test_render_qa_flags_sparse_nonblank_pages_for_review(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    for page in range(1, 4):
+        (tmp_path / f"page-{page}.png").touch()
+
+    measurements = {
+        1: (0.02, (1547, 2002), (180, 180, 1360, 1900)),
+        2: (0.0025, (1547, 2002), (180, 180, 1360, 1900)),
+        3: (0.0004, (1547, 2002), (180, 180, 1360, 1900)),
+    }
+
+    monkeypatch.setattr(
+        render_qa_metrics,
+        "page_metrics",
+        lambda path: measurements[render_qa_metrics.page_number(path)],
+    )
+
+    report = render_qa_metrics.collect(tmp_path, None)
+
+    assert report["blank_like_pages"] == [3]
+    assert report["sparse_pages"] == [2]
 TASK_3A_REVIEW_INVENTORY_IDS = {
     "diagram-numbered-01",
     "diagram-numbered-03",
@@ -112,7 +146,6 @@ TASK_3B1_CHANGED_ASSET_FILENAMES = {
     "ru-figure-20-eval-integrity.png",
 }
 TASK_3B1_EXPECTED_FILENAMES = TASK_3B1_CHANGED_ASSET_FILENAMES
-MIGRATED_V2_FILENAMES = TASK_3A_CHANGED_ASSET_FILENAMES | TASK_3B1_CHANGED_ASSET_FILENAMES
 ACCEPTED_TASK_3A_ASSET_HASHES = {
     "ru-figure-01-book-map.png": (
         "338e5101227b68da71fa0427c9d3dc375b975d4ed669706b124b2d83c71a6f08"
@@ -174,7 +207,7 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
     )
     assert inventory["source"] == {
         "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
-        "sha256": "d47728290c07cfa355b91ae49a677fcabb1b914d0bc72f64d918b3ff5f737ce1",
+        "sha256": "4487fae02050d1abc158ed4479bdf25b2c9f5aa220eb2a88bff73a1a1504d1ae",
     }
     assert inventory["source"]["sha256"] == generate_publisher_layout_v2.sha256_text_path(
         EDITORIAL_MANUSCRIPT
@@ -289,55 +322,77 @@ def test_publisher_layout_v2_review_ledger_covers_inventory_once() -> None:
     )
 
 
-def test_task_3a_records_partial_gates_without_claiming_final_placement() -> None:
+def test_final_layout_review_marks_every_diagram_as_passed() -> None:
     ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
     entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
 
-    assert not {entry["inventory_id"] for entry in ledger["entries"] if entry["status"] == "pass"}
+    assert all(
+        entry["status"] == "pass"
+        for entry in entries.values()
+        if entry["item_type"] == "diagram"
+    )
     assert all(
         entry["status"] == "pending"
-        for inventory_id, entry in entries.items()
-        if inventory_id
-        not in TASK_3A_REVIEW_INVENTORY_IDS | TASK_3B1_REVIEW_INVENTORY_IDS
+        for entry in entries.values()
+        if entry["item_type"] != "diagram"
     )
 
     for inventory_id in TASK_3A_REVIEW_INVENTORY_IDS:
         entry = entries[inventory_id]
-        assert entry["status"] == "in_progress"
+        assert entry["status"] == "pass"
         assert entry["severity"] is None
-        assert entry["updated_by"]
-        assert entry["updated_at"]
+        assert entry["reviewed_by"] == "Codex Task 7 final publisher review"
+        assert entry["reviewed_at"] == "2026-08-30"
         assert entry["gate_statuses"] == {
             "source": "pass",
             "standalone_render": "pass",
             "preview_placement": "pass",
-            "final_publisher_placement": "pending",
+            "final_publisher_placement": "pass",
         }
-        assert "final publisher placement pending Task 7" in entry["notes"]
+        assert "final publisher placement pass" in entry["notes"]
         assert all(not Path(ref["path"]).is_absolute() for ref in entry["evidence_refs"])
 
 
-def test_task_3b1_records_truthful_partial_gates_without_claiming_final_placement() -> None:
+def test_final_layout_review_closes_task_3b1_placement_gates() -> None:
     ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
     entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
 
-    assert not {entry["inventory_id"] for entry in ledger["entries"] if entry["status"] == "pass"}
     for inventory_id in TASK_3B1_REVIEW_INVENTORY_IDS:
         entry = entries[inventory_id]
-        assert entry["status"] == "in_progress"
+        assert entry["status"] == "pass"
         assert entry["severity"] is None
-        assert entry["updated_by"] == "Codex Task 3B1 quality review"
-        assert entry["updated_at"] == "2026-08-30"
+        assert entry["reviewed_by"] == "Codex Task 7 final publisher review"
+        assert entry["reviewed_at"] == "2026-08-30"
         assert entry["gate_statuses"] == {
             "source": "pass",
             "standalone_render": "pass",
             "grayscale": "pass",
             "preview_placement": "pass",
-            "final_publisher_placement": "pending",
+            "final_publisher_placement": "pass",
         }
-        assert "baseline DOCX payload mismatch" in entry["notes"]
-        assert "artifact sync pending" in entry["notes"]
-        assert "final publisher placement pending Task 7" in entry["notes"]
+        assert "final publisher placement pass" in entry["notes"]
+
+
+def test_final_layout_review_evidence_is_complete_and_current() -> None:
+    ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
+    diagram_entries = [
+        entry for entry in ledger["entries"] if entry["item_type"] == "diagram"
+    ]
+    required_paths = {
+        str(FINAL_LAYOUT_DOCX.relative_to(ROOT)),
+        str(FINAL_LAYOUT_RENDER_QA.relative_to(ROOT)),
+        str(FINAL_LAYOUT_VISUAL_AUDIT.relative_to(ROOT)),
+    }
+
+    assert len(diagram_entries) == 56
+    for entry in diagram_entries:
+        references = {reference["path"]: reference for reference in entry["evidence_refs"]}
+        assert required_paths <= set(references)
+        assert any("visual-placement-contact-" in path for path in references)
+        for path, reference in references.items():
+            artifact = ROOT / path
+            assert artifact.is_file()
+            assert hashlib.sha256(artifact.read_bytes()).hexdigest() == reference["sha256"]
 
 
 def test_task_3a_durable_renderer_evidence_covers_exact_assets_and_metrics() -> None:
@@ -390,6 +445,10 @@ def test_task_3a_ledger_evidence_is_repository_relative_present_and_hashed() -> 
             "preview_placement",
             "svg",
             "png",
+            "final_docx",
+            "render_qa",
+            "visual_audit",
+            "final_contact_sheet",
         }
         for reference in evidence_refs:
             evidence_path = Path(reference["path"])
@@ -450,9 +509,20 @@ def test_task_3b1_durable_renderer_evidence_covers_exact_assets_and_metrics() ->
         TASK_3B1_EXPECTED_FILENAMES
     )
     assert report["minimum_effective_font_pt"] >= 9.5
-    assert report["minimum_viewbox_aspect_ratio"] >= 0.72
+    assert report["minimum_viewbox_aspect_ratio"] == min(
+        result["viewbox_aspect_ratio"] for result in report["results"]
+    )
     assert report["violations"] == []
-    assert all(findings == [] for findings in report["findings"].values())
+    expected_overrides = generate_publisher_layout_v2.TASK_3B1_ASPECT_RATIO_OVERRIDES
+    assert {
+        finding["filename"]: finding["review"]
+        for finding in report["findings"]["aspect_ratio_overrides"]
+    } == expected_overrides
+    assert all(
+        findings == []
+        for finding_name, findings in report["findings"].items()
+        if finding_name != "aspect_ratio_overrides"
+    )
     assert {result["layout_engine"] for result in report["results"]} == {"dagre"}
     assert {result["layout_class"] for result in report["results"]} == {
         "simple-flow",
@@ -460,14 +530,86 @@ def test_task_3b1_durable_renderer_evidence_covers_exact_assets_and_metrics() ->
         "evidence-overlay",
     }
     for result in report["results"]:
+        assert result["source_sha256"]
+        assert result["svg_sha256"]
+        assert result["png_sha256"]
         assert result["effective_font_pt"] >= 9.5
-        assert result["viewbox_aspect_ratio"] >= 0.72
-        assert result["aspect_ratio_override"] is None
+        expected_override = expected_overrides.get(result["filename"])
+        if expected_override is None:
+            assert result["viewbox_aspect_ratio"] >= 0.72
+            assert result["aspect_ratio_override"] is None
+        else:
+            assert result["viewbox_aspect_ratio"] < 0.72
+            assert result["aspect_ratio_override"] == expected_override
         assert result["violations"] == []
         assert all(
             findings == []
             for finding_name, findings in result["findings"].items()
-            if finding_name != "viewbox_aspect_ratio"
+            if finding_name not in {"viewbox_aspect_ratio", "aspect_ratio_overrides"}
+        )
+
+    source_by_filename = {
+        item["filename"]: item["mermaid"]
+        for item in json.loads(NUMBERED_DIAGRAM_MANIFEST.read_text(encoding="utf-8"))[
+            "diagrams"
+        ]
+    }
+    for result in report["results"]:
+        source = source_by_filename[result["filename"]]
+        assert result["source_sha256"] == (
+            generate_publisher_layout_v2.mermaid_source_sha256(source)
+        )
+        generate_publisher_layout_v2.validate_rendered_diagram_evidence(
+            ROOT,
+            result,
+            source,
+        )
+
+
+@pytest.mark.parametrize(
+    ("mutation", "message"),
+    [
+        ("source", "source SHA-256"),
+        ("reported_source_hash", "source SHA-256"),
+        ("svg", "SVG SHA-256"),
+        ("png", "PNG SHA-256"),
+    ],
+)
+def test_task_3b1_validator_rejects_stale_source_or_assets(
+    tmp_path: Path,
+    mutation: str,
+    message: str,
+) -> None:
+    renderer_report = json.loads(TASK_3B1_RENDERER_REPORT.read_text(encoding="utf-8"))
+    result = copy.deepcopy(renderer_report["results"][0])
+    source_by_filename = {
+        item["filename"]: item["mermaid"]
+        for item in json.loads(NUMBERED_DIAGRAM_MANIFEST.read_text(encoding="utf-8"))[
+            "diagrams"
+        ]
+    }
+    source = source_by_filename[result["filename"]]
+    output_dir = tmp_path / "docs/publisher/visuals"
+    output_dir.mkdir(parents=True)
+    svg_source = ROOT / "docs/publisher/visuals" / result["svg"]
+    png_source = ROOT / "docs/publisher/visuals" / result["png"]
+    (output_dir / result["svg"]).write_bytes(svg_source.read_bytes())
+    (output_dir / result["png"]).write_bytes(png_source.read_bytes())
+
+    if mutation == "source":
+        source = f"{source}\n"
+    elif mutation == "reported_source_hash":
+        result["source_sha256"] = "0" * 64
+    elif mutation == "svg":
+        (output_dir / result["svg"]).write_bytes(svg_source.read_bytes() + b"\n")
+    elif mutation == "png":
+        (output_dir / result["png"]).write_bytes(png_source.read_bytes() + b"stale")
+
+    with pytest.raises(ValueError, match=message):
+        generate_publisher_layout_v2.validate_rendered_diagram_evidence(
+            tmp_path,
+            result,
+            source,
         )
 
 
@@ -480,14 +622,14 @@ def test_task_3b1_evidence_is_repository_relative_present_and_hashed() -> None:
         for path in (
             TASK_3B1_RENDERER_REPORT,
             *TASK_3B1_CONTACT_SHEETS,
-            TASK_3B1_PREVIEW_REPORT,
+            TASK_3B1_STANDALONE_REVIEW,
         )
     }
     for inventory_id in TASK_3B1_REVIEW_INVENTORY_IDS:
         evidence_refs = entries[inventory_id]["evidence_refs"]
         evidence_paths = {reference["path"] for reference in evidence_refs}
         assert expected_common_paths <= evidence_paths
-        assert len(evidence_refs) == 8
+        assert len(evidence_refs) == 12
         for reference in evidence_refs:
             evidence_path = Path(reference["path"])
             assert not evidence_path.is_absolute()
@@ -502,43 +644,40 @@ def test_task_3b1_evidence_is_repository_relative_present_and_hashed() -> None:
         assert int.from_bytes(payload[20:24], "big") == 3900
 
 
-def test_task_3b1_preview_records_all_migrated_assets_and_baseline_mismatch() -> None:
-    report = json.loads(TASK_3B1_PREVIEW_REPORT.read_text(encoding="utf-8"))
+def test_task_3b1_review_records_only_standalone_gates_as_passed() -> None:
+    report = json.loads(TASK_3B1_STANDALONE_REVIEW.read_text(encoding="utf-8"))
 
-    assert report["schema_version"] == 2
+    assert report["schema_version"] == 3
     assert report["task"] == "3B1"
-    assert report["status"] == "preview_pass"
+    assert report["status"] == "standalone_pass"
     assert report["temporary_docx_committed"] is False
+    assert report["page_renders_committed"] is False
+    assert report["preview_placement"] == "pending_task_7"
     assert report["final_publisher_placement"] == "pending_task_7"
     assert set(report["selected_assets"]) == TASK_3B1_EXPECTED_FILENAMES
-    assert set(report["migrated_assets"]) == MIGRATED_V2_FILENAMES
     assert report["visual_review"] == {
         "result": "pass",
-        "reviewed_by": "Codex",
+        "reviewed_by": "Kant (independent layout review)",
         "reviewed_on": "2026-08-30",
-        "actual_size": "pass",
+        "standalone_render": "pass",
         "grayscale": "pass",
     }
 
-    placements = report["placements"]
-    assert {placement["filename"] for placement in placements} == MIGRATED_V2_FILENAMES
-    assert {placement["preview_docx"]["page_number"] for placement in placements} <= set(
-        report["rendered_pages"]
-    )
-    for placement in placements:
-        asset_path = ROOT / "docs/publisher/visuals" / placement["filename"]
-        assert placement["asset_sha256"] == hashlib.sha256(asset_path.read_bytes()).hexdigest()
-        assert placement["baseline_docx"]["payload_match"] is False
-        assert placement["baseline_docx"]["artifact_sync_status"] == "pending"
-        assert placement["preview_docx"]["payload_match"] is True
-        assert placement["preview_docx"]["visually_verified"] is True
-        assert placement["gates"] == {
+    assert "rendered_pages" not in report
+    assert "placements" not in report
+    asset_reviews = report["asset_reviews"]
+    assert {review["filename"] for review in asset_reviews} == TASK_3B1_EXPECTED_FILENAMES
+    for review in asset_reviews:
+        assert review["gates"] == {
             "source": "pass",
             "standalone_render": "pass",
             "grayscale": "pass",
-            "preview_placement": "pass",
+            "preview_placement": "pending",
             "final_publisher_placement": "pending",
         }
+        assert review["source_sha256"]
+        assert review["svg_sha256"]
+        assert review["png_sha256"]
 
 
 def test_task_3b1_does_not_change_the_five_accepted_diagram_assets() -> None:
@@ -828,7 +967,7 @@ document.save(sys.argv[2])
             assert paragraph.find(f"{{{WORD_NS}}}hyperlink") is None
 
 
-def test_editorial_renderer_formats_sources_as_breakable_hanging_paragraphs(
+def test_editorial_renderer_compacts_sources_into_a_breakable_run_in_bibliography(
     tmp_path: Path,
 ) -> None:
     runtime_python = Path(
@@ -877,18 +1016,392 @@ document.save(sys.argv[2])
         document = ET.fromstring(archive.read("word/document.xml"))
 
     source_paragraphs = []
+    source_heading = None
     for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
         value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+        if value.startswith("Источники главы"):
+            source_heading = paragraph
         if re.match(r"^S\d{3}\.", value):
             source_paragraphs.append(paragraph)
 
-    assert len(source_paragraphs) == 2
-    for paragraph in source_paragraphs:
-        indent = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}ind")
-        assert indent is not None
-        assert int(indent.attrib[f"{{{WORD_NS}}}left"]) > 0
-        assert int(indent.attrib[f"{{{WORD_NS}}}hanging"]) > 0
-        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+    assert source_heading is not None
+    heading_spacing = source_heading.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+    assert heading_spacing is not None
+    assert int(heading_spacing.attrib[f"{{{WORD_NS}}}before"]) == 0
+    assert int(heading_spacing.attrib[f"{{{WORD_NS}}}after"]) == 0
+    assert int(heading_spacing.attrib[f"{{{WORD_NS}}}line"]) == 210
+    assert heading_spacing.attrib[f"{{{WORD_NS}}}lineRule"] == "exact"
+    heading_sizes = {
+        int(size.attrib[f"{{{WORD_NS}}}val"])
+        for size in source_heading.findall(f".//{{{WORD_NS}}}rPr/{{{WORD_NS}}}sz")
+    }
+    assert heading_sizes == {16, 20}
+    assert "".join(source_heading.itertext()) == "Источники главы: S001, S002"
+    assert source_heading.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+    assert source_paragraphs == []
+
+
+def test_editorial_renderer_formats_source_lists_as_compact_breakable_items(
+    tmp_path: Path,
+) -> None:
+    runtime_python = Path(
+        os.environ.get(
+            "CODEX_DOCUMENT_PYTHON",
+            Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        )
+    )
+    if not runtime_python.is_file():
+        pytest.skip("bundled document runtime is unavailable")
+
+    output = tmp_path / "source-list.docx"
+    script = r'''
+import sys
+from pathlib import Path
+from docx import Document
+from lxml import html
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import build_ru_editorial_docx
+
+document = Document()
+root = html.fragment_fromstring(
+    """
+    <h3>Источники главы</h3>
+    <ul>
+      <li><strong>S001.</strong> OWASP, AI Agent Security Cheat Sheet.</li>
+      <li><strong>S002.</strong> NIST, AI RMF 1.0.</li>
+    </ul>
+    """,
+    create_parent="div",
+)
+renderer = build_ru_editorial_docx.DocxRenderer(
+    document,
+    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+)
+renderer.render(root)
+document.save(sys.argv[2])
+'''
+    subprocess.run(
+        [str(runtime_python), "-c", script, str(ROOT), str(output)],
+        cwd=ROOT,
+        check=True,
+    )
+
+    with ZipFile(output) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    source_items = []
+    source_heading = None
+    for paragraph in document.findall(f".//{{{WORD_NS}}}p"):
+        value = "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+        if value.startswith("Источники главы"):
+            source_heading = paragraph
+        if re.match(r"^S\d{3}\.", value):
+            source_items.append(paragraph)
+
+    assert source_heading is not None
+    assert "".join(source_heading.itertext()) == "Источники главы: S001, S002"
+    assert source_items == []
+
+
+def test_editorial_renderer_uses_compact_spacing_for_regular_lists(
+    tmp_path: Path,
+) -> None:
+    runtime_python = Path(
+        os.environ.get(
+            "CODEX_DOCUMENT_PYTHON",
+            Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        )
+    )
+    if not runtime_python.is_file():
+        pytest.skip("bundled document runtime is unavailable")
+
+    output = tmp_path / "regular-list.docx"
+    script = r'''
+import sys
+from pathlib import Path
+from docx import Document
+from lxml import html
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import build_ru_editorial_docx
+
+document = Document()
+root = html.fragment_fromstring(
+    "<ul><li>Первый пункт</li><li>Второй пункт</li></ul>",
+    create_parent="div",
+)
+renderer = build_ru_editorial_docx.DocxRenderer(
+    document,
+    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+)
+renderer.render(root)
+document.save(sys.argv[2])
+'''
+    subprocess.run(
+        [str(runtime_python), "-c", script, str(ROOT), str(output)],
+        cwd=ROOT,
+        check=True,
+    )
+
+    with ZipFile(output) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    list_items = document.findall(f".//{{{WORD_NS}}}p")
+    assert len(list_items) == 2
+    for paragraph in list_items:
+        spacing = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+        assert spacing is not None
+        assert int(spacing.attrib[f"{{{WORD_NS}}}before"]) == 0
+        assert int(spacing.attrib[f"{{{WORD_NS}}}after"]) == 40
+
+
+def test_editorial_document_enables_widow_control_for_body_paragraphs(
+    tmp_path: Path,
+) -> None:
+    document = build_ru_editorial_docx.Document()
+
+    build_ru_editorial_docx.configure_document_properties(document)
+    output = tmp_path / "widow-control.docx"
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        styles = ET.fromstring(archive.read("word/styles.xml"))
+
+    normal = next(
+        style
+        for style in styles.findall(f".//{{{WORD_NS}}}style")
+        if style.attrib.get(f"{{{WORD_NS}}}styleId") == "Normal"
+    )
+    widow_control = normal.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}widowControl")
+    assert widow_control is not None
+    assert widow_control.attrib.get(f"{{{WORD_NS}}}val", "true") not in {
+        "false",
+        "0",
+        "off",
+    }
+
+
+def test_editorial_renderer_compacts_lab_step_headings(tmp_path: Path) -> None:
+    runtime_python = Path(
+        os.environ.get(
+            "CODEX_DOCUMENT_PYTHON",
+            Path.home()
+            / ".cache/codex-runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        )
+    )
+    if not runtime_python.is_file():
+        pytest.skip("bundled document runtime is unavailable")
+
+    output = tmp_path / "lab-step-heading.docx"
+    script = r'''
+import sys
+from pathlib import Path
+from docx import Document
+from lxml import html
+
+sys.path.insert(0, sys.argv[1])
+from docs.publisher.tools import build_ru_editorial_docx
+
+document = Document()
+root = html.fragment_fromstring(
+    """
+    <h4>Шаг 1. Зафиксируйте сценарий</h4>
+    <p>Опишите вход, результат и владельца последствия.</p>
+    """,
+    create_parent="div",
+)
+renderer = build_ru_editorial_docx.DocxRenderer(
+    document,
+    Path(sys.argv[1]) / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+)
+renderer.render(root)
+document.save(sys.argv[2])
+'''
+    subprocess.run(
+        [str(runtime_python), "-c", script, str(ROOT), str(output)],
+        cwd=ROOT,
+        check=True,
+    )
+
+    with ZipFile(output) as archive:
+        document = ET.fromstring(archive.read("word/document.xml"))
+
+    heading = next(
+        paragraph
+        for paragraph in document.findall(f".//{{{WORD_NS}}}p")
+        if "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).startswith("Шаг 1.")
+    )
+    spacing = heading.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+    assert spacing is not None
+    assert int(spacing.attrib[f"{{{WORD_NS}}}before"]) <= 80
+    assert int(spacing.attrib[f"{{{WORD_NS}}}after"]) <= 40
+    assert active_on_off_property(heading, "keepNext")
+
+
+def test_editorial_renderer_compacts_key_takeaway_blocks(tmp_path: Path) -> None:
+    from docx import Document
+    from lxml import html as lxml_html
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    output = tmp_path / "key-takeaways.docx"
+    document = Document()
+    root = lxml_html.fragment_fromstring(
+        """
+        <h3>Ключевые выводы</h3>
+        <ul>
+          <li>Первый вывод.</li>
+          <li>Второй вывод.</li>
+          <li>Третий вывод.</li>
+        </ul>
+        """,
+        create_parent="div",
+    )
+    renderer = build_ru_editorial_docx.DocxRenderer(
+        document,
+        ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    )
+    renderer.render(root)
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        document_xml = ET.fromstring(archive.read("word/document.xml"))
+
+    paragraphs = document_xml.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+    heading = next(
+        paragraph
+        for paragraph in paragraphs
+        if "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        )
+        == "Ключевые выводы"
+    )
+    heading_spacing = heading.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+    assert heading_spacing is not None
+    assert int(heading_spacing.attrib[f"{{{WORD_NS}}}before"]) <= 120
+    assert int(heading_spacing.attrib[f"{{{WORD_NS}}}after"]) <= 40
+    assert {
+        int(size.attrib[f"{{{WORD_NS}}}val"])
+        for size in heading.findall(f".//{{{WORD_NS}}}rPr/{{{WORD_NS}}}sz")
+    } == {26}
+
+    takeaway_items = [
+        paragraph
+        for paragraph in paragraphs
+        if "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).endswith("вывод.")
+    ]
+    assert len(takeaway_items) == 3
+    for paragraph in takeaway_items:
+        spacing = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+        assert spacing is not None
+        assert int(spacing.attrib[f"{{{WORD_NS}}}before"]) == 0
+        assert int(spacing.attrib[f"{{{WORD_NS}}}after"]) == 0
+        assert int(spacing.attrib[f"{{{WORD_NS}}}line"]) == 210
+        assert spacing.attrib[f"{{{WORD_NS}}}lineRule"] == "exact"
+        assert {
+            int(size.attrib[f"{{{WORD_NS}}}val"])
+            for size in paragraph.findall(f".//{{{WORD_NS}}}rPr/{{{WORD_NS}}}sz")
+        } == {19}
+
+
+def test_editorial_renderer_compacts_practical_step_paragraph(tmp_path: Path) -> None:
+    from docx import Document
+    from lxml import html as lxml_html
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    output = tmp_path / "practical-step.docx"
+    document = Document()
+    root = lxml_html.fragment_fromstring(
+        """
+        <h2>Глава 1. Проверка</h2>
+        <p><strong>Практический шаг.</strong> Сопоставьте решение с фактическими вызовами и владельцем.</p>
+        """,
+        create_parent="div",
+    )
+    renderer = build_ru_editorial_docx.DocxRenderer(
+        document,
+        ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    )
+    renderer.render(root)
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        document_xml = ET.fromstring(archive.read("word/document.xml"))
+
+    paragraph = next(
+        paragraph
+        for paragraph in document_xml.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+        if "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).startswith("Практический шаг.")
+    )
+    spacing = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+    assert spacing is not None
+    assert int(spacing.attrib[f"{{{WORD_NS}}}before"]) == 0
+    assert int(spacing.attrib[f"{{{WORD_NS}}}after"]) == 0
+    assert int(spacing.attrib[f"{{{WORD_NS}}}line"]) == 210
+    assert spacing.attrib[f"{{{WORD_NS}}}lineRule"] == "exact"
+    assert active_on_off_property(paragraph, "keepLines")
+
+
+def test_editorial_renderer_compacts_lab_support_paragraphs(tmp_path: Path) -> None:
+    from docx import Document
+    from lxml import html as lxml_html
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    output = tmp_path / "lab-support-paragraphs.docx"
+    document = Document()
+    root = lxml_html.fragment_fromstring(
+        """
+        <h2>Глава 1. Проверка</h2>
+        <p><strong>Наблюдение.</strong> Проверьте связность трассы.</p>
+        <p><strong>Критерий приемки:</strong> артефакты согласованы.</p>
+        <p><strong>Что доказывает результат.</strong> Связь воспроизводима.</p>
+        <p><strong>Накопительный артефакт.</strong> Сохраните результат.</p>
+        <p><strong>Отрицательная проверка.</strong> Проверьте отказ.</p>
+        <p><strong>Если результат отличается.</strong> Зафиксируйте расхождение.</p>
+        <p><strong>Дополнительное задание.</strong> Проверьте резервный маршрут.</p>
+        """,
+        create_parent="div",
+    )
+    renderer = build_ru_editorial_docx.DocxRenderer(
+        document,
+        ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    )
+    renderer.render(root)
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        document_xml = ET.fromstring(archive.read("word/document.xml"))
+
+    paragraphs = [
+        paragraph
+        for paragraph in document_xml.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+        if not "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).startswith("Глава 1.")
+    ]
+    assert len(paragraphs) == 7
+    for paragraph in paragraphs:
+        spacing = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+        assert spacing is not None
+        assert int(spacing.attrib[f"{{{WORD_NS}}}before"]) == 0
+        assert int(spacing.attrib[f"{{{WORD_NS}}}after"]) == 0
+        assert int(spacing.attrib[f"{{{WORD_NS}}}line"]) == 220
+        assert spacing.attrib[f"{{{WORD_NS}}}lineRule"] == "exact"
+        assert {
+            int(size.attrib[f"{{{WORD_NS}}}val"])
+            for size in paragraph.findall(f".//{{{WORD_NS}}}rPr/{{{WORD_NS}}}sz")
+        } == {20}
 
 
 def test_editorial_renderer_keeps_multiline_code_blocks_together(tmp_path: Path) -> None:
@@ -952,6 +1465,171 @@ document.save(sys.argv[2])
     for paragraph in code_paragraphs[:-1]:
         assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
     assert code_paragraphs[-1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+
+
+def test_editorial_renderer_keeps_page_sized_formal_listing_together(
+    tmp_path: Path,
+) -> None:
+    from docx import Document
+    from lxml import html as lxml_html
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    output = tmp_path / "page-sized-listing.docx"
+    code = "\n".join(f"value_{index} = {index}" for index in range(1, 25))
+    document = Document()
+    root = lxml_html.fragment_fromstring(
+        (
+            "<h2>Глава 1. Проверка листинга</h2>"
+            "<p><strong>Листинг 1. Проверяемая функция.</strong> Тип: учебный пример.</p>"
+            "<p><strong>Как читать листинг.</strong> Проследите все строки.</p>"
+            f'<pre><code class="language-python">{code}</code></pre>'
+        ),
+        create_parent="div",
+    )
+    renderer = build_ru_editorial_docx.DocxRenderer(
+        document,
+        ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    )
+    renderer.render(root)
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        document_xml = ET.fromstring(archive.read("word/document.xml"))
+
+    reading_paragraph = None
+    code_paragraphs = []
+    for paragraph in document_xml.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p"):
+        value = "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        )
+        if value.startswith("Как читать листинг."):
+            reading_paragraph = paragraph
+        elif re.match(r"^\s*\d+\s+value_\d+", value):
+            code_paragraphs.append(paragraph)
+
+    assert reading_paragraph is not None
+    assert reading_paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert len(code_paragraphs) == 24
+    for paragraph in code_paragraphs[:-1]:
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert code_paragraphs[-1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+
+
+def test_editorial_renderer_highlights_code_and_numbers_only_formal_listings(
+    tmp_path: Path,
+) -> None:
+    from docx import Document
+    from lxml import html as lxml_html
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    output = tmp_path / "highlighted-listing.docx"
+    document = Document()
+    root = lxml_html.fragment_fromstring(
+        """
+        <h2>Глава 1. Проверка листинга</h2>
+        <p><strong>Листинг 1. Проверяемая функция.</strong> Тип: учебный пример.</p>
+        <p><strong>Как читать листинг.</strong> Проследите ветвление.</p>
+        <pre><code class="language-python">def greet(name):
+    # Комментарий
+    return &quot;ok&quot;</code></pre>
+        <p>Команда проверки:</p>
+        <pre><code class="language-console">python -m pytest</code></pre>
+        """,
+        create_parent="div",
+    )
+    renderer = build_ru_editorial_docx.DocxRenderer(
+        document,
+        ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    )
+    renderer.render(root)
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        document_xml = ET.fromstring(archive.read("word/document.xml"))
+
+    paragraphs = document_xml.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+    code_blocks: list[list[ET.Element]] = []
+    current: list[ET.Element] = []
+    for paragraph in paragraphs:
+        if paragraph_uses_monospace_font(paragraph):
+            current.append(paragraph)
+        elif current:
+            code_blocks.append(current)
+            current = []
+    if current:
+        code_blocks.append(current)
+
+    assert len(code_blocks) == 2
+    formal, command = code_blocks
+    assert [
+        "".join(node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t"))
+        for paragraph in formal
+    ] == [
+        " 1  def greet(name):",
+        " 2      # Комментарий",
+        ' 3      return "ok"',
+    ]
+    assert "".join(
+        node.text or "" for node in command[0].findall(f".//{{{WORD_NS}}}t")
+    ) == "python -m pytest"
+
+    for paragraph in formal + command:
+        spacing = paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}spacing")
+        assert spacing is not None
+        assert spacing.attrib[f"{{{WORD_NS}}}lineRule"] == "exact"
+        assert spacing.attrib[f"{{{WORD_NS}}}line"] == "210"
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}suppressAutoHyphens") is not None
+        assert all(
+            run.find(f"{{{WORD_NS}}}rPr/{{{WORD_NS}}}noProof") is not None
+            for run in paragraph.findall(f"{{{WORD_NS}}}r")
+        )
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pBdr/{{{WORD_NS}}}left") is not None
+
+    assert formal[0].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pBdr/{{{WORD_NS}}}top") is not None
+    assert formal[-1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}pBdr/{{{WORD_NS}}}bottom") is not None
+    colors = {
+        color.attrib[f"{{{WORD_NS}}}val"]
+        for paragraph in formal
+        for color in paragraph.findall(f"{{{WORD_NS}}}r/{{{WORD_NS}}}rPr/{{{WORD_NS}}}color")
+    }
+    assert {"234E8A", "667085", "276749", "7A8088"} <= colors
+
+    listing_caption = next(
+        paragraph
+        for paragraph in paragraphs
+        if "".join(
+            node.text or "" for node in paragraph.findall(f".//{{{WORD_NS}}}t")
+        ).startswith("Листинг 1.")
+    )
+    assert active_on_off_property(listing_caption, "keepNext")
+    assert renderer.metrics["formal_listings"] == 1
+    assert renderer.metrics["numbered_code_lines"] == 3
+    assert renderer.metrics["code_lines"] == 4
+    assert renderer.metrics["highlighted_code_runs"] >= 4
+
+
+def test_syntax_highlighting_dependency_cannot_fail_silently(monkeypatch) -> None:
+    import builtins
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    original_import = builtins.__import__
+
+    def import_without_pygments(name, *args, **kwargs):
+        if name == "pygments" or name.startswith("pygments."):
+            raise ImportError("simulated missing Pygments")
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", import_without_pygments)
+
+    with pytest.raises(RuntimeError, match="Pygments is required"):
+        build_ru_editorial_docx.highlighted_code_lines("def greet():\n    return 1", "python")
+
+    assert build_ru_editorial_docx.highlighted_code_lines("plain text", "text") == [
+        [("plain text", build_ru_editorial_docx.CodeRunStyle())]
+    ]
 
 
 def ordered_embedded_images(path: Path) -> tuple[list[str], list[str]]:
@@ -1499,7 +2177,7 @@ def test_current_docx_exports_match_the_28_chapter_manuscript() -> None:
 
 
 def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
-    for docx_path in (RAW_EDITORIAL_DOCX, EDITORIAL_TEMPLATE_DOCX):
+    for docx_path in (FINAL_LAYOUT_DOCX,):
         with ZipFile(docx_path) as archive:
             document = ET.fromstring(archive.read("word/document.xml"))
 
@@ -1520,8 +2198,14 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
                     assert previous_text
             previous_text = text
 
-        assert len(page_breaks) == 30
+        assert len(page_breaks) == 38
         assert all(style in {"Heading1", "Heading2"} for _, style in page_breaks)
+        chapter_breaks = {
+            int(match.group(1))
+            for text, _ in page_breaks
+            if (match := re.fullmatch(r"Глава (\d+)\. .+", text))
+        }
+        assert chapter_breaks == set(range(1, 29))
 
 
 def test_baseline_docx_artifacts_preserve_the_same_manuscript_image_order() -> None:

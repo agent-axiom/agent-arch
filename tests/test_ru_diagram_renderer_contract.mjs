@@ -13,6 +13,9 @@ import {
 const {
   BLOCK_PADDING_PX,
   DEFAULT_LABEL_WRAP_WIDTH_PX,
+  DEFAULT_NODE_SPACING_PX,
+  DEFAULT_RANK_SPACING_PX,
+  DECISION_NODE_LABEL_PADDING_PX,
   DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION,
   DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX,
   MIN_CLUSTER_TITLE_CLEARANCE_PX,
@@ -23,19 +26,24 @@ const {
   VISUAL_STYLE_ID,
   assessPrintGeometry,
   classifyGeometry,
+  bindPngSourceSha256,
+  decisionNodeIds,
+  findSplitCyrillicWords,
   measureClusterTitleClearances,
+  mermaidSourceSha256,
   normalizeDiagramOptions,
   normalizeMermaidSource,
+  pngSourceSha256,
   prepareMermaidSource,
 } = rendererContract;
 
 const TESTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(TESTS_DIR, "..");
-const TASK_3B1_LAYOUT_CLASSES = new Map([
+const MIGRATED_LAYOUT_CLASSES = new Map([
   ["ru-figure-13-autonomy-ladder.png", "simple-flow"],
-  ["ru-figure-02-trust-boundaries.png", "simple-flow"],
+  ["ru-figure-02-trust-boundaries.png", "decision-state"],
   ["ru-figure-19-localhost-control-plane.png", "decision-state"],
-  ["ru-figure-16-capability-endpoint-contract.png", "simple-flow"],
+  ["ru-figure-16-capability-endpoint-contract.png", "decision-state"],
   ["ru-figure-06-approval-gateway.png", "decision-state"],
   ["ru-figure-25-memory-write-lifecycle.png", "decision-state"],
   ["ru-figure-05-memory-retrieval.png", "decision-state"],
@@ -43,6 +51,19 @@ const TASK_3B1_LAYOUT_CLASSES = new Map([
   ["ru-figure-21-mcp-gateway.png", "decision-state"],
   ["ru-figure-08-idempotency-recovery.png", "decision-state"],
   ["ru-figure-20-eval-integrity.png", "evidence-overlay"],
+  ["ru-figure-15-eval-audit-record-flow.png", "decision-state"],
+  ["ru-figure-09-evidence-chain.png", "decision-state"],
+  ["ru-figure-10-adlc-lifecycle.png", "decision-state"],
+  ["ru-figure-11-assurance-incident-registry.png", "decision-state"],
+  ["ru-figure-23-incident-response-state.png", "decision-state"],
+  ["ru-figure-18-runtime-stack.png", "layered-architecture"],
+  ["ru-figure-22-durable-workflow-fiber.png", "decision-state"],
+  ["ru-figure-14-brain-hands-session.png", "decision-state"],
+  ["ru-figure-17-rollout-simulation-fidelity.png", "decision-state"],
+  ["ru-figure-12-launch-readiness.png", "decision-state"],
+  ["ru-figure-24-capstone-evidence-package.png", "decision-state"],
+  ["ru-editorial-diagram-01-execution-form-decision.png", "decision-state"],
+  ["ru-editorial-diagram-02-registry-reconciliation.png", "decision-state"],
 ]);
 const FIXTURE_PATH = path.join(
   TESTS_DIR,
@@ -97,6 +118,7 @@ test("v2 constants enforce the print geometry floor", () => {
   assert.equal(MIN_CLUSTER_TITLE_CLEARANCE_PX, 12);
   assert.equal(MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX, 10);
   assert.equal(NODE_LABEL_PADDING_PX, 12);
+  assert.equal(DECISION_NODE_LABEL_PADDING_PX, 7);
   assert.equal(BLOCK_PADDING_PX, 20);
   assert.ok(BLOCK_PADDING_PX > NODE_LABEL_PADDING_PX);
   assert.equal(DEFAULT_LABEL_WRAP_WIDTH_PX, 220);
@@ -397,6 +419,8 @@ test("layout classes reserve ELK for layered architecture", () => {
     connector_style: "linear",
     connector_curve: "linear",
     label_wrap_width_px: 220,
+    node_spacing_px: 48,
+    rank_spacing_px: 58,
     feedback_loop_review: null,
     aspect_ratio_override: null,
   });
@@ -410,6 +434,8 @@ test("layout classes reserve ELK for layered architecture", () => {
     connector_style: "orthogonal",
     connector_curve: "step",
     label_wrap_width_px: 220,
+    node_spacing_px: 48,
+    rank_spacing_px: 58,
     feedback_loop_review: null,
     aspect_ratio_override: null,
   });
@@ -417,16 +443,54 @@ test("layout classes reserve ELK for layered architecture", () => {
     assert.deepEqual(normalizeDiagramOptions({
       filename: `${layoutClass}.png`,
       layout_class: layoutClass,
+      mermaid: layoutClass === "decision-state"
+        ? 'flowchart LR\nG{"Разрешить?"} --> A["Действие"]'
+        : 'flowchart LR\nE["Доказательство"] --> A["Действие"]',
     }), {
       layout_class: layoutClass,
       layout_engine: "dagre",
       connector_style: "linear",
       connector_curve: "linear",
       label_wrap_width_px: 220,
+      node_spacing_px: 48,
+      rank_spacing_px: 58,
       feedback_loop_review: null,
       aspect_ratio_override: null,
     });
   }
+});
+
+
+test("decision-state requires at least one real Mermaid decision shape", () => {
+  assert.throws(
+    () => normalizeDiagramOptions({
+      filename: "rectangle-question.png",
+      layout_class: "decision-state",
+      mermaid: 'flowchart LR\nG["Разрешить?"] --> A["Действие"]',
+    }),
+    /real decision shape/,
+  );
+  assert.deepEqual(
+    decisionNodeIds('flowchart LR\nG{"Разрешить?"} --> A["Действие"]'),
+    ["G"],
+  );
+});
+
+
+test("source SHA-256 is exact and PNG binding is deterministic", () => {
+  const source = 'flowchart LR\nA["Запрос"] --> G{"Разрешить?"}';
+  const digest = mermaidSourceSha256(source);
+  assert.match(digest, /^[0-9a-f]{64}$/);
+  assert.notEqual(digest, mermaidSourceSha256(`${source}\n`));
+
+  const onePixelPng = Buffer.from(
+    "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=",
+    "base64",
+  );
+  const first = bindPngSourceSha256(onePixelPng, digest);
+  const second = bindPngSourceSha256(first, digest);
+  assert.equal(pngSourceSha256(first), digest);
+  assert.deepEqual(second, first);
 });
 
 
@@ -444,6 +508,46 @@ test("a bounded per-diagram label wrap width preserves whole technical terms", (
       /label_wrap_width_px/,
     );
   }
+});
+
+
+test("bounded per-diagram spacing compacts dense graphs without disabling QA", () => {
+  assert.equal(DEFAULT_NODE_SPACING_PX, 48);
+  assert.equal(DEFAULT_RANK_SPACING_PX, 58);
+  const options = normalizeDiagramOptions({
+    filename: "dense.png",
+    node_spacing_px: 32,
+    rank_spacing_px: 34,
+  });
+  assert.equal(options.node_spacing_px, 32);
+  assert.equal(options.rank_spacing_px, 34);
+  for (const [field, values] of Object.entries({
+    node_spacing_px: [23, 73, 32.5, "32"],
+    rank_spacing_px: [23, 73, 34.5, "34"],
+  })) {
+    for (const value of values) {
+      assert.throws(
+        () => normalizeDiagramOptions({ filename: "invalid-spacing.png", [field]: value }),
+        new RegExp(field),
+      );
+    }
+  }
+});
+
+
+test("rendered label rows preserve every Cyrillic word", () => {
+  assert.deepEqual(findSplitCyrillicWords({
+    source: 'flowchart LR\nA["Исполнительный профиль"] --> B["Подтверждение"]',
+    rendered_rows: ["Исполнительный профиль", "Подтверждение"],
+  }), []);
+
+  assert.deepEqual(findSplitCyrillicWords({
+    source: 'flowchart LR\nA["Исполнительный профиль"] --> B["Подтверждение"]',
+    rendered_rows: ["Исполнительны", "й профиль", "Подтвержде", "ние"],
+  }), [
+    { word: "Исполнительный", expected_count: 1, rendered_count: 0 },
+    { word: "Подтверждение", expected_count: 1, rendered_count: 0 },
+  ]);
 });
 
 
@@ -535,8 +639,8 @@ test("leading and embedded Mermaid init/config directives are rejected before no
 });
 
 
-test("all production manifests preserve the exact Task 3B1 layout classifications", () => {
-  const seenTask3B1 = new Map();
+test("all production manifests preserve the exact migrated layout classifications", () => {
+  const seenMigrated = new Map();
   for (const filename of [
     "ru-inline-diagrams-2026-07-13.json",
     "ru-numbered-diagrams-2026-07-15.json",
@@ -552,12 +656,15 @@ test("all production manifests preserve the exact Task 3B1 layout classification
         assert.equal(options.layout_class, "layered-architecture");
         assert.equal(options.layout_engine, "elk");
         assert.equal(options.connector_curve, "step");
-      } else if (TASK_3B1_LAYOUT_CLASSES.has(diagram.filename)) {
-        const expectedClass = TASK_3B1_LAYOUT_CLASSES.get(diagram.filename);
+      } else if (MIGRATED_LAYOUT_CLASSES.has(diagram.filename)) {
+        const expectedClass = MIGRATED_LAYOUT_CLASSES.get(diagram.filename);
         assert.equal(options.layout_class, expectedClass);
-        assert.equal(options.layout_engine, "dagre");
+        assert.equal(
+          options.layout_engine,
+          expectedClass === "layered-architecture" ? "elk" : "dagre",
+        );
         assert.equal(options.connector_curve, "linear");
-        seenTask3B1.set(diagram.filename, expectedClass);
+        seenMigrated.set(diagram.filename, expectedClass);
       } else {
         assert.equal(options.layout_class, "simple-flow");
         assert.equal(options.layout_engine, "dagre");
@@ -565,5 +672,30 @@ test("all production manifests preserve the exact Task 3B1 layout classification
       }
     }
   }
-  assert.deepEqual(seenTask3B1, TASK_3B1_LAYOUT_CLASSES);
+  assert.deepEqual(seenMigrated, MIGRATED_LAYOUT_CLASSES);
+});
+
+
+test("Task 3B1 decision and gateway diagrams use the reviewed decision grammar", () => {
+  const manifest = JSON.parse(fs.readFileSync(
+    path.join(ROOT, "docs/publisher/ru-numbered-diagrams-2026-07-15.json"),
+    "utf8",
+  ));
+  const byNumber = new Map(manifest.diagrams.map((diagram) => [diagram.number, diagram]));
+  const expectedDecisionIds = new Map([
+    [4, ["P"]],
+    [5, ["P"]],
+    [7, ["P", "A"]],
+    [8, ["G", "H", "I"]],
+    [9, ["P", "T", "L", "R"]],
+    [10, ["A", "I", "R"]],
+    [11, ["P", "R"]],
+    [12, ["P", "R"]],
+    [13, ["O", "R"]],
+    [14, ["G"]],
+  ]);
+
+  for (const [number, expectedIds] of expectedDecisionIds) {
+    assert.deepEqual(decisionNodeIds(byNumber.get(number).mermaid), expectedIds);
+  }
 });

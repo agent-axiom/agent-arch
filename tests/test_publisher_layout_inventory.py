@@ -370,27 +370,124 @@ def test_task_3b1_updates_are_derived_from_exact_independent_evidence() -> None:
             "source": "pass",
             "standalone_render": "pass",
             "grayscale": "pass",
-            "preview_placement": "pass",
+            "preview_placement": "pending",
             "final_publisher_placement": "pending",
         }
 
 
-def test_default_generator_preserves_task_3a_while_adding_task_3b1() -> None:
+@pytest.mark.parametrize(
+    ("task", "filenames", "builder"),
+    [
+        (
+            "3B2",
+            layout_v2.TASK_3B2_CHANGED_ASSET_FILENAMES,
+            layout_v2._task_3b2_review_updates,
+        ),
+        (
+            "3C",
+            layout_v2.TASK_3C_CHANGED_ASSET_FILENAMES,
+            layout_v2._task_3c_review_updates,
+        ),
+    ],
+)
+def test_remaining_diagram_updates_are_derived_from_exact_standalone_evidence(
+    task: str,
+    filenames: frozenset[str],
+    builder: object,
+) -> None:
+    inventory = layout_v2.build_inventory(ROOT)
+    expected_ids = {
+        diagram["id"]
+        for diagram in inventory["diagrams"]
+        if diagram["filename"] in filenames
+    }
+
+    updates = builder(ROOT, inventory)
+
+    assert set(updates) == expected_ids
+    assert all(update["status"] == "in_progress" for update in updates.values())
+    assert all(
+        update["updated_by"] == f"Codex Task {task} quality review"
+        for update in updates.values()
+    )
+    assert all(
+        update["gate_statuses"]
+        == {
+            "source": "pass",
+            "standalone_render": "pass",
+            "grayscale": "pass",
+            "preview_placement": "pending",
+            "final_publisher_placement": "pending",
+        }
+        for update in updates.values()
+    )
+
+
+def test_task_3b1_visual_review_accepts_any_nonempty_reviewer_and_iso_date() -> None:
+    layout_v2.validate_visual_review_metadata(
+        {
+            "result": "pass",
+            "reviewed_by": "Independent layout editor",
+            "reviewed_on": "2027-01-31",
+            "standalone_render": "pass",
+            "grayscale": "pass",
+        },
+        "Task 3B1 visual review",
+    )
+
+
+@pytest.mark.parametrize(
+    ("reviewed_by", "reviewed_on", "message"),
+    [
+        ("", "2026-08-30", "reviewed_by"),
+        ("Reviewer", "30-08-2026", "ISO date"),
+        ("Reviewer", "2026-02-30", "ISO date"),
+    ],
+)
+def test_task_3b1_visual_review_rejects_blank_reviewer_or_invalid_date(
+    reviewed_by: str,
+    reviewed_on: str,
+    message: str,
+) -> None:
+    with pytest.raises(ValueError, match=message):
+        layout_v2.validate_visual_review_metadata(
+            {
+                "result": "pass",
+                "reviewed_by": reviewed_by,
+                "reviewed_on": reviewed_on,
+                "standalone_render": "pass",
+                "grayscale": "pass",
+            },
+            "Task 3B1 visual review",
+        )
+
+
+def test_default_generator_records_standalone_review_for_every_diagram() -> None:
     outputs = layout_v2.build_outputs(ROOT)
     ledger = json.loads(outputs[LAYOUT_LEDGER].decode("utf-8"))
     entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
 
     assert all(
-        entries[inventory_id]["status"] == "in_progress"
+        entries[inventory_id]["status"] == "pass"
         for inventory_id in TASK_3A_INVENTORY_IDS
     )
     assert all(
-        entries[inventory_id]["status"] == "in_progress"
+        entries[inventory_id]["status"] == "pass"
         for inventory_id in TASK_3B1_INVENTORY_IDS
     )
     assert all(
-        entries[inventory_id]["updated_by"] == "Codex Task 3A quality review"
+        entries[inventory_id]["reviewed_by"] == "Codex Task 7 final publisher review"
         for inventory_id in TASK_3A_INVENTORY_IDS
+    )
+    diagram_ids = {
+        diagram["id"]
+        for diagram in json.loads(outputs[LAYOUT_INVENTORY].decode("utf-8"))["diagrams"]
+    }
+    assert len(diagram_ids) == 56
+    assert all(entries[inventory_id]["status"] == "pass" for inventory_id in diagram_ids)
+    assert all(
+        entries[inventory_id]["gate_statuses"]["final_publisher_placement"] == "pass"
+        for inventory_id in diagram_ids
     )
 
 
@@ -414,13 +511,15 @@ def test_generated_inventory_preserves_all_frozen_facts() -> None:
         "reader_facing_headings": 43,
     }
 
-    migrated_v2_filenames = {
-        "ru-figure-01-book-map.png",
-        "ru-figure-03-reference-architecture.png",
-        "ru-figure-04-capability-contract-path.png",
-        "ru-inline-diagram-01.png",
-        "ru-inline-diagram-03.png",
-    } | TASK_3B1_FILENAMES
+    migrated_v2_filenames = (
+        layout_v2.TASK_3A_CHANGED_ASSET_FILENAMES
+        | layout_v2.TASK_3B1_CHANGED_ASSET_FILENAMES
+        | layout_v2.TASK_3B2_CHANGED_ASSET_FILENAMES
+        | layout_v2.TASK_3C_CHANGED_ASSET_FILENAMES
+    )
+    assert migrated_v2_filenames == {
+        diagram["filename"] for diagram in generated["diagrams"]
+    }
     for diagram in generated["diagrams"]:
         assert "current_placed_size_inches" not in diagram
         placements = diagram["baseline_docx_placements"]

@@ -12,6 +12,7 @@ import {
 const environment = resolveBrowserTestEnvironment();
 
 const COLLECTION_OPTIONS = {
+  decision_node_label_padding_px: 8,
   edge_sample_step_px: 2,
   route_comparison_sample_count: 33,
   curved_edge_ids: [],
@@ -77,6 +78,8 @@ test("diamond and ellipse labels are checked against padded shape interiors", {
     const nodes = new Map(geometry.nodes.map((node) => [node.id, node]));
     assert.equal(nodes.get("diamond-good").label_containment.contained, true);
     assert.equal(nodes.get("diamond-good").label_containment.shape_type, "polygon");
+    assert.equal(nodes.get("diamond-good").label_containment.padding_px, 8);
+    assert.equal(nodes.get("ellipse-good").label_containment.padding_px, 12);
     assert.equal(nodes.get("diamond-bad").label_containment.contained, false);
     assert.ok(nodes.get("diamond-bad").label_containment.outside_boundary_sample_count > 0);
     assert.equal(nodes.get("ellipse-good").label_containment.contained, true);

@@ -23,6 +23,12 @@ dev = [
   "ruff>=0.15.8,<0.16",
   "ty>=0.0.26,<0.1",
 ]
+publisher = [
+  "lxml>=6.1,<7",
+  "Pillow>=12.3,<13",
+  "Pygments>=2.19,<3",
+  "python-docx>=1.2,<2",
+]
 research = [
   "marimo>=0.21.1,<1",
   "polars>=1.39.3,<2",

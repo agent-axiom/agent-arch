@@ -96,7 +96,34 @@ TASK_3B1_V2_FILENAMES = {
     "ru-figure-08-idempotency-recovery.png",
     "ru-figure-20-eval-integrity.png",
 }
-MIGRATED_V2_FILENAMES = TASK_3A_V2_FILENAMES | TASK_3B1_V2_FILENAMES
+TASK_3B2_NUMBERS = set(range(15, 26))
+TASK_3B2_V2_FILENAMES = {
+    "ru-figure-15-eval-audit-record-flow.png",
+    "ru-figure-09-evidence-chain.png",
+    "ru-figure-10-adlc-lifecycle.png",
+    "ru-figure-11-assurance-incident-registry.png",
+    "ru-figure-23-incident-response-state.png",
+    "ru-figure-18-runtime-stack.png",
+    "ru-figure-22-durable-workflow-fiber.png",
+    "ru-figure-14-brain-hands-session.png",
+    "ru-figure-17-rollout-simulation-fidelity.png",
+    "ru-figure-12-launch-readiness.png",
+    "ru-figure-24-capstone-evidence-package.png",
+}
+TASK_3C_V2_FILENAMES = {
+    f"ru-inline-diagram-{number:02d}.png"
+    for number in range(1, 30)
+    if number not in {1, 3}
+} | {
+    "ru-editorial-diagram-01-execution-form-decision.png",
+    "ru-editorial-diagram-02-registry-reconciliation.png",
+}
+MIGRATED_V2_FILENAMES = (
+    TASK_3A_V2_FILENAMES
+    | TASK_3B1_V2_FILENAMES
+    | TASK_3B2_V2_FILENAMES
+    | TASK_3C_V2_FILENAMES
+)
 
 
 def join_shell_continuations(text: str) -> str:
@@ -114,6 +141,16 @@ def test_revision_is_reproducible(tmp_path: Path) -> None:
     data = json.loads(manifest.read_text(encoding="utf-8"))
     assert len(data["diagrams"]) == 29
     assert [item["number"] for item in data["diagrams"]] == list(range(1, 30))
+
+
+def test_reference_appendix_ends_without_an_orphan_marker_paragraph() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+
+    assert (
+        "ссылку на главу, которая объясняет смысл проверки. Буквальные маркеры "
+        "среды исполнения"
+    ) in text
+    assert "\n\nБуквальные маркеры среды исполнения" not in text
 
 
 def test_reference_package_quickstart_matches_runtime_contract() -> None:
@@ -1191,7 +1228,10 @@ def test_developmental_editing_removes_chapter_one_assembly_residue() -> None:
     assert chapter_one.count("### Ключевые выводы") == 1
     assert "### Архитектурный бриф и лестница автономности" in chapter_two
     assert "**Шаблон первого артефакта: архитектурный бриф безопасного агента.**" in chapter_two
-    assert "Рисунок 2. Рост сложности и требований к контролю" in chapter_two
+    assert (
+        "Рисунок 2. Независимые измерения формы выполнения, долговечности и полномочий"
+        in chapter_two
+    )
 
 
 def test_dense_chapters_have_four_explicit_instructional_acts() -> None:
@@ -2028,23 +2068,23 @@ def test_diagram_semantics_preserve_safety_invariants_and_russian_terminology() 
     assert "Остановить и передать человеку" in diagrams[10]["mermaid"]
     assert 'B["Успешность"] --> A["Здоровье агента поддержки"]' in diagrams[12]["mermaid"]
     assert diagrams[13]["caption"] == "Контур изменения, оценки, выпуска и обратной связи"
-    assert "Поддерживаемый стандартный путь" in diagrams[15]["mermaid"]
-    assert "Обратная связь продукта" in diagrams[15]["mermaid"]
-    assert "Разработка: требования" in diagrams[17]["mermaid"]
+    assert "Стандартный\\nпуть" in diagrams[15]["mermaid"]
+    assert "Обратная\\nсвязь" in diagrams[15]["mermaid"]
+    assert "Требования и\\nпроектирование" in diagrams[17]["mermaid"]
     assert "Сквозной контроль" in diagrams[17]["mermaid"]
     assert "Проверка и решение: происхождение и целостность" in diagrams[19]["mermaid"]
-    assert "Попытка обхода старым маршрутом" in diagrams[21]["mermaid"]
-    assert "Обнаружение и сдерживание" in diagrams[22]["mermaid"]
+    assert "Старый маршрут" in diagrams[21]["mermaid"]
+    assert "Реагирование\\nи сдерживание" in diagrams[22]["mermaid"]
     assert "Наблюдаемый причинный путь" in diagrams[23]["mermaid"]
     assert "Контрфактический контроль" in diagrams[23]["mermaid"]
     assert "Сужение рабочей поверхности" in diagrams[24]["mermaid"]
     assert diagrams[19]["caption"] == (
         "Проверенный пакет выпуска объединяет связанные цепочки доверия"
     )
-    assert "проверка" in diagrams[25]["mermaid"]
+    assert "проверить результат" in diagrams[25]["mermaid"]
     assert "Телеметрия и аудит" in diagrams[25]["mermaid"]
     assert "<-->" in diagrams[26]["mermaid"]
-    assert '|"Подтверждение"|' in diagrams[27]["mermaid"]
+    assert '|"Подтвердить"|' in diagrams[27]["mermaid"]
     assert "Решение человека" in diagrams[27]["mermaid"]
 
 
@@ -2057,19 +2097,21 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
     assert "VI. операционная модель" in diagrams[1]["mermaid"]
     assert "VII. заверение" in diagrams[1]["mermaid"]
     assert "VIII. эталонная реализация" in diagrams[1]["mermaid"]
-    assert "Оркестрация:" in diagrams[2]["mermaid"]
+    assert "Заданный или долговечный процесс" in diagrams[2]["mermaid"]
+    assert "Узкая область и подтверждение" in diagrams[2]["mermaid"]
     assert "Неизменное намерение" in diagrams[6]["mermaid"]
     assert "ключ идемпотентности" in diagrams[6]["mermaid"]
     assert '|"Разрешить"|' in diagrams[8]["mermaid"]
     assert '|"Запретить"|' in diagrams[8]["mermaid"]
     assert '|"На одобрение"|' in diagrams[8]["mermaid"]
     assert "карантин" in diagrams[10]["mermaid"].lower()
-    assert "Исходящий маршрут\\nразрешен?" in diagrams[11]["mermaid"]
+    assert "Песочница" in diagrams[11]["mermaid"]
+    assert "Ответ допустим?" in diagrams[11]["mermaid"]
     assert "Сверка внешнего состояния" in diagrams[13]["mermaid"]
-    assert "Поэтапный выпуск и наблюдение" in diagrams[17]["mermaid"]
-    assert "Логическое И" in diagrams[24]["mermaid"]
-    assert "РАСШИРИТЬ" in diagrams[25]["mermaid"]
-    assert "УДЕРЖАТЬ" in diagrams[25]["mermaid"]
+    assert "Ограниченный выпуск" in diagrams[17]["mermaid"]
+    assert "Все условия выполнены?" in diagrams[24]["mermaid"]
+    assert "Ограниченная волна" in diagrams[25]["mermaid"]
+    assert "Удержать и исправить" in diagrams[25]["mermaid"]
 
 
 def test_task_3a_diagram_sources_encode_the_reviewed_v2_designs() -> None:
@@ -2212,9 +2254,9 @@ def test_task_3b1_sources_encode_compact_reviewed_semantic_topologies() -> None:
     assert {item["filename"] for item in targeted.values()} == TASK_3B1_V2_FILENAMES
     assert {number: item["layout_class"] for number, item in targeted.items()} == {
         2: "simple-flow",
-        4: "simple-flow",
+        4: "decision-state",
         5: "decision-state",
-        7: "simple-flow",
+        7: "decision-state",
         8: "decision-state",
         9: "decision-state",
         10: "decision-state",
@@ -2224,27 +2266,68 @@ def test_task_3b1_sources_encode_compact_reviewed_semantic_topologies() -> None:
         14: "evidence-overlay",
     }
     assert all(item["connector_style"] == "linear" for item in targeted.values())
-    assert all(item["label_wrap_width_px"] == 220 for item in targeted.values())
-    assert all("aspect_ratio_override" not in item for item in targeted.values())
+    assert {
+        number: (
+            item["label_wrap_width_px"],
+            item["node_spacing_px"],
+            item["rank_spacing_px"],
+        )
+        for number, item in targeted.items()
+    } == {
+        2: (260, 48, 48),
+        4: (300, 36, 36),
+        5: (300, 36, 36),
+        7: (320, 24, 24),
+        8: (320, 24, 24),
+        9: (280, 24, 24),
+        10: (300, 28, 28),
+        11: (260, 24, 24),
+        12: (320, 24, 24),
+        13: (300, 32, 32),
+        14: (320, 32, 32),
+    }
+    expected_aspect_overrides = {
+        8: {
+            "reviewed_by": "Kant (independent layout review)",
+            "reviewed_on": "2026-08-30",
+            "reason": (
+                "Intentional full-height portrait approval workflow; verified at 9.79 pt "
+                "with no clipping, overlaps, or duplicate routes."
+            ),
+        },
+        11: {
+            "reviewed_by": "Kant (independent layout review)",
+            "reviewed_on": "2026-08-30",
+            "reason": (
+                "Intentional full-height portrait sandbox and response-validation workflow; "
+                "verified at 10.30 pt with no clipping, overlaps, or duplicate routes."
+            ),
+        },
+    }
+    assert {
+        number: item.get("aspect_ratio_override")
+        for number, item in targeted.items()
+        if "aspect_ratio_override" in item
+    } == expected_aspect_overrides
 
     expected_metrics = {
-        2: (4, 3),
-        4: (4, 3),
-        5: (5, 4),
-        7: (4, 3),
-        8: (4, 5),
-        9: (5, 4),
-        10: (5, 4),
-        11: (5, 4),
-        12: (4, 3),
+        2: (6, 3),
+        4: (9, 12),
+        5: (6, 6),
+        7: (9, 12),
+        8: (6, 8),
+        9: (11, 10),
+        10: (8, 10),
+        11: (7, 9),
+        12: (8, 10),
         13: (7, 6),
-        14: (6, 5),
+        14: (7, 6),
     }
     for number, item in targeted.items():
         source = item["mermaid"]
         assert layout_v2.mermaid_graph_metrics(source) == expected_metrics[number]
-        assert expected_metrics[number][0] <= 7
-        assert expected_metrics[number][1] <= 9
+        assert expected_metrics[number][0] <= 12
+        assert expected_metrics[number][1] <= 14
         assert "subgraph" not in source
         assert "~~~" not in source
         assert "<-->" not in source
@@ -2263,21 +2346,23 @@ def test_task_3b1_sources_encode_compact_reviewed_semantic_topologies() -> None:
         assert len(edge_lines) == len(set(edge_lines))
 
     autonomy = targeted[2]["mermaid"]
-    assert all(
-        stage in autonomy
-        for stage in ("Оркестрация", "Контроль", "Доказательства", "Автономное действие")
-    )
+    assert autonomy.startswith("block-beta\ncolumns 3")
     assert all(
         term in autonomy
         for term in (
-            "владелец",
-            "политика",
-            "подтверждение",
-            "трасса",
-            "оценка",
-            "откат",
+            "Форма выполнения",
+            "Один агент или несколько",
+            "Долговечность",
+            "Заданный или долговечный процесс",
+            "Полномочия",
+            "Узкая область и подтверждение",
         )
     )
+    assert [
+        line.strip()
+        for line in autonomy.splitlines()
+        if "-->" in line
+    ] == ["F --> F1", "D --> D1", "A --> A1"]
     manuscript = EXPECTED.read_text(encoding="utf-8")
     assert "многоагентность и долговечность не выдаются за уровни автономности" in manuscript
     assert (
@@ -2287,77 +2372,183 @@ def test_task_3b1_sources_encode_compact_reviewed_semantic_topologies() -> None:
 
     trust = targeted[4]["mermaid"]
     assert "данные, не инструкции" in trust
-    assert all(term in trust for term in ("поиск и память", "источник указан", "политика"))
-    assert all(term in trust for term in ("Подтверждение", "шлюз инструментов", "аудиторский"))
+    assert all(
+        term in trust
+        for term in (
+            "Ввод пользователя",
+            "Найденный контекст",
+            "Модель предлагает действие",
+            "Маршрут политики?",
+            "Связанное подтверждение",
+            "Шлюз инструментов",
+            "Фильтрованный результат",
+            "Аудиторский след",
+        )
+    )
+    assert 'P -->|"Разрешить"| T' in trust
+    assert 'P -->|"Запретить"| D' in trust
+    assert 'P -->|"Одобрение"| H' in trust
+    assert all(edge in trust for edge in ("P -.-> A", "H -.-> A", "T -.-> A"))
 
     localhost = targeted[5]["mermaid"]
-    assert "Локальный канал MCP" in localhost
-    assert "не подтверждает доверие" in localhost
+    assert "Недоверенный веб-контент или кодовый агент" in localhost
     assert 'P -->|"Да"| H' in localhost
     assert 'P -->|"Нет"| D' in localhost
-    assert all(term in localhost for term in ("Сеть", "секреты", "файлы", "команды"))
+    assert 'C["Исполнительный профиль: сеть, секреты, файлы, команды"] -.-> H' in localhost
+    assert all(term in localhost for term in ("Исполнительный профиль", "Узкое исполнение", "Аудит"))
+    assert all(edge in localhost for edge in ("H --> T", "D --> T"))
 
     capability = targeted[7]["mermaid"]
-    assert all(term in capability for term in ("владелец", "схема", "риск", "откат"))
-    assert "Политика выбирает" in capability
-    assert "Типизированный адаптер\\nбез прямого доступа" in capability
-    assert "единый аудиторский след" in capability
+    assert all(
+        term in capability
+        for term in (
+            "Контракт возможности",
+            "владелец, риск, откат",
+            "Маршрут политики?",
+            "Проверенное решение человека",
+            "Адаптер",
+            "Исход вызова?",
+            "Проверенный результат",
+            "Сбой",
+            "Неизвестный эффект",
+            "Аудиторский след",
+        )
+    )
+    assert all(
+        branch in capability
+        for branch in (
+            'P -->|"Запретить"| D',
+            'P -->|"Нужно решение"| H',
+            'P -->|"Разрешить"| A',
+            'H --> A',
+            'A -->|"Успех"| V',
+            'A -->|"Сбой"| F',
+            'A -->|"Неизвестно"| U',
+        )
+    )
+    assert all(edge in capability for edge in ("D --> T", "V --> T", "F --> T", "U --> T"))
 
     approval = targeted[8]["mermaid"]
-    assert 'P -->|"Разрешить"| E' in approval
-    assert 'P -->|"Запретить"| D' in approval
-    assert 'P -->|"На одобрение"| H' in approval
-    assert 'H -->|"Подтвердить"| E' in approval
-    assert 'H -->|"Не подтверждено"| D' in approval
+    assert 'P["Замороженный запрос: область, срок, отпечаток"] --> G' in approval
+    assert 'G{"Политика?"}' in approval
+    assert 'G -->|"Разрешить"| E' in approval
+    assert 'G -->|"Запретить"| D' in approval
+    assert 'G -->|"На одобрение"| H' in approval
+    assert 'H{"Человек одобрил в срок?"}' in approval
+    assert 'H -->|"Да"| I' in approval
+    assert 'H -->|"Нет"| D' in approval
+    assert 'I -->|"Да"| E' in approval
+    assert 'I -->|"Нет"| D' in approval
     assert all(
         term in approval
-        for term in ("Замороженный запрос", "отпечаток", "срока", "данных", "неизменное")
+        for term in (
+            "Замороженный запрос",
+            "На одобрение",
+            "Человек одобрил в срок?",
+            "отпечаток",
+            "Запрос прежний?",
+            "Исполнение",
+            "квитанция",
+            "аудит",
+        )
     )
 
     memory_write = targeted[9]["mermaid"]
-    assert 'A -->|"Нет или конфликт"| Q' in memory_write
-    assert 'A -->|"Да"| M' in memory_write
     assert all(
         term in memory_write
         for term in (
-            "происхождение",
-            "арендатор",
-            "Карантин",
-            "Запись с версиями",
-            "Отдельная политика чтения",
-            "доказанное удаление",
+            "Тенант и роль разрешают запись?",
+            "Отказ; аудит",
+            "Источник доверен?",
+            "Карантин; аудит",
+            "Версия: срок и владелец",
+            "Новая ревизия",
+            "Надгробная запись; очистка подтверждена",
+            "Доступ по тенанту, роли и цели?",
+            "Источник доверен, свеж, уместен?",
+            "Отказ в чтении; аудит",
+            "Выдать версию",
         )
     )
+    assert 'P -->|"Нет"| W' in memory_write
+    assert 'P -->|"Да"| T' in memory_write
+    assert 'T -->|"Нет"| Q' in memory_write
+    assert 'T -->|"Да"| M' in memory_write
+    assert 'M -->|"Пересмотр"| N' in memory_write
+    assert 'M -->|"Удаление"| Z' in memory_write
+    assert 'L{"Доступ по тенанту, роли и цели?"}' in memory_write
+    assert 'L -->|"Нет"| D' in memory_write
+    assert 'L -->|"Да"| R' in memory_write
+    assert 'R -->|"Да"| O' in memory_write
+    assert 'R -->|"Нет"| D' in memory_write
+    assert "-.->" not in memory_write
 
     memory_read = targeted[10]["mermaid"]
-    assert 'C -->|"Да"| M' in memory_read
-    assert 'C -->|"Нет или сомнение"| Q' in memory_read
     assert all(
         term in memory_read
         for term in (
-            "арендатора",
-            "роли",
-            "свежести",
-            "происхождения",
+            "Кандидаты памяти",
+            "Тенант и роль разрешают?",
+            "Источник доверен и свеж?",
+            "Запись уместна задаче?",
+            "Исключить и записать аудит",
+            "роль",
+            "свежесть",
+            "источник",
             "Карантин",
-            "данные, не инструкции",
+            "как данные",
+            "аудит",
         )
     )
+    assert all(edge in memory_read for edge in ('S --> A', 'S --> I', 'S --> R'))
+    assert 'A -->|"Нет"| X' in memory_read
+    assert 'I -->|"Нет"| Q' in memory_read
+    assert 'R -->|"Нет"| X' in memory_read
+    assert all(edge in memory_read for edge in ('A --> J', 'I --> J', 'R --> J'))
+    assert 'J --> M' in memory_read
 
     sandbox = targeted[11]["mermaid"]
-    assert "без прямого доступа в сеть" in sandbox
-    assert "Исходящий маршрут\\nразрешен?" in sandbox
-    assert 'P -->|"Да"| E' in sandbox
+    assert all(
+        term in sandbox
+        for term in (
+            "Песочница и MCP-адаптер: вызов и исходящий доступ разрешены?",
+            "MCP-сервер или внешняя система",
+            "Ответ допустим?",
+            "Фильтрованный результат",
+            "Карантин или отказ",
+            "Аудиторский след",
+        )
+    )
+    assert 'P -->|"Да"| X' in sandbox
     assert 'P -->|"Нет"| D' in sandbox
-    assert all(term in sandbox for term in ("Песочница", "Фильтрованный ответ", "трасса"))
+    assert 'R -->|"Да"| F' in sandbox
+    assert 'R -->|"Нет"| Q' in sandbox
+    assert all(edge in sandbox for edge in ("D --> T", "Q --> T", "F -.-> T", "P -.-> T"))
+    assert "Отказ и аудит" not in sandbox
 
     gateway = targeted[12]["mermaid"]
-    assert all(term in gateway for term in ("Намерение", "портал обнаружения"))
-    assert "без выдачи полномочий" in gateway
-    assert all(term in gateway for term in ("владелец", "версия", "хэш схемы"))
-    assert 'G -->|"Запретить"| D' in gateway
-    assert 'G -->|"Разрешить"| S' in gateway
-    assert all(term in gateway for term in ("MCP-сервер", "Фильтрованный ответ", "аудит"))
+    assert all(
+        term in gateway
+        for term in (
+            "Кандидат из разрешенного реестра",
+            "без полномочий",
+            "Проверены владелец, версия, схема и право вызова?",
+            "MCP-сервер",
+            "Ответ допустим?",
+            "Фильтрованный ответ",
+            "Карантин или отказ",
+            "Аудиторский след",
+        )
+    )
+    assert 'P -->|"Нет"| D' in gateway
+    assert 'P -->|"Да"| S' in gateway
+    assert 'R -->|"Да"| F' in gateway
+    assert 'R -->|"Нет"| K' in gateway
+    assert all(
+        edge in gateway
+        for edge in ("D --> A", "K --> A", "Q -.-> A", "F -.-> A")
+    )
+    assert "Аудит и отказ" not in gateway
 
     recovery = targeted[13]["mermaid"]
     assert 'O -->|"Успех"| S' in recovery
@@ -2369,10 +2560,323 @@ def test_task_3b1_sources_encode_compact_reviewed_semantic_topologies() -> None:
 
     evaluation = targeted[14]["mermaid"]
     assert "прежний ответ удален" in evaluation
+    assert "чувствительные данные замаскированы" in evaluation
+    assert "отдельный актор" in evaluation
+    assert "независимый источник или детерминированный эталон" in evaluation
+    assert "разнесенные режимы отказа" in evaluation
     assert all(term in evaluation for term in ("Кандидат", "симулятор", "Дельта поведения"))
     assert all(term in evaluation for term in ("эталон", "дефекты", "согласие", "уверенность"))
     assert 'G -->|"Расширить"| R' in evaluation
     assert 'G -->|"Удержать"| B' in evaluation
+
+
+def test_task_3b2_sources_encode_compact_reviewed_semantic_topologies() -> None:
+    diagrams = {
+        item["number"]: item
+        for item in json.loads(NUMBERED_MANIFEST.read_text(encoding="utf-8"))["diagrams"]
+    }
+    targeted = {number: diagrams[number] for number in TASK_3B2_NUMBERS}
+
+    assert {item["filename"] for item in targeted.values()} == TASK_3B2_V2_FILENAMES
+    assert {number: item["layout_class"] for number, item in targeted.items()} == {
+        15: "decision-state",
+        16: "decision-state",
+        17: "decision-state",
+        18: "decision-state",
+        19: "decision-state",
+        20: "layered-architecture",
+        21: "decision-state",
+        22: "decision-state",
+        23: "decision-state",
+        24: "decision-state",
+        25: "decision-state",
+    }
+    assert all(item["connector_style"] == "linear" for item in targeted.values())
+    assert {
+        number: (
+            item["label_wrap_width_px"],
+            item["node_spacing_px"],
+            item["rank_spacing_px"],
+        )
+        for number, item in targeted.items()
+    } == {
+        15: (300, 28, 24),
+        16: (300, 28, 24),
+        17: (300, 28, 24),
+        18: (300, 28, 24),
+        19: (300, 32, 28),
+        20: (260, 36, 36),
+        21: (300, 28, 24),
+        22: (320, 28, 24),
+        23: (300, 32, 28),
+        24: (260, 32, 32),
+        25: (300, 28, 24),
+    }
+    assert {
+        number: item.get("aspect_ratio_override")
+        for number, item in targeted.items()
+        if "aspect_ratio_override" in item
+    } == {
+        18: {
+            "reviewed_by": "Kant (independent layout review)",
+            "reviewed_on": "2026-08-30",
+            "reason": (
+                "Intentional full-height portrait incident-assurance workflow; "
+                "verified at 11.01 pt with no clipping, overlaps, or duplicate routes."
+            ),
+        },
+        21: {
+            "reviewed_by": "Kant (independent layout review)",
+            "reviewed_on": "2026-08-30",
+            "reason": (
+                "Intentional full-height portrait durable-workflow sequence; "
+                "verified at 13.23 pt with no clipping, overlaps, or duplicate routes."
+            ),
+        },
+    }
+
+    expected_metrics = {
+        15: (7, 6),
+        16: (7, 6),
+        17: (7, 7),
+        18: (6, 6),
+        19: (8, 9),
+        20: (7, 6),
+        21: (4, 4),
+        22: (5, 5),
+        23: (8, 7),
+        24: (8, 7),
+        25: (6, 5),
+    }
+    for number, item in targeted.items():
+        source = item["mermaid"]
+        assert layout_v2.mermaid_graph_metrics(source) == expected_metrics[number]
+        assert expected_metrics[number][0] <= 9
+        assert expected_metrics[number][1] <= 10
+        assert "subgraph" not in source
+        assert "~~~" not in source
+        assert "<-->" not in source
+        assert item["caption"] not in source
+        assert not re.search(r"[А-Яа-яЁё]-\\n[А-Яа-яЁё]", source)
+        edge_lines = [
+            line.strip()
+            for line in source.splitlines()
+            if "-->" in line or "-.->" in line
+        ]
+        assert len(edge_lines) == len(set(edge_lines))
+
+    audit = targeted[15]["mermaid"]
+    assert all(
+        term in audit
+        for term in (
+            "Запуск оценки",
+            "Случай и трасса",
+            "Вердикт проверяющего",
+            "Запись аудита оценки",
+            "Шлюз выпуска?",
+        )
+    )
+    assert 'G -->|"Да"| W' in audit
+    assert 'G -->|"Нет"| H' in audit
+
+    evidence = targeted[16]["mermaid"]
+    assert all(
+        term in evidence
+        for term in (
+            "Запуск: run_id",
+            "трасса",
+            "Политика, подтверждение",
+            "Результат и квитанция",
+            "Случай оценки",
+            "Проверенный вердикт",
+            "Выпуск разрешен?",
+        )
+    )
+
+    lifecycle = targeted[17]["mermaid"]
+    assert all(
+        term in lifecycle
+        for term in (
+            "Проект и изменение",
+            "Оценка и заверение",
+            "Переход разрешен?",
+            "Ограниченный выпуск",
+            "Эксплуатация и наблюдение",
+            "Закрыть полномочия",
+        )
+    )
+
+    closure = targeted[18]["mermaid"]
+    assert all(
+        term in closure
+        for term in (
+            "Сигнал или находка",
+            "Триаж и владелец",
+            "нужно сдерживание?",
+            "Исправить причину",
+            "Закрытие доказано?",
+            "Обновить реестр и контроль",
+        )
+    )
+
+    incident = targeted[19]["mermaid"]
+    assert all(
+        term in incident
+        for term in (
+            "Сохранить доказательства",
+            "Что произошло вовне?",
+            "Компенсировать или откатить",
+            "Повторить с тем же ключом",
+            "Слепой повтор запрещен",
+        )
+    )
+
+    runtime = targeted[20]["mermaid"]
+    runtime_lower = runtime.lower()
+    assert all(
+        term.lower() in runtime_lower
+        for term in (
+            "Программный каркас",
+            "Агентный цикл",
+            "Предложенное действие",
+            "Решение",
+            "политики",
+            "Изолированное исполнение",
+            "Квитанция и трасса",
+            "Отказ и аудит",
+            "Разрешить",
+            "Запретить",
+        )
+    )
+    assert "G --> E" in runtime
+    assert "G --> H" in runtime
+
+    durable = targeted[21]["mermaid"]
+    assert all(
+        term in durable
+        for term in (
+            "Событие или возобновление",
+            "Долговечный процесс",
+            "нужна внутренняя нить?",
+            "Нить и контрольная точка",
+            "Управляемый шаг",
+            "Квитанция и новая точка",
+        )
+    )
+
+    session = targeted[22]["mermaid"]
+    assert all(
+        term in session
+        for term in (
+            "Долговечная сессия",
+            "Перезапускаемый цикл",
+            "Предложенное действие",
+            "Политика и подтверждение?",
+            "Изолированный исполнитель",
+            "Структурированный результат",
+        )
+    )
+
+    fidelity = targeted[23]["mermaid"]
+    assert all(
+        term in fidelity
+        for term in (
+            "Реальные сценарии",
+            "Задержки и частичные сбои",
+            "Песочница или только чтение",
+            "Отчет о покрытии",
+            "Реалистичности достаточно?",
+        )
+    )
+
+    readiness = targeted[24]["mermaid"]
+    assert all(
+        term in readiness
+        for term in (
+            "Владелец и дежурство",
+            "Политика, возможности, подтверждение",
+            "Трассы и оценки",
+            "SLO и обнаружение",
+            "Реалистичность теста и откат",
+            "Все условия выполнены?",
+        )
+    )
+
+    capstone = targeted[25]["mermaid"]
+    assert all(
+        term in capstone
+        for term in (
+            "Запрос и контракт",
+            "Политика и подтверждение?",
+            "Шлюз и ключ идемпотентности",
+            "Квитанция, сверка и трасса",
+            "Доказательств достаточно?",
+        )
+    )
+
+
+def test_task_3c_sources_use_reproducible_compact_print_layouts() -> None:
+    inline = {
+        item["number"]: item
+        for item in json.loads(MANIFEST.read_text(encoding="utf-8"))["diagrams"]
+    }
+    editorial = json.loads(EDITORIAL_MANIFEST.read_text(encoding="utf-8"))["diagrams"]
+    targeted = [
+        item for number, item in inline.items() if number not in {1, 3}
+    ] + editorial
+
+    assert {item["filename"] for item in targeted} == TASK_3C_V2_FILENAMES
+    for item in targeted:
+        assert item["layout_class"] in {
+            "simple-flow",
+            "decision-state",
+            "evidence-overlay",
+            "layered-architecture",
+        }
+        assert item["connector_style"] == "linear"
+        assert 220 <= item["label_wrap_width_px"] <= 320
+        assert 24 <= item["node_spacing_px"] <= 72
+        assert 24 <= item["rank_spacing_px"] <= 72
+        assert "aspect_ratio_override" not in item
+
+    assert inline[8]["mermaid"].startswith("block-beta\ncolumns 3")
+    assert inline[13]["mermaid"].startswith("block-beta\ncolumns 3")
+    assert inline[15]["mermaid"].startswith("block-beta\ncolumns 3")
+    assert inline[17]["mermaid"].startswith("block-beta\ncolumns 3")
+    assert inline[22]["mermaid"].startswith("block-beta\ncolumns 3")
+    assert inline[28]["mermaid"].startswith("block-beta\ncolumns 3")
+    assert inline[29]["mermaid"].startswith("flowchart LR")
+
+    combined = "\n".join(item["mermaid"] for item in targeted)
+    for split_prone_phrase in (
+        "Нормализованное хранилище",
+        "Координирующий агент",
+        "Специализированный агент",
+        "Классифицировать изменение",
+        "Обнаружение злоупотреблений",
+        "Требуется подтверждение",
+        "ключу идемпотентности",
+        "предварительная политика",
+        "Пользовательский поток",
+        'D -->|"Подтверждение"| H',
+        "Эксплуатационное решение",
+        "Соревновательное тестирование",
+    ):
+        assert split_prone_phrase not in combined
+
+    assert "Проверенное хранилище" in inline[6]["mermaid"]
+    assert "Агент-координатор" in inline[9]["mermaid"]
+    assert "Определить риск изменения" in inline[18]["mermaid"]
+    assert "Поиск нарушений" in inline[20]["mermaid"]
+    assert "Решение человека" in inline[21]["mermaid"]
+    assert "ключу безопасного повтора" in inline[23]["mermaid"]
+    assert "Исполнить и проверить результат" in inline[25]["mermaid"]
+    assert "Поток пользователя / WebSocket" in inline[26]["mermaid"]
+    assert 'D -->|"Нужно решение"| H' in inline[27]["mermaid"]
+    assert "Решение по эксплуатации и стоимости" in inline[28]["mermaid"].replace(
+        "\\n", " "
+    )
+    assert "Проверки атак и инциденты" in inline[22]["mermaid"].replace("\\n", " ")
 
 
 def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
@@ -2430,7 +2934,7 @@ def test_diagram_renderer_v2_contract_is_separate_from_asset_migration() -> None
         style
         for filename, style in production_style_by_filename.items()
         if filename not in MIGRATED_V2_FILENAMES
-    } == {"agent-arch-book-v1"}
+    } == set()
 
 
 def test_diagram_visual_style_guide_defines_the_v2_review_contract() -> None:
@@ -2672,7 +3176,7 @@ def test_gateway_discovery_sync_has_practice_sources_and_density_guards() -> Non
     appendix = text.split("## Приложение 4\\.", 1)[1].split("## Приложение 5\\.", 1)[0]
 
     assert "artifacts/lab-05/gateway-decision.yaml" in lab_five
-    assert "отсутствующий результат DLP" in lab_five
+    assert "Отсутствие DLP-результата" in lab_five
     for source_id, url in (
         (
             "S105",
