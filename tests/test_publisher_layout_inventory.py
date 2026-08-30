@@ -14,6 +14,39 @@ ROOT = Path(__file__).resolve().parents[1]
 LAYOUT_TOOL = ROOT / "docs/publisher/tools/generate_publisher_layout_v2.py"
 LAYOUT_INVENTORY = ROOT / "docs/publisher/ru-publisher-layout-v2-inventory.json"
 LAYOUT_LEDGER = ROOT / "docs/publisher/ru-publisher-layout-v2-review-ledger.json"
+TASK_3A_INVENTORY_IDS = {
+    "diagram-numbered-01",
+    "diagram-numbered-03",
+    "diagram-numbered-06",
+    "diagram-inline-01",
+    "diagram-inline-03",
+}
+TASK_3B1_INVENTORY_IDS = {
+    "diagram-numbered-02",
+    "diagram-numbered-04",
+    "diagram-numbered-05",
+    "diagram-numbered-07",
+    "diagram-numbered-08",
+    "diagram-numbered-09",
+    "diagram-numbered-10",
+    "diagram-numbered-11",
+    "diagram-numbered-12",
+    "diagram-numbered-13",
+    "diagram-numbered-14",
+}
+TASK_3B1_FILENAMES = {
+    "ru-figure-13-autonomy-ladder.png",
+    "ru-figure-02-trust-boundaries.png",
+    "ru-figure-19-localhost-control-plane.png",
+    "ru-figure-16-capability-endpoint-contract.png",
+    "ru-figure-06-approval-gateway.png",
+    "ru-figure-25-memory-write-lifecycle.png",
+    "ru-figure-05-memory-retrieval.png",
+    "ru-figure-07-sandbox-mcp.png",
+    "ru-figure-21-mcp-gateway.png",
+    "ru-figure-08-idempotency-recovery.png",
+    "ru-figure-20-eval-integrity.png",
+}
 
 
 def test_publisher_layout_generator_is_checked_in() -> None:
@@ -322,6 +355,45 @@ def test_build_outputs_never_reads_inventory_or_ledger_as_generator_inputs(
     assert set(outputs) == {LAYOUT_INVENTORY, LAYOUT_LEDGER}
 
 
+def test_task_3b1_updates_are_derived_from_exact_independent_evidence() -> None:
+    inventory = layout_v2.build_inventory(ROOT)
+
+    assert layout_v2.TASK_3B1_CHANGED_ASSET_FILENAMES == TASK_3B1_FILENAMES
+    updates = layout_v2._task_3b1_review_updates(ROOT, inventory)
+
+    assert set(updates) == TASK_3B1_INVENTORY_IDS
+    for update in updates.values():
+        assert update["status"] == "in_progress"
+        assert update["severity"] is None
+        assert update["updated_by"] == "Codex Task 3B1 quality review"
+        assert update["gate_statuses"] == {
+            "source": "pass",
+            "standalone_render": "pass",
+            "grayscale": "pass",
+            "preview_placement": "pass",
+            "final_publisher_placement": "pending",
+        }
+
+
+def test_default_generator_preserves_task_3a_while_adding_task_3b1() -> None:
+    outputs = layout_v2.build_outputs(ROOT)
+    ledger = json.loads(outputs[LAYOUT_LEDGER].decode("utf-8"))
+    entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
+
+    assert all(
+        entries[inventory_id]["status"] == "in_progress"
+        for inventory_id in TASK_3A_INVENTORY_IDS
+    )
+    assert all(
+        entries[inventory_id]["status"] == "in_progress"
+        for inventory_id in TASK_3B1_INVENTORY_IDS
+    )
+    assert all(
+        entries[inventory_id]["updated_by"] == "Codex Task 3A quality review"
+        for inventory_id in TASK_3A_INVENTORY_IDS
+    )
+
+
 def test_generated_inventory_preserves_all_frozen_facts() -> None:
     committed = json.loads(LAYOUT_INVENTORY.read_text(encoding="utf-8"))
 
@@ -342,13 +414,13 @@ def test_generated_inventory_preserves_all_frozen_facts() -> None:
         "reader_facing_headings": 43,
     }
 
-    task_3a_filenames = {
+    migrated_v2_filenames = {
         "ru-figure-01-book-map.png",
         "ru-figure-03-reference-architecture.png",
         "ru-figure-04-capability-contract-path.png",
         "ru-inline-diagram-01.png",
         "ru-inline-diagram-03.png",
-    }
+    } | TASK_3B1_FILENAMES
     for diagram in generated["diagrams"]:
         assert "current_placed_size_inches" not in diagram
         placements = diagram["baseline_docx_placements"]
@@ -356,7 +428,7 @@ def test_generated_inventory_preserves_all_frozen_facts() -> None:
             "google-doc-book-standards",
             "template2000n-book-standards",
         }
-        expected_payload_match = diagram["filename"] not in task_3a_filenames
+        expected_payload_match = diagram["filename"] not in migrated_v2_filenames
         for placement in placements.values():
             assert placement["payload_match"] is expected_payload_match
             assert placement["artifact_sync_status"] == (

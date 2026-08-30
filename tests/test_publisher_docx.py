@@ -57,6 +57,15 @@ TASK_3A_QA_DIR = ROOT / "docs/publisher/qa/layout-v2/task-3a"
 TASK_3A_RENDERER_REPORT = TASK_3A_QA_DIR / "renderer-report.json"
 TASK_3A_CONTACT_SHEET = TASK_3A_QA_DIR / "contact-sheet.png"
 TASK_3A_PREVIEW_REPORT = TASK_3A_QA_DIR / "preview-placement.json"
+TASK_3B1_QA_DIR = ROOT / "docs/publisher/qa/layout-v2/task-3b1"
+TASK_3B1_RENDERER_REPORT = TASK_3B1_QA_DIR / "renderer-report.json"
+TASK_3B1_CONTACT_SHEETS = (
+    TASK_3B1_QA_DIR / "contact-sheet-01.png",
+    TASK_3B1_QA_DIR / "contact-sheet-02.png",
+    TASK_3B1_QA_DIR / "grayscale-contact-sheet-01.png",
+    TASK_3B1_QA_DIR / "grayscale-contact-sheet-02.png",
+)
+TASK_3B1_PREVIEW_REPORT = TASK_3B1_QA_DIR / "preview-placement.json"
 DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
 DIAGRAM_GEOMETRY_AUDIT = ROOT / "docs/publisher/tools/ru_diagram_svg_geometry.mjs"
 EXPECTED_TABLE_COUNT = 12
@@ -76,6 +85,66 @@ TASK_3A_CHANGED_ASSET_FILENAMES = {
     "ru-inline-diagram-03.png",
 }
 TASK_3A_EXPECTED_FILENAMES = TASK_3A_CHANGED_ASSET_FILENAMES
+TASK_3B1_REVIEW_INVENTORY_IDS = {
+    "diagram-numbered-02",
+    "diagram-numbered-04",
+    "diagram-numbered-05",
+    "diagram-numbered-07",
+    "diagram-numbered-08",
+    "diagram-numbered-09",
+    "diagram-numbered-10",
+    "diagram-numbered-11",
+    "diagram-numbered-12",
+    "diagram-numbered-13",
+    "diagram-numbered-14",
+}
+TASK_3B1_CHANGED_ASSET_FILENAMES = {
+    "ru-figure-13-autonomy-ladder.png",
+    "ru-figure-02-trust-boundaries.png",
+    "ru-figure-19-localhost-control-plane.png",
+    "ru-figure-16-capability-endpoint-contract.png",
+    "ru-figure-06-approval-gateway.png",
+    "ru-figure-25-memory-write-lifecycle.png",
+    "ru-figure-05-memory-retrieval.png",
+    "ru-figure-07-sandbox-mcp.png",
+    "ru-figure-21-mcp-gateway.png",
+    "ru-figure-08-idempotency-recovery.png",
+    "ru-figure-20-eval-integrity.png",
+}
+TASK_3B1_EXPECTED_FILENAMES = TASK_3B1_CHANGED_ASSET_FILENAMES
+MIGRATED_V2_FILENAMES = TASK_3A_CHANGED_ASSET_FILENAMES | TASK_3B1_CHANGED_ASSET_FILENAMES
+ACCEPTED_TASK_3A_ASSET_HASHES = {
+    "ru-figure-01-book-map.png": (
+        "338e5101227b68da71fa0427c9d3dc375b975d4ed669706b124b2d83c71a6f08"
+    ),
+    "ru-figure-01-book-map.svg": (
+        "83ed969d1fb61d97016d2c03bc3d5a351a9bb294b41a45fc5b52db7f76626f44"
+    ),
+    "ru-figure-03-reference-architecture.png": (
+        "6d2ed8747c9b947043e91debac3c74d58b7b2c6ecb25ed4901f42bcc316300fa"
+    ),
+    "ru-figure-03-reference-architecture.svg": (
+        "9e0e0dd78434098325bbe994f30195c7f2386d96c6baed79334cc21131ef7cb8"
+    ),
+    "ru-figure-04-capability-contract-path.png": (
+        "fe39a37dabaa42aaedd1508cb3821e288486e1536e43e0b13ced5faabc3df610"
+    ),
+    "ru-figure-04-capability-contract-path.svg": (
+        "da47413f2363667d4886ee6cf7fd845dcb7b18a958c1413cf935bacb1ebad631"
+    ),
+    "ru-inline-diagram-01.png": (
+        "a857eec60ebc3e119ba812eac429b43c92625bc766b7c7937f5959a335a1c2fa"
+    ),
+    "ru-inline-diagram-01.svg": (
+        "6b26ee456ecc274cdd5a35066626e7eb2b2cedbd6b90cf4c34bf16be4d675a43"
+    ),
+    "ru-inline-diagram-03.png": (
+        "69e390bb6f8fb70ca42da076b202fa60d254c559584340e024f96ea3ecb25f32"
+    ),
+    "ru-inline-diagram-03.svg": (
+        "7acd015538560e1e7bddb230304bb74d8be3f978a34e1e9af443ebdf7947187b"
+    ),
+}
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -98,6 +167,10 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
     assert (
         generate_publisher_layout_v2.TASK_3A_CHANGED_ASSET_FILENAMES
         == TASK_3A_CHANGED_ASSET_FILENAMES
+    )
+    assert (
+        generate_publisher_layout_v2.TASK_3B1_CHANGED_ASSET_FILENAMES
+        == TASK_3B1_CHANGED_ASSET_FILENAMES
     )
     assert inventory["source"] == {
         "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
@@ -224,7 +297,8 @@ def test_task_3a_records_partial_gates_without_claiming_final_placement() -> Non
     assert all(
         entry["status"] == "pending"
         for inventory_id, entry in entries.items()
-        if inventory_id not in TASK_3A_REVIEW_INVENTORY_IDS
+        if inventory_id
+        not in TASK_3A_REVIEW_INVENTORY_IDS | TASK_3B1_REVIEW_INVENTORY_IDS
     )
 
     for inventory_id in TASK_3A_REVIEW_INVENTORY_IDS:
@@ -241,6 +315,29 @@ def test_task_3a_records_partial_gates_without_claiming_final_placement() -> Non
         }
         assert "final publisher placement pending Task 7" in entry["notes"]
         assert all(not Path(ref["path"]).is_absolute() for ref in entry["evidence_refs"])
+
+
+def test_task_3b1_records_truthful_partial_gates_without_claiming_final_placement() -> None:
+    ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
+    entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
+
+    assert not {entry["inventory_id"] for entry in ledger["entries"] if entry["status"] == "pass"}
+    for inventory_id in TASK_3B1_REVIEW_INVENTORY_IDS:
+        entry = entries[inventory_id]
+        assert entry["status"] == "in_progress"
+        assert entry["severity"] is None
+        assert entry["updated_by"] == "Codex Task 3B1 quality review"
+        assert entry["updated_at"] == "2026-08-30"
+        assert entry["gate_statuses"] == {
+            "source": "pass",
+            "standalone_render": "pass",
+            "grayscale": "pass",
+            "preview_placement": "pass",
+            "final_publisher_placement": "pending",
+        }
+        assert "baseline DOCX payload mismatch" in entry["notes"]
+        assert "artifact sync pending" in entry["notes"]
+        assert "final publisher placement pending Task 7" in entry["notes"]
 
 
 def test_task_3a_durable_renderer_evidence_covers_exact_assets_and_metrics() -> None:
@@ -339,6 +436,115 @@ def test_task_3a_preview_placement_evidence_is_truthful_and_complete() -> None:
         assert placement["effective_font_pt"] >= 9.5
         assert placement["viewbox_aspect_ratio"] >= 0.72
         assert placement["visually_verified"] is True
+
+
+def test_task_3b1_durable_renderer_evidence_covers_exact_assets_and_metrics() -> None:
+    report = json.loads(TASK_3B1_RENDERER_REPORT.read_text(encoding="utf-8"))
+
+    assert report["mermaid"] == {
+        "version": "11.17.2",
+        "sha256": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8",
+    }
+    assert report["rendered"] == 11
+    assert {result["filename"] for result in report["results"]} == (
+        TASK_3B1_EXPECTED_FILENAMES
+    )
+    assert report["minimum_effective_font_pt"] >= 9.5
+    assert report["minimum_viewbox_aspect_ratio"] >= 0.72
+    assert report["violations"] == []
+    assert all(findings == [] for findings in report["findings"].values())
+    assert {result["layout_engine"] for result in report["results"]} == {"dagre"}
+    assert {result["layout_class"] for result in report["results"]} == {
+        "simple-flow",
+        "decision-state",
+        "evidence-overlay",
+    }
+    for result in report["results"]:
+        assert result["effective_font_pt"] >= 9.5
+        assert result["viewbox_aspect_ratio"] >= 0.72
+        assert result["aspect_ratio_override"] is None
+        assert result["violations"] == []
+        assert all(
+            findings == []
+            for finding_name, findings in result["findings"].items()
+            if finding_name != "viewbox_aspect_ratio"
+        )
+
+
+def test_task_3b1_evidence_is_repository_relative_present_and_hashed() -> None:
+    ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
+    entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
+
+    expected_common_paths = {
+        path.relative_to(ROOT).as_posix()
+        for path in (
+            TASK_3B1_RENDERER_REPORT,
+            *TASK_3B1_CONTACT_SHEETS,
+            TASK_3B1_PREVIEW_REPORT,
+        )
+    }
+    for inventory_id in TASK_3B1_REVIEW_INVENTORY_IDS:
+        evidence_refs = entries[inventory_id]["evidence_refs"]
+        evidence_paths = {reference["path"] for reference in evidence_refs}
+        assert expected_common_paths <= evidence_paths
+        assert len(evidence_refs) == 8
+        for reference in evidence_refs:
+            evidence_path = Path(reference["path"])
+            assert not evidence_path.is_absolute()
+            artifact_path = ROOT / evidence_path
+            assert artifact_path.is_file()
+            assert hashlib.sha256(artifact_path.read_bytes()).hexdigest() == reference["sha256"]
+
+    for contact_sheet in TASK_3B1_CONTACT_SHEETS:
+        payload = contact_sheet.read_bytes()
+        assert payload[:8] == b"\x89PNG\r\n\x1a\n"
+        assert int.from_bytes(payload[16:20], "big") == 4200
+        assert int.from_bytes(payload[20:24], "big") == 3900
+
+
+def test_task_3b1_preview_records_all_migrated_assets_and_baseline_mismatch() -> None:
+    report = json.loads(TASK_3B1_PREVIEW_REPORT.read_text(encoding="utf-8"))
+
+    assert report["schema_version"] == 2
+    assert report["task"] == "3B1"
+    assert report["status"] == "preview_pass"
+    assert report["temporary_docx_committed"] is False
+    assert report["final_publisher_placement"] == "pending_task_7"
+    assert set(report["selected_assets"]) == TASK_3B1_EXPECTED_FILENAMES
+    assert set(report["migrated_assets"]) == MIGRATED_V2_FILENAMES
+    assert report["visual_review"] == {
+        "result": "pass",
+        "reviewed_by": "Codex",
+        "reviewed_on": "2026-08-30",
+        "actual_size": "pass",
+        "grayscale": "pass",
+    }
+
+    placements = report["placements"]
+    assert {placement["filename"] for placement in placements} == MIGRATED_V2_FILENAMES
+    assert {placement["preview_docx"]["page_number"] for placement in placements} <= set(
+        report["rendered_pages"]
+    )
+    for placement in placements:
+        asset_path = ROOT / "docs/publisher/visuals" / placement["filename"]
+        assert placement["asset_sha256"] == hashlib.sha256(asset_path.read_bytes()).hexdigest()
+        assert placement["baseline_docx"]["payload_match"] is False
+        assert placement["baseline_docx"]["artifact_sync_status"] == "pending"
+        assert placement["preview_docx"]["payload_match"] is True
+        assert placement["preview_docx"]["visually_verified"] is True
+        assert placement["gates"] == {
+            "source": "pass",
+            "standalone_render": "pass",
+            "grayscale": "pass",
+            "preview_placement": "pass",
+            "final_publisher_placement": "pending",
+        }
+
+
+def test_task_3b1_does_not_change_the_five_accepted_diagram_assets() -> None:
+    for filename, expected_hash in ACCEPTED_TASK_3A_ASSET_HASHES.items():
+        asset_path = ROOT / "docs/publisher/visuals" / filename
+        assert hashlib.sha256(asset_path.read_bytes()).hexdigest() == expected_hash
 
 
 def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:

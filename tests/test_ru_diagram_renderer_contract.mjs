@@ -31,6 +31,19 @@ const {
 
 const TESTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(TESTS_DIR, "..");
+const TASK_3B1_LAYOUT_CLASSES = new Map([
+  ["ru-figure-13-autonomy-ladder.png", "simple-flow"],
+  ["ru-figure-02-trust-boundaries.png", "simple-flow"],
+  ["ru-figure-19-localhost-control-plane.png", "decision-state"],
+  ["ru-figure-16-capability-endpoint-contract.png", "simple-flow"],
+  ["ru-figure-06-approval-gateway.png", "decision-state"],
+  ["ru-figure-25-memory-write-lifecycle.png", "decision-state"],
+  ["ru-figure-05-memory-retrieval.png", "decision-state"],
+  ["ru-figure-07-sandbox-mcp.png", "decision-state"],
+  ["ru-figure-21-mcp-gateway.png", "decision-state"],
+  ["ru-figure-08-idempotency-recovery.png", "decision-state"],
+  ["ru-figure-20-eval-integrity.png", "evidence-overlay"],
+]);
 const FIXTURE_PATH = path.join(
   TESTS_DIR,
   "fixtures/ru_diagram_renderer/geometry-cases.json",
@@ -377,7 +390,7 @@ test("an explicit reviewed aspect override is allowed and reported", () => {
 });
 
 
-test("layout classes select Dagre for simple flows and ELK for layered architecture", () => {
+test("layout classes reserve ELK for layered architecture", () => {
   assert.deepEqual(normalizeDiagramOptions({ filename: "simple.png" }), {
     layout_class: "simple-flow",
     layout_engine: "dagre",
@@ -400,6 +413,20 @@ test("layout classes select Dagre for simple flows and ELK for layered architect
     feedback_loop_review: null,
     aspect_ratio_override: null,
   });
+  for (const layoutClass of ["decision-state", "evidence-overlay"]) {
+    assert.deepEqual(normalizeDiagramOptions({
+      filename: `${layoutClass}.png`,
+      layout_class: layoutClass,
+    }), {
+      layout_class: layoutClass,
+      layout_engine: "dagre",
+      connector_style: "linear",
+      connector_curve: "linear",
+      label_wrap_width_px: 220,
+      feedback_loop_review: null,
+      aspect_ratio_override: null,
+    });
+  }
 });
 
 
@@ -508,7 +535,8 @@ test("leading and embedded Mermaid init/config directives are rejected before no
 });
 
 
-test("all production manifests remain valid during the Task 3A transition", () => {
+test("all production manifests preserve the exact Task 3B1 layout classifications", () => {
+  const seenTask3B1 = new Map();
   for (const filename of [
     "ru-inline-diagrams-2026-07-13.json",
     "ru-numbered-diagrams-2026-07-15.json",
@@ -524,6 +552,12 @@ test("all production manifests remain valid during the Task 3A transition", () =
         assert.equal(options.layout_class, "layered-architecture");
         assert.equal(options.layout_engine, "elk");
         assert.equal(options.connector_curve, "step");
+      } else if (TASK_3B1_LAYOUT_CLASSES.has(diagram.filename)) {
+        const expectedClass = TASK_3B1_LAYOUT_CLASSES.get(diagram.filename);
+        assert.equal(options.layout_class, expectedClass);
+        assert.equal(options.layout_engine, "dagre");
+        assert.equal(options.connector_curve, "linear");
+        seenTask3B1.set(diagram.filename, expectedClass);
       } else {
         assert.equal(options.layout_class, "simple-flow");
         assert.equal(options.layout_engine, "dagre");
@@ -531,4 +565,5 @@ test("all production manifests remain valid during the Task 3A transition", () =
       }
     }
   }
+  assert.deepEqual(seenTask3B1, TASK_3B1_LAYOUT_CLASSES);
 });
