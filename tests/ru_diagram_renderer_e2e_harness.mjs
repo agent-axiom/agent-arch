@@ -21,6 +21,10 @@ const RENDERER = path.join(
 const FIXTURE_DIR = path.join(TESTS_DIR, "fixtures/ru_diagram_renderer");
 const GOOD_MANIFEST = path.join(FIXTURE_DIR, "good-manifest.json");
 const DEFECTIVE_MANIFEST = path.join(FIXTURE_DIR, "defective-manifest.json");
+const INVALID_FEEDBACK_MANIFEST = path.join(
+  FIXTURE_DIR,
+  "invalid-feedback-manifest.json",
+);
 
 
 function invokeRenderer({ manifest, mermaidJs, chrome, outputDir, reportPath }) {
@@ -113,17 +117,36 @@ async function runGoodFixture({ mermaidJs, chrome, tempRoot }) {
   assert.equal(run.signal, null);
   const report = await readJson(reportPath);
   assert.deepEqual(JSON.parse(run.stdout), report);
-  assertReportContract(report, 2);
+  assertReportContract(report, 3);
   assert.deepEqual(report.violations, []);
   assert.deepEqual(
     report.results.map((result) => result.layout_engine),
-    ["dagre", "elk"],
+    ["dagre", "elk", "dagre"],
   );
   for (const result of report.results) {
     await assertSvgGeometryStage(outputDir, result);
     assert.deepEqual(result.violations, []);
   }
-  return report.results.map((result) => result.layout_engine);
+  const feedbackResult = report.results.find(
+    (result) => result.filename === "fixture-good-reviewed-feedback.png",
+  );
+  assert.ok(feedbackResult, "good fixture report lacks the reviewed feedback diagram");
+  assert.equal(feedbackResult.connector_curve, "linear");
+  assert.equal(feedbackResult.feedback_loop_review.edge_id, "feedback");
+  assert.equal(
+    feedbackResult.geometry.edge_paths.find((edge) => edge.id === "feedback")?.route_kind,
+    "curved",
+  );
+  assert.ok(
+    feedbackResult.geometry.edge_paths
+      .filter((edge) => edge.id !== "feedback")
+      .every((edge) => edge.route_kind === "polyline"),
+    "a non-reviewed feedback edge was rendered as curved",
+  );
+  return {
+    layoutEngines: report.results.map((result) => result.layout_engine),
+    reviewedFeedbackEdgeIds: [feedbackResult.feedback_loop_review.edge_id],
+  };
 }
 
 
@@ -171,10 +194,58 @@ async function runDefectiveFixtures({ mermaidJs, chrome, tempRoot }) {
       `${diagram.filename}: report lacks ${expectedFinding}`,
     );
     assert.ok(report.results[0].findings[expectedFinding].length > 0);
+    if (diagram.filename === "fixture-bad-edge-text.png") {
+      const result = report.results[0];
+      const ownedLabel = result.geometry.edge_labels.find(
+        (label) => label.edge_id === "labeled",
+      );
+      assert.ok(ownedLabel, "labeled edge lacks stable DOM ownership");
+      const labelFindings = result.findings.unrelated_edge_text_intersections.filter(
+        (finding) => finding.text_id === ownedLabel.text_id,
+      );
+      assert.ok(labelFindings.some((finding) => finding.edge_id === "unrelated"));
+      assert.ok(labelFindings.every((finding) => finding.edge_id !== "labeled"));
+    }
     assert.match(run.stderr, /print-readability violations/);
     findings.push(expectedFinding);
   }
   return findings;
+}
+
+
+async function runInvalidFeedbackFixtures({ mermaidJs, chrome, tempRoot }) {
+  const manifest = await readJson(INVALID_FEEDBACK_MANIFEST);
+  assert.equal(manifest.diagrams.length, manifest.expected_count);
+  const rejectedFilenames = [];
+  for (const diagram of manifest.diagrams) {
+    const caseRoot = path.join(tempRoot, "invalid-feedback", path.parse(diagram.filename).name);
+    const outputDir = path.join(caseRoot, "output");
+    const manifestPath = path.join(caseRoot, "manifest.json");
+    const reportPath = path.join(caseRoot, "report.json");
+    await fs.mkdir(caseRoot, { recursive: true });
+    await fs.writeFile(manifestPath, `${JSON.stringify({
+      expected_count: 1,
+      diagrams: [diagram],
+    }, null, 2)}\n`, "utf8");
+
+    const run = await invokeRenderer({
+      manifest: manifestPath,
+      mermaidJs,
+      chrome,
+      outputDir,
+      reportPath,
+    });
+    assert.notEqual(run.status, 0, `${diagram.filename}: invalid review exited zero`);
+    assert.equal(run.signal, null, `${diagram.filename}: renderer ended from ${run.signal}`);
+    assert.equal(
+      await pathExists(reportPath),
+      false,
+      `${diagram.filename}: invalid review reached geometry reporting`,
+    );
+    assert.match(run.stderr, new RegExp(diagram.fixture_expected_error));
+    rejectedFilenames.push(diagram.filename);
+  }
+  return rejectedFilenames;
 }
 
 
@@ -188,7 +259,7 @@ export async function runFixtureHarness({ mermaidJs, chrome }) {
 
   const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "ru-diagram-renderer-e2e-"));
   try {
-    const goodLayoutEngines = await runGoodFixture({
+    const good = await runGoodFixture({
       mermaidJs: resolvedMermaidJs,
       chrome: resolvedChrome,
       tempRoot,
@@ -198,11 +269,18 @@ export async function runFixtureHarness({ mermaidJs, chrome }) {
       chrome: resolvedChrome,
       tempRoot,
     });
+    const invalidFeedbackFixtures = await runInvalidFeedbackFixtures({
+      mermaidJs: resolvedMermaidJs,
+      chrome: resolvedChrome,
+      tempRoot,
+    });
     return {
-      good_diagrams: goodLayoutEngines.length,
-      good_layout_engines: goodLayoutEngines,
+      good_diagrams: good.layoutEngines.length,
+      good_layout_engines: good.layoutEngines,
+      reviewed_feedback_edge_ids: good.reviewedFeedbackEdgeIds,
       defective_fixtures: defectiveFindings.length,
       defective_findings: defectiveFindings,
+      invalid_feedback_fixtures: invalidFeedbackFixtures,
     };
   } finally {
     await fs.rm(tempRoot, { recursive: true, force: true });

@@ -4,7 +4,6 @@ on:
   push:
     branches: ["main"]
     paths-ignore:
-      - 'docs/**'
       - 'README.md'
       - 'README.ru.md'
       - 'README.zh.md'
@@ -12,7 +11,19 @@ on:
       - 'mkdocs.yml'
       - 'docs/assets/badges/coverage.svg'
   workflow_dispatch:
-
+  pull_request:
+    paths:
+      - '.github/workflows/coverage.yml'
+      - 'docs/publisher/package.json'
+      - 'docs/publisher/package-lock.json'
+      - 'docs/publisher/tools/ru_diagram_renderer_contract.mjs'
+      - 'docs/publisher/tools/ru_diagram_svg_geometry.mjs'
+      - 'docs/publisher/tools/render_ru_inline_diagrams.mjs'
+      - 'tests/fixtures/ru_diagram_renderer/**'
+      - 'tests/ru_diagram_renderer_e2e_harness.mjs'
+      - 'tests/ru_diagram_test_environment.mjs'
+      - 'tests/test_ru_diagram_renderer_*.mjs'
+      - 'tests/test_ru_diagram_svg_geometry_e2e.mjs'
 permissions:
   contents: write
 
@@ -83,3 +94,31 @@ jobs:
           commit_message: "Update coverage badge"
           file_pattern: docs/assets/badges/coverage.svg
           skip_fetch: true
+
+  publisher-diagram-renderer:
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+        with:
+          persist-credentials: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v6.5.0
+        with:
+          node-version: 20.19.5
+          cache: npm
+          cache-dependency-path: docs/publisher/package-lock.json
+
+      - name: Install publisher Node dependencies
+        run: npm ci --prefix docs/publisher
+
+      - name: Install Chromium
+        run: npm exec --prefix docs/publisher -- playwright install --with-deps chromium
+
+      - name: Run publisher Node and browser tests
+        run: npm test --prefix docs/publisher

@@ -1,5 +1,5 @@
 {
-  "expected_count": 2,
+  "expected_count": 3,
   "diagrams": [
     {
       "number": 1,
@@ -14,6 +14,19 @@
       "layout_class": "layered-architecture",
       "connector_style": "orthogonal",
       "mermaid": "flowchart LR\nsubgraph I[\"Вход\"]\nA[\"Запрос\"]\nend\nsubgraph C[\"Управление\"]\nB[\"Политика\"]\nend\nsubgraph R[\"Исполнение\"]\nD[\"Действие\"]\nend\nA --> B --> D"
+    },
+    {
+      "number": 3,
+      "caption": "Проверенная петля обратной связи",
+      "filename": "fixture-good-reviewed-feedback.png",
+      "reviewed_feedback_loop": {
+        "edge_id": "feedback",
+        "curve": "basis",
+        "reviewed_by": "layout-editor",
+        "reviewed_on": "2026-08-30",
+        "reason": "The return edge is curved to remain distinct from the forward linear path."
+      },
+      "mermaid": "flowchart LR\nA[\"Запрос\"] forward@--> B[\"Проверка\"]\nB next@--> C[\"Результат\"]\nC feedback@--> A"
     }
   ]
 }

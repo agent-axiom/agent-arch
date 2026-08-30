@@ -13,7 +13,7 @@
       "caption": "Недопустимое пересечение связи и чужой подписи",
       "filename": "fixture-bad-edge-text.png",
       "fixture_expected_finding": "unrelated_edge_text_intersections",
-      "mermaid": "flowchart LR\nA[\"Начало\"] -->|\"Чужая подпись\"| B[\"Конец\"]\nC[\"Вторая ветка\"] --> D[\"Второй конец\"]\nlinkStyle 1 translate:0px -115px"
+      "mermaid": "flowchart LR\nU[\"Без подписи\"] unlabeled@--> V[\"Первый конец\"]\nA[\"Начало\"] labeled@-->|\"Собственная подпись\"| B[\"Конец\"]\nC[\"Вторая ветка\"] unrelated@--> D[\"Второй конец\"]\nlinkStyle 2 translate:0px -115px"
     },
     {
       "number": 3,
@@ -27,7 +27,7 @@
       "caption": "Недопустимые совпадающие маршруты",
       "filename": "fixture-bad-duplicate-route.png",
       "fixture_expected_finding": "duplicate_edge_routes",
-      "mermaid": "flowchart LR\nA[\"Источник\"] --> B[\"Приемник\"]\nA --> B\nlinkStyle 0,1 scale:0.01"
+      "mermaid": "flowchart LR\nA[\"Источник\"] --> B[\"Общая точка\"] --> C[\"Первый выход\"]\nA --> B --> D[\"Второй выход\"]\nlinkStyle 2 translate:0px 244px,scale:1 -1"
     },
     {
       "number": 5,

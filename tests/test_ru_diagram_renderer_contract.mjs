@@ -4,7 +4,15 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import * as rendererContract from "../docs/publisher/tools/ru_diagram_renderer_contract.mjs";
 import {
+  assertBrowserTestEnvironment,
+  browserTestSkip,
+} from "./ru_diagram_test_environment.mjs";
+
+const {
+  DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION,
+  DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX,
   MIN_CLUSTER_TITLE_CLEARANCE_PX,
   MIN_EFFECTIVE_FONT_PT,
   MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX,
@@ -14,7 +22,9 @@ import {
   classifyGeometry,
   measureClusterTitleClearances,
   normalizeDiagramOptions,
-} from "../docs/publisher/tools/ru_diagram_renderer_contract.mjs";
+  normalizeMermaidSource,
+  prepareMermaidSource,
+} = rendererContract;
 
 const TESTS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(TESTS_DIR, "..");
@@ -30,12 +40,62 @@ function clone(value) {
 }
 
 
+function clearanceGeometry(clearancePx) {
+  const textBounds = { x: 0, y: 0, width: 10, height: 10 };
+  const strokeWidthPx = 2;
+  const centerlineY = textBounds.height + clearancePx + strokeWidthPx / 2;
+  const start = { x: -10, y: centerlineY };
+  const end = { x: 20, y: centerlineY };
+  return {
+    precision_px: 0.01,
+    visible_text: [{
+      id: `text-${clearancePx}`,
+      role: "text",
+      owner_id: null,
+      text: "Контроль",
+      bounds: textBounds,
+    }],
+    nodes: [],
+    cluster_frames: [],
+    cluster_titles: [],
+    edge_paths: [{
+      id: `edge-${clearancePx}`,
+      visible: true,
+      source_node_id: "source",
+      target_node_id: "target",
+      stroke_width_px: strokeWidthPx,
+      route_kind: "polyline",
+      sampling_error_bound_px: 1,
+      samples: [start, end],
+      segments: [{ start, end, deviation_bound_px: 0 }],
+      comparison_samples: [start, end],
+    }],
+  };
+}
+
+
 test("v2 constants enforce the print geometry floor", () => {
   assert.equal(VISUAL_STYLE_ID, "agent-arch-book-v2");
   assert.equal(MIN_EFFECTIVE_FONT_PT, 9.5);
   assert.equal(MIN_VIEWBOX_ASPECT_RATIO, 0.72);
   assert.equal(MIN_CLUSTER_TITLE_CLEARANCE_PX, 12);
   assert.equal(MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX, 10);
+  assert.equal(DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX, 24);
+  assert.equal(DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION, 0.25);
+});
+
+
+test("required CI browser dependencies fail instead of producing a skip", () => {
+  const environment = {
+    required: true,
+    missing: ["Playwright module", "Mermaid bundle", "Chromium executable"],
+  };
+
+  assert.equal(browserTestSkip(environment), false);
+  assert.throws(
+    () => assertBrowserTestEnvironment(environment),
+    /browser dependencies unavailable/,
+  );
 });
 
 
@@ -147,6 +207,36 @@ test("clearance rejects a closest approach between 2px sample endpoints", () => 
 });
 
 
+test("straight-route clearance rejects 9.9px and accepts exact 10.0px and 10.1px", () => {
+  const below = classifyGeometry(clearanceGeometry(9.9));
+  const exact = classifyGeometry(clearanceGeometry(10));
+  const above = classifyGeometry(clearanceGeometry(10.1));
+
+  assert.equal(below.unrelated_edge_text_intersections.length, 1);
+  assert.equal(below.unrelated_edge_text_intersections[0].clearance_px, 9.9);
+  assert.deepEqual(exact.unrelated_edge_text_intersections, []);
+  assert.deepEqual(above.unrelated_edge_text_intersections, []);
+});
+
+
+test("a curved route approaching text between coarse samples is rejected", () => {
+  const geometry = clearanceGeometry(10.1);
+  const edge = geometry.edge_paths[0];
+  const midpoint = { x: 5, y: 20.8 };
+  edge.route_kind = "curved";
+  edge.segments = [
+    { start: edge.samples[0], end: midpoint, deviation_bound_px: 0.01 },
+    { start: midpoint, end: edge.samples[1], deviation_bound_px: 0.01 },
+  ];
+
+  const findings = classifyGeometry(geometry);
+
+  assert.equal(findings.unrelated_edge_text_intersections.length, 1);
+  assert.equal(findings.unrelated_edge_text_intersections[0].edge_id, "edge-10.1");
+  assert.equal(findings.unrelated_edge_text_intersections[0].clearance_px, 9.79);
+});
+
+
 test("a node label outside its shape is rejected", () => {
   const geometry = clone(CASES.good);
   geometry.nodes[0].label_bounds = CASES.node_label_overflow.label_bounds;
@@ -171,7 +261,50 @@ test("coincident visible edge routes are rejected", () => {
 
   assert.deepEqual(findings.duplicate_edge_routes, [{
     edge_ids: ["edge-a-b", "edge-a-b-duplicate"],
-    maximum_separation_px: 0,
+    overlap_length_px: 140,
+    overlap_fraction: 1,
+    minimum_overlap_length_px: DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX,
+    minimum_overlap_fraction: DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION,
+  }]);
+});
+
+
+test("routes that diverge after a long shared segment are rejected", () => {
+  const geometry = clone(CASES.good);
+  geometry.visible_text = [];
+  geometry.nodes = [];
+  geometry.cluster_frames = [];
+  geometry.cluster_titles = [];
+  geometry.edge_paths = [{
+    id: "edge-left",
+    visible: true,
+    stroke_width_px: 2,
+    samples: [
+      { x: 0, y: 0 },
+      { x: 60, y: 0 },
+      { x: 100, y: 0 },
+    ],
+    comparison_samples: [],
+  }, {
+    id: "edge-right",
+    visible: true,
+    stroke_width_px: 2,
+    samples: [
+      { x: 0, y: 0 },
+      { x: 60, y: 0 },
+      { x: 100, y: 40 },
+    ],
+    comparison_samples: [],
+  }];
+
+  const findings = classifyGeometry(geometry);
+
+  assert.deepEqual(findings.duplicate_edge_routes, [{
+    edge_ids: ["edge-left", "edge-right"],
+    overlap_length_px: 60,
+    overlap_fraction: 0.6,
+    minimum_overlap_length_px: DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX,
+    minimum_overlap_fraction: DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION,
   }]);
 });
 
@@ -235,7 +368,7 @@ test("layout classes select Dagre for simple flows and ELK for layered architect
 });
 
 
-test("basis is available only through an explicit feedback-loop review", () => {
+test("a reviewed feedback loop keeps the global curve linear and targets one edge ID", () => {
   assert.throws(
     () => normalizeDiagramOptions({
       filename: "unreviewed.png",
@@ -245,17 +378,81 @@ test("basis is available only through an explicit feedback-loop review", () => {
   );
 
   const review = {
+    edge_id: "feedback",
     curve: "basis",
     reviewed_by: "layout-editor",
     reviewed_on: "2026-08-30",
     reason: "The only curved route is the reviewed feedback edge.",
   };
-  const options = normalizeDiagramOptions({
+  const diagram = {
     filename: "feedback.png",
+    mermaid: "flowchart LR\nA main@--> B\nB feedback@--> A",
     reviewed_feedback_loop: review,
-  });
-  assert.equal(options.connector_curve, "basis");
+  };
+  const options = normalizeDiagramOptions(diagram);
+  assert.equal(options.connector_curve, "linear");
   assert.deepEqual(options.feedback_loop_review, review);
+  assert.match(prepareMermaidSource(diagram, options), /feedback@\{ curve: basis \}$/);
+});
+
+
+test("feedback-loop reviews reject missing, multiple, and unidentified edge declarations", () => {
+  const review = {
+    edge_id: "feedback",
+    curve: "basis",
+    reviewed_by: "layout-editor",
+    reviewed_on: "2026-08-30",
+    reason: "The feedback edge needs a distinct return route.",
+  };
+  const mermaid = "flowchart LR\nA main@--> B\nB feedback@--> A";
+
+  assert.throws(
+    () => normalizeDiagramOptions({
+      filename: "missing-id.png",
+      mermaid,
+      reviewed_feedback_loop: { ...review, edge_id: undefined },
+    }),
+    /reviewed_feedback_loop\.edge_id/,
+  );
+  assert.throws(
+    () => normalizeDiagramOptions({
+      filename: "multiple-reviews.png",
+      mermaid,
+      reviewed_feedback_loop: [review, { ...review, edge_id: "main" }],
+    }),
+    /must be an object/,
+  );
+  assert.throws(
+    () => normalizeDiagramOptions({
+      filename: "unidentified.png",
+      mermaid,
+      reviewed_feedback_loop: { ...review, edge_id: "not-declared" },
+    }),
+    /does not identify an edge declared in Mermaid source/,
+  );
+  assert.throws(
+    () => normalizeDiagramOptions({
+      filename: "duplicate-id.png",
+      mermaid: `${mermaid}\nC feedback@--> D`,
+      reviewed_feedback_loop: review,
+    }),
+    /must identify exactly one Mermaid edge declaration/,
+  );
+});
+
+
+test("leading and embedded Mermaid init/config directives are rejected before normalization", () => {
+  for (const source of [
+    "%%{init: { 'flowchart': { 'curve': 'basis' } }}%%\nflowchart LR\nA --> B",
+    "%%{ config: { 'theme': 'dark' } }%%\nflowchart LR\nA --> B",
+    "flowchart LR\nA --> B\n%%{init: { 'theme': 'dark' }}%%",
+    "flowchart LR\n%%{ config: { 'flowchart': { 'curve': 'basis' } } }%%\nA --> B",
+  ]) {
+    assert.throws(
+      () => normalizeMermaidSource(source, "directive.png"),
+      /local Mermaid configuration is not allowed/,
+    );
+  }
 });
 
 

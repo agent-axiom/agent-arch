@@ -1,0 +1,62 @@
+{
+  "expected_count": 4,
+  "diagrams": [
+    {
+      "number": 1,
+      "caption": "Отсутствует идентификатор проверенной связи",
+      "filename": "fixture-bad-feedback-missing-id.png",
+      "fixture_expected_error": "reviewed_feedback_loop.edge_id must be a Mermaid v11 edge ID",
+      "reviewed_feedback_loop": {
+        "curve": "basis",
+        "reviewed_by": "layout-editor",
+        "reviewed_on": "2026-08-30",
+        "reason": "This invalid fixture intentionally omits the edge ID."
+      },
+      "mermaid": "flowchart LR\nA feedback@--> B"
+    },
+    {
+      "number": 2,
+      "caption": "Несколько проверенных петель",
+      "filename": "fixture-bad-feedback-multiple.png",
+      "fixture_expected_error": "reviewed_feedback_loop must be an object",
+      "reviewed_feedback_loop": [
+        {
+          "edge_id": "feedback",
+          "curve": "basis",
+          "reviewed_by": "layout-editor",
+          "reviewed_on": "2026-08-30",
+          "reason": "First invalid review."
+        },
+        {
+          "edge_id": "other",
+          "curve": "natural",
+          "reviewed_by": "layout-editor",
+          "reviewed_on": "2026-08-30",
+          "reason": "Second invalid review."
+        }
+      ],
+      "mermaid": "flowchart LR\nA feedback@--> B\nB other@--> C"
+    },
+    {
+      "number": 3,
+      "caption": "Неопознанная проверенная связь",
+      "filename": "fixture-bad-feedback-unidentified.png",
+      "fixture_expected_error": "does not identify an edge declared in Mermaid source",
+      "reviewed_feedback_loop": {
+        "edge_id": "feedback",
+        "curve": "basis",
+        "reviewed_by": "layout-editor",
+        "reviewed_on": "2026-08-30",
+        "reason": "This invalid review points at an undeclared edge."
+      },
+      "mermaid": "flowchart LR\nA forward@--> B"
+    },
+    {
+      "number": 4,
+      "caption": "Непроверенная локальная кривая",
+      "filename": "fixture-bad-feedback-unreviewed-curve.png",
+      "fixture_expected_error": "edge-level Mermaid curves must come from reviewed_feedback_loop",
+      "mermaid": "flowchart LR\nA feedback@--> B\nfeedback@{ curve: basis }"
+    }
+  ]
+}

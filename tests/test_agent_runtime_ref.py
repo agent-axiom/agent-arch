@@ -14287,7 +14287,12 @@ class TestCli:
 
     def test_workflow_jobs_recheck_expected_branch_at_runtime(self) -> None:
         expected_job_conditions = {
-            ".github/workflows/coverage.yml": {"coverage": "github.ref == 'refs/heads/main'"},
+            ".github/workflows/coverage.yml": {
+                "coverage": "github.ref == 'refs/heads/main'",
+                "publisher-diagram-renderer": (
+                    "github.event_name == 'pull_request' || github.ref == 'refs/heads/main'"
+                ),
+            },
             ".github/workflows/deploy.yml": {
                 "build": "github.ref == 'refs/heads/docs-prod'",
                 "deploy": "github.ref == 'refs/heads/docs-prod'",
@@ -14338,7 +14343,14 @@ class TestCli:
                     "Ensure badge directory exists",
                     "Generate coverage badge",
                     "Commit coverage badge",
-                ]
+                ],
+                "publisher-diagram-renderer": [
+                    "Checkout",
+                    "Setup Node",
+                    "Install publisher Node dependencies",
+                    "Install Chromium",
+                    "Run publisher Node and browser tests",
+                ],
             },
             ".github/workflows/deploy.yml": {
                 "build": [
@@ -14426,7 +14438,12 @@ class TestCli:
                     "name": "Checkout",
                     "uses": "actions/checkout@v6.0.2",
                     "with": {"ref": "main", "fetch-depth": 0},
-                }
+                },
+                {
+                    "name": "Checkout",
+                    "uses": "actions/checkout@v6.0.2",
+                    "with": {"persist-credentials": False},
+                },
             ],
             ".github/workflows/deploy.yml": [
                 {
@@ -14676,7 +14693,6 @@ class TestCli:
                 "push": {
                     "branches": ["main"],
                     "paths-ignore": [
-                        "docs/**",
                         "README.md",
                         "README.ru.md",
                         "README.zh.md",
@@ -14684,6 +14700,21 @@ class TestCli:
                         "mkdocs.yml",
                         "docs/assets/badges/coverage.svg",
                     ],
+                },
+                "pull_request": {
+                    "paths": [
+                        ".github/workflows/coverage.yml",
+                        "docs/publisher/package.json",
+                        "docs/publisher/package-lock.json",
+                        "docs/publisher/tools/ru_diagram_renderer_contract.mjs",
+                        "docs/publisher/tools/ru_diagram_svg_geometry.mjs",
+                        "docs/publisher/tools/render_ru_inline_diagrams.mjs",
+                        "tests/fixtures/ru_diagram_renderer/**",
+                        "tests/ru_diagram_renderer_e2e_harness.mjs",
+                        "tests/ru_diagram_test_environment.mjs",
+                        "tests/test_ru_diagram_renderer_*.mjs",
+                        "tests/test_ru_diagram_svg_geometry_e2e.mjs",
+                    ]
                 },
                 "workflow_dispatch": None,
             },
