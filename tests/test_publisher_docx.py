@@ -57,6 +57,20 @@ DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
 DIAGRAM_GEOMETRY_AUDIT = ROOT / "docs/publisher/tools/ru_diagram_svg_geometry.mjs"
 EXPECTED_TABLE_COUNT = 12
 EXPECTED_IMAGE_COUNT = 57
+TASK_3A_REVIEW_INVENTORY_IDS = {
+    "diagram-numbered-01",
+    "diagram-numbered-03",
+    "diagram-numbered-06",
+    "diagram-inline-01",
+    "diagram-inline-03",
+}
+TASK_3A_TRANSITIONAL_ASSET_FILENAMES = {
+    "ru-figure-01-book-map.png",
+    "ru-figure-03-reference-architecture.png",
+    "ru-figure-04-capability-contract-path.png",
+    "ru-inline-diagram-01.png",
+    "ru-inline-diagram-03.png",
+}
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -76,6 +90,10 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
     assert inventory["schema_version"] == 1
     assert inventory["baseline_date"] == "2026-08-30"
     assert inventory["base_commit"] == "8e125f1feeb0e8ea8a61e0ef3be7e0eb3c56398a"
+    assert (
+        generate_publisher_layout_v2.TRANSITIONAL_SOURCE_ASSET_FILENAMES
+        == TASK_3A_TRANSITIONAL_ASSET_FILENAMES
+    )
     assert inventory["source"] == {
         "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
         "sha256": "d47728290c07cfa355b91ae49a677fcabb1b914d0bc72f64d918b3ff5f737ce1",
@@ -193,6 +211,40 @@ def test_publisher_layout_v2_review_ledger_covers_inventory_once() -> None:
     )
 
 
+def test_task_3a_marks_only_the_five_verified_diagrams_passed() -> None:
+    ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
+    entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
+
+    assert {
+        inventory_id
+        for inventory_id, entry in entries.items()
+        if entry["status"] == "pass"
+    } == TASK_3A_REVIEW_INVENTORY_IDS
+    assert all(
+        entry["status"] == "pending"
+        for inventory_id, entry in entries.items()
+        if inventory_id not in TASK_3A_REVIEW_INVENTORY_IDS
+    )
+
+    for inventory_id in TASK_3A_REVIEW_INVENTORY_IDS:
+        entry = entries[inventory_id]
+        assert entry["severity"] is None
+        assert entry["reviewed_by"]
+        assert entry["reviewed_at"]
+        assert "reviewer_status=passed" in entry["notes"]
+        assert re.search(r"effective_font_pt=\d+\.\d{2}", entry["notes"])
+        assert re.search(r"aspect_ratio=\d+\.\d{3}", entry["notes"])
+        assert re.search(r"renderer_report=/private/tmp/\S+\.json", entry["notes"])
+        assert re.search(r"renderer_report_sha256=[0-9a-f]{64}", entry["notes"])
+        assert any(
+            re.fullmatch(
+                r"renderer-report:/private/tmp/\S+\.json#sha256=[0-9a-f]{64}",
+                evidence_ref,
+            )
+            for evidence_ref in entry["evidence_refs"]
+        )
+
+
 def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
     styled_characters = 0
     monospace_characters = 0
@@ -265,7 +317,7 @@ def test_generated_mermaid_svgs_are_valid_standalone_xml() -> None:
             ET.parse(svg_path)
 
 
-def test_mermaid_sources_connect_nodes_instead_of_cluster_frames() -> None:
+def test_only_figure_3_uses_reviewed_lane_frame_transitions() -> None:
     for manifest_path in (INLINE_DIAGRAMS, NUMBERED_DIAGRAMS):
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
         for diagram in manifest["diagrams"]:
@@ -282,7 +334,12 @@ def test_mermaid_sources_connect_nodes_instead_of_cluster_frames() -> None:
                 for endpoint in (left, right)
                 if endpoint in cluster_ids
             }
-            assert linked_cluster_ids == set(), (
+            expected_cluster_ids = (
+                {"REQUEST", "CONTROL", "EVIDENCE"}
+                if diagram["filename"] == "ru-figure-03-reference-architecture.png"
+                else set()
+            )
+            assert linked_cluster_ids == expected_cluster_ids, (
                 f"{diagram['filename']} links cluster frames: "
                 f"{sorted(linked_cluster_ids)}"
             )
@@ -1176,7 +1233,27 @@ def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
     template_targets, _ = ordered_embedded_images(CURRENT_TEMPLATE_DOCX)
 
     assert len(relative_paths) == EXPECTED_IMAGE_COUNT
-    assert raw_hashes == expected_hashes
+    mismatched_filenames = {
+        Path(relative_path).name
+        for relative_path, raw_hash, expected_hash in zip(
+            relative_paths,
+            raw_hashes,
+            expected_hashes,
+            strict=True,
+        )
+        if raw_hash != expected_hash
+    }
+    assert mismatched_filenames == TASK_3A_TRANSITIONAL_ASSET_FILENAMES
+    assert all(
+        raw_hash == expected_hash
+        for relative_path, raw_hash, expected_hash in zip(
+            relative_paths,
+            raw_hashes,
+            expected_hashes,
+            strict=True,
+        )
+        if Path(relative_path).name not in TASK_3A_TRANSITIONAL_ASSET_FILENAMES
+    )
     assert template_targets == raw_targets
 
 

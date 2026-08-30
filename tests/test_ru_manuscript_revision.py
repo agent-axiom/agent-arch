@@ -73,6 +73,14 @@ EDITORIAL_DIAGRAM_PATHS = [
     "visuals/ru-editorial-diagram-02-registry-reconciliation.png",
 ]
 
+TASK_3A_V2_FILENAMES = {
+    "ru-figure-01-book-map.png",
+    "ru-figure-03-reference-architecture.png",
+    "ru-figure-04-capability-contract-path.png",
+    "ru-inline-diagram-01.png",
+    "ru-inline-diagram-03.png",
+}
+
 
 def join_shell_continuations(text: str) -> str:
     text = re.sub(r" \\\n\s*", " ", text)
@@ -2046,6 +2054,113 @@ def test_numbered_diagram_manifest_covers_every_redesigned_figure() -> None:
     assert "УДЕРЖАТЬ" in diagrams[25]["mermaid"]
 
 
+def test_task_3a_diagram_sources_encode_the_reviewed_v2_designs() -> None:
+    diagrams = {
+        item["filename"]: item
+        for path in (MANIFEST, NUMBERED_MANIFEST)
+        for item in json.loads(path.read_text(encoding="utf-8"))["diagrams"]
+    }
+    targeted = {filename: diagrams[filename] for filename in TASK_3A_V2_FILENAMES}
+
+    assert {item["layout_class"] for item in targeted.values()} <= {
+        "simple-flow",
+        "layered-architecture",
+    }
+    assert targeted["ru-figure-03-reference-architecture.png"]["layout_class"] == (
+        "layered-architecture"
+    )
+    assert {
+        item["layout_class"]
+        for filename, item in targeted.items()
+        if filename != "ru-figure-03-reference-architecture.png"
+    } == {"simple-flow"}
+    assert all("aspect_ratio_override" not in item for item in targeted.values())
+
+    book_map = targeted["ru-figure-01-book-map.png"]["mermaid"]
+    assert [book_map.count(f'P{number}["') for number in range(1, 9)] == [1] * 8
+    assert [
+        line.strip()
+        for line in book_map.splitlines()
+        if "-->" in line or "-.->" in line
+    ] == [
+        "P1 --> P2",
+        "P2 --> P3",
+        "P3 --> P4",
+        "P4 --> P5",
+        "P5 --> P6",
+        "P6 --> P7",
+        "P7 --> P8",
+    ]
+    assert "Части I" not in book_map
+    assert "Части V" not in book_map
+    assert book_map.startswith("block-beta")
+    assert "columns 4" in book_map
+    assert "subgraph" not in book_map
+
+    chapter_formula = targeted["ru-inline-diagram-01.png"]["mermaid"]
+    assert [chapter_formula.count(f'{node}["') for node in "ABCDEFG"] == [1] * 7
+    assert [
+        line.strip()
+        for line in chapter_formula.splitlines()
+        if "-->" in line or "-.->" in line
+    ] == [
+        "A --> B",
+        "B --> C",
+        "C --> D",
+        "D --> E",
+        "E --> F",
+        "F --> G",
+    ]
+    assert chapter_formula.startswith("block-beta")
+    assert "columns 4" in chapter_formula
+    assert "subgraph" not in chapter_formula
+
+    architecture = targeted["ru-figure-03-reference-architecture.png"]["mermaid"]
+    assert architecture.count("subgraph ") == 3
+    assert all(
+        lane in architecture
+        for lane in ("Запрос и контекст", "Контроль и исполнение", "Доказательства")
+    )
+    assert architecture.count("-->") == 5
+    assert architecture.count("-.->") == 1
+    assert "<--" not in architecture
+
+    contract_core = targeted["ru-inline-diagram-03.png"]["mermaid"]
+    assert "subgraph" not in contract_core
+    assert contract_core.count("B -->") == 2
+    assert contract_core.count("D --> X") == 1
+    assert contract_core.count("K --> X") == 1
+    assert contract_core.count("-->") == 7
+
+    capability_path = targeted["ru-figure-04-capability-contract-path.png"]["mermaid"]
+    assert capability_path.startswith("flowchart LR")
+    assert [
+        line.strip()
+        for line in capability_path.splitlines()
+        if "-->" in line
+        ] == [
+            "U --> C",
+            "C --> X",
+            "X --> R",
+        ]
+    assert [
+        line.strip()
+        for line in capability_path.splitlines()
+        if "-.->" in line
+    ] == ["O -.-> C", "T -.-> R"]
+    assert "Неизменное намерение" in capability_path
+    assert "ключ идемпотентности" in capability_path.lower()
+    assert targeted["ru-figure-04-capability-contract-path.png"][
+        "label_wrap_width_px"
+    ] == 240
+    assert "Политика" in capability_path
+    assert "подтверждение" in capability_path
+    assert "внешнего эффекта" in capability_path.lower()
+    assert all(term in capability_path for term in ("Владелец", "риск и откат"))
+    assert "style U" not in capability_path
+    assert all(term in capability_path for term in ("Трасса", "и аудит"))
+
+
 def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
     source_diagrams = [
         item
@@ -2068,7 +2183,12 @@ def test_every_manuscript_visual_has_mermaid_source_and_unified_style() -> None:
 
     for filename in source_filenames:
         svg = ET.fromstring((VISUALS / filename).with_suffix(".svg").read_bytes())
-        assert svg.attrib["data-visual-style"] == "agent-arch-book-v1"
+        expected_style = (
+            "agent-arch-book-v2"
+            if filename in TASK_3A_V2_FILENAMES
+            else "agent-arch-book-v1"
+        )
+        assert svg.attrib["data-visual-style"] == expected_style
 
 
 def test_diagram_renderer_v2_contract_is_separate_from_asset_migration() -> None:
@@ -2081,11 +2201,22 @@ def test_diagram_renderer_v2_contract_is_separate_from_asset_migration() -> None
     assert "font-size: 26px !important" not in renderer
     assert 'curve: "basis"' not in renderer
 
-    production_style_ids = {
-        ET.fromstring(path.read_bytes()).attrib["data-visual-style"]
+    production_style_by_filename = {
+        path.with_suffix(".png").name: ET.fromstring(path.read_bytes()).attrib[
+            "data-visual-style"
+        ]
         for path in VISUALS.glob("ru-*.svg")
     }
-    assert production_style_ids == {"agent-arch-book-v1"}
+    assert {
+        filename
+        for filename, style in production_style_by_filename.items()
+        if style == "agent-arch-book-v2"
+    } == TASK_3A_V2_FILENAMES
+    assert {
+        style
+        for filename, style in production_style_by_filename.items()
+        if filename not in TASK_3A_V2_FILENAMES
+    } == {"agent-arch-book-v1"}
 
 
 def test_diagram_visual_style_guide_defines_the_v2_review_contract() -> None:

@@ -11,12 +11,15 @@ import {
 } from "./ru_diagram_test_environment.mjs";
 
 const {
+  BLOCK_PADDING_PX,
+  DEFAULT_LABEL_WRAP_WIDTH_PX,
   DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION,
   DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX,
   MIN_CLUSTER_TITLE_CLEARANCE_PX,
   MIN_EFFECTIVE_FONT_PT,
   MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX,
   MIN_VIEWBOX_ASPECT_RATIO,
+  NODE_LABEL_PADDING_PX,
   VISUAL_STYLE_ID,
   assessPrintGeometry,
   classifyGeometry,
@@ -80,6 +83,10 @@ test("v2 constants enforce the print geometry floor", () => {
   assert.equal(MIN_VIEWBOX_ASPECT_RATIO, 0.72);
   assert.equal(MIN_CLUSTER_TITLE_CLEARANCE_PX, 12);
   assert.equal(MIN_UNRELATED_EDGE_TEXT_CLEARANCE_PX, 10);
+  assert.equal(NODE_LABEL_PADDING_PX, 12);
+  assert.equal(BLOCK_PADDING_PX, 20);
+  assert.ok(BLOCK_PADDING_PX > NODE_LABEL_PADDING_PX);
+  assert.equal(DEFAULT_LABEL_WRAP_WIDTH_PX, 220);
   assert.equal(DUPLICATE_ROUTE_MIN_OVERLAP_LENGTH_PX, 24);
   assert.equal(DUPLICATE_ROUTE_MIN_OVERLAP_FRACTION, 0.25);
 });
@@ -350,6 +357,7 @@ test("layout classes select Dagre for simple flows and ELK for layered architect
     layout_engine: "dagre",
     connector_style: "linear",
     connector_curve: "linear",
+    label_wrap_width_px: 220,
     feedback_loop_review: null,
     aspect_ratio_override: null,
   });
@@ -362,9 +370,27 @@ test("layout classes select Dagre for simple flows and ELK for layered architect
     layout_engine: "elk",
     connector_style: "orthogonal",
     connector_curve: "step",
+    label_wrap_width_px: 220,
     feedback_loop_review: null,
     aspect_ratio_override: null,
   });
+});
+
+
+test("a bounded per-diagram label wrap width preserves whole technical terms", () => {
+  assert.equal(normalizeDiagramOptions({
+    filename: "wide-label.png",
+    label_wrap_width_px: 240,
+  }).label_wrap_width_px, 240);
+  for (const value of [159, 321, 220.5, "240"]) {
+    assert.throws(
+      () => normalizeDiagramOptions({
+        filename: "invalid-label-width.png",
+        label_wrap_width_px: value,
+      }),
+      /label_wrap_width_px/,
+    );
+  }
 });
 
 
@@ -456,7 +482,7 @@ test("leading and embedded Mermaid init/config directives are rejected before no
 });
 
 
-test("all production manifests remain valid with v2 defaults", () => {
+test("all production manifests remain valid during the Task 3A transition", () => {
   for (const filename of [
     "ru-inline-diagrams-2026-07-13.json",
     "ru-numbered-diagrams-2026-07-15.json",
@@ -468,9 +494,15 @@ test("all production manifests remain valid with v2 defaults", () => {
     ));
     for (const diagram of manifest.diagrams) {
       const options = normalizeDiagramOptions(diagram);
-      assert.equal(options.layout_class, "simple-flow");
-      assert.equal(options.layout_engine, "dagre");
-      assert.equal(options.connector_curve, "linear");
+      if (diagram.filename === "ru-figure-03-reference-architecture.png") {
+        assert.equal(options.layout_class, "layered-architecture");
+        assert.equal(options.layout_engine, "elk");
+        assert.equal(options.connector_curve, "step");
+      } else {
+        assert.equal(options.layout_class, "simple-flow");
+        assert.equal(options.layout_engine, "dagre");
+        assert.equal(options.connector_curve, "linear");
+      }
     }
   }
 });
