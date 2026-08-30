@@ -53,6 +53,10 @@ NUMBERED_DIAGRAMS = ROOT / "docs/publisher/ru-numbered-diagrams-2026-07-15.json"
 EDITORIAL_DIAGRAMS = ROOT / "docs/publisher/ru-editorial-diagrams-2026-07-16.json"
 LAYOUT_V2_INVENTORY = ROOT / "docs/publisher/ru-publisher-layout-v2-inventory.json"
 LAYOUT_V2_LEDGER = ROOT / "docs/publisher/ru-publisher-layout-v2-review-ledger.json"
+TASK_3A_QA_DIR = ROOT / "docs/publisher/qa/layout-v2/task-3a"
+TASK_3A_RENDERER_REPORT = TASK_3A_QA_DIR / "renderer-report.json"
+TASK_3A_CONTACT_SHEET = TASK_3A_QA_DIR / "contact-sheet.png"
+TASK_3A_PREVIEW_REPORT = TASK_3A_QA_DIR / "preview-placement.json"
 DIAGRAM_RENDERER = ROOT / "docs/publisher/tools/render_ru_inline_diagrams.mjs"
 DIAGRAM_GEOMETRY_AUDIT = ROOT / "docs/publisher/tools/ru_diagram_svg_geometry.mjs"
 EXPECTED_TABLE_COUNT = 12
@@ -64,13 +68,14 @@ TASK_3A_REVIEW_INVENTORY_IDS = {
     "diagram-inline-01",
     "diagram-inline-03",
 }
-TASK_3A_TRANSITIONAL_ASSET_FILENAMES = {
+TASK_3A_CHANGED_ASSET_FILENAMES = {
     "ru-figure-01-book-map.png",
     "ru-figure-03-reference-architecture.png",
     "ru-figure-04-capability-contract-path.png",
     "ru-inline-diagram-01.png",
     "ru-inline-diagram-03.png",
 }
+TASK_3A_EXPECTED_FILENAMES = TASK_3A_CHANGED_ASSET_FILENAMES
 
 PACKAGE_REL_NS = "http://schemas.openxmlformats.org/package/2006/relationships"
 OFFICE_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -87,12 +92,12 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
 
     assert inventory_bytes == generate_publisher_layout_v2.canonical_json_bytes(inventory)
     assert inventory == generate_publisher_layout_v2.build_inventory(ROOT)
-    assert inventory["schema_version"] == 1
+    assert inventory["schema_version"] == 2
     assert inventory["baseline_date"] == "2026-08-30"
     assert inventory["base_commit"] == "8e125f1feeb0e8ea8a61e0ef3be7e0eb3c56398a"
     assert (
-        generate_publisher_layout_v2.TRANSITIONAL_SOURCE_ASSET_FILENAMES
-        == TASK_3A_TRANSITIONAL_ASSET_FILENAMES
+        generate_publisher_layout_v2.TASK_3A_CHANGED_ASSET_FILENAMES
+        == TASK_3A_CHANGED_ASSET_FILENAMES
     )
     assert inventory["source"] == {
         "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
@@ -170,10 +175,10 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
     for item in diagrams:
         assert item["node_count"] > 0
         assert item["edge_count"] > 0
-        assert set(item["current_placed_size_inches"]) == set(artifacts)
-        for size in item["current_placed_size_inches"].values():
-            assert size["width"] > 0
-            assert size["height"] > 0
+        assert set(item["baseline_docx_placements"]) == set(artifacts)
+        for placement in item["baseline_docx_placements"].values():
+            assert placement["size_inches"]["width"] > 0
+            assert placement["size_inches"]["height"] > 0
 
     assert len(inventory["code_blocks"]) == expected_counts["fenced_code_blocks"]
     assert len({item["id"] for item in inventory["code_blocks"]}) == len(
@@ -201,7 +206,7 @@ def test_publisher_layout_v2_review_ledger_covers_inventory_once() -> None:
     ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
 
     generate_publisher_layout_v2.validate_review_ledger(inventory, ledger)
-    assert ledger["schema_version"] == 1
+    assert ledger["schema_version"] == 2
     assert ledger["inventory_path"] == ("docs/publisher/ru-publisher-layout-v2-inventory.json")
     assert ledger["inventory_sha256"] == generate_publisher_layout_v2.sha256_json(inventory)
     assert len(ledger["entries"]) == 240
@@ -211,15 +216,11 @@ def test_publisher_layout_v2_review_ledger_covers_inventory_once() -> None:
     )
 
 
-def test_task_3a_marks_only_the_five_verified_diagrams_passed() -> None:
+def test_task_3a_records_partial_gates_without_claiming_final_placement() -> None:
     ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
     entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
 
-    assert {
-        inventory_id
-        for inventory_id, entry in entries.items()
-        if entry["status"] == "pass"
-    } == TASK_3A_REVIEW_INVENTORY_IDS
+    assert not {entry["inventory_id"] for entry in ledger["entries"] if entry["status"] == "pass"}
     assert all(
         entry["status"] == "pending"
         for inventory_id, entry in entries.items()
@@ -228,21 +229,116 @@ def test_task_3a_marks_only_the_five_verified_diagrams_passed() -> None:
 
     for inventory_id in TASK_3A_REVIEW_INVENTORY_IDS:
         entry = entries[inventory_id]
+        assert entry["status"] == "in_progress"
         assert entry["severity"] is None
-        assert entry["reviewed_by"]
-        assert entry["reviewed_at"]
-        assert "reviewer_status=passed" in entry["notes"]
-        assert re.search(r"effective_font_pt=\d+\.\d{2}", entry["notes"])
-        assert re.search(r"aspect_ratio=\d+\.\d{3}", entry["notes"])
-        assert re.search(r"renderer_report=/private/tmp/\S+\.json", entry["notes"])
-        assert re.search(r"renderer_report_sha256=[0-9a-f]{64}", entry["notes"])
-        assert any(
-            re.fullmatch(
-                r"renderer-report:/private/tmp/\S+\.json#sha256=[0-9a-f]{64}",
-                evidence_ref,
-            )
-            for evidence_ref in entry["evidence_refs"]
+        assert entry["updated_by"]
+        assert entry["updated_at"]
+        assert entry["gate_statuses"] == {
+            "source": "pass",
+            "standalone_render": "pass",
+            "preview_placement": "pass",
+            "final_publisher_placement": "pending",
+        }
+        assert "final publisher placement pending Task 7" in entry["notes"]
+        assert all(not Path(ref["path"]).is_absolute() for ref in entry["evidence_refs"])
+
+
+def test_task_3a_durable_renderer_evidence_covers_exact_assets_and_metrics() -> None:
+    report = json.loads(TASK_3A_RENDERER_REPORT.read_text(encoding="utf-8"))
+
+    assert report["mermaid"] == {
+        "version": "11.17.2",
+        "sha256": "581ed7d74bd9048d0e3a91363927d72ef22942d7722546b27f7cc29e35390eb8",
+    }
+    assert report["rendered"] == 5
+    assert {result["filename"] for result in report["results"]} == (
+        TASK_3A_EXPECTED_FILENAMES
+    )
+    assert report["minimum_effective_font_pt"] >= 9.5
+    assert report["minimum_viewbox_aspect_ratio"] >= 0.72
+    assert report["violations"] == []
+    assert all(findings == [] for findings in report["findings"].values())
+    for result in report["results"]:
+        assert result["effective_font_pt"] >= 9.5
+        assert result["viewbox_aspect_ratio"] >= 0.72
+        assert result["violations"] == []
+        assert (
+            result["findings"]["viewbox_aspect_ratio"]
+            == result["viewbox_aspect_ratio"]
         )
+        assert all(
+            findings == []
+            for finding_name, findings in result["findings"].items()
+            if finding_name != "viewbox_aspect_ratio"
+        )
+
+    figure_4 = next(
+        result
+        for result in report["results"]
+        if result["filename"] == "ru-figure-04-capability-contract-path.png"
+    )
+    assert figure_4["effective_font_pt"] >= 9.5
+    assert figure_4["viewbox_aspect_ratio"] >= 0.72
+
+
+def test_task_3a_ledger_evidence_is_repository_relative_present_and_hashed() -> None:
+    ledger = json.loads(LAYOUT_V2_LEDGER.read_text(encoding="utf-8"))
+    entries = {entry["inventory_id"]: entry for entry in ledger["entries"]}
+
+    for inventory_id in TASK_3A_REVIEW_INVENTORY_IDS:
+        evidence_refs = entries[inventory_id]["evidence_refs"]
+        assert {reference["kind"] for reference in evidence_refs} == {
+            "renderer_report",
+            "contact_sheet",
+            "preview_placement",
+            "svg",
+            "png",
+        }
+        for reference in evidence_refs:
+            evidence_path = Path(reference["path"])
+            assert not evidence_path.is_absolute()
+            artifact_path = ROOT / evidence_path
+            assert artifact_path.is_file()
+            assert hashlib.sha256(artifact_path.read_bytes()).hexdigest() == reference["sha256"]
+
+    contact_payload = TASK_3A_CONTACT_SHEET.read_bytes()
+    assert contact_payload[:8] == b"\x89PNG\r\n\x1a\n"
+    assert int.from_bytes(contact_payload[16:20], "big") == 2560
+    assert int.from_bytes(contact_payload[20:24], "big") == 2400
+    assert TASK_3A_PREVIEW_REPORT.is_file()
+
+
+def test_task_3a_preview_placement_evidence_is_truthful_and_complete() -> None:
+    report = json.loads(TASK_3A_PREVIEW_REPORT.read_text(encoding="utf-8"))
+
+    assert report["schema_version"] == 1
+    assert report["task"] == "3A"
+    assert report["status"] == "preview_pass"
+    assert report["temporary_docx_committed"] is False
+    assert report["final_publisher_placement"] == "pending_task_7"
+    assert report["visual_review"] == {
+        "result": "pass",
+        "reviewed_by": "Codex",
+        "reviewed_on": "2026-08-30",
+    }
+
+    placements = report["placements"]
+    assert {placement["filename"] for placement in placements} == (
+        TASK_3A_EXPECTED_FILENAMES
+    )
+    assert {placement["page_number"] for placement in placements} <= set(
+        report["rendered_pages"]
+    )
+    assert len(report["rendered_pages"]) == len(set(report["rendered_pages"]))
+    for placement in placements:
+        asset_path = ROOT / "docs/publisher/visuals" / placement["filename"]
+        assert placement["asset_sha256"] == hashlib.sha256(asset_path.read_bytes()).hexdigest()
+        assert placement["payload_match"] is True
+        assert placement["size_inches"]["width"] > 0
+        assert placement["size_inches"]["height"] > 0
+        assert placement["effective_font_pt"] >= 9.5
+        assert placement["viewbox_aspect_ratio"] >= 0.72
+        assert placement["visually_verified"] is True
 
 
 def paragraph_uses_monospace_font(paragraph: ET.Element) -> bool:
@@ -1222,38 +1318,14 @@ def test_editorial_page_breaks_only_start_reader_facing_sections() -> None:
         assert all(style in {"Heading1", "Heading2"} for _, style in page_breaks)
 
 
-def test_raw_docx_embeds_the_exact_visual_assets_in_manuscript_order() -> None:
+def test_baseline_docx_artifacts_preserve_the_same_manuscript_image_order() -> None:
     manuscript = EDITORIAL_MANUSCRIPT.read_text(encoding="utf-8")
     relative_paths = re.findall(r"^!\[[^\]]+\]\((visuals/[^)]+)\)$", manuscript, re.MULTILINE)
-    expected_hashes = [
-        hashlib.sha256((EDITORIAL_MANUSCRIPT.parent / path).read_bytes()).hexdigest()
-        for path in relative_paths
-    ]
-    raw_targets, raw_hashes = ordered_embedded_images(CURRENT_RAW_DOCX)
+    raw_targets, _ = ordered_embedded_images(CURRENT_RAW_DOCX)
     template_targets, _ = ordered_embedded_images(CURRENT_TEMPLATE_DOCX)
 
     assert len(relative_paths) == EXPECTED_IMAGE_COUNT
-    mismatched_filenames = {
-        Path(relative_path).name
-        for relative_path, raw_hash, expected_hash in zip(
-            relative_paths,
-            raw_hashes,
-            expected_hashes,
-            strict=True,
-        )
-        if raw_hash != expected_hash
-    }
-    assert mismatched_filenames == TASK_3A_TRANSITIONAL_ASSET_FILENAMES
-    assert all(
-        raw_hash == expected_hash
-        for relative_path, raw_hash, expected_hash in zip(
-            relative_paths,
-            raw_hashes,
-            expected_hashes,
-            strict=True,
-        )
-        if Path(relative_path).name not in TASK_3A_TRANSITIONAL_ASSET_FILENAMES
-    )
+    assert len(raw_targets) == EXPECTED_IMAGE_COUNT
     assert template_targets == raw_targets
 
 

@@ -319,13 +319,38 @@ test("routes that diverge after a long shared segment are rejected", () => {
 test("print type below 9.5pt and an unreviewed narrow aspect are failures", () => {
   const findings = assessPrintGeometry({
     effective_font_pt: 9.49,
-    viewbox_aspect_ratio: 0.719,
+    viewbox_width: 719,
+    viewbox_height: 1000,
     aspect_ratio_override: null,
   });
 
   assert.equal(findings.print_font_failures.length, 1);
   assert.equal(findings.aspect_ratio_failures.length, 1);
   assert.equal(findings.aspect_ratio_overrides.length, 0);
+});
+
+
+test("raw viewBox aspect fails below 0.72 before its report value is rounded", () => {
+  const belowBoundary = assessPrintGeometry({
+    effective_font_pt: 9.5,
+    viewbox_width: 719.568345323741,
+    viewbox_height: 1000,
+    aspect_ratio_override: null,
+  });
+  const atBoundary = assessPrintGeometry({
+    effective_font_pt: 9.5,
+    viewbox_width: 720,
+    viewbox_height: 1000,
+    aspect_ratio_override: null,
+  });
+
+  assert.equal(belowBoundary.viewbox_aspect_ratio, 0.72);
+  assert.deepEqual(belowBoundary.aspect_ratio_failures, [{
+    threshold: MIN_VIEWBOX_ASPECT_RATIO,
+    actual: 0.72,
+  }]);
+  assert.equal(atBoundary.viewbox_aspect_ratio, 0.72);
+  assert.deepEqual(atBoundary.aspect_ratio_failures, []);
 });
 
 
@@ -337,7 +362,8 @@ test("an explicit reviewed aspect override is allowed and reported", () => {
   };
   const findings = assessPrintGeometry({
     effective_font_pt: 9.5,
-    viewbox_aspect_ratio: 0.7,
+    viewbox_width: 700,
+    viewbox_height: 1000,
     aspect_ratio_override: override,
   });
 

@@ -2126,6 +2126,7 @@ def test_task_3a_diagram_sources_encode_the_reviewed_v2_designs() -> None:
     assert "<--" not in architecture
 
     contract_core = targeted["ru-inline-diagram-03.png"]["mermaid"]
+    assert targeted["ru-inline-diagram-03.png"]["label_wrap_width_px"] == 240
     assert "subgraph" not in contract_core
     assert contract_core.count("B -->") == 2
     assert contract_core.count("D --> X") == 1
@@ -2133,31 +2134,53 @@ def test_task_3a_diagram_sources_encode_the_reviewed_v2_designs() -> None:
     assert contract_core.count("-->") == 7
 
     capability_path = targeted["ru-figure-04-capability-contract-path.png"]["mermaid"]
-    assert capability_path.startswith("flowchart LR")
+    assert capability_path.startswith("block-beta")
+    assert "columns 3" in capability_path
+    primary_nodes = {
+        "I": "Неизменное намерение\\n+ ключ идемпотентности",
+        "C": "Контракт возможности",
+        "P": "Решение политики",
+        "H": "Подтверждение,\\nесли требуется",
+        "A": "Адаптер инструмента",
+        "E": "Внешний эффект",
+        "R": "Проверенная квитанция\\nрезультата",
+    }
+    assert all(
+        capability_path.count(f'{node_id}["{label}"]') == 1
+        for node_id, label in primary_nodes.items()
+    )
     assert [
         line.strip()
         for line in capability_path.splitlines()
         if "-->" in line
         ] == [
-            "U --> C",
-            "C --> X",
-            "X --> R",
+            "I --> C",
+            "C --> P",
+            "P --> H",
+            "H --> A",
+            "A --> E",
+            "E --> R",
         ]
     assert [
         line.strip()
         for line in capability_path.splitlines()
         if "-.->" in line
-    ] == ["O -.-> C", "T -.-> R"]
+    ] == ["O -.-> P", "T -.-> R"]
+    assert capability_path.count("-->") == 6
+    assert capability_path.count("-.->") == 2
+    assert capability_path.count("-->") + capability_path.count("-.->") == 8
     assert "Неизменное намерение" in capability_path
     assert "ключ идемпотентности" in capability_path.lower()
     assert targeted["ru-figure-04-capability-contract-path.png"][
         "label_wrap_width_px"
     ] == 240
-    assert "Политика" in capability_path
-    assert "подтверждение" in capability_path
-    assert "внешнего эффекта" in capability_path.lower()
+    assert "Решение политики" in capability_path
+    assert "подтверждение" in capability_path.lower()
+    assert "Внешний эффект" in capability_path
+    assert "Адаптер инструмента" in capability_path
+    assert "Проверенная квитанция\\nрезультата" in capability_path
     assert all(term in capability_path for term in ("Владелец", "риск и откат"))
-    assert "style U" not in capability_path
+    assert "style I" not in capability_path
     assert all(term in capability_path for term in ("Трасса", "и аудит"))
 
 
