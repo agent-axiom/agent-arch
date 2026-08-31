@@ -76,4 +76,10 @@ def test_manifest_includes_the_release_decision_from_laboratory_eight(
     artifact_ids = [item["id"] for item in payload["artifacts"]]
     assert artifact_ids[-1] == "lab-08"
     assert payload["artifacts"][-1]["path"] == "lab-08/release-decision.json"
+    assert artifact_ids[-4:] == [
+        "lab-08-manifest-check",
+        "lab-08-unknown-effect",
+        "lab-08-retirement-check",
+        "lab-08",
+    ]
     assert payload["signals"]["lab_08_observed"]["value"] is True

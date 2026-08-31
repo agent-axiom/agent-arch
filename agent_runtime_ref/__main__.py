@@ -2477,6 +2477,11 @@ def build_parser() -> argparse.ArgumentParser:
         default=[],
         help="Require an artifact id; repeat for cumulative lab evidence",
     )
+    rollout.add_argument(
+        "--output",
+        default=None,
+        help="Optional path for the structured rollout decision",
+    )
 
     controls = subparsers.add_parser(
         "check-controls",
@@ -2534,6 +2539,11 @@ def build_parser() -> argparse.ArgumentParser:
         action="append",
         default=[],
         help="Override a retirement step, e.g. revoke_egress=false",
+    )
+    check_retirement.add_argument(
+        "--output",
+        default=None,
+        help="Optional path for the structured retirement decision",
     )
 
     inspect_approvals = subparsers.add_parser(
@@ -2838,6 +2848,13 @@ def main(argv: Sequence[str] | None = None) -> int:
     else:
         parser.error(f"Unsupported command: {command}")
         return 2
+    if command in {"check-rollout", "check-retirement"} and args.output:
+        destination = Path(args.output)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_text(
+            json.dumps(payload, ensure_ascii=True, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
+        )
     print(json.dumps(payload, ensure_ascii=True))
     return 0
 
