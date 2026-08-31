@@ -327,5 +327,5 @@ def test_current_ru_manuscript_commands_pass_syntax_and_clean_room_smoke() -> No
         7,
         8,
     }
-    assert len(report.runtime_commands) == 21
+    assert len(report.runtime_commands) == 22
     assert report.smoke_results

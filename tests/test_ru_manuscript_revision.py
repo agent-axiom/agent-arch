@@ -204,6 +204,28 @@ def test_pinned_practical_revision_contains_closed_failure_scenarios() -> None:
         assert scenario in result.stdout
 
 
+@pytest.mark.parametrize(
+    "path",
+    (
+        "docs/companion/examples/build_capstone_reference.py",
+        "docs/companion/examples/build_capstone_evidence_manifest.py",
+        "docs/companion/examples/validate_capstone_package.py",
+        "docs/companion/examples/validate_lab8_package.py",
+    ),
+)
+def test_pinned_practical_revision_contains_part_eight_tools(path: str) -> None:
+    subprocess.run(
+        [
+            "git",
+            "cat-file",
+            "-e",
+            f"{revision_tool.PRACTICAL_REPOSITORY_REF}:{path}",
+        ],
+        cwd=ROOT,
+        check=True,
+    )
+
+
 def test_revision_has_clean_reader_facing_structure() -> None:
     text = EXPECTED.read_text(encoding="utf-8")
 
@@ -245,8 +267,8 @@ def test_revision_has_clean_reader_facing_structure() -> None:
     assert len(re.findall(r"Рисунок \d+\\?\.", text)) == 25
     assert not re.search(r"^На рисунке \d+ представлена схема", text, re.MULTILINE)
     assert len(re.findall(r"^На рисунке \d+ ", text, re.MULTILINE)) == 25
-    assert len(re.findall(r"^Таблица \d+\.", text, re.MULTILINE)) == 12
-    assert len(re.findall(r"^В таблице \d+ ", text, re.MULTILINE)) == 11
+    assert len(re.findall(r"^Таблица \d+\.", text, re.MULTILINE)) == 13
+    assert len(re.findall(r"^В таблице \d+ ", text, re.MULTILINE)) == 12
     assert len(re.findall(r"Лабораторная работа \d+\\?\.", text)) == 8
     for pseudo_table_header in (
         "| Ситуация | Что чаще лучше |",
@@ -2395,7 +2417,10 @@ def test_task_3b1_sources_encode_compact_reviewed_semantic_topologies() -> None:
     assert 'P -->|"Да"| H' in localhost
     assert 'P -->|"Нет"| D' in localhost
     assert 'C["Исполнительный профиль: сеть, секреты, файлы, команды"] -.-> H' in localhost
-    assert all(term in localhost for term in ("Исполнительный профиль", "Узкое исполнение", "Аудит"))
+    assert all(
+        term in localhost
+        for term in ("Исполнительный профиль", "Узкое исполнение", "Аудит")
+    )
     assert all(edge in localhost for edge in ("H --> T", "D --> T"))
 
     capability = targeted[7]["mermaid"]
@@ -3074,7 +3099,7 @@ def test_final_technical_book_copyedit_is_applied() -> None:
         assert residue not in prose_without_identifiers
 
     lab_8 = text.split("### Лабораторная работа 8", 1)[1].split("## Итоговый проект", 1)[0]
-    assert len(re.findall(r"^#### Шаг \d+\.", lab_8, re.MULTILINE)) >= 4
+    assert len(re.findall(r"^#### Шаг \d+\. Контрольная точка", lab_8, re.MULTILINE)) == 5
     assert lab_8.count("**Наблюдение.**") >= 2
 
 
@@ -3110,8 +3135,9 @@ def test_multi_agent_review_remediations_are_reflected_in_practice() -> None:
     assert "manifest_integrity_verified=true" in lab_8
     assert "trusted_attestation_verified=false" in lab_8
 
-    assert "**Безусловные блокеры.**" in text
-    assert "запрещают принятие проекта независимо от суммы" in text
+    assert "**Безусловные выпускные блокеры.**" in text
+    assert "запрещают `limited_wave` независимо от учебного балла" in text
+    assert "запрещают принятие проекта независимо от суммы" not in text
 
 
 def test_capability_discovery_is_a_governed_runtime_operation() -> None:
@@ -3212,8 +3238,8 @@ def test_every_manuscript_table_has_a_numbered_caption() -> None:
     captions = re.findall(r"^Таблица (\d+)\. .+$", text, re.MULTILINE)
     tables = re.findall(r"^\|.+\|\n\|\s*:?-+", text, re.MULTILINE)
 
-    assert captions == [str(number) for number in range(1, 13)]
-    assert len(tables) == 12
+    assert captions == [str(number) for number in range(1, 14)]
+    assert len(tables) == 13
     for number in range(1, 13):
         assert re.search(
             rf"^Таблица {number}\. .+\n\n\|.+\|$",
@@ -4242,14 +4268,62 @@ def test_capstone_rubric_has_observable_score_anchors() -> None:
     capstone = text.split("## Итоговый проект", 1)[1].split("## Послесловие", 1)[0]
 
     for marker in (
-        "Таблица 12. Аналитическая рубрика итогового проекта",
+        "Таблица 13. Аналитическая рубрика итогового проекта",
         "0 баллов",
         "2 балла",
         "4 балла",
-        "Безусловные блокеры",
+        "Два независимых вердикта",
         "Оцененный эталон",
     ):
         assert marker in capstone
+
+
+def test_part_eight_practice_is_a_guided_publication_ready_module() -> None:
+    text = EXPECTED.read_text(encoding="utf-8")
+    laboratory = text.split("### Лабораторная работа 8", 1)[1].split(
+        "## Итоговый проект",
+        1,
+    )[0]
+    capstone = text.split("## Итоговый проект", 1)[1].split("# Заключение", 1)[0]
+
+    for marker in (
+        "Таблица 12. Словарь решений и управляющих действий",
+        "**Результат лабораторной работы.**",
+        "#### Шаг 1. Контрольная точка",
+        "#### Шаг 2. Контрольная точка",
+        "#### Шаг 3. Контрольная точка",
+        "#### Шаг 4. Контрольная точка",
+        "#### Шаг 5. Контрольная точка",
+        "artifacts/lab-08/release-decision.json",
+        "lab-04-pre-dispatch",
+        "validate_lab8_package.py",
+        "lab-08-manifest-check",
+        "--through 8",
+    ):
+        assert marker in laboratory
+
+    for marker in (
+        "**Время выполнения проекта.** 3–5 часов",
+        "### Что должно остаться на диске",
+        "artifacts/capstone-reference",
+        "artifacts/capstone-work",
+        "validate_capstone_package.py",
+        "build_capstone_evidence_manifest.py",
+        "post_dispatch_timeout",
+        "unknown_effect_reconciliation",
+        "package_inventory",
+        "trace_continuity",
+        "blocked_on_reconciliation",
+        "### Разбор эталонного результата",
+        "### Если проверка не проходит",
+        "### Два независимых вердикта",
+        "учебная работа засчитана",
+        "решение о выпуске",
+    ):
+        assert marker in capstone
+
+    assert "Проект принят при результате не ниже 16 баллов" not in capstone
+    assert "неизвестный внешний эффект без завершенной сверки" in capstone
 
 
 def test_august_sources_are_local_and_bibliographically_complete() -> None:
@@ -4656,7 +4730,8 @@ def test_final_quality_pass_documents_an_executable_reader_path() -> None:
 
     capstone = text.split("## Итоговый проект", 1)[1].split("# Заключение", 1)[0]
     assert "build_capstone_reference.py" in capstone
-    assert "artifacts/capstone/release-decision.json" in capstone
+    assert "artifacts/capstone-work" in capstone
+    assert "release-decision.json" in capstone
 
 
 def test_final_quality_pass_uses_one_decision_vocabulary_and_honest_approval_map() -> None:

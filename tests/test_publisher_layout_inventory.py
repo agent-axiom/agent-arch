@@ -502,7 +502,7 @@ def test_generated_inventory_preserves_all_frozen_facts() -> None:
         "chapters": 28,
         "appendices": 5,
         "formal_listings": 37,
-        "fenced_code_blocks": 141,
+        "fenced_code_blocks": 153,
         "manuscript_images": 57,
         "mermaid_diagrams": 56,
         "inline_diagrams": 29,

@@ -207,7 +207,7 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
     )
     assert inventory["source"] == {
         "path": "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
-        "sha256": "4487fae02050d1abc158ed4479bdf25b2c9f5aa220eb2a88bff73a1a1504d1ae",
+        "sha256": "8d9f8dbfccbe49efe3889cb6f67641df38f879795d2cfa2f99131fdc6ab043e8",
     }
     assert inventory["source"]["sha256"] == generate_publisher_layout_v2.sha256_text_path(
         EDITORIAL_MANUSCRIPT
@@ -260,7 +260,7 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
         "chapters": 28,
         "appendices": 5,
         "formal_listings": 37,
-        "fenced_code_blocks": 141,
+        "fenced_code_blocks": 153,
         "manuscript_images": 57,
         "mermaid_diagrams": 56,
         "inline_diagrams": 29,
@@ -291,7 +291,7 @@ def test_publisher_layout_v2_inventory_matches_frozen_baseline() -> None:
         inventory["code_blocks"]
     )
     assert [item["id"] for item in inventory["code_blocks"]] == [
-        f"code-block-{index:03d}" for index in range(1, 142)
+        f"code-block-{index:03d}" for index in range(1, 154)
     ]
     assert [
         item["nearest_formal_listing"]["number"]
@@ -315,8 +315,8 @@ def test_publisher_layout_v2_review_ledger_covers_inventory_once() -> None:
     assert ledger["schema_version"] == 2
     assert ledger["inventory_path"] == ("docs/publisher/ru-publisher-layout-v2-inventory.json")
     assert ledger["inventory_sha256"] == generate_publisher_layout_v2.sha256_json(inventory)
-    assert len(ledger["entries"]) == 240
-    assert len({entry["id"] for entry in ledger["entries"]}) == 240
+    assert len(ledger["entries"]) == 252
+    assert len({entry["id"] for entry in ledger["entries"]}) == 252
     assert {entry["status"] for entry in ledger["entries"]} <= (
         generate_publisher_layout_v2.ALLOWED_REVIEW_STATUSES
     )
@@ -1156,6 +1156,9 @@ document.save(sys.argv[2])
         assert spacing is not None
         assert int(spacing.attrib[f"{{{WORD_NS}}}before"]) == 0
         assert int(spacing.attrib[f"{{{WORD_NS}}}after"]) == 40
+        assert int(spacing.attrib[f"{{{WORD_NS}}}line"]) == 260
+        assert spacing.attrib[f"{{{WORD_NS}}}lineRule"] == "atLeast"
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepLines") is not None
 
 
 def test_editorial_document_enables_widow_control_for_body_paragraphs(
@@ -1322,7 +1325,8 @@ def test_editorial_renderer_compacts_practical_step_paragraph(tmp_path: Path) ->
     root = lxml_html.fragment_fromstring(
         """
         <h2>Глава 1. Проверка</h2>
-        <p><strong>Практический шаг.</strong> Сопоставьте решение с фактическими вызовами и владельцем.</p>
+        <p><strong>Практический шаг.</strong>
+        Сопоставьте решение с фактическими вызовами и владельцем.</p>
         """,
         create_parent="div",
     )
@@ -1514,6 +1518,36 @@ def test_editorial_renderer_keeps_page_sized_formal_listing_together(
     for paragraph in code_paragraphs[:-1]:
         assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
     assert code_paragraphs[-1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
+
+
+def test_editorial_renderer_keeps_short_text_output_together(tmp_path: Path) -> None:
+    from docx import Document
+    from lxml import html as lxml_html
+
+    from docs.publisher.tools import build_ru_editorial_docx
+
+    output = tmp_path / "text-output.docx"
+    code = "\n".join(f"artifact-{index:02d}" for index in range(1, 19))
+    document = Document()
+    root = lxml_html.fragment_fromstring(
+        f'<pre><code class="language-text">{code}</code></pre>',
+        create_parent="div",
+    )
+    renderer = build_ru_editorial_docx.DocxRenderer(
+        document,
+        ROOT / "docs/publisher/ru-manuscript-editorial-2026-07-13.md",
+    )
+    renderer.render(root)
+    document.save(output)
+
+    with ZipFile(output) as archive:
+        document_xml = ET.fromstring(archive.read("word/document.xml"))
+
+    paragraphs = document_xml.findall(f".//{{{WORD_NS}}}body/{{{WORD_NS}}}p")
+    assert len(paragraphs) == 18
+    for paragraph in paragraphs[:-1]:
+        assert paragraph.find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is not None
+    assert paragraphs[-1].find(f"{{{WORD_NS}}}pPr/{{{WORD_NS}}}keepNext") is None
 
 
 def test_editorial_renderer_highlights_code_and_numbers_only_formal_listings(
