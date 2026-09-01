@@ -30,6 +30,16 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Reject tracked publisher data
+        shell: bash
+        run: |
+          tracked="$(git ls-files -- docs/publisher)"
+          if [[ -n "$tracked" ]]; then
+            echo "docs/publisher is local-only; remove these tracked files:" >&2
+            printf '%s\n' "$tracked" >&2
+            exit 1
+          fi
+
       - name: Configure Pages
         if: ${{ env.PAGES_PAT == '' }}
         uses: actions/configure-pages@v6.0.0
