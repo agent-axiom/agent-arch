@@ -13,4 +13,7 @@ artifacts/*
 !artifacts/evidence-manifest.yaml
 docs/book-backlog.md
 
+# Publisher manuscript and production assets are intentionally local-only.
+docs/publisher/
+
 .worktrees/

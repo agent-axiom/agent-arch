@@ -6,6 +6,18 @@ from typing import Any
 
 import pytest
 
+PRIVATE_PUBLISHER_ROOT = Path(__file__).resolve().parents[1] / "docs/publisher"
+
+# These tests exercise local-only manuscript tooling. A public clone omits that
+# tree by design; restoring it locally makes the tests collect normally.
+if not PRIVATE_PUBLISHER_ROOT.is_dir():
+    collect_ignore = [
+        "test_plan_google_doc_developmental_sync.py",
+        "test_publisher_docx.py",
+        "test_ru_lab_commands.py",
+        "test_ru_manuscript_revision.py",
+    ]
+
 
 @pytest.fixture
 def config_dir() -> Path:

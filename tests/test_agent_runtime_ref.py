@@ -14234,7 +14234,17 @@ class TestCli:
         assert "artifacts/" not in gitignore_lines
         assert "artifacts/*" in gitignore_lines
         assert "!artifacts/eval-dataset.json" in gitignore_lines
+        assert "docs/publisher/" in gitignore_lines
         assert Path("artifacts/eval-dataset.json").is_file()
+
+    def test_publisher_data_guard_is_enabled_for_quality_and_deploy(self) -> None:
+        for workflow_path in (
+            Path(".github/workflows/quality.yml"),
+            Path(".github/workflows/deploy.yml"),
+        ):
+            workflow_text = workflow_path.read_text(encoding="utf-8")
+            assert "Reject tracked publisher data" in workflow_text
+            assert "git ls-files -- docs/publisher" in workflow_text
 
     def test_coverage_workflow_runs_when_eval_artifact_changes(self) -> None:
         workflow_text = Path(".github/workflows/coverage.yml").read_text(encoding="utf-8")
@@ -14383,6 +14393,7 @@ class TestCli:
             ".github/workflows/deploy.yml": {
                 "build": [
                     "Checkout",
+                    "Reject tracked publisher data",
                     "Configure Pages",
                     "Enable and configure Pages",
                     "Setup uv",
@@ -14396,6 +14407,7 @@ class TestCli:
             ".github/workflows/quality.yml": {
                 "quality": [
                     "Checkout",
+                    "Reject tracked publisher data",
                     "Setup uv",
                     "Setup Python",
                     "Sync dependencies",

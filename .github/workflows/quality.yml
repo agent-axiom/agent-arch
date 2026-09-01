@@ -27,6 +27,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6.0.2
 
+      - name: Reject tracked publisher data
+        shell: bash
+        run: |
+          tracked="$(git ls-files -- docs/publisher)"
+          if [[ -n "$tracked" ]]; then
+            echo "docs/publisher is local-only; remove these tracked files:" >&2
+            printf '%s\n' "$tracked" >&2
+            exit 1
+          fi
+
       - name: Setup uv
         uses: astral-sh/setup-uv@v8.1.0
 

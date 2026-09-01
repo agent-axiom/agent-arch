@@ -50,6 +50,9 @@ select = [
   "PLR0912",
 ]
 
+[tool.ruff.lint.isort]
+known-first-party = ["agent_runtime_ref", "docs"]
+
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"

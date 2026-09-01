@@ -64,7 +64,9 @@ def test_quality_workflow_runs_the_local_policy_checks() -> None:
         "actions/checkout@v6.0.2",
         "astral-sh/setup-uv@v8.1.0",
     ]
-    assert [step["run"] for step in quality["steps"] if "run" in step] == [
+    guard_step, *policy_steps = [step["run"] for step in quality["steps"] if "run" in step]
+    assert "git ls-files -- docs/publisher" in guard_step
+    assert policy_steps == [
         "uv python install 3.12",
         "uv sync --locked --group dev",
         "uv run pytest tests/test_agent_runtime_ref.py -q -k workflow",
