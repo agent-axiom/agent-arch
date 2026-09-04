@@ -17,6 +17,9 @@ LAB_ARTIFACTS: Final[tuple[tuple[int, str, str], ...]] = (
     (5, "lab-05", "lab-05/evidence.yaml"),
     (6, "lab-06", "lab-06/ownership-registry-change.yaml"),
     (7, "lab-07", "lab-07/assurance-drill.yaml"),
+    (8, "lab-08-manifest-check", "lab-08/01-manifest-check.json"),
+    (8, "lab-08-unknown-effect", "lab-08/02-unknown-effect.json"),
+    (8, "lab-08-retirement-check", "lab-08/03-retirement-check.json"),
     (8, "lab-08", "lab-08/release-decision.json"),
 )
 
