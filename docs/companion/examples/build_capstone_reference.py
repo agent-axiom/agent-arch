@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import subprocess
 import sys
@@ -9,6 +8,11 @@ from pathlib import Path
 from typing import Sequence
 
 import yaml
+
+if __package__:
+    from .build_capstone_evidence_manifest import build_capstone_manifest
+else:
+    from build_capstone_evidence_manifest import build_capstone_manifest
 
 
 def _run_runtime(repo_root: Path, args: Sequence[str]) -> dict[str, object]:
@@ -32,10 +36,6 @@ def _write_json(path: Path, payload: object) -> None:
     )
 
 
-def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
-
-
 def _git_revision(repo_root: Path) -> str:
     completed = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -55,6 +55,8 @@ def build_capstone(
 ) -> dict[str, object]:
     output_dir = output_dir.resolve()
     repo_root = repo_root.resolve()
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise FileExistsError(f"Capstone output directory must be empty or absent: {output_dir}")
     output_dir.mkdir(parents=True, exist_ok=True)
 
     agent = _run_runtime(repo_root, ("inspect-agent",))
@@ -91,7 +93,7 @@ def build_capstone(
     (output_dir / "01-baseline.md").write_text(baseline, encoding="utf-8")
 
     normal_trace = output_dir / "02-normal-trace.jsonl"
-    timeout_trace = output_dir / "02-timeout-trace.jsonl"
+    unknown_effect_trace = output_dir / "02-unknown-effect-trace.jsonl"
     _run_runtime(
         repo_root,
         (
@@ -109,32 +111,36 @@ def build_capstone(
         (
             "export-events",
             "--trace-id",
-            "trace-capstone-timeout",
+            "trace-capstone-unknown-effect",
             "--session-id",
             "session-capstone",
             "--simulate-failure",
-            "tool_timeout",
+            "post_dispatch_timeout",
             "--output",
-            str(timeout_trace),
+            str(unknown_effect_trace),
         ),
     )
     normal_summary = _run_runtime(repo_root, ("inspect-trace", "--input", str(normal_trace)))
-    timeout_summary = _run_runtime(
+    unknown_effect_summary = _run_runtime(
         repo_root,
-        ("inspect-trace", "--input", str(timeout_trace)),
+        ("inspect-trace", "--input", str(unknown_effect_trace)),
     )
     _write_json(output_dir / "02-normal-trace-summary.json", normal_summary)
-    _write_json(output_dir / "02-timeout-trace-summary.json", timeout_summary)
-    comparison = """# Сравнение трасс
-
-| Путь | Итог | Внешний эффект | Допустимый следующий шаг |
-| :--- | :--- | :------------- | :----------------------- |
-| Обычный | Ожидание подтверждения | Не выполнен | Получить решение человека |
-| Тайм-аут | Отказ `tool_timeout` | Неизвестен | Сверить внешнее состояние |
-
-Тайм-аут транспорта не является доказательством отсутствия заявки. Повтор
-запрещен до результата сверки по устойчивому бизнес-ключу.
-"""
+    _write_json(
+        output_dir / "02-unknown-effect-trace-summary.json",
+        unknown_effect_summary,
+    )
+    comparison = (
+        "# Сравнение трасс\n\n"
+        "| Путь | Итог | Внешний эффект | Допустимый следующий шаг |\n"
+        "| :--- | :--- | :------------- | :----------------------- |\n"
+        "| Контрольный путь до подтверждения | Ожидание подтверждения | "
+        "Не выполнен | Получить решение человека |\n"
+        "| Тайм-аут после отправки | `blocked_on_reconciliation` | "
+        "Неизвестен | Сверить внешнее состояние |\n\n"
+        "Тайм-аут после передачи запроса не является доказательством отсутствия "
+        "заявки.\nПовтор запрещен до результата сверки по устойчивому бизнес-ключу.\n"
+    )
     (output_dir / "02-trace-comparison.md").write_text(comparison, encoding="utf-8")
 
     reconciliation = {
@@ -157,7 +163,7 @@ def build_capstone(
         (
             "export-eval-dataset",
             "--scenario",
-            "failed_run_timeout",
+            "unknown_effect_reconciliation",
             "--session-prefix",
             "session-capstone",
             "--output",
@@ -186,12 +192,24 @@ def build_capstone(
         "decision": "hold",
         "next_eligible_decision": "limited_wave",
         "blocking_findings": [
-            "unknown_external_effect_not_reconciled",
-            "trusted_duplicate_ticket_attestation_missing",
+            {
+                "id": "unknown_external_effect_not_reconciled",
+                "evidence_ref": "02-unknown-effect-trace.jsonl",
+                "owner": "support-platform-on-call",
+                "required_evidence": "verification_result",
+                "reconsider_when": "verification_result=not_found",
+            },
+            {
+                "id": "trusted_duplicate_ticket_attestation_missing",
+                "evidence_ref": "04-rollout-hold.json",
+                "owner": "support-platform-release-owner",
+                "required_evidence": "trusted_duplicate_ticket_eval_attestation",
+                "reconsider_when": "duplicate_ticket_eval_passed=true",
+            },
         ],
         "owner": "support-platform-release-owner",
         "evidence_refs": [
-            "02-timeout-trace.jsonl",
+            "02-unknown-effect-trace.jsonl",
             "03-reconciliation.yaml",
             "04-rollout-hold.json",
         ],
@@ -204,50 +222,36 @@ def build_capstone(
 
 ```console
 uv run python docs/companion/examples/build_capstone_reference.py \\
-  --output-dir artifacts/capstone
+  --output-dir artifacts/capstone-reference
 ```
 
 Пакет намеренно завершает решение `hold`: учебный стенд подтверждает форму
 доказательств, но не заменяет промышленную аттестацию и внешнюю сверку.
+
+Проверьте пакет:
+
+```console
+uv run python docs/companion/examples/validate_capstone_package.py \\
+  --package-dir artifacts/capstone-reference
+```
 """
     (output_dir / "README.md").write_text(readme, encoding="utf-8")
 
-    artifact_files = sorted(
-        path
-        for path in output_dir.iterdir()
-        if path.is_file() and path.name != "evidence-manifest.yaml"
-    )
-    artifacts = [
-        {
-            "id": path.stem.replace("_", "-").replace(".", "-"),
-            "path": path.name,
-            "sha256": _sha256(path),
-        }
-        for path in artifact_files
-    ]
-    manifest = {
-        "version": 1,
-        "issuer": "agent-arch-capstone-reference",
-        "subject": "support-triage-ref",
-        "measured_at": measured_at,
-        "artifacts": artifacts,
-        "signals": {
-            "capstone_package_built": {
-                "value": True,
-                "artifact_refs": [item["id"] for item in artifacts],
-            }
-        },
-    }
-    (output_dir / "evidence-manifest.yaml").write_text(
-        yaml.safe_dump(manifest, allow_unicode=True, sort_keys=False),
-        encoding="utf-8",
+    build_capstone_manifest(
+        output_dir,
+        measured_at=measured_at,
+        issuer="agent-arch-capstone-reference",
     )
     return release_decision
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Build the Russian book capstone package.")
-    parser.add_argument("--output-dir", type=Path, default=Path("artifacts/capstone"))
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=Path("artifacts/capstone-reference"),
+    )
     parser.add_argument(
         "--repo-root",
         type=Path,
