@@ -177,6 +177,30 @@ def _rebuild_capstone_manifest(package: Path) -> None:
     build_capstone_manifest(package, measured_at=MEASURED_AT)
 
 
+def _unknown_trace_events(package: Path):
+    return [
+        json.loads(line)
+        for line in (package / "02-unknown-effect-trace.jsonl")
+        .read_text(encoding="utf-8")
+        .splitlines()
+    ]
+
+
+def _write_unknown_trace(package: Path, events) -> None:
+    (package / "02-unknown-effect-trace.jsonl").write_text(
+        "\n".join(json.dumps(event) for event in events) + "\n",
+        encoding="utf-8",
+    )
+    summary_path = package / "02-unknown-effect-trace-summary.json"
+    summary = _read_json(summary_path)
+    summary.update(
+        events=events,
+        event_types=[event["event_type"] for event in events],
+        event_count=len(events),
+    )
+    _write_json(summary_path, summary)
+
+
 def _validate_capstone(package: Path):
     from docs.companion.examples.validate_capstone_package import validate_capstone_package
 
@@ -755,3 +779,269 @@ def test_lab8_cli_reports_success_and_failed_validation(lab8_dir: Path, tmp_path
     completed = subprocess.run(command, cwd=tmp_path, capture_output=True, text=True, check=False)
     assert completed.returncode == 1
     assert json.loads(completed.stdout)["valid"] is False
+
+
+@pytest.mark.parametrize("package_kind", ["capstone", "lab8"])
+@pytest.mark.parametrize(
+    "mutation", ["false", "string_false", "zero", "one", "object", "missing", "link"]
+)
+def test_package_requires_true_evidence_linked_signals(
+    request: pytest.FixtureRequest,
+    package_kind: str,
+    mutation: str,
+) -> None:
+    package = request.getfixturevalue(f"{package_kind}_dir")
+    path = package / "evidence-manifest.yaml"
+    manifest = yaml.safe_load(path.read_text(encoding="utf-8"))
+    signal_id = "capstone_package_built" if package_kind == "capstone" else "lab_08_observed"
+    signal = manifest["signals"][signal_id]
+    if mutation == "missing":
+        manifest["signals"]["unrelated_observation"] = manifest["signals"].pop(signal_id)
+    elif mutation == "link":
+        signal["artifact_refs"] = [manifest["artifacts"][0]["id"]]
+    else:
+        signal["value"] = {
+            "false": False,
+            "string_false": "false",
+            "zero": 0,
+            "one": 1,
+            "object": {},
+        }[mutation]
+    path.write_text(yaml.safe_dump(manifest), encoding="utf-8")
+    validate = _validate_capstone if package_kind == "capstone" else _validate_lab8
+    check = "manifest_integrity" if package_kind == "capstone" else "cumulative_manifest"
+    assert _failed_checks(validate(package)) == {check}
+
+
+@pytest.mark.parametrize("signal_index", range(12))
+def test_lab8_requires_each_laboratory_observation(lab8_dir: Path, signal_index: int) -> None:
+    path = lab8_dir / "evidence-manifest.yaml"
+    manifest = yaml.safe_load(path.read_text(encoding="utf-8"))
+    signal = list(manifest["signals"].values())[signal_index]
+    signal["value"] = False
+    path.write_text(yaml.safe_dump(manifest), encoding="utf-8")
+    assert _failed_checks(_validate_lab8(lab8_dir)) == {"cumulative_manifest"}
+
+
+@pytest.mark.parametrize("package_kind", ["capstone", "lab8"])
+def test_package_accepts_student_metadata_and_list_signals(
+    request: pytest.FixtureRequest,
+    package_kind: str,
+) -> None:
+    package = request.getfixturevalue(f"{package_kind}_dir")
+    path = package / "evidence-manifest.yaml"
+    manifest = yaml.safe_load(path.read_text(encoding="utf-8"))
+    manifest.update(issuer="student-team", subject="student-study", measured_at=MEASURED_AT)
+    if package_kind == "capstone":
+        ids = {
+            item["id"]: f"student-evidence-{index}"
+            for index, item in enumerate(manifest["artifacts"])
+        }
+        for item in manifest["artifacts"]:
+            item["id"] = ids[item["id"]]
+        for signal in manifest["signals"].values():
+            signal["artifact_refs"] = [ids[reference] for reference in signal["artifact_refs"]]
+    manifest["signals"]["student_observation"] = {
+        "value": "reviewed",
+        "artifact_refs": [manifest["artifacts"][0]["id"]],
+    }
+    manifest["signals"] = [
+        {"id": name, **signal} for name, signal in reversed(list(manifest["signals"].items()))
+    ]
+    path.write_text(yaml.safe_dump(manifest), encoding="utf-8")
+    validate = _validate_capstone if package_kind == "capstone" else _validate_lab8
+    assert validate(package)["valid"] is True
+
+
+@pytest.mark.parametrize("value", ["true", "false", "", "missing"])
+def test_unknown_raw_completion_requires_indeterminate_success(
+    capstone_dir: Path, value: str
+) -> None:
+    events = _unknown_trace_events(capstone_dir)
+    completion = events[-1]["payload"]
+    if value == "missing":
+        completion.pop("task_success")
+    else:
+        completion["task_success"] = value
+    _write_unknown_trace(capstone_dir, events)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _failed_checks(_validate_capstone(capstone_dir)) == {"trace_continuity"}
+
+
+@pytest.mark.parametrize("value", [True, False, 0, "null", {}, "missing"])
+def test_unknown_eval_requires_indeterminate_success(capstone_dir: Path, value: object) -> None:
+    path = capstone_dir / "04-eval.json"
+    payload = _read_json(path)
+    run = payload["sessions"][0]["runs"][0]
+    if value == "missing":
+        run.pop("task_success")
+    else:
+        run["task_success"] = value
+    _write_json(path, payload)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _failed_checks(_validate_capstone(capstone_dir)) == {"eval_unknown_effect"}
+
+
+@pytest.mark.parametrize(
+    "event_type", ["policy_precheck", "tool_policy_decision", "idempotency_decision"]
+)
+@pytest.mark.parametrize("mutation", ["missing", "duplicate", "late", "deny"])
+def test_unknown_trace_requires_ordered_allowing_dispatch_guards(
+    capstone_dir: Path,
+    event_type: str,
+    mutation: str,
+) -> None:
+    events = _unknown_trace_events(capstone_dir)
+    gate = next(event for event in events if event["event_type"] == event_type)
+    if mutation == "missing":
+        events.remove(gate)
+    elif mutation == "duplicate":
+        events.insert(events.index(gate), dict(gate))
+    elif mutation == "late":
+        events.remove(gate)
+        events.insert(-1, gate)
+    else:
+        gate["payload"]["action"] = "deny"
+    _write_unknown_trace(capstone_dir, events)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _failed_checks(_validate_capstone(capstone_dir)) == {"trace_continuity"}
+
+
+@pytest.mark.parametrize(
+    "event_type,field,value",
+    [
+        ("idempotency_decision", "idempotency_key", "unrelated-key"),
+        ("idempotency_decision", "idempotency_key", ""),
+        ("idempotency_decision", "idempotency_key", "missing"),
+        ("idempotency_decision", "capability", "search_docs"),
+        ("tool_policy_decision", "capability", "search_docs"),
+        ("idempotency_decision", "action", "replay"),
+    ],
+)
+def test_unknown_trace_requires_matching_write_identity(
+    capstone_dir: Path,
+    event_type: str,
+    field: str,
+    value: str,
+) -> None:
+    events = _unknown_trace_events(capstone_dir)
+    payload = next(event["payload"] for event in events if event["event_type"] == event_type)
+    if value == "missing":
+        payload.pop(field)
+    else:
+        payload[field] = value
+    _write_unknown_trace(capstone_dir, events)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _failed_checks(_validate_capstone(capstone_dir)) == {"trace_continuity"}
+
+
+def test_unknown_trace_allows_student_trace_and_business_key(capstone_dir: Path) -> None:
+    events = _unknown_trace_events(capstone_dir)
+    for event in events:
+        event["trace_id"] = "student-trace"
+        payload = event["payload"]
+        if "idempotency_key" in payload:
+            payload["idempotency_key"] = "student-request-unique-key"
+    _write_unknown_trace(capstone_dir, events)
+    path = capstone_dir / "02-unknown-effect-trace-summary.json"
+    summary = _read_json(path)
+    summary.update(trace_id="student-trace", idempotency_keys=["student-request-unique-key"])
+    _write_json(path, summary)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _validate_capstone(capstone_dir)["valid"] is True
+
+
+@pytest.mark.parametrize(
+    "target,field,value",
+    [
+        ("rule_expected", "on_unknown_side_effect", "retry"),
+        ("rule_expected", "idempotency_key_required", False),
+        ("rule_expected", "max_ticket_side_effects", 2),
+        ("rule_expected", "max_ticket_side_effects", True),
+        ("rule", "blocking", False),
+        ("rule", "blocking", "true"),
+        ("rubric", "grading_rules", []),
+        ("rubric", "grading_rules", "missing"),
+        ("outcomes", "idempotency_key_required", False),
+        ("outcomes", "max_ticket_side_effects", 2),
+        ("outcomes", "duplicate_ticket_eval_passed", "true"),
+        ("outcomes", "latest_status", "success"),
+        ("run", "capability_name", "search_docs"),
+        ("run", "idempotency_key", "missing"),
+        ("run", "idempotency_key", ""),
+        ("run", "idempotency_key", "  "),
+        ("run", "idempotency_key", "unrelated-key"),
+        ("session_record", "traces", []),
+        ("session", "trace_ids", ["unrelated-trace"]),
+        ("summary", "latest_trace_id", "unrelated-trace"),
+        ("summary", "idempotency_keys", []),
+        ("dataset", "idempotency_keys", ["unrelated-key"]),
+    ],
+)
+def test_eval_requires_write_identity_and_duplicate_prevention(
+    capstone_dir: Path,
+    target: str,
+    field: str,
+    value: object,
+) -> None:
+    path = capstone_dir / "04-eval.json"
+    payload = _read_json(path)
+    session = payload["sessions"][0]
+    rubric = session["eval"]
+    targets = {
+        "dataset": payload,
+        "session": session,
+        "session_record": session["session"],
+        "summary": session["summary"],
+        "run": session["runs"][0],
+        "rubric": rubric,
+        "outcomes": rubric["expected_outcomes"],
+        "rule": rubric["grading_rules"][0],
+        "rule_expected": rubric["grading_rules"][0]["expected"],
+    }
+    if value == "missing":
+        targets[target].pop(field)
+    else:
+        targets[target][field] = value
+    _write_json(path, payload)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _failed_checks(_validate_capstone(capstone_dir)) == {"eval_unknown_effect"}
+
+
+def test_eval_rejects_conflicting_duplicate_guards(capstone_dir: Path) -> None:
+    path = capstone_dir / "04-eval.json"
+    payload = _read_json(path)
+    rules = payload["sessions"][0]["eval"]["grading_rules"]
+    contradictory = json.loads(json.dumps(rules[0]))
+    contradictory["expected"]["on_unknown_side_effect"] = "retry"
+    rules.append(contradictory)
+    _write_json(path, payload)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _failed_checks(_validate_capstone(capstone_dir)) == {"eval_unknown_effect"}
+
+
+def test_eval_accepts_student_ids_and_additional_rubric_rules(capstone_dir: Path) -> None:
+    path = capstone_dir / "04-eval.json"
+    payload = _read_json(path)
+    session = payload["sessions"][0]
+    run = session["runs"][0]
+    run.update(trace_id="student-eval-trace", idempotency_key="student-eval-request")
+    for record in (payload, session, session["summary"]):
+        record.update(trace_ids=[run["trace_id"]], idempotency_keys=[run["idempotency_key"]])
+    for record in (session, session["summary"]):
+        record["latest_trace_id"] = run["trace_id"]
+    session["session"].update(traces=[run["trace_id"]], session_id="student-eval-session")
+    payload["session_ids"] = ["student-eval-session"]
+    payload["dataset_name"] = "student-assessment"
+    session["eval"]["labels"].append("student-reviewed")
+    session["eval"]["grading_rules"].insert(
+        0,
+        {
+            "type": "student-output-review",
+            "blocking": True,
+            "expected": {"owner_reviewed": True},
+        },
+    )
+    _write_json(path, payload)
+    _rebuild_capstone_manifest(capstone_dir)
+    assert _validate_capstone(capstone_dir)["valid"] is True

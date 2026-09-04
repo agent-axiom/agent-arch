@@ -14,6 +14,7 @@ if str(REPO_ROOT) not in sys.path:
 
 from agent_runtime_ref.evidence import verify_evidence_manifest  # noqa: E402
 from agent_runtime_ref.telemetry import TelemetryEmitter  # noqa: E402
+from docs.companion.examples.package_signals import required_signals_observed  # noqa: E402
 
 REQUIRED_FILES = frozenset(
     {
@@ -113,6 +114,11 @@ def _manifest_integrity(package_dir: Path) -> tuple[bool, str]:
     diagnostics.extend(
         f"{item.code} at {item.location}: {item.message}" for item in verification.diagnostics
     )
+    if verification.verified and not required_signals_observed(
+        manifest.get("signals"),
+        {"capstone_package_built": set(verification.artifact_ids)},
+    ):
+        diagnostics.append("capstone_package_built must be boolean true and link every artifact")
     return verification.verified and not diagnostics, "; ".join(diagnostics) or "verified"
 
 
@@ -143,6 +149,59 @@ def _trace_matches_summary(
     )
 
 
+def _ordered_event_payloads(
+    events: list[dict[str, Any]],
+    event_types: Sequence[str],
+) -> dict[str, dict[str, str]]:
+    payloads: dict[str, dict[str, str]] = {}
+    previous_index = -1
+    for event_type in event_types:
+        matches = [
+            (index, event)
+            for index, event in enumerate(events)
+            if event["event_type"] == event_type
+        ]
+        if len(matches) != 1:
+            raise ValueError(f"trace requires exactly one {event_type} event")
+        index, event = matches[0]
+        if index <= previous_index:
+            raise ValueError(f"trace event is out of order: {event_type}")
+        previous_index = index
+        payloads[event_type] = event["payload"]
+    return payloads
+
+
+def _dispatch_guards_allow_write(events: list[dict[str, Any]]) -> bool:
+    payloads = _ordered_event_payloads(
+        events,
+        (
+            "policy_precheck",
+            "tool_policy_decision",
+            "idempotency_decision",
+            "tool_execution",
+            "effect_reconciliation_required",
+        ),
+    )
+    key = payloads["idempotency_decision"].get("idempotency_key", "")
+    write_events = (
+        "tool_policy_decision",
+        "idempotency_decision",
+        "tool_execution",
+        "effect_reconciliation_required",
+    )
+    return (
+        payloads["policy_precheck"].get("action") == "allow"
+        and payloads["tool_policy_decision"].get("action") == "allow"
+        and payloads["idempotency_decision"].get("action") == "execute"
+        and all(
+            payloads[event_type].get("capability") == "create_ticket" for event_type in write_events
+        )
+        and bool(key.strip())
+        and payloads["tool_execution"].get("idempotency_key") == key
+        and payloads["effect_reconciliation_required"].get("idempotency_key") == key
+    )
+
+
 def _validate_raw_unknown_trace(
     events: list[dict[str, Any]],
     summary: dict[str, Any],
@@ -166,6 +225,7 @@ def _validate_raw_unknown_trace(
     ]
     ok = (
         _trace_matches_summary(events, summary)
+        and _dispatch_guards_allow_write(events)
         and len(tool_events) == 1
         and tool_events[0]["payload"].get("capability") == "create_ticket"
         and tool_events[0]["payload"].get("outcome") == "side_effect_unknown"
@@ -181,6 +241,7 @@ def _validate_raw_unknown_trace(
         and completion_events[0]["payload"].get("status") == "blocked_on_reconciliation"
         and completion_events[0]["payload"].get("side_effect_status") == "side_effect_unknown"
         and completion_events[0]["payload"].get("failure_reason") == "post_dispatch_timeout"
+        and completion_events[0]["payload"].get("task_success") == "null"
         and event_types.index("tool_execution")
         < event_types.index("effect_reconciliation_required")
         < event_types.index("run_complete")
@@ -204,6 +265,61 @@ def _validate_normal_trace(package_dir: Path) -> bool:
         and tools[0].get("outcome") == "approval_required"
         and tools[0].get("side_effect_status") == "not_executed"
         and events[-1]["payload"].get("side_effect_status") == "not_executed"
+    )
+
+
+def _duplicate_prevention_assertions(expected: object) -> bool:
+    if not isinstance(expected, dict):
+        return False
+    maximum = expected.get("max_ticket_side_effects")
+    return (
+        expected.get("idempotency_key_required") is True
+        and type(maximum) is int
+        and 0 <= maximum <= 1
+    )
+
+
+def _blocking_duplicate_guard(rule: dict[str, Any]) -> bool:
+    expected = rule.get("expected")
+    return (
+        rule.get("blocking") is True
+        and _duplicate_prevention_assertions(expected)
+        and expected.get("on_unknown_side_effect") == "stop_or_reconcile"
+    )
+
+
+def _eval_rubric_valid(evaluation: dict[str, Any]) -> bool:
+    rules = evaluation.get("grading_rules")
+    if not isinstance(rules, list) or not all(isinstance(rule, dict) for rule in rules):
+        return False
+    guards = [rule for rule in rules if rule.get("type") == "duplicate_ticket_guard"]
+    outcomes = evaluation.get("expected_outcomes")
+    return (
+        bool(guards)
+        and _duplicate_prevention_assertions(outcomes)
+        and outcomes.get("latest_status") == "blocked_on_reconciliation"
+        and outcomes.get("duplicate_ticket_eval_passed") is True
+        and type(outcomes.get("reconciliation_runs")) is int
+        and outcomes["reconciliation_runs"] == 1
+        and all(_blocking_duplicate_guard(rule) for rule in guards)
+    )
+
+
+def _eval_write_identity(payload: dict[str, Any], session: dict[str, Any]) -> bool:
+    run = session["runs"][0]
+    key = run.get("idempotency_key")
+    trace_id = run.get("trace_id")
+    summary = session["summary"]
+    return (
+        run.get("capability_name") == "create_ticket"
+        and isinstance(key, str)
+        and bool(key.strip())
+        and all(
+            record.get("idempotency_keys") == [key] and record.get("trace_ids") == [trace_id]
+            for record in (payload, session, summary)
+        )
+        and session["session"].get("traces") == [trace_id]
+        and session.get("latest_trace_id") == summary.get("latest_trace_id") == trace_id
     )
 
 
@@ -232,12 +348,16 @@ def _validate_eval(payload: dict[str, Any]) -> tuple[bool, str]:
         and run.get("status") == "blocked_on_reconciliation"
         and run.get("failure_reason") == "post_dispatch_timeout"
         and run.get("side_effect_status") == "side_effect_unknown"
+        and "task_success" in run
+        and run["task_success"] is None
         and isinstance(run.get("trace_id"), str)
         and bool(run["trace_id"].strip())
         and payload.get("trace_ids") == [run["trace_id"]]
         and isinstance(session_record.get("session_id"), str)
         and bool(session_record["session_id"].strip())
         and payload.get("session_ids") == [session_record["session_id"]]
+        and _eval_write_identity(payload, session)
+        and _eval_rubric_valid(evaluation)
     )
     return ok, "evaluation must exercise the post-dispatch unknown-effect path"
 

@@ -16,6 +16,7 @@ from agent_runtime_ref.evidence import verify_evidence_manifest  # noqa: E402
 from docs.companion.examples.build_lab_evidence_manifest import (  # noqa: E402
     LAB_ARTIFACTS,
 )
+from docs.companion.examples.package_signals import required_signals_observed  # noqa: E402
 
 REQUIRED_LAB8_FILES = frozenset(
     {
@@ -61,7 +62,13 @@ def _cumulative_manifest(artifacts_dir: Path) -> tuple[bool, str]:
     artifacts = manifest["artifacts"]
     actual_paths = {item["id"]: item["path"] for item in artifacts}
     valid = len(artifacts) == len(required_paths) and actual_paths == required_paths
-    return valid, "verified" if valid else "artifact ids must link the exact laboratory paths"
+    if not valid:
+        return False, "artifact ids must link the exact laboratory paths"
+    required_refs = {
+        artifact_id.replace("-", "_") + "_observed": {artifact_id} for artifact_id in required_paths
+    }
+    signals_ok = required_signals_observed(manifest.get("signals"), required_refs)
+    return signals_ok, "laboratory observations must be boolean true and link their artifacts"
 
 
 def validate_lab8_package(artifacts_dir: Path) -> dict[str, object]:
