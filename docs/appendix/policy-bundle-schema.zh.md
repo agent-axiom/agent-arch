@@ -33,6 +33,74 @@
 
 所以最好把策略包视作一个一等工件。
 
+## 建议扩展：部分 OAuth grant
+
+这是生产契约建议，不表示 reference runtime 已实现这些字段。动机来自 [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/)。以下字段属于内部策略证据，并非新的标准 OAuth 字段。
+
+- `requested_scopes`：本次授权请求的 scopes。
+- `granted_scopes`：从经过验证的授权服务器响应或其他可信 provider 机制获得的实际集合；不能根据请求猜测，也不能假定所有 token 都是 JWT。
+- `required_scopes`：所选操作的最低权限，不是同意界面的必需 scopes。
+- `missing_scopes`：required 与 granted 的差集；非空时必须在副作用发生之前阻止操作。
+- `grant_ref`、`authorization_checked_at`：非秘密的 grant 引用和检查时间；与 subject、task、tool、resource、policy version 一起支持决策审查。不得记录 token 本身。
+
+示例（scope 名称和证据字段并非标准化定义）：
+
+```yaml
+oauth_scope_evidence:
+  grant_ref: grant-42
+  authorization_checked_at: "2026-09-08T00:00:00Z"
+  requested_scopes: [tickets.read, tickets.write]
+  granted_scopes: [tickets.read]
+  required_scopes: [tickets.write]
+  missing_scopes: [tickets.write]
+  decision: deny
+  reason: insufficient_granted_scope
+```
+
+scope 检查不能替代 resource/audience/expiry 验证、当前策略或独立的操作审批。如果无法可靠确定 grant，就停止敏感操作；不得以 requested 代替 granted。refresh/resume 后需要检查当前授权上下文，下游服务仍需自行执行授权检查。
+
+该建议契约的验收场景：
+
+1. 仅授予读取：生成独立获准的摘要，不调用写入工具，并明确结果只完成了一部分。
+2. 缺失 scope 是整个任务必需的：说明原因并停止，不重试、不更换 credential、不暗中扩大访问权限。
+3. scope 存在但 resource 或 task 超出策略：拒绝；广泛 grant 不能覆盖 task-scoped authority。
+4. refresh/resume 后写权限消失：不得复用旧 allow 决策。
+5. grant 未知或用户完全拒绝同意：不得基于 requested scopes 执行。操作审批不能替代 grant。
+
+## 建议扩展：MCP 目录缓存
+
+这是内部契约建议，不是 `agent_runtime_ref` 已实现的能力，也不是可直接使用的 FastMCP 配置。`ttlMs` 和 `cacheScope` 是 FastMCP 文档描述的服务器提示；下面其他字段是建议的标准化证据。来源：[LangChain: MCP in LangChain](https://www.langchain.com/blog/mcp-in-langchain-stateless-protocol-elicitation-and-more) / [FastMCP: Response caching](https://gofastmcp.com/clients/client#response-caching)。
+
+```yaml
+catalog_cache_evidence:
+  target_id: support-mcp-prod
+  protocol_version: "2026-07-28"
+  request_fingerprint: tools-list-page-1
+  partition_ref: verified-tenant-a-principal-7-authz-v3
+  policy_version: support-policy-v8
+  server_ttl_ms: 60000          # ttlMs
+  server_cache_scope: public   # cacheScope
+  local_max_ttl_ms: 30000
+  effective_ttl_ms: 30000
+  fetched_at: "2026-09-08T07:00:00Z"
+  expires_at: "2026-09-08T07:00:30Z"
+  catalog_digest_ref: catalog-snapshot-42
+  cache_hit: true
+  authorization_decision_ref: fresh-tool-call-decision-43
+```
+
+`partition_ref` 应从已验证的 tenant/principal 和访问上下文派生；密钥与 token 不得进入缓存键或日志。`target_id` 必须唯一标识服务器；`request_fingerprint` 标识列表方法及参数，包括分页或过滤条件。示例字符串仅作说明。`server_cache_scope` 记录收到的 `cacheScope`，不得扩大其含义。即使响应为 `public`，本地策略仍可要求更严格的隔离。
+
+TTL 限制快照复用：有效期不得超过服务器 `ttlMs` 或本地上限。零 TTL 不允许复用；对于缺失或无效提示，这个保守契约要求从网络读取而不复用缓存。这是本地策略，不代表所有 SDK 的默认行为。如果无法刷新过期目录，不得用旧快照为敏感调用提供授权依据。在 FastMCP 中，`refresh` 从网络读取并更新缓存；`bypass` 既不读取缓存，也不存储响应。
+
+建议契约的验收场景：
+
+1. 同一 tenant 的两名用户权限不同：第一人的目录不得服务第二人。共享必须同时满足服务器标记 `public` 和本地策略允许。
+2. TTL 到期前权限被撤销：当前授权检查拒绝调用；缓存命中不能复用旧 allow，依赖权限的可见性也应失效。
+3. 检测到定义变化：刷新并重新检查 schema、风险和审批；不得自动将旧审批迁移到不同契约。
+4. TTL 过期、为零或无效：从网络读取；服务器不可用不能成为绕过检查的理由。
+5. principal、grant 或策略版本变化：更换分区或使缓存失效；metadata 和访问决策都不得跨越上下文边界。
+
 ## 什么是策略包
 
 这里可以把策略包理解为一组作为整体发布的相关规则：

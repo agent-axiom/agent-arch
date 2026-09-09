@@ -29,6 +29,19 @@
 
 Поэтому полезно мыслить набор для оценки как контракт.
 
+## Предлагаемое расширение: оценка сжатия вывода инструментов
+
+Это проект evidence-контракта, не реализованные поля `agent_runtime_ref` и не результаты измерений. Основание: [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/). Контроль `full_output` и вариант `selective_output` используют одинаковые правила доступа и удаления секретов; «полный» не означает обход политики.
+
+- `experiment_id`, `task_id`, `attempt_id`, `variant`, `repo_snapshot`, `model_ref`, `harness_version`, `compression_policy_version`, `verifier_ref`: идентичность сравнения.
+- `task_success`, `total_cost`, `cost_unit`, `pricing_version`, `latency_ms`, `model_turns`: исход всей попытки, включая компрессию и восстановление. Не смешивай денежную стоимость с кредитами без явного пересчета.
+- `output_id`, `tool_call_id`, `output_class`, `transform_mode`, `original_output_ref`, `original_complete`, `original_tokens`, `delivered_tokens`: след преобразования; счетчики токенов используют один tokenizer и не заменяют billed usage.
+- `original_retrieved`, `recovery_read_count`, `repeated_command_count`, `repeated_exploration_count`, `recovery_reason`, `recovery_evidence_ref`: наблюдаемая повторная работа с привязкой к output; неизвестную причину не выдавай за доказанное последствие сжатия.
+
+`original_retrieval_rate` = число уникальных сжатых outputs с хотя бы одним чтением оригинала / число сжатых outputs. При нулевом знаменателе запиши `null`, а не нулевую долю. Несколько чтений одного оригинала увеличивают `recovery_read_count`, но не числитель доли. Дополнительные ходы и изменение задержки определяются сравнением с контролем, а не догадкой внутри одной трассы.
+
+Проверочные сценарии: точное сохранение кода и diff; перегруппировка поиска без утраты совпадений; повторяющийся build-log с единственной критичной ошибкой; смешанный неизвестный вывод; чтение оригинала без повторного побочного эффекта; недоступный или неполный оригинал; набор без срабатываний компрессора. Для каждого сценария проверь качество, полную стоимость и задержку. Высокая доля восстановления требует разбора, но сама по себе не равна провалу: оцени полезность вместе с результатом задачи.
+
 ## Целостность оценки как контроль первого класса
 
 Свежий разбор OpenAI по SWE-Bench Pro показывает, почему этого недостаточно: даже реалистичный benchmark может давать шумный сигнал, если сами задачи сломаны. [OpenAI обнаружила](https://openai.com/index/separating-signal-from-noise-coding-evaluations/), что автоматический конвейер пометил 200 из 731 задач публичного split как сломанные, а кампания с пятью опытными инженерами на задачу нашла 249 таких задач. В терминах книги это означает простую вещь: eval artifact сам должен проходить проверку качества, потому что он влияет на безопасность выпуска, приоритеты исследований и аргументы safety case.

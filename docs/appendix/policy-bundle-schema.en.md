@@ -33,6 +33,74 @@ That may work while the system is small. But as soon as change management, audit
 
 That is why it is useful to package a `policy bundle` as a first-class artifact.
 
+## Proposed extension: partial OAuth grants
+
+This is a production contract proposal, not a claim that the reference runtime implements these fields. Motivation: [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/). The fields below are internal policy evidence, not new standard OAuth fields.
+
+- `requested_scopes`: scopes of the specific authorization request.
+- `granted_scopes`: the actual set from a verified authorization-server response or another trusted provider mechanism; neither a guess from the request nor an assumption that every token is a JWT.
+- `required_scopes`: minimum permissions for the selected operation, not mandatory consent-UI scopes.
+- `missing_scopes`: required minus granted; a nonempty set blocks the operation before side effects.
+- `grant_ref`, `authorization_checked_at`: a non-secret grant reference and check time; together with subject, task, tool, resource, and policy version they make the decision reviewable. Never log the token itself.
+
+Illustrative example (scope names and evidence fields are not standardized):
+
+```yaml
+oauth_scope_evidence:
+  grant_ref: grant-42
+  authorization_checked_at: "2026-09-08T00:00:00Z"
+  requested_scopes: [tickets.read, tickets.write]
+  granted_scopes: [tickets.read]
+  required_scopes: [tickets.write]
+  missing_scopes: [tickets.write]
+  decision: deny
+  reason: insufficient_granted_scope
+```
+
+Scope checking does not replace resource/audience/expiry validation, current policy, or separate action approval. If the grant cannot be established reliably, stop the sensitive operation; never substitute requested for granted. Refresh/resume requires current authorization context, and the downstream service retains its own authorization checks.
+
+Acceptance scenarios for this proposed contract:
+
+1. Read-only grant: produce an independently permitted summary, never invoke the write tool, and label the outcome partial.
+2. A missing scope is essential to the task: stop with an explicit reason, without retries, credential substitution, or hidden access expansion.
+3. Scope present but resource or task outside policy: deny; a broad grant cannot override task-scoped authority.
+4. Write permission disappears after refresh/resume: do not reuse the old allow decision.
+5. Unknown grant or complete consent refusal: never execute based on requested scopes. Action approval cannot substitute for the grant.
+
+## Proposed extension: MCP catalog cache
+
+This is an internal contract proposal, not an implemented `agent_runtime_ref` feature or a ready-to-use FastMCP configuration. `ttlMs` and `cacheScope` are server hints documented by FastMCP; the other fields below propose normalized evidence. Sources: [LangChain: MCP in LangChain](https://www.langchain.com/blog/mcp-in-langchain-stateless-protocol-elicitation-and-more) / [FastMCP: Response caching](https://gofastmcp.com/clients/client#response-caching).
+
+```yaml
+catalog_cache_evidence:
+  target_id: support-mcp-prod
+  protocol_version: "2026-07-28"
+  request_fingerprint: tools-list-page-1
+  partition_ref: verified-tenant-a-principal-7-authz-v3
+  policy_version: support-policy-v8
+  server_ttl_ms: 60000          # ttlMs
+  server_cache_scope: public   # cacheScope
+  local_max_ttl_ms: 30000
+  effective_ttl_ms: 30000
+  fetched_at: "2026-09-08T07:00:00Z"
+  expires_at: "2026-09-08T07:00:30Z"
+  catalog_digest_ref: catalog-snapshot-42
+  cache_hit: true
+  authorization_decision_ref: fresh-tool-call-decision-43
+```
+
+Derive `partition_ref` from verified tenant/principal and access context; keep secrets and tokens out of keys and logs. `target_id` must uniquely identify the server; `request_fingerprint` identifies the listing method and parameters, including a page or filter. Example strings are illustrative. `server_cache_scope` records the received `cacheScope` without widening its meaning. Local policy can retain stricter isolation even for `public` responses.
+
+TTL bounds snapshot reuse: effective lifetime must not exceed server `ttlMs` or the local cap. Zero TTL permits no reuse; for missing or invalid hints this conservative contract requires a network read without cache reuse. That is local policy, not a claim about every SDK default. If an expired catalog cannot be refreshed, do not turn the stale snapshot into authority for a sensitive invocation. In FastMCP, `refresh` fetches and updates the cache; `bypass` neither serves nor stores a cached response.
+
+Acceptance scenarios for the proposed contract:
+
+1. Two users in one tenant with different permissions: the first catalog never serves the second. Sharing requires both server-marked `public` and permitting local policy.
+2. Permission revoked before TTL expires: current authorization denies invocation; a cache hit cannot reuse an old allow, and authorization-dependent visibility is invalidated.
+3. Definition change detected: refresh and recheck schema, risk, and approval; never automatically carry old approval onto a different contract.
+4. Expired, zero, or invalid TTL: network read; server unavailability cannot authorize bypassing checks.
+5. Principal, grant, or policy-version change: a different partition or invalidation; neither metadata nor access decisions cross context boundaries.
+
 ## What a policy bundle is
 
 Here, it is useful to define a `policy bundle` as a related set of rules that ships together:

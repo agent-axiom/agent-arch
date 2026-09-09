@@ -29,6 +29,19 @@
 
 所以最好把评测数据集当成一种契约。
 
+## 建议扩展：工具输出压缩评估
+
+这是证据契约建议，不是 `agent_runtime_ref` 已实现字段或实测结果。依据：[GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/)。`full_output` 对照与 `selective_output` 实验使用相同的访问和秘密脱敏规则；完整输出不意味着绕过策略。
+
+- `experiment_id`、`task_id`、`attempt_id`、`variant`、`repo_snapshot`、`model_ref`、`harness_version`、`compression_policy_version`、`verifier_ref`：比较身份。
+- `task_success`、`total_cost`、`cost_unit`、`pricing_version`、`latency_ms`、`model_turns`：包括压缩与恢复的整个尝试结果。没有明确换算时，不得混合货币和 credits。
+- `output_id`、`tool_call_id`、`output_class`、`transform_mode`、`original_output_ref`、`original_complete`、`original_tokens`、`delivered_tokens`：转换证据；token 计数采用同一个 tokenizer，但不能替代计费用量。
+- `original_retrieved`、`recovery_read_count`、`repeated_command_count`、`repeated_exploration_count`、`recovery_reason`、`recovery_evidence_ref`：关联到输出的可观察重复工作；未知原因不能视为压缩导致的已证实结果。
+
+`original_retrieval_rate` = 至少读取过一次原文的不同压缩输出数 / 压缩输出数。分母为零时记录 `null`，不是零比例。多次读取同一原文增加 `recovery_read_count`，但不增加比例分子。额外轮次与延迟变化应通过对照比较确定，而非在单条 trace 中猜测。
+
+验收场景：精确保留代码和 diff；无损重组搜索结果；包含唯一关键错误的重复构建日志；混合未知输出；无需重复副作用的原文读取；原文缺失或不完整；压缩器从未触发的测试集。每种场景都检查质量、总成本和延迟。高恢复比例需要调查，但不自动等于失败，应结合任务结果评估其价值。
+
 ## 把评测完整性作为一等控制
 
 OpenAI 对 SWE-Bench Pro 的审计说明了为什么只有这个契约还不够：即使是很真实的 benchmark，如果任务本身坏了，也会产生噪声信号。[OpenAI 发现](https://openai.com/index/separating-signal-from-noise-coding-evaluations/)，自动管线把 731 个 public split 任务中的 200 个标为损坏，而每个任务由五位资深工程师参与的人类标注活动识别出 249 个损坏任务。用本书的语言说，eval artifact 本身也需要质量保证，因为它会影响部署安全、研究优先级和 safety case 的论证。

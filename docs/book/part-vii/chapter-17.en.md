@@ -209,6 +209,14 @@ That second path should not be treated as “approval removed.” It should be t
 - how subagent or follow-on actions inherit or lose that delegated approval;
 - which verifier contracts are trusted to grade those same high-risk paths when rollout or assurance depends on verifier output.
 
+### A partial grant must not become an authority expansion
+
+A successful OAuth flow does not mean every `requested_scopes` entry appears in `granted_scopes`: users may decline optional permissions. [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) describes this behavior. The catalog defines separate `required_scopes` for each operation; example scope names are illustrative, not a universal OAuth vocabulary.
+
+Before execution, the gateway computes `missing_scopes = required_scopes - granted_scopes` from verified authorization context. A nonempty set denies that operation. An independent permitted part of the task may continue only if this preserves task meaning and atomicity; partial progress must not be reported as full completion. Action approval cannot create a missing OAuth scope. New access consent is a separate user decision, followed by fresh policy and task-boundary checks, without automatically widening the active run.
+
+After credential refresh, revocation, or task resume, do not rely on the old grant snapshot. Unknown or unverified permissions must not be reconstructed from the original request. Evidence fields and failure scenarios are in the [policy bundle contract](../../appendix/policy-bundle-schema.md).
+
 ## 7. A Policy Decision Should Be an Object, Not Just a Bool
 
 A very useful engineering habit: do not reduce policy decisions to `True/False`.
@@ -258,6 +266,16 @@ Before the next external action, policy must therefore evaluate more than the cu
 The runtime records this check as a separate `trajectory_policy_decision` event containing the rule identifier, a safe representation of the observed sequence, counters, reason, and final decision. Rate limits complement this contract by constraining request frequency, tokens, or connection duration, but they do not replace semantic trajectory policy, which checks action order, value continuity, and cumulative effect.
 
 The [trajectory-policy scenarios](../../companion/examples/trajectory-policy-scenarios.en.md) provide a runnable teaching example and its expected decisions. The evaluator receives a verified snapshot from a trusted provider, but does not itself prove that snapshot's provenance, implement a distributed durable store, locking, compare-and-swap (`CAS`), an atomic action-and-counter commit, or crash recovery, and is not connected to `AgentRuntime`.
+
+### MCP catalog caching: freshness is not permission
+
+LangChain describes tool-list caching with a server TTL; FastMCP documents `ttlMs`, `cacheScope`, and caller partitioning for shared stores. This is client-specific behavior: caching is opt-in and works with modern-era servers that advertise hints; legacy connections do not gain it automatically. Sources: [LangChain: MCP in LangChain](https://www.langchain.com/blog/mcp-in-langchain-stateless-protocol-elicitation-and-more) / [FastMCP: Response caching](https://gofastmcp.com/clients/client#response-caching).
+
+Isolation requires one client per caller or a shared-store partition derived from verified identity. A tenant alone is insufficient when two users see different catalogs; caller-supplied `user_id` and the server URL alone are not trusted partitions. In FastMCP only server-marked `public` responses may cross partitions. Local policy may forbid even that sharing; never relabel a user-specific catalog as public.
+
+**A cache hit reuses a description, not an allow decision.** Even before TTL expires, a revoked scope must block invocation through fresh authorization checks. The catalog is neither a credential nor a guarantee that listed actions are allowed. Create a new client when the principal changes; after grant or policy changes, make stale visibility unavailable until revalidated. Hidden tool names and schemas must not leak to another user either.
+
+When a tool definition changes, the old plan and approval may no longer match the action. On detecting a new version or digest, refresh the catalog and recheck arguments, risk, and approval applicability; TTL alone cannot instantly detect a change. For sensitive operations, force refresh or use verifiable version binding. A client digest detects differences between snapshots but cannot force a server to execute the old version: that guarantee needs server-side version binding. See the [policy bundle contract](../../appendix/policy-bundle-schema.md) for fields and acceptance scenarios.
 
 ## 8. Example Policy Contract
 

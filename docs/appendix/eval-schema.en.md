@@ -29,6 +29,19 @@ That is a problem for three reasons:
 
 That is why it helps to treat an eval dataset as a contract.
 
+## Proposed extension: tool-output compression evaluation
+
+This is a proposed evidence contract, not implemented `agent_runtime_ref` fields or measured results. Basis: [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/). The `full_output` control and `selective_output` treatment use identical access and secret-redaction rules; full output never means bypassing policy.
+
+- `experiment_id`, `task_id`, `attempt_id`, `variant`, `repo_snapshot`, `model_ref`, `harness_version`, `compression_policy_version`, `verifier_ref`: comparison identity.
+- `task_success`, `total_cost`, `cost_unit`, `pricing_version`, `latency_ms`, `model_turns`: entire-attempt outcome, including compression and recovery. Do not mix currency and credits without an explicit conversion.
+- `output_id`, `tool_call_id`, `output_class`, `transform_mode`, `original_output_ref`, `original_complete`, `original_tokens`, `delivered_tokens`: transformation evidence; use one tokenizer for token counters, which do not replace billed usage.
+- `original_retrieved`, `recovery_read_count`, `repeated_command_count`, `repeated_exploration_count`, `recovery_reason`, `recovery_evidence_ref`: observed rework linked to an output; unknown causation is not proven compression-induced work.
+
+`original_retrieval_rate` = distinct compressed outputs with at least one original retrieval / compressed outputs. With a zero denominator, record `null`, not a zero rate. Multiple reads of one original increase `recovery_read_count`, not the rate numerator. Extra turns and latency changes are determined against the control, not guessed within a single trace.
+
+Acceptance scenarios: exact code/diff preservation; lossless search regrouping; repetitive build logs with one critical error; mixed unknown output; original retrieval without repeating a side effect; missing or incomplete originals; a suite with no compressor activations. Check quality, total cost, and latency for each. A high retrieval rate calls for investigation but is not automatically a failure: evaluate usefulness alongside task outcomes.
+
 ## Eval integrity as a first-class control
 
 OpenAI's SWE-Bench Pro audit shows why that contract is not enough by itself: even a realistic benchmark can produce noisy signal when the tasks are broken. [OpenAI found](https://openai.com/index/separating-signal-from-noise-coding-evaluations/) that an automated pipeline flagged 200 of 731 public-split tasks as broken, while a campaign with five experienced engineers per task identified 249. In the language of this book, the eval artifact itself needs quality assurance because it shapes deployment safety, research priorities, and safety-case claims.

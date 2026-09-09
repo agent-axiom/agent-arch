@@ -547,6 +547,26 @@ runtime:
 
 它的价值在于让运行时契约保持显式，也更容易在不同环境之间迁移。
 
+### 选择性压缩输出：文本更少不一定更便宜
+
+GitHub 的实验中，早期压缩方案迫使 agent 重新读取保存的输出或再次执行命令；局部 token 节省反而增加了整个任务的成本和延迟。特别是 `git diff` 过滤器因这些回归而被移除。这是特定集成与工作负载的证据，并不证明 RTK 或所有压缩都有害。来源：[GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/)（2026 年 9 月 2 日）。
+
+建议的输出处理契约不同于对话历史压缩，reference runtime 尚未实现它：
+
+- `preserve`：无损保留代码、`cat`、`git diff`、`git show` 和任意未知输出。
+- `lossless_group`：可以重新组织搜索结果，但保留全部匹配、路径及其与原始结果的联系。
+- `selective_compress`：仅在节省明显时压缩重复的 install/build/test/progress 日志。保留诊断、退出码和独有错误。混合输出应按内容分类；命令名称本身不能证明全部输出都适合缩短。
+
+转换前，保存策略允许的原始输出，并关联 `tool_call_id`、`original_output_ref`、转换版本和完整性状态。压缩视图明确指出省略内容，并提供无需重新执行命令的原文读取路径。上游截断或原文不可用时，不得声称可完整恢复。秘密处理、访问控制和保留期限同样适用于原文；读取既不扩大权限，也不将外部文本升级为可信指令。
+
+恢复既是后备路径，也是评估信号：频繁读取原文、重复搜索和命令可能说明有用内容被删除。不得为了恢复文本而重复执行有副作用的操作。指标与配对比较见[评估 schema](../../appendix/eval-schema.md)。
+
+### 从文档重新生成：独立的构建模式
+
+[Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) 中的 SMART 将规格视为持久资产，将实现视为可重新生成的产物。关键不只是 DAG 编排：修复必须回到文档，否则下次干净生成可能丢失它。实用测试是：不访问旧代码，仅凭文档和允许的依赖重建系统。
+
+本书建议为该模式建立构建清单，记录文档与依赖图版本、生成器模型和配置、依赖、歧义日志、产物和独立验证结果。检查 agent 推断图中的循环、遗漏依赖和接口兼容性。语义可重复不代表代码逐字节相同。新生成不得自动替换运行中的构建；仍需验证、受控发布和回滚。这是建议契约，不是 reference runtime 已实现能力。详情和局限见 [SMART 案例](../../appendix/case-studies.md)。
+
 ## 14. 常见错误
 
 非常典型的问题有：

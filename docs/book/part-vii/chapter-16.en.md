@@ -548,6 +548,26 @@ runtime:
 
 This is useful because it keeps the runtime contract explicit and portable between environments.
 
+### Selective output compression: less text is not always cheaper
+
+In GitHub's experiments, early compression variants made agents reopen saved output or rerun commands; local token savings increased whole-task cost and latency. In particular, the `git diff` filter was removed after these regressions. This is evidence about specific integration and workloads, not proof that RTK or compression in general is harmful. Source: [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/) (September 2, 2026).
+
+The proposed output-handling contract is separate from conversation-history compaction and is not yet implemented by the reference runtime:
+
+- `preserve`: retain code, `cat`, `git diff`, `git show`, and arbitrary unknown output without content loss.
+- `lossless_group`: regroup search results while preserving every match, path, and link to the original result.
+- `selective_compress`: compress repetitive install/build/test/progress logs only for substantial savings. Preserve diagnostics, exit codes, and unique errors. Classify mixed output by content; a command name alone does not establish that all output is safe to shorten.
+
+Before transforming, retain the policy-permitted original and bind it to `tool_call_id`, `original_output_ref`, transformation version, and completeness status. The compressed view explicitly identifies omissions and provides direct original retrieval without command re-execution. Upstream truncation or an unavailable original must not be presented as complete recovery. Secret handling, access controls, and retention also apply to originals; retrieval neither expands authority nor promotes external text to trusted instructions.
+
+Recovery is both a fallback and an evaluation signal: frequent original reads, repeated searches, and commands may indicate useful content was removed. Never repeat a side effect just to recover its text. See the [eval schema](../../appendix/eval-schema.md) for metrics and paired comparisons.
+
+### Regeneration from documents as a distinct build mode
+
+SMART in [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) treats specifications as durable and implementation as a regenerable artifact. The point is not merely DAG orchestration: fixes must return to the document or the next clean generation may lose them. A practical test is rebuilding from documents and permitted dependencies without access to the previous code.
+
+For this mode, we recommend a build manifest recording document and graph versions, generator model/configuration, dependencies, ambiguity logs, resulting artifact, and independent verification results. Validate agent-inferred graphs for cycles, missing dependencies, and interface compatibility. Repeatable semantics do not imply byte-identical code. A new generation must not automatically replace a working build: verification, controlled release, and rollback remain necessary. This is a proposed contract, not an implemented reference-runtime capability. See the [SMART case](../../appendix/case-studies.md) for details and limitations.
+
 ## 14. Common Mistakes
 
 Very typical problems:

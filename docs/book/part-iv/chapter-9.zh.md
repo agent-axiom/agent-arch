@@ -431,6 +431,14 @@ Google 还有一个很有价值的提醒：对高风险能力来说，短生命�
 
 常驻 worker 有时会赢在延迟，但经常输在隔离性和可解释性上。所以面对高风险执行，更合理的默认立场通常是：**短生命周期优先，只有在明确需要时才保留持久环境**。
 
+### 部分 OAuth 同意：请求的权限不等于授予的权限
+
+Cloudflare 提供了一个具体例子：客户端将 scopes 标记为必需或可选，用户可以在当前授权请求中取消可选 scopes。这些分类仅适用于本次流程请求的 scopes，并不要求每次请求都包含客户端的完整权限目录。交换 authorization code 后，应用必须检查实际授予的权限，而不是假定整个请求都已获批。来源：[Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/)（2026 年 8 月 20 日）。
+
+适配器应区分 `requested_scopes`（授权请求）、`granted_scopes`（当前 credential 的已验证权限）和 `required_scopes`（单个操作的最低权限）。最后一个字段属于工具契约，不是同意界面的必需 scope 列表。`required_scopes ⊆ granted_scopes` 是必要而非充分条件：仍需检查 subject、resource、audience、有效期、任务策略和必要的操作审批。
+
+例如，某个示例服务请求 `tickets.read` 和 `tickets.write`，却只获得 `tickets.read`。如果读取本身属于任务范围，agent 可以生成摘要；更新工单则必须在**调用工具之前**阻止。不得切换到权限更大的账户，也不得自动重新请求更广访问。如果写入是任务的必要部分，任务仍未完成，agent 应说明缺少的权限。决策证据与验收场景见[策略包契约](../../appendix/policy-bundle-schema.md)。
+
 ## 6. MCP 2026-07-28 核心是无状态的
 
 MCP 2026-07-28 规范要求核心协议中的每个请求都自包含，并按消息协商协议版本。[^mcp-2026-07-28][^mcp-2026-07-28-release] 旧的 `initialize`/`initialized` 握手和协议会话头已经移出核心。这样更容易做水平扩展和故障恢复，但并不等于应用不再需要状态。

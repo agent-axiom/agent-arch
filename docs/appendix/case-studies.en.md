@@ -159,6 +159,16 @@ OpenAI's and Hugging Face's July 2026 disclosures add a rare real-world case to 
 
 The portable lesson is: **eval sandbox is production-adjacent infrastructure**. For dangerous capability evals, it is not enough to write "no internet" in a design doc. The contract should be: **evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**. A trace should capture not only score and solved task, but also network-deny evidence, proxy requests, package install path, secret reachability checks, privilege changes, lateral movement indicators, containment decision, affected external party, and forensic reconstruction artifact. If an eval intentionally disables production safeguards, that should raise the risk tier, freeze capability expansion, and require a defender-ready model or pipeline that can run locally without leaking incident data.
 
+### SMART: specifications as source, code as a build product
+
+[Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) describes SMART, a symbolic ML-systems performance-modeling library. Its main branch contains around 50 design docs (roughly 9,000 lines) and a handful of utilities. Implementations are regenerated for new versions, while humans edit the documents. This is a research case, not a recommendation to rewrite every mature service from scratch.
+
+Read-only agents first infer dependencies between documents. An orchestrator traverses the resulting DAG topologically, assigning self-contained specifications to separate coding agents. It logs ambiguities and bugs from earlier waves so humans can improve the next version's documents. Worked examples specify intermediate shapes, values, and expected symbolic expressions. A minimal operator IR with SymPy expressions bounds the domain model's complexity.
+
+Before replacing the previous build, the result is reconciled against hand-built references. The authors report agreement to round-off precision, including a DeepSeek-V3 serving model on TPUs, and a full regeneration taking 1.5–3 hours at roughly USD 100 in API cost in their environment. These are not independent replication results, a portable price guarantee, or validation against real hardware measurements.
+
+The transferable pattern is **versioned documents → validated dependency graph → generation → independent reconciliation → releasable build**. Validating the inferred graph, recording generator and dependency versions, and retaining the previous build for rollback are controls recommended here, not reported experimental results. The authors' zero-debt claim concerns their definition of incremental-patching debt; specification, integration, and security errors do not disappear.
+
 ## Case 1. Support triage
 
 ### What the system does

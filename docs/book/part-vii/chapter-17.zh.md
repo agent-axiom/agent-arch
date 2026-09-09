@@ -209,6 +209,14 @@ Anthropic 的工作流分类又补上了一个缺失的治理维度。[^anthropi
 - 子智能体或后续动作如何继承这种委派审批，或者在什么条件下失效；
 - 当 rollout 或 assurance 依赖验证器输出时，哪些验证器契约可以被信任来给这些高风险路径分级。
 
+### 部分 grant 不应变成权限扩张
+
+OAuth 流程成功并不代表所有 `requested_scopes` 都进入了 `granted_scopes`：用户可能拒绝可选权限。[Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) 描述了这一行为。能力目录应为每个操作定义独立的 `required_scopes`；书中的 scope 名称只是示例，不是通用 OAuth 词汇。
+
+执行前，gateway 根据经过验证的授权上下文计算 `missing_scopes = required_scopes - granted_scopes`。集合非空时拒绝该操作。只有在保持任务含义和原子性的情况下，才可继续独立且已获授权的部分；不得把部分进展报告为全部完成。操作审批不能产生缺失的 OAuth scope。新的访问同意是用户的独立决定，随后必须重新检查策略和任务边界，不能自动扩大当前 run 的权限。
+
+credential 刷新、权限撤销或任务恢复后，不应依赖旧 grant 快照。未知或未经验证的权限不能从原始请求推断。证据字段与失败场景见[策略包契约](../../appendix/policy-bundle-schema.md)。
+
 ## 7. 策略决策应该是对象，而不只是 bool
 
 一个很有用的工程习惯：不要把策略决策简化成 `True/False`。
@@ -258,6 +266,16 @@ AWS AgentCore Gateway 展示了围绕 MCP tools 建立这类层的实践版本�
 运行时应把这次检查记录为独立的 `trajectory_policy_decision` 事件，其中包含规则标识符、对已观察序列的安全表示、计数器、原因和最终决策。速率限制通过约束请求频率、令牌或连接时长来补充这一契约，但不能替代语义层面的轨迹策略；后者检查动作顺序、值的一致性和累计影响。
 
 [轨迹策略场景](../../companion/examples/trajectory-policy-scenarios.zh.md)提供了可运行的教学示例及预期决策。评估器从可信提供方接收已验证快照，但它本身不证明快照来源，不实现分布式持久存储、锁、比较并交换（`CAS`）、动作与计数器的原子提交或崩溃恢复，也没有接入 `AgentRuntime`。
+
+### MCP 目录缓存：新鲜度不等于权限
+
+LangChain 描述了使用服务器 TTL 的工具列表缓存；FastMCP 则说明了 `ttlMs`、`cacheScope` 和共享存储中的调用者分区。这是特定客户端的行为：缓存需要显式启用，并仅对提供缓存提示的 modern-era 服务器生效；legacy 连接不会自动获得该能力。来源：[LangChain: MCP in LangChain](https://www.langchain.com/blog/mcp-in-langchain-stateless-protocol-elicitation-and-more) / [FastMCP: Response caching](https://gofastmcp.com/clients/client#response-caching)。
+
+隔离需要每个调用者独立的客户端，或从已验证身份派生的共享缓存 partition。如果同一 tenant 的两名用户看到不同目录，仅用 tenant 不足以隔离；调用者提交的 `user_id` 和服务器 URL 本身都不是可信 partition。在 FastMCP 中，只有服务器标记为 `public` 的响应可以跨分区使用。本地策略可以进一步禁止共享；不得自行将用户专属目录标为公开。
+
+**缓存命中复用的是描述，不是 allow 决策。** 即使 TTL 尚未过期，scope 撤销也必须通过新的授权检查阻止调用。目录既不是 credential，也不能保证列出的动作都被允许。主体变化时创建新客户端；grant 或策略变化后，在重新验证前使旧可见性不可用。隐藏工具的名称和 schema 也不得泄露给其他用户。
+
+工具定义变化后，旧计划和审批可能不再对应当前动作。发现新版本或 digest 时，刷新目录并重新检查参数、风险和审批适用性；TTL 本身不能即时发现变化。敏感操作应强制刷新或使用可验证的版本绑定。客户端 digest 可以发现快照差异，却不能迫使服务器执行旧版本；这种保证需要服务器端 version binding。字段与验收场景见[策略包契约](../../appendix/policy-bundle-schema.md)。
 
 ## 8. 一个策略契约示例
 

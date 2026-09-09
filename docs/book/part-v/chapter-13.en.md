@@ -256,6 +256,20 @@ This also means release discipline should be careful about what it rewards. A si
 
 The same discipline should apply to verifier contract changes. If grading standards change because a verifier contract version changed, the eval loop should surface that as a release-bearing regression signal rather than quietly treating the new verdicts as directly comparable to the old ones.
 
+### Evaluate compression across the complete task
+
+[GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/) illustrates the tokens-per-tool-call trap: shorter responses can cause rereads, repeated commands, and extra turns. GitHub reports no statistically significant task-success regression in tested offline tasks where the final compressor triggered; that is not a guarantee of equivalence on every workload.
+
+Compare a full-policy-permitted-output control with selective compression on the same tasks and repository snapshots, holding model, harness, budget, and verifier fixed. Repeats or randomized ordering help estimate variability. Primary outcomes are whole-task success, total cost, and latency, not individual message size. Include compressor, storage, original retrieval, repeated calls, and failed attempts in the cost accounting. Cost per successful task is total cost across all attempts divided by successes; it is undefined with zero successes.
+
+Separately measure the fraction of compressed outputs whose originals were retrieved, repeated commands, repeated exploration, and extra turns. Repetition alone is not causal evidence: link events to the original output and recovery reason, and infer regression from group comparisons. Report both overall suite impact and a diagnostic slice where compression triggered, with explicit denominators. Predeclare acceptable quality regression and savings criteria, estimate uncertainty, then validate through a bounded online experiment. Proposed artifact fields are in the [eval schema](../../appendix/eval-schema.md).
+
+### Independent references for specification-generated systems
+
+SMART reconciles its regenerated library against hand-built models; documents also contain exact examples used to generate tests. Source: [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1). Do not conflate these checks: code and tests derived from the same wrong premise can consistently reproduce the same mistake.
+
+Preserve independent references and the provenance of expected results. Examples visible to the generator test specification conformance, but are not a held-out test set. Add independently authored cases withheld from the generator, invariants, and interface checks; compare multiple clean generations under fixed conditions. Reference changes require separate review, not adjustment to fit new code. Claims of physical performance-model accuracy need hardware measurements: agreement with another analytical model does not establish that. These are evaluation recommendations, not additional experiments performed by SMART's authors.
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.

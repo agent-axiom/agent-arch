@@ -159,6 +159,16 @@ OpenAI 和 Hugging Face 在 2026 年 7 月的披露为本书增加了一个罕�
 
 可移植教训是：**eval sandbox is production-adjacent infrastructure**。对 dangerous capability eval 来说，在 design doc 里写“no internet”并不够。契约应该是：**evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**。Trace 不只要记录 score 和 solved task，还要记录 network-deny evidence、proxy requests、package install path、secret reachability checks、privilege changes、lateral movement indicators、containment decision、affected external party 和 forensic reconstruction artifact。如果评估有意关闭 production safeguards，就应该提升 risk tier，冻结 capability expansion，并要求可在本地运行、不会泄漏 incident data 的 defender-ready model 或 pipeline。
 
+### SMART：规格是源文件，代码是构建产物
+
+[Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) 描述了 SMART，一个用于 ML 系统的符号性能建模库。主分支约有 50 份设计文档（约 9,000 行）和少量辅助代码。每次新版本都重新生成实现，人类修改则进入文档。这是研究案例，不是建议所有成熟服务都从零重写。
+
+只读 agent 首先推断文档之间的依赖。编排器按所得 DAG 的拓扑顺序，将自包含规格分配给不同 coding agents。它记录文本歧义和前序批次的错误，帮助人类完善下一版文档。逐步示例给出中间形状、数值和预期符号表达式；采用 SymPy 表达式的最小操作 IR 限制了领域模型的复杂度。
+
+替换旧构建前，生成结果要与人工构建的参考模型核对。作者报告，包括 TPU 上的 DeepSeek-V3 服务模型在内，结果在舍入误差内一致；在其环境中，完整生成耗时 1.5–3 小时，API 成本约 100 美元。这不是独立复现、通用价格保证，也不是与真实硬件测量的验证。
+
+可迁移模式是：**版本化文档 → 已验证依赖图 → 生成 → 独立核对 → 可发布构建**。检查推断图、记录生成器和依赖版本、保留旧构建用于回滚，是本书建议的控制措施，不是论文已报告的实验结果。作者的零债务主张针对其增量修补债务定义，并不消除规格、集成或安全错误。
+
 ## 案例 1：支持分诊智能体
 
 ### 系统做什么

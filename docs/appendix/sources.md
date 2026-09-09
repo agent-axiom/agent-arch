@@ -15,6 +15,8 @@
 !!! note "Канонические маршруты источников"
     Используй источники как быстрый маршрут для трех канонических сценариев. **Триаж обращений поддержки** начинается с OWASP, руководств OpenAI по агентам, источников о человеке в контуре, материалов по политикам и подтверждениям, оценки трасс и кейсов инцидентов. **Внутренний ассистент знаний** начинается с материалов LangGraph о памяти, материалов OpenAI о памяти агента, источников по поиску и оценке, управления с акцентом на происхождение данных и исследовательского фронтира памяти. **Координация инцидентов** начинается с NIST/AI RMF, материалов Google и Microsoft по управлению, источников наблюдаемости, исследований надежности многоагентных систем, разбора инцидентов и материалов по выпуску и управляющему слою.
 
+- [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) (arXiv:2609.05364v1)
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем
@@ -67,12 +69,16 @@
 - Model Context Protocol, [Security Best Practices](https://modelcontextprotocol.io/docs/tutorials/security/security_best_practices)
 - Model Context Protocol, [Authorization specification](https://modelcontextprotocol.io/specification/draft/basic/authorization)
 - Albumentations, [AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/)
+- [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/) (2026-09-02)
+
 - GitHub, [dKosarevsky/albu-mcp release v1.21.1](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) и [снимок исходного кода 171e2ca](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8)
 - Agent2Agent Protocol, [A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)
 - LangGraph, [Overview](https://docs.langchain.com/oss/javascript/langgraph)
 - LangGraph, [Durable execution](https://docs.langchain.com/oss/javascript/langgraph/durable-execution)
 - LangGraph, [Persistence](https://docs.langchain.com/oss/python/langgraph/persistence)
 - LangGraph, [Memory overview](https://docs.langchain.com/oss/python/langgraph/memory)
+- [LangChain: MCP in LangChain](https://www.langchain.com/blog/mcp-in-langchain-stateless-protocol-elicitation-and-more) / [FastMCP: Response caching](https://gofastmcp.com/clients/client#response-caching)
+
 - LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)
 - LangChain, [The Runtime Behind Production Deep Agents](https://www.langchain.com/blog/runtime-behind-production-deep-agents)
 - LangChain, [Choosing the Right Multi-Agent Architecture](https://www.langchain.com/blog/choosing-the-right-multi-agent-architecture)
@@ -88,6 +94,8 @@
 - Google, [google/ax: Agent Executor](https://github.com/google/ax)
 - Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
 - Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
+- [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) (2026-08-20)
+
 - Cloudflare, [Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 - Cloudflare Agents SDK, [Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/) и [Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)
 - Cloudflare Agents SDK, [Human-in-the-loop patterns](https://developers.cloudflare.com/agents/concepts/agentic-patterns/human-in-the-loop/) и [WebSockets](https://developers.cloudflare.com/agents/api-reference/websockets/)

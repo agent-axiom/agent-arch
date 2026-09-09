@@ -431,6 +431,14 @@ Why that is usually better:
 
 Persistent workers sometimes win on latency, but they often lose on isolation and explainability. So the default stance for high-risk execution should usually be: **ephemeral first, persistence only by explicit need**.
 
+### Partial OAuth consent: requested does not mean granted
+
+Cloudflare provides a concrete example: clients mark scopes required or optional, and users can deselect optional scopes in the current authorization request. Those categories apply only to scopes requested in that flow; they do not force every request to include the client's entire scope catalog. After exchanging the authorization code, the application must inspect the actual grant rather than assume the entire request was approved. Source: [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) (August 20, 2026).
+
+An adapter should distinguish `requested_scopes` (authorization request), `granted_scopes` (verified permissions of the current credential), and `required_scopes` (minimum permissions for one operation). The last field is a tool contract, not the consent screen's mandatory-scope list. Checking `required_scopes ⊆ granted_scopes` is necessary, not sufficient: subject, resource, audience, expiry, task policy, and any required action approval remain separate checks.
+
+For an illustrative service, requesting `tickets.read` and `tickets.write` may yield only `tickets.read`. The agent can prepare a summary if reading is independently within the task; updating a ticket is blocked **before tool invocation**. It must not switch to a more privileged account or automatically retry consent with broader access. If writing is essential, the task remains incomplete and the agent reports the missing permission. See the [policy bundle contract](../../appendix/policy-bundle-schema.md) for decision evidence and acceptance scenarios.
+
 ## 6. The MCP 2026-07-28 core is stateless
 
 The MCP 2026-07-28 specification makes each core protocol request self-contained and negotiates the protocol version per message.[^mcp-2026-07-28][^mcp-2026-07-28-release] The former `initialize`/`initialized` handshake and protocol session header are no longer part of the core. This simplifies horizontal scaling and recovery, but it does not eliminate application state.
