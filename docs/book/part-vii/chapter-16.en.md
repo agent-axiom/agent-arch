@@ -568,6 +568,14 @@ SMART in [Design Docs Are All You Need: An AI-native Machine-Learning Performanc
 
 For this mode, we recommend a build manifest recording document and graph versions, generator model/configuration, dependencies, ambiguity logs, resulting artifact, and independent verification results. Validate agent-inferred graphs for cycles, missing dependencies, and interface compatibility. Repeatable semantics do not imply byte-identical code. A new generation must not automatically replace a working build: verification, controlled release, and rollback remain necessary. This is a proposed contract, not an implemented reference-runtime capability. See the [SMART case](../../appendix/case-studies.md) for details and limitations.
 
+### Context inheritance is not authority delegation
+
+[LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness) describes fork as transferring supervisor state and history with a new assignment. Fewer repeated reads and prompt caching can reduce cost, depending on the task, model, and reusable cache prefix. This does not promise free transmission of a large history.
+
+Proposed internal launch fields: `subagent_role`, `context_mode`, `context_source_ref`, `context_snapshot_ref`, `task_constraints_ref`, `delegated_capabilities_ref`, `result_contract_ref`. These are not claimed reference-runtime features. A snapshot identifies the inheritance boundary; later parent updates must not be assumed to reach the child automatically.
+
+Authority remains governed separately by task policy: fork does not copy tool access, approval validity, or permission to disclose history to another principal. `isolated` means fresh model context, not a separate filesystem, credential, or sandbox. A verifier needs original requirements and evidence, not the author's conclusion as its answer. Role-based choices appear in the [supervisor practice](../part-i/practical-manager-handoffs.md).
+
 ## 14. Common Mistakes
 
 Very typical problems:

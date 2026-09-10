@@ -29,6 +29,16 @@ That is a problem for three reasons:
 
 That is why it helps to treat an eval dataset as a contract.
 
+## Proposed extension: subagent context-mode comparison
+
+Basis: [LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness). These fields are internal evaluation proposals, not Deep Agents API fields or implemented reference-runtime contracts:
+
+- `experiment_id`, `task_id`, `subagent_role`, `context_mode`, `context_snapshot_ref`, `evidence_bundle_ref`, `model_ref`, `harness_version`, `capability_policy_ref`: comparison conditions without embedding private history in reports.
+- `task_success`, `repeated_read_count`, `tool_call_count`, `model_turns`, `total_cost`, `cost_unit`, `latency_ms`, `cached_input_tokens`, `uncached_input_tokens`, `cache_condition`: whole-task outcome, not only child-call cost; missing cache telemetry is unknown, not zero.
+- `known_defect_ref`, `defect_detected`, `false_positive_count`, `misleading_parent_explanation`, `review_evidence_ref`: review independence on labeled cases.
+
+Compare roles separately, repeat runs, and estimate variability. Requirements, available review artifacts, and permissions stay fixed; history transmission is the experimental factor. Separately test cold/warm caches, long irrelevant history, untrusted instructions in history, preservation of constraints under isolated mode, and no authority expansion under fork. A repeated read alone does not establish wasted work; inspect trace evidence. Define quality and cost tolerances before running, not after choosing a winner.
+
 ## Proposed extension: tool-output compression evaluation
 
 This is a proposed evidence contract, not implemented `agent_runtime_ref` fields or measured results. Basis: [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/). The `full_output` control and `selective_output` treatment use identical access and secret-redaction rules; full output never means bypassing policy.

@@ -29,6 +29,16 @@
 
 所以最好把评测数据集当成一种契约。
 
+## 建议扩展：子智能体上下文模式比较
+
+依据：[LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness)。以下是内部评估建议字段，不是 Deep Agents API 或 reference runtime 已实现契约：
+
+- `experiment_id`、`task_id`、`subagent_role`、`context_mode`、`context_snapshot_ref`、`evidence_bundle_ref`、`model_ref`、`harness_version`、`capability_policy_ref`：比较条件，不把私人历史嵌入报告。
+- `task_success`、`repeated_read_count`、`tool_call_count`、`model_turns`、`total_cost`、`cost_unit`、`latency_ms`、`cached_input_tokens`、`uncached_input_tokens`、`cache_condition`：整个任务结果，不仅是子调用成本；缓存遥测缺失应记为未知而非零。
+- `known_defect_ref`、`defect_detected`、`false_positive_count`、`misleading_parent_explanation`、`review_evidence_ref`：在已标注案例上衡量审查独立性。
+
+分别比较角色，重复运行并估计波动。需求、可审查产物和权限保持一致；实验因素是历史传递方式。另测冷/热缓存、过长无关历史、历史中的不可信指令、isolated 下的约束保留及 fork 不扩大权限。重复读取本身不证明浪费，应检查 trace。质量与成本容忍度须预先设定，不能在选出赢家后再决定。
+
 ## 建议扩展：工具输出压缩评估
 
 这是证据契约建议，不是 `agent_runtime_ref` 已实现字段或实测结果。依据：[GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/)。`full_output` 对照与 `selective_output` 实验使用相同的访问和秘密脱敏规则；完整输出不意味着绕过策略。

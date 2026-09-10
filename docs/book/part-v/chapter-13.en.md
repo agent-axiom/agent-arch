@@ -270,6 +270,12 @@ SMART reconciles its regenerated library against hand-built models; documents al
 
 Preserve independent references and the provenance of expected results. Examples visible to the generator test specification conformance, but are not a held-out test set. Add independently authored cases withheld from the generator, invariants, and interface checks; compare multiple clean generations under fixed conditions. Reference changes require separate review, not adjustment to fit new code. Claims of physical performance-model accuracy need hardware measurements: agreement with another analytical model does not establish that. These are evaluation recommendations, not additional experiments performed by SMART's authors.
 
+### Evaluating fork and isolated: efficiency and independence
+
+For continuation work, compare `fork` and `isolated` on matched tasks, artifacts, and permissions, holding model, harness, and budget fixed. Measure success, repeated reads, tool calls, whole-task cost, and latency; report cached/uncached input and cache warm-up conditions separately. Fewer reads do not establish lower total cost. Motivation: [LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness).
+
+For verifiers, add a separate test: present the same diff containing a known defect with a neutral evidence bundle versus an incorrect, confident supervisor explanation. Compare defect detection, false alarms, and adoption of the misleading explanation. The name `isolated` does not prove independence: bias may enter through the task, shared files, or selectively supplied evidence; identical models may share errors too. References and criteria must be independent of the solution under review. This is a proposed experiment, not a measured result from the article; see [eval-schema](../../appendix/eval-schema.md) for fields.
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.

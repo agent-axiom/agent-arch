@@ -118,6 +118,19 @@ handoffs 通常在这些情况下更有优势：
 
 这里交接往往比一个假装什么都懂的中央管理器更自然。
 
+### 按角色选择子智能体上下文
+
+[LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness)（2026 年 9 月 8 日）区分 `fork`（继承协调者历史继续工作）和 `isolated`（以任务描述开启新上下文）。文中 Deep Agents 版本默认使用 `isolated`。这是上下文传递方式，不是新的编排模型。
+
+| 角色 | 建议起点 | 输入 |
+| --- | --- | --- |
+| 执行已诊断任务的 worker | 历史相关且允许访问时用 `fork` | 已收集证据、约束、具体任务 |
+| 审查完成工作的 verifier | `isolated` | 产物、需求、审查标准，不附作者的说服性叙述 |
+| 回答独立问题的 researcher | `isolated` | 问题、调查边界、证据格式 |
+| 分析对话的 memory agent | 允许历史访问时用 `fork` | 对话作为数据及狭窄任务；记忆写入单独授权 |
+
+这些是判断的起点，不是所有 worker 都必须继承一切的硬规则。历史过长、不相关或敏感时，应传递最小已验证交接包。Fork 继承事实，也继承错误和不可信文本。Isolated 不能丢弃必要任务约束。子智能体返回可审查结果，其全部中间过程不必进入协调者上下文。
+
 ## 7. 常见错误
 
 这两种模式都有自己的典型失败方式。

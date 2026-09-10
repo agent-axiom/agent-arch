@@ -118,6 +118,19 @@ Typical examples:
 
 Here, handoff is often more natural than a central manager pretending to understand everything equally well.
 
+### Choose subagent context by role
+
+[LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness) (September 8, 2026) distinguishes `fork`, continuing with the supervisor's history, from `isolated`, a fresh context with a task description. In the described Deep Agents version, `isolated` is the default. These are context-transfer options, not new orchestration models.
+
+| Role | Preferred starting point | Input |
+| --- | --- | --- |
+| Worker continuing a diagnosed task | `fork` when history is relevant and permitted | Gathered evidence, constraints, a specific assignment |
+| Verifier reviewing completed work | `isolated` | Artifact, requirements, review criteria, without the author's persuasive narrative |
+| Researcher answering a standalone question | `isolated` | Question, research boundaries, evidence format |
+| Memory agent analyzing a conversation | `fork` when history access is allowed | Conversation as data and a narrow assignment; memory writes authorized separately |
+
+These are defaults for judgment, not a hard rule that every worker inherits everything. Large, irrelevant, or sensitive history favors a minimal verified handoff instead of a full fork. Fork carries mistakes and untrusted text alongside facts. Isolated mode must not discard mandatory task constraints. The child returns a reviewable result; its entire intermediate trajectory need not enter the supervisor's context.
+
 ## 7. Common Mistakes
 
 Both patterns have typical failure modes.

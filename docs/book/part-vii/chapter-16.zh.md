@@ -567,6 +567,14 @@ GitHub 的实验中，早期压缩方案迫使 agent 重新读取保存的输出
 
 本书建议为该模式建立构建清单，记录文档与依赖图版本、生成器模型和配置、依赖、歧义日志、产物和独立验证结果。检查 agent 推断图中的循环、遗漏依赖和接口兼容性。语义可重复不代表代码逐字节相同。新生成不得自动替换运行中的构建；仍需验证、受控发布和回滚。这是建议契约，不是 reference runtime 已实现能力。详情和局限见 [SMART 案例](../../appendix/case-studies.md)。
 
+### 继承上下文不等于委派权限
+
+[LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness) 描述的 fork 会传递协调者状态与历史，并加入新任务。减少重复读取和 prompt caching 可能节约成本，但取决于任务、模型和可复用缓存前缀；这不保证大段历史可以免费传递。
+
+建议的内部启动字段：`subagent_role`、`context_mode`、`context_source_ref`、`context_snapshot_ref`、`task_constraints_ref`、`delegated_capabilities_ref`、`result_contract_ref`。这些不是 reference runtime 已实现能力。快照标明继承边界；不能假定父级后续更新自动传给子级。
+
+权限仍由任务策略单独决定：fork 不复制工具访问、审批有效性或向另一主体披露历史的许可。`isolated` 仅表示新的模型上下文，不表示独立文件系统、credential 或 sandbox。Verifier 需要原始需求和证据，而不是作者预设的结论。角色选择见[协调者实践](../part-i/practical-manager-handoffs.md)。
+
 ## 14. 常见错误
 
 非常典型的问题有：

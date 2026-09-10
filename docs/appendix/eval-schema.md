@@ -29,6 +29,16 @@
 
 Поэтому полезно мыслить набор для оценки как контракт.
 
+## Предлагаемое расширение: сравнение режимов контекста подагентов
+
+Основание: [LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness). Следующие поля — внутреннее предложение для оценки, а не API Deep Agents или реализованный контракт эталонного runtime:
+
+- `experiment_id`, `task_id`, `subagent_role`, `context_mode`, `context_snapshot_ref`, `evidence_bundle_ref`, `model_ref`, `harness_version`, `capability_policy_ref`: условия сравнения без помещения самой приватной истории в отчет.
+- `task_success`, `repeated_read_count`, `tool_call_count`, `model_turns`, `total_cost`, `cost_unit`, `latency_ms`, `cached_input_tokens`, `uncached_input_tokens`, `cache_condition`: исход всей задачи, не только дочернего вызова; отсутствие cache telemetry обозначается как неизвестное, не нулевое.
+- `known_defect_ref`, `defect_detected`, `false_positive_count`, `misleading_parent_explanation`, `review_evidence_ref`: независимость проверки на заранее размеченных случаях.
+
+Сравни роли раздельно, повторяй прогоны и оцени разброс. Одинаковыми остаются требования, доступные проверяемые артефакты и права; экспериментальный фактор — способ передачи истории. Отдельно проверь холодный и прогретый кэш, нерелевантную длинную историю, недоверенную инструкцию в истории, сохранение ограничений в isolated и отсутствие расширения прав при fork. Один повторный read не доказывает лишнюю работу; причина устанавливается по трассе. Допуски по качеству и стоимости задаются до запуска, а не подбираются под выигравший вариант.
+
 ## Предлагаемое расширение: оценка сжатия вывода инструментов
 
 Это проект evidence-контракта, не реализованные поля `agent_runtime_ref` и не результаты измерений. Основание: [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/). Контроль `full_output` и вариант `selective_output` используют одинаковые правила доступа и удаления секретов; «полный» не означает обход политики.
