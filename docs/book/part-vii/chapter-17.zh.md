@@ -217,6 +217,21 @@ OAuth 流程成功并不代表所有 `requested_scopes` 都进入了 `granted_sc
 
 credential 刷新、权限撤销或任务恢复后，不应依赖旧 grant 快照。未知或未经验证的权限不能从原始请求推断。证据字段与失败场景见[策略包契约](../../appendix/policy-bundle-schema.md)。
 
+### 凭据所有权与凭据类型是两个独立维度
+
+Managed Deep Agents 预发布版的 [LangChain Connections](https://www.langchain.com/blog/connections-managed-credentials-and-per-caller-identity-for-managed-deep-agents) 将凭据属于谁与访问权如何获得分开。`agent-owned` 表示部署持有、供调用者共享的凭据；`user-owned` 表示运行时解析特定用户的凭据。这两者都不等同于下游服务看到的实际账户。
+
+| 所有者 | 静态秘密 | OAuth grant |
+| --- | --- | --- |
+| 智能体 / 部署 | 共享的搜索服务密钥 | 专用共享账户的授权 |
+| 用户 | 按已验证身份选择的个人秘密 | 当前调用用户的授权 |
+
+因此，OAuth 本身不能证明操作代表用户执行，静态秘密也不一定是共享的。Connections 在创建时固定所有权；运行时查找只选择已有凭据，不改变所有者。连接名称只是配置引用，不是权限证据。
+
+生产契约应绑定已验证的请求者、租户、部署、连接与实际下游主体。缺少用户授权时，应停止依赖该授权的操作，通过受保护流程请求访问；不得静默替换为智能体或其他用户的凭据。恢复时重新验证身份、资源、权限及独立的操作批准。这是对前述部分 OAuth 授权契约的扩展，不是替代。
+
+读取也必须测试：对私有仓库执行同一查询，应遵守每位调用者的可见性。共享账户的审计应区分谁提出请求与以谁的身份执行，不得将共享账户的操作呈现为用户个人操作。字段与场景属于[建议的 policy bundle 扩展](../../appendix/policy-bundle-schema.zh.md)，并非 reference runtime 已实现的 Connections 集成。
+
 ## 7. 策略决策应该是对象，而不只是 bool
 
 一个很有用的工程习惯：不要把策略决策简化成 `True/False`。

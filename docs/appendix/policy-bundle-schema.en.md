@@ -33,6 +33,21 @@ That may work while the system is small. But as soon as change management, audit
 
 That is why it is useful to package a `policy bundle` as a first-class artifact.
 
+## Proposed extension: credential-to-identity binding
+
+Motivation: [LangChain Connections](https://www.langchain.com/blog/connections-managed-credentials-and-per-caller-identity-for-managed-deep-agents). This is a proposed internal contract, not new OAuth fields or an implemented reference-runtime resolver. `credential_owner` (`agent` or `user`) is independent of `credential_type` (`secret` or `oauth`).
+
+Include non-secret references `connection_ref`, `credential_ref`, `deployment_ref`, `tenant_ref`, `requester_principal_ref`, `effective_principal_ref`, plus `credential_owner`, `credential_type`, `policy_version`, and `authorization_checked_at` in policy evidence. Derive the requester from verified inbound context and the effective principal from a trusted provider binding; the model cannot assign either through tool arguments. For user-owned credentials, the resolver must verify ownership by the current user and tenant. If the effective principal is unknown, block operations requiring that binding. Keep secret values and tokens out of traces, prompts, and cache keys.
+
+Acceptance scenarios for a future implementation:
+
+1. Preserve all four owner/type combinations without inferring ownership from OAuth; agent-owned OAuth remains a shared identity.
+2. Users A and B call the same connection: neither A's private results nor credentials reach B; reject a tool-argument `user_id` substitution.
+3. Missing user grant: do not execute the dependent operation or fall back to a shared credential. Access consent does not replace action approval.
+4. Caller/tenant changes or access is revoked during a pause: do not reuse the old credential, cache, or allow decision without revalidation.
+5. An explicit policy permits a shared account: audit records requester and effective principal separately, with no credential values in evidence.
+
+
 ## Proposed extension: partial OAuth grants
 
 This is a production contract proposal, not a claim that the reference runtime implements these fields. Motivation: [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/). The fields below are internal policy evidence, not new standard OAuth fields.

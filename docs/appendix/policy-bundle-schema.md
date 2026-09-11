@@ -33,6 +33,21 @@
 
 Поэтому полезно собирать набор политик как отдельный артефакт.
 
+## Предлагаемое расширение: привязка credential к идентичности
+
+Мотивация: [LangChain Connections](https://www.langchain.com/blog/connections-managed-credentials-and-per-caller-identity-for-managed-deep-agents). Это внутренний предлагаемый контракт, не новые поля OAuth и не реализованный resolver reference runtime. `credential_owner` (`agent` или `user`) независим от `credential_type` (`secret` или `oauth`).
+
+В решение политики включайте несекретные ссылки `connection_ref`, `credential_ref`, `deployment_ref`, `tenant_ref`, `requester_principal_ref`, `effective_principal_ref`, а также `credential_owner`, `credential_type`, `policy_version` и `authorization_checked_at`. Инициатор берётся из проверенного входного контекста, фактический субъект — из доверенной привязки провайдера; модель не может назначать их аргументами инструмента. Для user-owned credential resolver обязан проверить принадлежность текущему пользователю и tenant. Если фактический субъект не установлен, операция, требующая такой привязки, блокируется. Не храните значения секретов или токены в trace, prompt или ключах кэша.
+
+Проверочные сценарии для будущей реализации:
+
+1. Все четыре сочетания owner/type сохраняются без вывода владельца из наличия OAuth; agent-owned OAuth остаётся общей идентичностью.
+2. Пользователи A и B вызывают один connection: приватные результаты и credential A не доступны B; подмена `user_id` аргументом инструмента отклоняется.
+3. Нет пользовательского grant: зависимая операция не выполняется; fallback на общий credential запрещён. Consent на доступ не заменяет approval действия.
+4. После паузы изменился caller/tenant или доступ отозван: старый credential, кэш и решение allow не переиспользуются без новой проверки.
+5. Общая учётная запись используется по явной политике: аудит хранит отдельно инициатора и фактического субъекта; значения credential не попадают в доказательства.
+
+
 ## Предлагаемое расширение: частичный OAuth grant
 
 Это проект промышленного контракта, а не утверждение о поддержке этих полей эталонным runtime. Мотивация — [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/); перечисленные ниже поля относятся к внутреннему policy evidence, а не к новым стандартным полям OAuth.

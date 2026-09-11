@@ -217,6 +217,21 @@ Before execution, the gateway computes `missing_scopes = required_scopes - grant
 
 After credential refresh, revocation, or task resume, do not rely on the old grant snapshot. Unknown or unverified permissions must not be reconstructed from the original request. Evidence fields and failure scenarios are in the [policy bundle contract](../../appendix/policy-bundle-schema.md).
 
+### Credential ownership and type are independent axes
+
+[LangChain Connections](https://www.langchain.com/blog/connections-managed-credentials-and-per-caller-identity-for-managed-deep-agents), in the Managed Deep Agents prerelease, separates who owns a credential from how access was obtained. `agent-owned` means a deployment credential shared by callers; `user-owned` means resolving a particular user's credential at run time. Neither is identical to the account the downstream service sees.
+
+| Owner | Static secret | OAuth grant |
+| --- | --- | --- |
+| Agent / deployment | Shared search-service key | Grant for a dedicated shared account |
+| User | Personal secret selected by verified identity | Grant for the individual caller |
+
+OAuth therefore does not by itself prove on-behalf-of-user execution, and a static secret need not be shared. Connections fixes ownership at creation; runtime lookup selects an existing credential rather than changing its owner. A connection name is a configuration reference, not evidence of authority.
+
+For a production contract, bind the verified requester, tenant, deployment, connection, and effective downstream principal. If a user grant is missing, stop the dependent operation and request access through a protected flow; never silently substitute an agent or another user's credential. On resume, revalidate identity, resource, permissions, and separate action approval. This extends the partial OAuth grant contract above rather than replacing it.
+
+Test reads as well: identical queries against private repositories must respect each caller's visibility. For shared accounts, audit must distinguish who requested an action from whose identity executed it, without presenting a shared-account action as a personal user action. The fields and scenarios are a [proposed policy bundle extension](../../appendix/policy-bundle-schema.en.md), not a Connections integration implemented in the reference runtime.
+
 ## 7. A Policy Decision Should Be an Object, Not Just a Bool
 
 A very useful engineering habit: do not reduce policy decisions to `True/False`.

@@ -33,6 +33,21 @@
 
 所以最好把策略包视作一个一等工件。
 
+## 建议扩展：凭据与身份绑定
+
+动机：[LangChain Connections](https://www.langchain.com/blog/connections-managed-credentials-and-per-caller-identity-for-managed-deep-agents)。这是建议的内部契约，不是新增 OAuth 字段，也不是 reference runtime 已实现的解析器。`credential_owner`（`agent` 或 `user`）独立于 `credential_type`（`secret` 或 `oauth`）。
+
+策略证据应包含非秘密引用 `connection_ref`、`credential_ref`、`deployment_ref`、`tenant_ref`、`requester_principal_ref`、`effective_principal_ref`，以及 `credential_owner`、`credential_type`、`policy_version`、`authorization_checked_at`。请求者来自已验证的入口上下文，实际主体来自可信的提供方绑定；模型不能通过工具参数指定它们。对于用户所有的凭据，解析器必须验证其属于当前用户和租户。若无法确定实际主体，应阻止要求该绑定的操作。秘密值和令牌不得进入轨迹、提示或缓存键。
+
+未来实现的验收场景：
+
+1. 保留全部四种 owner/type 组合，不因 OAuth 推断所有权；agent-owned OAuth 仍为共享身份。
+2. 用户 A、B 调用同一连接：A 的私有结果与凭据不得泄露给 B；拒绝通过工具参数 `user_id` 替换身份。
+3. 缺少用户授权：不执行依赖操作，也不回退到共享凭据。访问同意不能替代操作批准。
+4. 暂停期间调用者或租户改变，或权限被撤销：未经重新验证，不复用旧凭据、缓存或 allow 决策。
+5. 明确策略允许共享账户：审计分别记录请求者和实际主体，证据中不含凭据值。
+
+
 ## 建议扩展：部分 OAuth grant
 
 这是生产契约建议，不表示 reference runtime 已实现这些字段。动机来自 [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/)。以下字段属于内部策略证据，并非新的标准 OAuth 字段。
