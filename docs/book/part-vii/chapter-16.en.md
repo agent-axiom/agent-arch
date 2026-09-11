@@ -576,6 +576,22 @@ Proposed internal launch fields: `subagent_role`, `context_mode`, `context_sourc
 
 Authority remains governed separately by task policy: fork does not copy tool access, approval validity, or permission to disclose history to another principal. `isolated` means fresh model context, not a separate filesystem, credential, or sandbox. A verifier needs original requirements and evidence, not the author's conclusion as its answer. Role-based choices appear in the [supervisor practice](../part-i/practical-manager-handoffs.md).
 
+### Select an execution pattern, not only a model
+
+[GitHub Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) chooses among `single`, `cascade`, and `critique`. This is a separate runtime contract: the decision determines not only the solver but also the number of legs, escalation conditions, and result validation.
+
+| Pattern | When to consider it | Execution boundary |
+| --- | --- | --- |
+| `single` | One solver is expected to meet the quality bar | One solver, then result validation |
+| `cascade` | A cheap first attempt is useful and a gate can detect insufficient results | Draft → gate → acceptance or bounded escalation |
+| `critique` | Independent review is expected to help more than another unaided attempt | Draft → isolated critic → one revision by the author → validation |
+
+HydraFusion's critic comes from a different model family, has no tools, and is read-only; this reduces coupling but does not prove independent errors. Calibrate these selection criteria on tasks rather than turning them into a universal rule that difficult work always needs multiple models.
+
+Proposed production-adapter contract: before execution, validate `routing_policy_version`, `workflow_ref`, model bindings and availability, `quality_gate_ref`, total budget/deadline, maximum legs, and allowed fallback. Each leg has a role, input snapshot, timeout, cancellation, and output contract. Escalation or fallback neither resets the budget nor expands authority; an unavailable critic is not a successful review. If no safe route fits the limits, stop with an explicit status rather than continuing an unbounded model chain.
+
+Keep solver changes in a staged isolated workspace. Only a validated candidate may cross the normal approval boundary into the target workspace; a cancelled or invalid workflow applies nothing there. This does not undo external side effects already performed: gateway checks, approvals, and idempotency still govern them. Account for router, draft, gate, critique, revision, escalation, retry, and fallback cost and latency. This is a proposed contract, not a HydraFusion router implemented in the reference runtime; compare patterns in [Chapter 13](../part-v/chapter-13.en.md).
+
 ## 14. Common Mistakes
 
 Very typical problems:

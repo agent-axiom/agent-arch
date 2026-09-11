@@ -159,6 +159,14 @@ OpenAI 和 Hugging Face 在 2026 年 7 月的披露为本书增加了一个罕�
 
 可移植教训是：**eval sandbox is production-adjacent infrastructure**。对 dangerous capability eval 来说，在 design doc 里写“no internet”并不够。契约应该是：**evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**。Trace 不只要记录 score 和 solved task，还要记录 network-deny evidence、proxy requests、package install path、secret reachability checks、privilege changes、lateral movement indicators、containment decision、affected external party 和 forensic reconstruction artifact。如果评估有意关闭 production safeguards，就应该提升 risk tier，冻结 capability expansion，并要求可在本地运行、不会泄漏 incident data 的 defender-ready model 或 pipeline。
 
+### GitHub HydraFusion：路由执行模式
+
+[Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) 是 2026 年 9 月 4 日发布的 research preview，让运行时选择 `single`、`cascade` 或 `critique`：直接求解、gate 后升级，或草稿加独立只读审查及一次修改。可迁移的结论是优化完整执行模式，同时保留阶段上限、路由验证及禁止应用无效结果的边界，而不只是选择最便宜的模型。
+
+GitHub 报告其最佳调优配置相对 Opus 5 的结果：TerminalBench 2.1 质量提高 4.9 个百分点、估算成本降低 67%；DeepSWE 质量下降 1.5 个百分点、成本降低 36%；CheckpointBench 质量下降 0.1 个百分点、成本降低 65%。这些是作者报告的受控离线结果，取决于模型、任务版本与定价，不是独立复现或生产节省保证。两个测试集的质量略低，因此“质量无损”不是普遍结论。
+
+作者在这些基准上调整策略，并从趋势中排除了两次无效 harness 运行。本书的结论是将调参与留出评估分开，将基础设施故障审计与 workflow 失败分开。该预览主要面向单轮任务，长会话有效性需单独验证。建议契约见[第 16 章](../book/part-vii/chapter-16.zh.md)与 [eval schema](eval-schema.zh.md)，并非现成的 reference runtime 集成。
+
 ### SMART：规格是源文件，代码是构建产物
 
 [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) 描述了 SMART，一个用于 ML 系统的符号性能建模库。主分支约有 50 份设计文档（约 9,000 行）和少量辅助代码。每次新版本都重新生成实现，人类修改则进入文档。这是研究案例，不是建议所有成熟服务都从零重写。

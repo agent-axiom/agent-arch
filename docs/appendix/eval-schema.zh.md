@@ -29,6 +29,18 @@
 
 所以最好把评测数据集当成一种契约。
 
+## 建议扩展：workflow 路由评估
+
+依据：[GitHub Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/)。以下为建议的内部字段，不是 HydraFusion API 字段，也不是 reference runtime 已实现的 evaluator：
+
+- `experiment_id`、`task_id`、`repo_snapshot`、`split_ref`、`routing_policy_version`、`workflow_ref`、`selected_pattern`、`selection_reason_ref`、`model_pool_ref`、`harness_version`、`pricing_version`、`budget_ref`：选择与比较条件。
+- `leg_id`、`parent_leg_id`、`role`、`model_ref`、`gate_version`、`gate_verdict`、`outcome`、`cost`、`latency_ms`、`retry_of`、`fallback_reason`：包括失败在内的完整阶段账本；引用不含秘密或隐藏标准答案。
+- `independent_grader_ref`、`task_success`、`total_cost`、`end_to_end_latency_ms`、`escalation_count`、`fallback_count`、`cancelled`、`patch_applied`、`validation_evidence_ref`：最终结果与应用边界。
+
+调参后在独立留出集上比较自适应 router 与固定 `single`、`cascade`、`critique`。`total_cost` 包括每个已执行阶段；每成功任务成本为所有尝试总成本 / 成功数，成功数为零时无定义。未知成本不等于零。明确 gate 错误接受率分母：已接受候选中未通过独立验证的比例。也保留被拒绝候选，用于分析不必要的升级。
+
+未来实现场景：单个 solver 通过；弱草稿被拒绝并升级；gate 接受的缺陷被独立 grader 发现；critic 不可用或判断错误；一次修改机会耗尽；fallback 超出剩余总预算；阶段中取消；最终验证失败。最后两种情况的 `patch_applied` 必须为 `false`。按预先规则单独标记评估基础设施故障并保留审计记录；这不是隐藏 workflow 失败的理由。
+
 ## 建议扩展：子智能体上下文模式比较
 
 依据：[LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness)。以下是内部评估建议字段，不是 Deep Agents API 或 reference runtime 已实现契约：

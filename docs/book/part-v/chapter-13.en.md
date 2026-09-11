@@ -276,6 +276,14 @@ For continuation work, compare `fork` and `isolated` on matched tasks, artifacts
 
 For verifiers, add a separate test: present the same diff containing a known defect with a neutral evidence bundle versus an incorrect, confident supervisor explanation. Compare defect detection, false alarms, and adoption of the misleading explanation. The name `isolated` does not prove independence: bias may enter through the task, shared files, or selectively supplied evidence; identical models may share errors too. References and criteria must be independent of the solution under review. This is a proposed experiment, not a measured result from the article; see [eval-schema](../../appendix/eval-schema.md) for fields.
 
+### Evaluate execution-pattern selection
+
+Choosing `single`/`cascade`/`critique` is itself an evaluation target, not proof that multi-agent execution helps. [HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) repeatedly refined policies on its benchmarks; the best published configurations cannot be treated as results on a demonstrably untouched holdout.
+
+For your system, compare adaptive routing with fixed patterns on matched tasks and repository snapshots, using the same available model pool, permissions, limits, prices, and independent final grader. Separate tuning from holdout by tasks/repositories; freeze the router and thresholds before the holdout run, and never feed hidden answers or grades into online routing. A cascade gate is part of the system under test, not its independent quality oracle.
+
+Measure verified success, complete cost across attempts, latency including p95, and escalation, fallback, failure, and gate false-acceptance rates. Report overall results and task slices, not only cases where critique activated. Repeats and uncertainty intervals distinguish improvement from variability; declare quality-regression tolerances in advance. Handle missing and cancelled results under a declared rule rather than removing them to improve savings. Follow offline validation with bounded online rollout, especially for multi-turn work; evidence fields are in the [eval schema](../../appendix/eval-schema.en.md).
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.

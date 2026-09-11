@@ -29,6 +29,18 @@
 
 Поэтому полезно мыслить набор для оценки как контракт.
 
+## Предлагаемое расширение: оценка маршрутизации workflow
+
+Основание: [GitHub Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/). Это предлагаемые внутренние поля, не API HydraFusion и не реализованный evaluator reference runtime:
+
+- `experiment_id`, `task_id`, `repo_snapshot`, `split_ref`, `routing_policy_version`, `workflow_ref`, `selected_pattern`, `selection_reason_ref`, `model_pool_ref`, `harness_version`, `pricing_version`, `budget_ref`: условия выбора и сравнения.
+- `leg_id`, `parent_leg_id`, `role`, `model_ref`, `gate_version`, `gate_verdict`, `outcome`, `cost`, `latency_ms`, `retry_of`, `fallback_reason`: журнал всех этапов, включая неуспешные; ссылки не содержат секретов или скрытых эталонных ответов.
+- `independent_grader_ref`, `task_success`, `total_cost`, `end_to_end_latency_ms`, `escalation_count`, `fallback_count`, `cancelled`, `patch_applied`, `validation_evidence_ref`: финальный результат и граница применения.
+
+Адаптивный router и фиксированные `single`, `cascade`, `critique` сравнивают на отдельной контрольной выборке после настройки. `total_cost` включает все выполненные этапы; стоимость успешной задачи — сумма затрат всех попыток / число успехов, при нуле успехов значение не определено. Неизвестная стоимость не равна нулю. Для частоты ошибочного принятия gate явно задайте знаменатель: среди принятых кандидатов доля проваливших независимую проверку. Сохраняйте также отклонённые кандидаты для анализа лишних эскалаций.
+
+Сценарии будущей реализации: один solver проходит; слабый draft отклоняется и эскалируется; gate принимает дефект, обнаруженный независимым grader; critic недоступен или ошибается; одна доработка исчерпана; fallback не помещается в общий бюджет; отмена во время этапа; финальная валидация не проходит. В последних двух случаях `patch_applied` должен быть `false`. Падение инфраструктуры оценки отмечают отдельно по заранее принятому правилу и сохраняют в аудите; это не основание скрывать отказы самого workflow.
+
 ## Предлагаемое расширение: сравнение режимов контекста подагентов
 
 Основание: [LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness). Следующие поля — внутреннее предложение для оценки, а не API Deep Agents или реализованный контракт эталонного runtime:

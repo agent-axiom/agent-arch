@@ -29,6 +29,18 @@ That is a problem for three reasons:
 
 That is why it helps to treat an eval dataset as a contract.
 
+## Proposed extension: workflow-routing evaluation
+
+Basis: [GitHub Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/). These are proposed internal fields, not HydraFusion API fields or an implemented reference-runtime evaluator:
+
+- `experiment_id`, `task_id`, `repo_snapshot`, `split_ref`, `routing_policy_version`, `workflow_ref`, `selected_pattern`, `selection_reason_ref`, `model_pool_ref`, `harness_version`, `pricing_version`, `budget_ref`: selection and comparison conditions.
+- `leg_id`, `parent_leg_id`, `role`, `model_ref`, `gate_version`, `gate_verdict`, `outcome`, `cost`, `latency_ms`, `retry_of`, `fallback_reason`: a ledger of all legs, including failures; references contain neither secrets nor hidden reference answers.
+- `independent_grader_ref`, `task_success`, `total_cost`, `end_to_end_latency_ms`, `escalation_count`, `fallback_count`, `cancelled`, `patch_applied`, `validation_evidence_ref`: final outcome and application boundary.
+
+Compare the adaptive router and fixed `single`, `cascade`, and `critique` patterns on a separate holdout after tuning. `total_cost` includes every executed leg; cost per successful task is all-attempt cost / successes and is undefined with zero successes. Unknown cost is not zero. Define the gate false-acceptance denominator explicitly: among accepted candidates, the fraction failing independent validation. Retain rejected candidates too for analysis of unnecessary escalations.
+
+Future implementation scenarios: one solver passes; a weak draft is rejected and escalated; the gate accepts a defect found by the independent grader; the critic is unavailable or wrong; the single revision is exhausted; fallback exceeds the remaining total budget; cancellation during a leg; final validation fails. In the last two cases, `patch_applied` must be `false`. Label evaluation-infrastructure failures separately under a predeclared rule and preserve their audit record; this is not a reason to hide workflow failures.
+
 ## Proposed extension: subagent context-mode comparison
 
 Basis: [LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness). These fields are internal evaluation proposals, not Deep Agents API fields or implemented reference-runtime contracts:

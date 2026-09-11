@@ -575,6 +575,22 @@ GitHub 的实验中，早期压缩方案迫使 agent 重新读取保存的输出
 
 权限仍由任务策略单独决定：fork 不复制工具访问、审批有效性或向另一主体披露历史的许可。`isolated` 仅表示新的模型上下文，不表示独立文件系统、credential 或 sandbox。Verifier 需要原始需求和证据，而不是作者预设的结论。角色选择见[协调者实践](../part-i/practical-manager-handoffs.md)。
 
+### 选择执行模式，而不只是模型
+
+[GitHub Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) 在 `single`、`cascade`、`critique` 之间选择。这是独立的运行时契约：决策不仅决定执行模型，也决定阶段数、升级条件与结果验证方式。
+
+| 模式 | 何时考虑 | 执行边界 |
+| --- | --- | --- |
+| `single` | 预计一个执行模型即可达到质量门槛 | 一个 solver，然后验证结果 |
+| `cascade` | 低成本首轮尝试有用，且 gate 能识别不足 | 草稿 → gate → 接受或有限升级 |
+| `critique` | 独立审查预计比另一次独立尝试更有价值 | 草稿 → 隔离 critic → 作者修改一次 → 验证 |
+
+HydraFusion 的 critic 来自不同模型系列、没有工具且只读；这减少耦合，但不能证明错误相互独立。应在实际任务上校准选择标准，而不是把它变成“困难任务总需要多个模型”的通则。
+
+建议的生产适配器契约：执行前验证 `routing_policy_version`、`workflow_ref`、模型绑定及可用性、`quality_gate_ref`、总预算与截止时间、阶段上限和允许的 fallback。每个阶段都有角色、输入快照、超时、取消与输出契约。升级或 fallback 不能重置预算或扩大权限；critic 不可用不等于审查通过。若没有安全路径能满足限制，应以明确状态停止，而不是无限串联模型。
+
+solver 的变更保存在隔离的暂存工作区。只有通过验证的候选结果才能经过正常 approval 边界应用到目标工作区；取消或无效的 workflow 不得在那里应用变更。这不会撤销已经发生的外部副作用：gateway、批准与幂等性仍负责控制它们。计入 router、draft、gate、critique、revision、escalation、retry、fallback 的成本和延迟。这是建议契约，不是 reference runtime 已实现的 HydraFusion router；模式比较见[第 13 章](../part-v/chapter-13.zh.md)。
+
 ## 14. 常见错误
 
 非常典型的问题有：
