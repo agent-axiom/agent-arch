@@ -514,10 +514,14 @@ def continue_run(run_id: str, worker_id: str):
 - session API：`wake(sessionId)`、`getEvents()` 和 `emitEvent(id, event)`，用于读取 durable log 并写入新的决策；
 - hands API：`execute(name, input)` 用于调用具体 capability，`provision({resources})` 用于按 policy profile 发放 sandbox/tool 资源；
 - failure contract：sandbox、tool executor、policy proxy 或 resource provision 的失败，应该作为普通 `tool-call error` 返回给 harness，而不是隐藏的进程崩溃；
-- secret boundary：tokens 永远不应该被 sandbox 直接拿到；sandbox 拿到的是 brokered capability，而不是 raw credentials。
+- secret boundary：应用主密钥和业务权限保留在 sandbox 外，业务服务访问通过代理能力提供。若协议要求环境内持有 executor 身份密钥，应单独说明其受限权限以及智能体代码可能读取它这一事实。
 
 这样，brain 可以犯错，hands 可以失败，session 可以同时幸存，而 replay 看到的不是“模型失败”这种笼统结论，而是具体边界：资源不足、policy 拒绝 capability、sandbox 没启动，或者 tool 返回了受控错误。这让 managed-agent 拆分不仅可扩展，也可调查。
 
+
+[OpenAI Agents API：self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) 明确展示了这种例外：云端 harness 控制自有 executor，环境内的受限密钥只能连接 environments，不能授权其他 API 操作。文档允许智能体生成的代码读取该密钥，但要求使用独立密钥，将其他权限设为 `None`，并与会话属于同一组织、项目及用户或服务账户。应用主密钥留在环境外。连接密钥仍是秘密，不是公开标识符或隔离保证：不得进入源码、镜像、日志，并需支持轮换和撤销。不要假设文档未承诺的单一 environment 限制。
+
+生产适配器应记录凭据类别、实际权限、会话所有者绑定、非秘密密钥引用及撤销流程。这是细化威胁模型，而非放宽业务权限边界，也不是 reference runtime 已实现的集成。网络与用户边界见[第 9 章](../part-iv/chapter-9.zh.md)。
 
 ## 13. 一个运行时配置示例
 

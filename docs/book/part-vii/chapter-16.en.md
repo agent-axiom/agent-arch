@@ -515,10 +515,14 @@ The practical contract is stricter than “keep the history.” **The session is
 - session API: `wake(sessionId)`, `getEvents()`, and `emitEvent(id, event)` for reading the durable log and writing new decisions;
 - hands API: `execute(name, input)` for invoking a concrete capability and `provision({resources})` for issuing sandbox/tool resources under a policy profile;
 - failure contract: sandbox, tool executor, policy proxy, or resource-provisioning failure should return to the harness as an ordinary `tool-call error`, not as a hidden process crash;
-- secret boundary: tokens are never reachable from the sandbox; the sandbox receives a brokered capability, not raw credentials.
+- secret boundary: broader application keys and business authority remain outside the sandbox; business-service access is brokered. If the protocol requires an executor identity key inside the environment, document its restricted authority and possible accessibility to agent code separately.
 
 Then the brain can make a mistake, the hands can fail, the session can survive both events, and replay can see a specific boundary: resource exhaustion, policy denial, sandbox startup failure, or a managed tool error. That makes the managed-agent split not only scalable, but investigable.
 
+
+[OpenAI Agents API: self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) makes this exception explicit: a cloud harness controls your executor, and a restricted key inside the environment permits only connecting environments, not other API actions. The documentation allows agent-generated code to read this key but requires a separate key with every other permission set to `None`, belonging to the same organization, project, and user or service account as the session. The broader application key stays outside. The connection key is still a secret, not a public identifier or an isolation guarantee: keep it out of source, images, and logs, and provide rotation and revocation. Do not assume an undocumented restriction to just one environment.
+
+For a production adapter, record credential classes, actual permissions, session-owner binding, a non-secret key reference, and revocation procedure. This refines the threat model rather than weakening the business-authority boundary; it is not an implemented reference-runtime integration. Network and user boundaries are covered in [Chapter 9](../part-iv/chapter-9.en.md).
 
 ## 13. Example Runtime Configuration
 

@@ -605,6 +605,16 @@ capability request → policy → contained execution → telemetry → incident
 这条链让 containment 可以被审查：policy 选择执行 profile，hands 在受限环境内执行，telemetry 记录边界，assurance/eval loops 再用结果影响下一次决策。
 
 
+### 自托管 executor 不等于本地 harness
+
+在 [OpenAI Agents API](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) 中，OpenAI 运行 harness，`codex exec-server` 在所有者选择的环境中运行：执行 shell 命令、读写文件、使用本地 MCP 服务器。executor 通过 API 注册，并主动建立传输命令与结果的出站 WebSocket；断线后会重新连接。这不是完全本地的控制循环。
+
+出站连接并不意味着数据留在本地：命令结果，包括读取的文件内容，可能返回云端 harness。所有者必须界定允许的挂载、本地凭据、网络及返回结果，并在所选环境中落实隔离。self-hosted 标签和安装 executor 本身不会创建 sandbox。不要将此 API 与另行讨论的 Agents SDK Sandbox Agents 混为一谈。
+
+按用户或工作负载隔离环境：同处一个环境的智能体可以访问共享文件、凭据和资源。文档要求每个会话有独立 environment ID 与 executor；复用镜像不意味着共享运行环境安全。受限连接密钥不同于必须留在外部的应用主密钥；见[第 16 章 §12.1](../part-vii/chapter-16.zh.md)。
+
+重新连接恢复的是传输，不是被中断命令恰好执行一次的证明。重试副作用前先核对操作状态和证据。连接事件 `pending`、`connected`、`failed` 不能替代最终任务结果。这些是围绕文档连接机制建议的运维检查，不是 API 已实现幂等性的证据。
+
 ## 10. 一个简单的能力分发示例
 
 这个小骨架展示的核心思想是：传输和执行画像来自能力契约，而不是由模型临时决定。

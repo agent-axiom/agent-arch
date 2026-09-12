@@ -169,6 +169,20 @@ GitHub case study о Copilot code review уточняет tool-часть это
 
 Переносимый урок: **eval sandbox is production-adjacent infrastructure**. Для dangerous capability eval недостаточно записать "нет интернета" в design doc. Нужен отдельный контракт: **evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**. В trace должны попадать не только score и solved task, но и network-deny evidence, proxy requests, package install path, secret reachability checks, privilege changes, lateral movement indicators, containment decision, affected external party и forensic reconstruction artifact. Если оценка намеренно отключает production safeguards, это должно повышать risk tier, включать release freeze для расширения capabilities и требовать defender-ready модели/пайплайна, который можно запускать локально без утечки incident data.
 
+### OpenAI Agents API: собственный executor с облачным управлением
+
+[Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) — пример разделения места исполнения и управляющего контура: OpenAI держит harness, владелец запускает executor и отвечает за выбранную среду. Через исходящий WebSocket идут команды и результаты. Ограниченный ключ подключения может быть доступен агентному коду; основной ключ приложения должен оставаться вне окружения. Ограниченность ключа не делает его публичным и не изолирует общие файлы пользователей.
+
+Рекомендуемые приёмочные проверки для адаптера, а не заявленные результаты тестов API:
+
+1. Проверить фактические разрешения executor key: подключение разрешено, прочие API-действия запрещены; ключ приложения недоступен агентному коду, значения ключей отсутствуют в логах и образах.
+2. Отозвать ключ и проверить отказ нового подключения. Отдельно измерить поведение уже открытого WebSocket и возможность остановить executor: не предполагать, что отзыв автоматически и мгновенно закрывает активный канал.
+3. Разорвать соединение во время команды: различить неизвестный исход и отказ, восстановить статус перед повтором; не создавать повторный побочный эффект.
+4. Запустить пользователей A/B в разных окружениях: проверить отсутствие доступа к чужим файлам, credentials и результатам, а также верную привязку владельца сессии.
+5. На синтетических данных проверить, какие результаты покидают окружение, и что ограничения файловой системы и egress действительно действуют. Факт исходящего соединения не равен локальности данных.
+
+Контракт разграничения секретов — в [главе 16](../book/part-vii/chapter-16.md); транспортная граница и ответственность владельца — в [главе 9](../book/part-iv/chapter-9.md). Кейс не означает, что reference runtime реализует этот сервис.
+
 ### GitHub HydraFusion: маршрутизация схемы выполнения
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/), research preview от 4 сентября 2026 года, предлагает runtime выбирать `single`, `cascade` или `critique`: прямое решение, эскалацию после gate либо черновик с независимой read-only критикой и одной доработкой. Переносимый вывод — оптимизировать схему выполнения целиком, сохраняя лимиты этапов, проверку маршрута и запрет применения невалидного результата; не просто выбирать самую дешёвую модель.

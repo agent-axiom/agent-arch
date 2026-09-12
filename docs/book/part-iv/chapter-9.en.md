@@ -605,6 +605,16 @@ capability request → policy → contained execution → telemetry → incident
 The chain makes containment reviewable: policy chooses the execution profile, hands execute inside the restricted environment, telemetry records the boundary, and assurance/eval loops use the result for the next decision.
 
 
+### A self-hosted executor does not mean a local harness
+
+In the [OpenAI Agents API](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted), OpenAI runs the harness while `codex exec-server` runs in the owner's chosen environment: it executes shell commands, reads and writes files, and uses local MCP servers. The executor registers through the API and initiates an outbound WebSocket for commands and results; it reconnects after a drop. This is not a fully local control loop.
+
+An outbound connection does not keep data local: command results, including content read from files, can return to the cloud harness. The owner must define permitted mounts, local credentials, networking, and returned results, and enforce isolation in the chosen environment. The self-hosted label and executor installation do not themselves create a sandbox. Do not conflate this API with the separately discussed Agents SDK Sandbox Agents.
+
+Isolate environments by user or workload: co-located agents can access shared files, credentials, and resources. The documentation requires each session to have its own environment ID and executor; reusing an image does not make sharing a live environment safe. The restricted connection key differs from the broader application key, which must stay outside; see [Chapter 16, §12.1](../part-vii/chapter-16.en.md).
+
+Reconnection restores transport, not proof of exactly-once execution for an interrupted command. Reconcile operation status and evidence before retrying a side effect. Connection events `pending`, `connected`, and `failed` do not replace the final task outcome. These are proposed operational checks around the documented connection, not evidence of implemented API idempotency.
+
 ## 10. A Simple Capability Dispatch Example
 
 This small skeleton shows the core idea: transport and execution profile are chosen from the capability contract, not invented by the model on the fly.

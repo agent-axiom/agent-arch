@@ -159,6 +159,20 @@ OpenAI's and Hugging Face's July 2026 disclosures add a rare real-world case to 
 
 The portable lesson is: **eval sandbox is production-adjacent infrastructure**. For dangerous capability evals, it is not enough to write "no internet" in a design doc. The contract should be: **evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**. A trace should capture not only score and solved task, but also network-deny evidence, proxy requests, package install path, secret reachability checks, privilege changes, lateral movement indicators, containment decision, affected external party, and forensic reconstruction artifact. If an eval intentionally disables production safeguards, that should raise the risk tier, freeze capability expansion, and require a defender-ready model or pipeline that can run locally without leaking incident data.
 
+### OpenAI Agents API: your executor under cloud control
+
+[Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) separates execution location from the control plane: OpenAI runs the harness; the owner runs the executor and is responsible for the chosen environment. Commands and results travel over an outbound WebSocket. Agent code may access the restricted connection key, while the broader application key must stay outside. A restricted key is neither public nor a boundary isolating users' shared files.
+
+Recommended adapter acceptance checks, not reported API test results:
+
+1. Verify actual executor-key permissions: connection is allowed and other API actions are denied; agent code cannot reach the application key, and key values appear in neither logs nor images.
+2. Revoke the key and verify rejection of a new connection. Separately measure behavior of an already-open WebSocket and the ability to stop the executor: do not assume revocation instantly closes active channels.
+3. Drop the connection during a command: distinguish unknown outcome from failure and reconcile status before retrying; prevent duplicate side effects.
+4. Run users A/B in separate environments: verify no access to each other's files, credentials, or results and correct session-owner binding.
+5. With synthetic data, inspect which results leave the environment and whether filesystem and egress restrictions actually hold. Outbound-only connectivity does not imply data locality.
+
+The secret-class contract is in [Chapter 16](../book/part-vii/chapter-16.en.md); transport boundaries and owner responsibilities are in [Chapter 9](../book/part-iv/chapter-9.en.md). This case does not imply that the reference runtime implements the service.
+
 ### GitHub HydraFusion: routing execution patterns
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/), a September 4, 2026 research preview, lets the runtime choose `single`, `cascade`, or `critique`: direct solving, escalation after a gate, or drafting with independent read-only critique and one revision. The portable lesson is to optimize the whole execution pattern while preserving bounded legs, route validation, and no application of invalid results, rather than merely selecting the cheapest model.

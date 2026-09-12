@@ -22238,7 +22238,8 @@ def test_anthropic_managed_agents_contract_is_integrated() -> None:
             "`execute(name, input)`",
             "`provision({resources})`",
             "tool-call error",
-            "tokens are never reachable from the sandbox",
+            "основные ключи приложения и бизнес-полномочия остаются вне sandbox",
+            "ключ идентичности executor",
         ),
         "docs/appendix/reference-package.md": (
             "Brain / Hands / Session",
@@ -22257,7 +22258,8 @@ def test_anthropic_managed_agents_contract_is_integrated() -> None:
             "`execute(name, input)`",
             "`provision({resources})`",
             "managed tool error",
-            "tokens are never reachable from the sandbox",
+            "broader application keys and business authority remain outside the sandbox",
+            "executor identity key",
         ),
         "docs/appendix/reference-package.en.md": (
             "Brain / Hands / Session",
@@ -22276,7 +22278,8 @@ def test_anthropic_managed_agents_contract_is_integrated() -> None:
             "`execute(name, input)`",
             "`provision({resources})`",
             "tool 返回了受控错误",
-            "raw credentials",
+            "应用主密钥和业务权限保留在 sandbox 外",
+            "executor 身份密钥",
         ),
         "docs/appendix/reference-package.zh.md": (
             "Brain / Hands / Session",

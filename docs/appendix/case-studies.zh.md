@@ -159,6 +159,20 @@ OpenAI 和 Hugging Face 在 2026 年 7 月的披露为本书增加了一个罕�
 
 可移植教训是：**eval sandbox is production-adjacent infrastructure**。对 dangerous capability eval 来说，在 design doc 里写“no internet”并不够。契约应该是：**evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**。Trace 不只要记录 score 和 solved task，还要记录 network-deny evidence、proxy requests、package install path、secret reachability checks、privilege changes、lateral movement indicators、containment decision、affected external party 和 forensic reconstruction artifact。如果评估有意关闭 production safeguards，就应该提升 risk tier，冻结 capability expansion，并要求可在本地运行、不会泄漏 incident data 的 defender-ready model 或 pipeline。
 
+### OpenAI Agents API：云端控制下的自有 executor
+
+[Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) 将执行位置与控制平面分离：OpenAI 运行 harness，所有者运行 executor 并负责所选环境。命令和结果经出站 WebSocket 传输。智能体代码可能访问受限连接密钥，但应用主密钥必须留在环境外。受限密钥不是公开信息，也不能隔离用户的共享文件。
+
+建议的适配器验收检查，并非已报告的 API 测试结果：
+
+1. 验证 executor 密钥的实际权限：允许连接，禁止其他 API 操作；智能体代码无法访问应用主密钥，日志与镜像不含密钥值。
+2. 撤销密钥并确认新连接被拒绝。单独测量已打开 WebSocket 的行为及停止 executor 的能力：不要假设撤销会立即关闭活动通道。
+3. 在命令执行中断开连接：区分结果未知与失败，重试前核对状态，防止重复副作用。
+4. 在独立环境运行用户 A/B：验证无法访问彼此文件、凭据或结果，并验证会话所有者绑定正确。
+5. 使用合成数据检查哪些结果离开环境，以及文件系统和 egress 限制是否真正生效。仅出站连接不等于数据本地化。
+
+秘密类别契约见[第 16 章](../book/part-vii/chapter-16.zh.md)；传输边界与所有者责任见[第 9 章](../book/part-iv/chapter-9.zh.md)。此案例不表示 reference runtime 已实现该服务。
+
 ### GitHub HydraFusion：路由执行模式
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) 是 2026 年 9 月 4 日发布的 research preview，让运行时选择 `single`、`cascade` 或 `critique`：直接求解、gate 后升级，或草稿加独立只读审查及一次修改。可迁移的结论是优化完整执行模式，同时保留阶段上限、路由验证及禁止应用无效结果的边界，而不只是选择最便宜的模型。
