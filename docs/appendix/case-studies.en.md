@@ -173,6 +173,20 @@ Recommended adapter acceptance checks, not reported API test results:
 
 The secret-class contract is in [Chapter 16](../book/part-vii/chapter-16.en.md); transport boundaries and owner responsibilities are in [Chapter 9](../book/part-iv/chapter-9.en.md). This case does not imply that the reference runtime implements the service.
 
+#### Extension: environment startup and shutdown
+
+[Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle) adds a resource controller to the network contract: one provisioning owner, durable session-to-compute mapping, fresh state checks before acting, and coordination between shutdown and new input. Neither `idle` nor a deleted session alone proves compute has stopped.
+
+Proposed adapter checks:
+
+- Duplicate or concurrent webhooks yield one active environment; failure after compute creation but before mapping persistence is reconciled without duplication.
+- A delayed webhook for a deleted session or resolved action starts nothing; `function_call` is not routed into provisioning.
+- `idle` races with new input: pending shutdown is cancelled and the working executor is not destroyed between the state check and startup.
+- Deletion during provisioning retains an inspectable cleanup record; late-created compute is discovered and released. Also test a provider failure to stop the resource.
+- Disconnects and late connections do not cause blind input resubmission; replacement compute verifies file restoration from storage/snapshots, not only matching environment IDs.
+
+These are future implementation scenarios, not results of executed API tests. Contracts appear in [Chapter 16](../book/part-vii/chapter-16.en.md) and [Chapter 23](../book/part-viii/chapter-23.en.md).
+
 ### GitHub HydraFusion: routing execution patterns
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/), a September 4, 2026 research preview, lets the runtime choose `single`, `cascade`, or `critique`: direct solving, escalation after a gate, or drafting with independent read-only critique and one revision. The portable lesson is to optimize the whole execution pattern while preserving bounded legs, route validation, and no application of invalid results, rather than merely selecting the cheapest model.

@@ -523,6 +523,16 @@ def continue_run(run_id: str, worker_id: str):
 
 生产适配器应记录凭据类别、实际权限、会话所有者绑定、非秘密密钥引用及撤销流程。这是细化威胁模型，而非放宽业务权限边界，也不是 reference runtime 已实现的集成。网络与用户边界见[第 9 章](../part-iv/chapter-9.zh.md)。
 
+### 会话与 compute 生命周期是不同契约
+
+[OpenAI Agents API：Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle) 明确指出，会话可以比自托管环境存活更久，但应用负责 compute 与文件。每个会话应由一个组件负责 provisioning，并持久保存 `session → environment → provider compute` 映射；重复和并发请求不得创建重复环境。生产适配器需要按会话原子协调、幂等启动以及结果未知后的提供方状态核对，而不只是对单个 webhook ID 去重。
+
+Webhook handler 验证签名并入队，只有入队成功才返回成功响应。启动由 `agent.session.action_required` 且 `required_action.type: environment_connection` 触发；事件流中称为 `agent.session.requires_action`。`function_call` 需要函数结果，不是启动环境。Worker 再次读取会话：跳过已删除会话或已解决动作，为当前连接需求启动或重连 executor。确认会话仍为 `failed` 时释放 compute。签名秘密与会话读取凭据应独立于 executor key。
+
+停止操作必须与新输入及 provisioning 使用同一协调机制。`idle` 可能在连接请求解除后、等待输入开始 turn 前到达，因此不是停止许可。有新连接请求或执行开始时取消待执行的停止，并在停止前重查状态。如果应用无法协调此转换，文档建议保持 compute 运行。仅查询状态而不防护并发启动，仍会留下竞态。
+
+连接事件报告连接状态，不请求 compute。Turn 中断线不保证产生重连 webhook 或重启被终止命令。迟到的连接不会重放已超时输入，重试前需核对请求结果。相同 environment ID 不会恢复新 compute 上的文件，必须使用提供方 storage/snapshots。这是基于 API 文档建议的适配器契约，不是 reference runtime 已实现的控制器。关闭流程见[第 23 章](../part-viii/chapter-23.zh.md)。
+
 ## 13. 一个运行时配置示例
 
 下面是一个通过配置定义运行时形态、而不是把所有决定都写死在代码里的例子：

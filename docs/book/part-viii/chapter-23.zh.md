@@ -128,6 +128,12 @@ flowchart LR
 
 </div>
 
+### 删除会话不会释放 compute
+
+在 [OpenAI Agents API](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle) 中，删除会话既不停止自托管 compute，也不发送删除 webhook。因此，不能只凭 delete-session 成功响应就认定退役完成。
+
+建议适配器顺序：停止新输入；在统一协调下阻止新 provisioning 并核对进行中的启动；保留非秘密引用和必要审计数据；分别删除会话、通过提供方停止 compute；确认两者结果。保留未完成清理记录，以支持重试和提供方核对。若删除请求后才创建出 compute，控制器必须发现并释放它，而不是连同映射一起遗失。停止失败意味着退役尚未完成，即使会话已删除。文件与快照保留仍是单独的策略决定，不是删除会话的隐含效果。
+
 ## 6. 记忆与审计数据需要单独的纪律
 
 一旦系统退役，一个不舒服的问题就出现了：积累下来的状态该怎么办？

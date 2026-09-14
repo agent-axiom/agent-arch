@@ -128,6 +128,12 @@ flowchart LR
 
 </div>
 
+### Deleting a session does not release compute
+
+In the [OpenAI Agents API](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle), deleting a session neither stops self-hosted compute nor emits a deletion webhook. Retirement therefore cannot finish on a successful delete-session response alone.
+
+Proposed adapter sequence: stop new input; under shared coordination, block new provisioning and reconcile startups already in flight; retain non-secret references and necessary audit data; separately delete the session and stop provider compute; confirm both outcomes. Keep an unfinished-cleanup record for retries and provider reconciliation. If compute appears after deletion was requested, the controller must discover and release it rather than lose it with the mapping. A failed stop means retirement is incomplete even if the session was deleted. File and snapshot retention remains a separate policy decision, not an implicit effect of deleting the session.
+
 ## 6. Memory and audit data need their own discipline
 
 As soon as a system is retired, an uncomfortable question appears: what should happen to accumulated state?

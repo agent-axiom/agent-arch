@@ -173,6 +173,20 @@ OpenAI 和 Hugging Face 在 2026 年 7 月的披露为本书增加了一个罕�
 
 秘密类别契约见[第 16 章](../book/part-vii/chapter-16.zh.md)；传输边界与所有者责任见[第 9 章](../book/part-iv/chapter-9.zh.md)。此案例不表示 reference runtime 已实现该服务。
 
+#### 扩展：环境启动与停止
+
+[Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle) 为网络契约补充资源控制器：单一 provisioning 负责人、持久化会话到 compute 的映射、动作前重查状态，以及停止与新输入的协调。`idle` 或会话已删除都不能单独证明 compute 已停止。
+
+建议的适配器检查：
+
+- 重复或并发 webhook 只产生一个活动环境；compute 已创建但映射未保存时发生故障，应核对状态而不创建副本。
+- 已删除会话或已解决动作的迟到 webhook 不启动任何资源；`function_call` 不进入 provisioning。
+- `idle` 与新输入并发：取消待执行停止，避免在状态检查和启动之间销毁工作中的 executor。
+- provisioning 期间删除会话，仍保留可检查的清理记录；发现并释放迟到创建的 compute。另测提供方停止资源失败的情况。
+- 断线与迟到连接不触发盲目重新提交输入；替换 compute 时验证从 storage/snapshots 恢复文件，而不只验证 environment ID 相同。
+
+这些是未来实现场景，不是已执行 API 测试的结果。契约见[第 16 章](../book/part-vii/chapter-16.zh.md)和[第 23 章](../book/part-viii/chapter-23.zh.md)。
+
 ### GitHub HydraFusion：路由执行模式
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) 是 2026 年 9 月 4 日发布的 research preview，让运行时选择 `single`、`cascade` 或 `critique`：直接求解、gate 后升级，或草稿加独立只读审查及一次修改。可迁移的结论是优化完整执行模式，同时保留阶段上限、路由验证及禁止应用无效结果的边界，而不只是选择最便宜的模型。

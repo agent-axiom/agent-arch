@@ -524,6 +524,16 @@ Then the brain can make a mistake, the hands can fail, the session can survive b
 
 For a production adapter, record credential classes, actual permissions, session-owner binding, a non-secret key reference, and revocation procedure. This refines the threat model rather than weakening the business-authority boundary; it is not an implemented reference-runtime integration. Network and user boundaries are covered in [Chapter 9](../part-iv/chapter-9.en.md).
 
+### Session and compute lifecycles are separate contracts
+
+[OpenAI Agents API: Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle) clarifies that a session can outlive its self-hosted environment, while the application manages compute and files. One component must own session provisioning and a durable `session → environment → provider compute` mapping; repeated and concurrent requests must not create duplicates. A production adapter needs atomic per-session coordination, idempotent startup, and provider reconciliation after unknown outcomes, not merely deduplication of one webhook ID.
+
+The webhook handler verifies the signature, queues the request, and acknowledges success only after queuing succeeds. Startup is triggered by `agent.session.action_required` with `required_action.type: environment_connection`; the stream calls it `agent.session.requires_action`. A `function_call` needs a function result, not environment startup. The worker retrieves the session again: skip deleted sessions or resolved actions, and serve a current connection need by starting or reconnecting the executor. A session confirmed to still be `failed` requires compute release. Keep signing secrets and session-read credentials separate from the executor key.
+
+Shutdown uses the same coordination with incoming work and provisioning. An `idle` event can arrive after a connection request clears but before waiting input begins its turn: it is not permission to stop compute. Cancel pending shutdown when a connection is requested or execution starts; recheck state before stopping. If the application cannot coordinate this transition, the documentation recommends keeping compute running. A state read without protection against concurrent startup leaves a race.
+
+Connection events report connectivity, not compute requests. Mid-turn disconnects guarantee neither a reconnection webhook nor restart of a killed command. A late connection does not replay input that already timed out; reconcile request outcome before retrying. Reusing an environment ID does not restore files on replacement compute: provider storage/snapshots are needed. This is a proposed adapter contract around the API documentation, not an implemented reference-runtime controller. Closure is covered in [Chapter 23](../part-viii/chapter-23.en.md).
+
 ## 13. Example Runtime Configuration
 
 Here is an example config that defines the runtime shape without hardcoding every decision:
