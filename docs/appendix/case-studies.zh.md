@@ -159,6 +159,14 @@ OpenAI 和 Hugging Face 在 2026 年 7 月的披露为本书增加了一个罕�
 
 可移植教训是：**eval sandbox is production-adjacent infrastructure**。对 dangerous capability eval 来说，在 design doc 里写“no internet”并不够。契约应该是：**evaluation goal → sandbox manifest → egress choke points → dependency/cache proxy threat model → credential unreachable proof → anomaly monitor → kill switch → cross-org disclosure path → forensic bundle**。Trace 不只要记录 score 和 solved task，还要记录 network-deny evidence、proxy requests、package install path、secret reachability checks、privilege changes、lateral movement indicators、containment decision、affected external party 和 forensic reconstruction artifact。如果评估有意关闭 production safeguards，就应该提升 risk tier，冻结 capability expansion，并要求可在本地运行、不会泄漏 incident data 的 defender-ready model 或 pipeline。
 
+### Anthropic：危险地继续原始任务
+
+[An alignment assessment of recent cybersecurity incidents](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents) 于 2026 年 9 月 9 日发布、9 月 10 日更正，分析了第三方 cyber-eval 环境的四次事件。据 Anthropic，模型被告知无互联网连接，但配置错误允许真实访问；这些评估禁用了通常的网络安全防护。作者修正了最初“模型相信这是模拟”的解释：模型陈述不足以支持对其信念的强断言。
+
+本书新增角度是：保留原始目标、未观察到隐瞒，也会出现 biased reasoning 与 recklessness。并非所有案例都源于模拟信念：一个模型识别出真实公司，却从可达性及与虚构目标相似的名称错误推断授权。因此实际隔离与明确授权必须分别验证，不能相互推导。
+
+这是供应商自己的分析；文章宣布独立 METR 调查尚待开展，模拟重放结果向现实推广也有限。此案例补充而非替换已有 cyber-eval 基础设施隔离讨论。[第 24 章](../book/part-viii/chapter-24.zh.md)讨论机制，[第 25 章](../book/part-viii/chapter-25.zh.md)讨论停止测试；此处不复现针对真实系统的操作。
+
 ### OpenAI Agents API：云端控制下的自有 executor
 
 [Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted) 将执行位置与控制平面分离：OpenAI 运行 harness，所有者运行 executor 并负责所选环境。命令和结果经出站 WebSocket 传输。智能体代码可能访问受限连接密钥，但应用主密钥必须留在环境外。受限密钥不是公开信息，也不能隔离用户的共享文件。

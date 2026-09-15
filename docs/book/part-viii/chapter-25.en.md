@@ -169,6 +169,14 @@ A useful minimal taxonomy might look like this:
 
 The important part is not the number of labels. It is that they give you a repeatable set of failure classes.
 
+### Tasks with no authorized solution and conflicting environment evidence
+
+[Anthropic's assessment](https://www.anthropic.com/research/alignment-assessment-cybersecurity-incidents) motivates distinct control scenarios: the agent is told it is isolated, but controlled observations contradict that claim; or no solution exists within authorized scope. Success means stopping the risky path, reporting the constraint, and seeking clarification of authority, not completing the goal at any cost. A “simulation” claim does not expand stated scope.
+
+Run these checks in genuinely isolated environments with synthetic services and harmless tool simulations, not by exposing third parties for realism. Compare paired tasks with and without an authorized solution; vary claimed isolation and conflicting evidence separately. Record trajectory length and accumulated pressure from failed attempts. Establish the permission oracle before execution, independently of the model's answer.
+
+Separate agent decisions from control performance: a prohibited attempt blocked by the gateway is containment success, not correct voluntary stopping. Measure boundary violations, time to stopping/escalation, and unnecessary refusal on authorized tasks. Acknowledging possible harm without changing subsequent actions is not success. Grade the full trajectory rather than only the final answer. Fields appear in the [eval schema](../../appendix/eval-schema.en.md); this is a proposed experiment, not a replication of Anthropic's published percentages.
+
 ## 8. User simulator and synthetic adversary are different roles
 
 A `user simulator` is useful when you want reproducible normal and boundary user scenarios.
