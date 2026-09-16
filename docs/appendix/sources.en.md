@@ -82,6 +82,7 @@ Below is the main set of primary sources used by the current version of the book
 - [LangChain: MCP in LangChain](https://www.langchain.com/blog/mcp-in-langchain-stateless-protocol-elicitation-and-more) / [FastMCP: Response caching](https://gofastmcp.com/clients/client#response-caching)
 
 - [LangChain, Organizing Context in a Multi-Agent Harness](https://www.langchain.com/blog/organizing-context-in-a-multi-agent-harness) (2026-09-08)
+- LangChain, [How We Built LangChain’s Paid Media Agent](https://www.langchain.com/blog/paid-media-agent)
 - [LangChain, Connections: managed credentials and per-caller identity for Managed Deep Agents](https://www.langchain.com/blog/connections-managed-credentials-and-per-caller-identity-for-managed-deep-agents)
 
 - LangChain, [Multi-agent](https://docs.langchain.com/oss/python/langchain/multi-agent)

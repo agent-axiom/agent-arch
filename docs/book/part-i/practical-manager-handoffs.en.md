@@ -131,6 +131,12 @@ Here, handoff is often more natural than a central manager pretending to underst
 
 These are defaults for judgment, not a hard rule that every worker inherits everything. Large, irrelevant, or sensitive history favors a minimal verified handoff instead of a full fork. Fork carries mistakes and untrusted text alongside facts. Isolated mode must not discard mandatory task constraints. The child returns a reviewable result; its entire intermediate trajectory need not enter the supervisor's context.
 
+### Separate context does not isolate files or completion
+
+In the [LangChain Paid Media Agent case](https://www.langchain.com/blog/paid-media-agent), two subagents shared a report location and a `done` flag: completion by the first could make the second skip its work. The authors separated report locations and completion state by platform.
+
+Design three boundaries separately: **context** determines what the model sees; **artifact scope** determines what a branch can read and change; **execution state** determines whose work a result confirms. `fork`/`isolated` controls the first boundary, not the other two. The coordinator declares the expected branches, accepts confirmation for each separately, and explicitly reports omissions. The detailed [ownership contract](../part-vii/chapter-16.md) does not require a separate VM for every specialist, but does require verifiable separation of records and artifacts.
+
 ## 7. Common Mistakes
 
 Both patterns have typical failure modes.

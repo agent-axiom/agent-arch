@@ -605,6 +605,17 @@ HydraFusion 的 critic 来自不同模型系列、没有工具且只读；这减
 
 solver 的变更保存在隔离的暂存工作区。只有通过验证的候选结果才能经过正常 approval 边界应用到目标工作区；取消或无效的 workflow 不得在那里应用变更。这不会撤销已经发生的外部副作用：gateway、批准与幂等性仍负责控制它们。计入 router、draft、gate、critique、revision、escalation、retry、fallback 的成本和延迟。这是建议契约，不是 reference runtime 已实现的 HydraFusion router；模式比较见[第 13 章](../part-v/chapter-13.zh.md)。
 
+### 产物与完成状态属于具体分支
+
+[LangChain 付费媒体智能体](https://www.langchain.com/blog/paid-media-agent)展示了共享报告路径和 `done` 如何导致相邻子智能体误判完成。以下契约是本书的建议，不代表参考运行时已经实现，也不是对 LangChain 内部结构的精确描述：
+
+- 协调器分配 `run_id`、`branch_id` 和 `attempt_id`；例如 `runs/<run_id>/<branch_id>/<attempt_id>/report.pdf` 的工作路径属于该次尝试。共享输入可以只读。唯一名称本身不限制访问：工具或文件系统策略必须强制执行写入边界，包括路径和链接解析。
+- 完成记录包含相同标识符、状态、产物引用及验证证据。全局 `done` 或文件存在本身不能证明所有分支都已完成。渲染成功仅证明约定的渲染标准得到满足，并不证明分析正确。
+- 获授权的组件只有在产物可用且通过验证后才能发布成功确认。协调器仅将其用于当前尝试；重复投递不能增加已完成分支数，已取消或被替代尝试的迟到结果不能替换当前结果。
+- 汇总依据预先定义的必需分支集合。缺失、失败和取消是不同状态；部分结果必须明确标出缺项，不能被当作完整成功。
+
+应检查 A → B 和 B → A 两种完成顺序、重复完成通知及旧尝试的迟到结果。具体场景见[实践案例](../../appendix/case-studies.md)。
+
 ## 14. 常见错误
 
 非常典型的问题有：

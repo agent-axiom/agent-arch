@@ -203,6 +203,21 @@ For its best tuned configuration relative to Opus 5, GitHub reports: TerminalBen
 
 The authors refined policies on these benchmarks and excluded two invalid harness runs from the trend. The book's lesson is to separate tuning from holdout evaluation and infrastructure-failure auditing from workflow failures. The preview primarily targets single-turn tasks; long-session effectiveness needs separate validation. Proposed contracts appear in [Chapter 16](../book/part-vii/chapter-16.en.md) and the [eval schema](eval-schema.en.md), not as a ready-made reference-runtime integration.
 
+### LangChain Paid Media Agent: false completion of a sibling branch
+
+In [How We Built LangChain’s Paid Media Agent](https://www.langchain.com/blog/paid-media-agent), the “Design isolation explicitly” section describes a coordinator with one subagent per advertising platform. Separate context windows did not eliminate a shared mutable resource: two subagents wrote reports to the same location and shared a `done` flag. After the first finished, the second could mistake that state for its own and stop without a report. The reported fix was a separate report location and completion state for each platform.
+
+The transferable lesson is **context isolation ≠ artifact isolation ≠ status isolation**. This is the authors' engineering account, not an independent estimate of failure frequency. It does not imply that every subagent always needs its own sandbox or that all shared state must be forbidden.
+
+Proposed validation scenario (not a report of an executed experiment):
+
+1. Start branches A and B with different assignments and separate contexts, delaying B until A finishes. In the negative control, a shared path and `done` must reproduce B's omission; otherwise the scenario does not test the reported failure.
+2. With separate artifact scopes and completion records, A's success does not change B's status. Both branches produce their own accessible outputs; the coordinator validates their association with the assignment and current attempt.
+3. Repeat with reversed order, duplicate A notification, and a B failure or missing artifact. A duplicate does not count as another completed branch; the aggregate is not declared complete.
+4. Restart B and deliver a late success from its previous attempt. It neither closes the new attempt nor overwrites its artifact. Until all required branches are confirmed, only an explicitly partial aggregate is permitted.
+
+See the [coordinator practice](../book/part-i/practical-manager-handoffs.md) and [runtime contract](../book/part-vii/chapter-16.md).
+
 ### SMART: specifications as source, code as a build product
 
 [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) describes SMART, a symbolic ML-systems performance-modeling library. Its main branch contains around 50 design docs (roughly 9,000 lines) and a handful of utilities. Implementations are regenerated for new versions, while humans edit the documents. This is a research case, not a recommendation to rewrite every mature service from scratch.

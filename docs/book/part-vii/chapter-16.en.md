@@ -606,6 +606,17 @@ Proposed production-adapter contract: before execution, validate `routing_policy
 
 Keep solver changes in a staged isolated workspace. Only a validated candidate may cross the normal approval boundary into the target workspace; a cancelled or invalid workflow applies nothing there. This does not undo external side effects already performed: gateway checks, approvals, and idempotency still govern them. Account for router, draft, gate, critique, revision, escalation, retry, and fallback cost and latency. This is a proposed contract, not a HydraFusion router implemented in the reference runtime; compare patterns in [Chapter 13](../part-v/chapter-13.en.md).
 
+### Artifacts and completion belong to a specific branch
+
+[LangChain Paid Media Agent](https://www.langchain.com/blog/paid-media-agent) illustrates false completion of a sibling subagent through a shared report path and `done`. The following contract is a book recommendation, not a claim of implemented support in the reference runtime or an exact description of LangChain internals:
+
+- The coordinator assigns `run_id`, `branch_id`, and `attempt_id`; a workspace path such as `runs/<run_id>/<branch_id>/<attempt_id>/report.pdf` belongs to that attempt. Shared inputs may be read-only. Unique names alone do not restrict access: tools or filesystem policy enforce write boundaries, including path and link resolution.
+- A completion record carries the same identifiers, status, an artifact reference, and validation evidence. A global `done` or the mere existence of a file does not confirm every branch's work. Successful rendering confirms only the agreed rendering criterion, not the accuracy of the analysis.
+- An authorized component publishes success confirmation only after the artifact is available and validated. The coordinator accepts it for the current attempt; duplicate delivery does not increase the completed-branch count, and late results from cancelled or superseded attempts cannot replace the current result.
+- Aggregation uses a predefined set of required branches. Missing, failed, and cancelled remain distinct states; a partial result is acceptable only with explicit omissions, not as complete success.
+
+Check both A → B and B → A orderings, duplicate completion delivery, and late results from an old attempt. A concrete scenario appears in the [case studies](../../appendix/case-studies.md).
+
 ## 14. Common Mistakes
 
 Very typical problems:
