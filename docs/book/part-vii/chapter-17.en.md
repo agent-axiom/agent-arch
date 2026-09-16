@@ -232,6 +232,26 @@ For a production contract, bind the verified requester, tenant, deployment, conn
 
 Test reads as well: identical queries against private repositories must respect each caller's visibility. For shared accounts, audit must distinguish who requested an action from whose identity executed it, without presenting a shared-account action as a personal user action. The fields and scenarios are a [proposed policy bundle extension](../../appendix/policy-bundle-schema.en.md), not a Connections integration implemented in the reference runtime.
 
+### Operation, resource, and access class are separate dimensions
+
+[Cloudflare Workers granular authorization](https://blog.cloudflare.com/workers-granular-authorization/) and its [role documentation](https://developers.cloudflare.com/workers/authorization/) provide a concrete matrix instead of a single “Worker access” permission. These are minimum permissions for the listed operations; broader roles may include them, but do not automatically expand resource scope.
+
+| Operation | Resource | Required access class |
+| --- | --- | --- |
+| Read settings, metrics, logs, and traces | A specific Worker | `Metadata Read-Only` |
+| Read source code | That Worker | `Content Read-Only` |
+| Update an existing Worker's code without route changes | That Worker | `Editor` |
+| Delete a Worker | The Worker being deleted | `Admin` at an applicable scope |
+| Change a Route or Custom Domain | Worker and every affected zone | `Editor` for the Worker **and** `Workers Routes Write` for each zone |
+
+A command name does not determine authority: `wrangler deploy` may update an existing Worker, create one, or change routes. Creation requires `Admin` at the Workers product scope; ordinary deployment with unchanged routes does not require zone access. The gateway must derive actions and target resources from a trusted adapter and the actual configuration, not the model's claim that this is “just a deploy.” An unresolved target set cannot authorize execution.
+
+Do not turn this into “deployment needs permissions on every connected resource.” Cloudflare documents that deploying a Worker with KV/R2/D1 bindings does not require separate permissions on those resources; direct access is checked separately. However, permission to change code may allow use of existing bindings through the Worker. Thus preventing deletion does not make deployment safe: code review, runtime access limits, and separate approval for high-risk changes still matter. Similarly, telemetry access does not make logs non-sensitive: secrets and personal data need filtering and access controls.
+
+For a compound change, check every required action–resource pair; a Worker role is not zone-management authority. Evidence and negative checks appear in the [proposed policy-bundle extension](../../appendix/policy-bundle-schema.en.md).
+
+Implementation limit: the [detailed Workers documentation](https://developers.cloudflare.com/workers/authorization/workers/#limitations) explicitly says Custom Domains do not yet support per-Worker roles. The matrix describes necessary access classes, not support for every scope–operation combination. Check the target API capabilities; missing support is not grounds to automatically broaden access to product scope.
+
 ## 7. A Policy Decision Should Be an Object, Not Just a Bool
 
 A very useful engineering habit: do not reduce policy decisions to `True/False`.

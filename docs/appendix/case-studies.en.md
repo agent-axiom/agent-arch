@@ -41,6 +41,16 @@ Rules of Durable Objects sharpens this case as **Durable Agent Identity**: agent
 
 Cloudflare Agent Memory adds a governed long-term memory layer to that pattern: the agent does not receive a raw database/filesystem interface, but works through a bounded service with `ingest`, `remember`, `recall`, `list`, and `forget`. The practical contract is: **compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**. For this book, the important anti-pattern is treating "memory" as hidden SQL/key-value access for the model. Otherwise retrieval strategy, durable writes, forgetting, and conflict resolution move into the prompt instead of a managed runtime layer.
 
+### Cloudflare Workers: separate authority for observation, code, and routing
+
+[Cloudflare, Give every teammate and agent the right level of access to your Workers](https://blog.cloudflare.com/workers-granular-authorization/) describes per-Worker access and `Metadata Read-Only`, `Content Read-Only`, `Editor`, and `Admin` roles. It is a concrete example of operation- and resource-scoped authorization, not a replacement for least privilege. This account also uses the [authorization documentation](https://developers.cloudflare.com/workers/authorization/) updated September 15, 2026.
+
+The compound boundary is particularly useful: changing a Route or Custom Domain needs `Editor` on the Worker and `Workers Routes Write` on every affected zone. Updating the Worker without changing those connections does not require zone access. Therefore, authorizing only the outer “deploy” command is insufficient, while granting broad zone access just in case is unnecessary.
+
+Limits: deployment authority without deletion still permits harmful code, including code using existing bindings; logs can contain sensitive data. The documentation says the `wrangler login` OAuth flow does not yet support granular authorization and specifies an account-owned API token for this path. Do not assume support transfers between authentication methods or that planned resource-level access for other products is already implemented.
+
+See the matrix in [Chapter 17](../book/part-vii/chapter-17.en.md) and the proposed contract with six checks in the [policy schema](policy-bundle-schema.en.md). These are not claims of a ready-made Cloudflare integration in the reference runtime.
+
 ### Cloudflare vulnerability harness: VDH, VVS, and noise filtering
 
 Cloudflare separately describes a vulnerability harness that began as a `security-audit` skill and then became a fleet-wide pipeline: Recon builds a threat model, Hunters attack code by bug class, Validate tries to disprove each finding, Gapfill closes thin coverage cells, Dedup collapses duplicates, Trace follows issues into consumer repos, Feedback rewrites future tasks, and Report renders without a model. The architectural lesson is that a harness should not be “one large agent reads the whole repository.” Each stage writes state to a database keyed by `run_id`, `repo`, and `stage`, can resume or retry, and leaves reviewable findings, so a five-hour run is not lost to one transient failure.

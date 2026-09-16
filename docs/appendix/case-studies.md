@@ -41,6 +41,16 @@ Rules of Durable Objects уточняет этот кейс как **Durable Age
 
 Cloudflare Agent Memory добавляет к этому слой управляемой долговременной памяти: агент не получает сырой database/filesystem interface, а работает через ограниченный сервис с `ingest`, `remember`, `recall`, `list` и `forget`. Практический контракт: **compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**. Для книги это важный анти-паттерн: "память" не должна быть просто скрытым SQL/key-value доступом для модели. Иначе retrieval strategy, durable writes, forgetting и conflict resolution оказываются внутри prompt вместо управляемого runtime layer.
 
+### Cloudflare Workers: разные права на наблюдение, код и изменение маршрута
+
+[Cloudflare, Give every teammate and agent the right level of access to your Workers](https://blog.cloudflare.com/workers-granular-authorization/) описывает доступ к отдельному Worker и роли `Metadata Read-Only`, `Content Read-Only`, `Editor`, `Admin`. Это пример авторизации по операции и области ресурса, а не новая замена минимальным привилегиям. Разбор опирается также на [документацию авторизации](https://developers.cloudflare.com/workers/authorization/) от 15 сентября 2026 года.
+
+Особенно полезна составная граница: изменение Route или Custom Domain требует `Editor` на Worker и `Workers Routes Write` на каждую затронутую зону. Обычное обновление Worker без изменения этих связей не требует доступа к зоне. Поэтому нельзя авторизовать лишь внешнюю команду «deploy» или требовать широкого доступа к зоне на всякий случай.
+
+Границы вывода: право деплоя без удаления всё равно позволяет выпустить вредный код, в том числе использующий существующие bindings; логи могут содержать чувствительные данные. В документации `wrangler login` через OAuth пока не поддерживает гранулярную авторизацию; для этого пути указан account-owned API token. Не следует переносить поддержку с одного способа входа на другой или считать обещанное расширение ресурсных прав на другие продукты уже реализованным.
+
+Матрица — в [главе 17](../book/part-vii/chapter-17.md), предлагаемый контракт и шесть проверок — в [схеме политик](policy-bundle-schema.md). Они не заявляют готовую интеграцию Cloudflare в эталонный рантайм.
+
 ### Cloudflare vulnerability harness: VDH, VVS и фильтрация шума
 
 Cloudflare отдельно описывает vulnerability harness, который начался как `security-audit` skill, а затем вырос в fleet-wide pipeline: Recon строит threat model, Hunters атакуют код по классам багов, Validate пытается опровергнуть finding, Gapfill закрывает тонкие coverage cells, Dedup сворачивает повторы, Trace уводит проверку в consumer repos, Feedback переписывает будущие задания, а Report рендерится уже без модели. Важный архитектурный урок: harness не должен быть “один большой агент читает весь репозиторий”. Каждая стадия пишет состояние в БД по `run_id`, `repo` и `stage`, может resume/retry и оставляет проверяемые findings, поэтому пятичасовой запуск не исчезает из-за одного transient failure.

@@ -41,6 +41,16 @@ Rules of Durable Objects 把这个案例进一步收紧成 **Durable Agent Ident
 
 Cloudflare Agent Memory 在这个模式上补了一层受治理的长期记忆：agent 不会拿到原始 database/filesystem interface，而是通过一个有边界的服务使用 `ingest`、`remember`、`recall`、`list` 和 `forget`。实践契约是：**compaction ingest → classified memory → provenance and tenant isolation → constrained recall/remember/forget/list API → supersession and export → eval against stale or conflicting memories**。对本书来说，重要的反模式是把“memory”当成模型背后的隐藏 SQL/key-value 访问。否则 retrieval strategy、durable writes、forgetting 和 conflict resolution 都会被塞进 prompt，而不是留在受管理的 runtime layer。
 
+### Cloudflare Workers：观察、代码与路由的权限分离
+
+[Cloudflare：为每位成员和智能体分配合适的 Workers 访问权限](https://blog.cloudflare.com/workers-granular-authorization/)介绍了单个 Worker 的访问范围及 `Metadata Read-Only`、`Content Read-Only`、`Editor`、`Admin` 角色。这是按操作与资源范围授权的具体案例，而不是最小权限原则的替代品。本节也参考了 2026 年 9 月 15 日更新的[授权文档](https://developers.cloudflare.com/workers/authorization/)。
+
+复合边界尤其有用：修改 Route 或 Custom Domain 需要 Worker 的 `Editor` 及每个受影响区域的 `Workers Routes Write`。不改变这些连接的 Worker 更新不需要区域访问。因此，只批准外层“deploy”命令不够，而以防万一为由赋予广泛区域权限也无必要。
+
+结论边界：即使没有删除权限，部署权限仍可发布有害代码，包括使用已有绑定的代码；日志也可能包含敏感数据。文档指出，`wrangler login` 的 OAuth 流程尚不支持精细授权，此路径需使用账号所有的 API 令牌。不能假定一种认证方式的支持自动适用于另一种，也不能把面向其他产品的资源级权限计划视为已经实现。
+
+矩阵见[第 17 章](../book/part-vii/chapter-17.zh.md)，建议契约与六项检查见[策略模式](policy-bundle-schema.zh.md)。这些内容不代表参考运行时已有可用的 Cloudflare 集成。
+
 ### Cloudflare vulnerability harness：VDH、VVS 与噪声过滤
 
 Cloudflare 另外描述了一个 vulnerability harness：它从 `security-audit` skill 起步，后来变成 fleet-wide pipeline。Recon 构建 threat model，Hunters 按 bug class 攻击代码，Validate 尝试推翻 finding，Gapfill 补齐薄弱 coverage cells，Dedup 合并重复项，Trace 把问题追到 consumer repos，Feedback 改写后续任务，Report 则在没有模型的情况下渲染。这里的架构教训是：harness 不应该是“一个大 agent 读取整个仓库”。每个 stage 都把状态写入以 `run_id`、`repo` 和 `stage` 为 key 的数据库，可以 resume/retry，并留下可审查 findings，所以五小时运行不会因为一次 transient failure 全部丢失。

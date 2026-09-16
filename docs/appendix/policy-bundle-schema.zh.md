@@ -116,6 +116,42 @@ TTL 限制快照复用：有效期不得超过服务器 `ttlMs` 或本地上限�
 4. TTL 过期、为零或无效：从网络读取；服务器不可用不能成为绕过检查的理由。
 5. principal、grant 或策略版本变化：更换分区或使缓存失效；metadata 和访问决策都不得跨越上下文边界。
 
+## 建议扩展：复合资源授权
+
+这是建议的内部契约，不是可直接使用的 Cloudflare 配置，也不是 `agent_runtime_ref` 已实现的功能。以下操作名称和标识符仅用于示例；访问边界来自 [Workers 角色文档](https://developers.cloudflare.com/workers/authorization/)。
+
+```yaml
+compound_authorization_evidence:
+  principal_ref: verified-ci-principal
+  task_ref: approved-route-change
+  plan_ref: immutable-plan-42
+  policy_version: deploy-policy-v3
+  requirements:
+    - action: worker.update
+      resource_ref: account-a/worker-a
+      required_access: Editor
+      decision: allow
+    - action: route.write
+      resource_ref: account-a/zone-a
+      required_access: Workers Routes Write
+      decision: deny
+  decision: deny
+  reason: missing_zone_route_permission
+```
+
+适配器从规范化的账号、Worker 和受影响区域标识符推导 `requirements`，迁移路由时包括原区域和新区域。模型给出的列表不能证明完整性。每项检查使用同一主体当前已验证的权限；总体 `allow` 要求**所有**检查通过、符合任务范围，并在需要时获得独立审批。`unknown`、检查不可用或任一 `deny` 都阻止复合变更。审计保留原因与非秘密证据引用，不记录令牌。
+
+预检查不会在多个 API 之间创建事务。首次修改前检查完整计划；每次调用前及暂停恢复后重新检查权限和目标，服务端仍保留自己的授权检查。计划变化需要新决策，并在必要时重新审批。如果部分调用后权限被撤销，应停止后续修改并核对真实效果；记录部分结果，恢复操作单独授权。不得承诺自动回滚或为完成任务扩大凭据权限。
+
+建议检查（不是实际调用 Cloudflare 的结果）：
+
+1. 权限仅覆盖 Worker A：即使操作名称相同，读取或修改 Worker B 也被拒绝。
+2. `Metadata Read-Only` 允许 A 的遥测，但不允许读取代码；`Content Read-Only` 不允许部署。
+3. `Editor` 允许符合策略的现有 A 更新，但不允许删除或创建新 Worker。
+4. 不改变路由的部署无需区域权限；新增、修改或删除路由时，任一受影响区域缺少 `Workers Routes Write` 都必须在修改前阻止操作。
+5. 复合操作的权限全部存在时，也只能批准任务范围内的已验证计划。审批后替换区域需要重新检查。
+6. 步骤之间撤销权限会阻止下一步；已完成的效果记为部分结果，而非完整成功或保证已回滚。
+
 ## 什么是策略包
 
 这里可以把策略包理解为一组作为整体发布的相关规则：

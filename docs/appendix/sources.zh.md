@@ -99,6 +99,7 @@
 - Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
 - Microsoft Azure Architecture Center, [AI Agent Orchestration Patterns](https://learn.microsoft.com/en-us/azure/architecture/ai-ml/guide/ai-agent-design-patterns)
 - [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) (2026-08-20)
+- Cloudflare, [为每位成员和智能体分配合适的 Workers 访问权限](https://blog.cloudflare.com/workers-granular-authorization/); [Workers 角色与权限](https://developers.cloudflare.com/workers/authorization/); [Workers](https://developers.cloudflare.com/workers/authorization/workers/) (2026-09-15)
 
 - Cloudflare, [Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 - Cloudflare Agents SDK, [Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/) 与 [Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)

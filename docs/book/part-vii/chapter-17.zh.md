@@ -232,6 +232,26 @@ Managed Deep Agents 预发布版的 [LangChain Connections](https://www.langchai
 
 读取也必须测试：对私有仓库执行同一查询，应遵守每位调用者的可见性。共享账户的审计应区分谁提出请求与以谁的身份执行，不得将共享账户的操作呈现为用户个人操作。字段与场景属于[建议的 policy bundle 扩展](../../appendix/policy-bundle-schema.zh.md)，并非 reference runtime 已实现的 Connections 集成。
 
+### 操作、资源与访问类别是不同维度
+
+[Cloudflare Workers 精细授权](https://blog.cloudflare.com/workers-granular-authorization/)及其[角色文档](https://developers.cloudflare.com/workers/authorization/)给出了具体矩阵，而不是笼统的“Worker 访问”权限。下表列出对应操作的最低权限；更高角色可能包含这些权限，但不会自动扩大资源范围。
+
+| 操作 | 资源 | 所需访问类别 |
+| --- | --- | --- |
+| 读取设置、指标、日志与追踪 | 指定 Worker | `Metadata Read-Only` |
+| 读取源代码 | 同一 Worker | `Content Read-Only` |
+| 更新现有 Worker 代码且不改变路由 | 同一 Worker | `Editor` |
+| 删除 Worker | 被删除的 Worker | 适用范围内的 `Admin` |
+| 修改 Route 或 Custom Domain | Worker 及每个受影响区域 | Worker 的 `Editor` **以及**每个区域的 `Workers Routes Write` |
+
+命令名称不能决定权限：`wrangler deploy` 可能更新现有 Worker、创建新 Worker 或修改路由。创建需要 Workers 产品范围的 `Admin`；路由不变的普通部署不需要区域权限。网关必须从可信适配器和实际配置推导操作与目标资源，而不是相信模型声称“只是部署”。目标集合未确定时不得授权执行。
+
+不要将其理解为“部署必须拥有所有关联资源的权限”。Cloudflare 文档说明，部署带有 KV/R2/D1 bindings 的 Worker 不需要这些资源的独立权限；直接访问另行检查。但修改代码的权限可能允许通过 Worker 使用已有绑定。因此，禁止删除并不意味着部署安全：仍需代码审查、运行时访问限制和高风险变更的独立审批。同样，遥测访问不代表日志不敏感：秘密和个人数据仍需过滤及访问控制。
+
+复合变更必须检查每个必需的“操作—资源”组合；Worker 角色不等于区域管理权限。证据格式与负向检查见[策略包建议扩展](../../appendix/policy-bundle-schema.zh.md)。
+
+实现限制：[Workers 详细文档](https://developers.cloudflare.com/workers/authorization/workers/#limitations)明确指出，Custom Domains 尚不支持单个 Worker 范围的角色。矩阵描述必要的访问类别，不保证所有范围与操作组合均受支持。应检查目标 API 的支持情况；不支持不能成为自动扩大到产品级权限的理由。
+
 ## 7. 策略决策应该是对象，而不只是 bool
 
 一个很有用的工程习惯：不要把策略决策简化成 `True/False`。

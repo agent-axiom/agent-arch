@@ -116,6 +116,42 @@ Acceptance scenarios for the proposed contract:
 4. Expired, zero, or invalid TTL: network read; server unavailability cannot authorize bypassing checks.
 5. Principal, grant, or policy-version change: a different partition or invalidation; neither metadata nor access decisions cross context boundaries.
 
+## Proposed extension: compound resource authorization
+
+This is a proposed internal contract, not a ready-to-use Cloudflare configuration or an implemented `agent_runtime_ref` feature. Operation names and identifiers below are illustrative; the access distinctions come from [Workers roles](https://developers.cloudflare.com/workers/authorization/).
+
+```yaml
+compound_authorization_evidence:
+  principal_ref: verified-ci-principal
+  task_ref: approved-route-change
+  plan_ref: immutable-plan-42
+  policy_version: deploy-policy-v3
+  requirements:
+    - action: worker.update
+      resource_ref: account-a/worker-a
+      required_access: Editor
+      decision: allow
+    - action: route.write
+      resource_ref: account-a/zone-a
+      required_access: Workers Routes Write
+      decision: deny
+  decision: deny
+  reason: missing_zone_route_permission
+```
+
+The adapter derives `requirements` from canonical account, Worker, and affected-zone identifiers, including both old and new zones when moving a route. A model-supplied list is not evidence of completeness. Every check uses current verified authority for the same principal; aggregate `allow` requires **all** checks to pass, task-scope compliance, and separate approval where required. `unknown`, unavailable checks, or any `deny` block the compound change. Audit records retain reasons and non-secret evidence references, never tokens.
+
+Preflight does not create a transaction across APIs. Check the full plan before the first mutation; recheck authority and targets immediately before individual calls and after pauses, while the service retains its own authorization. A changed plan needs a new decision and, where necessary, approval. If authority is revoked after some calls, stop further mutations and reconcile actual effects; record the partial outcome and authorize recovery separately. Never promise automatic rollback or broaden credentials to finish.
+
+Proposed checks (not results of executed Cloudflare calls):
+
+1. Access is scoped to Worker A: reading or changing Worker B is denied even for the same operation name.
+2. `Metadata Read-Only` permits A's telemetry, not code reads; `Content Read-Only` does not permit deployment.
+3. `Editor` permits an in-policy update of existing A, not deletion or creation of a new Worker.
+4. Deployment without route changes needs no zone permission; adding, changing, or removing a route without `Workers Routes Write` on any affected zone is blocked before mutation.
+5. All compound-operation permissions are present: only the verified plan within task scope can be allowed. Substituting a zone after approval requires a new check.
+6. Revocation between steps denies the next step; completed effects are recorded as partial, not complete success or guaranteed rollback.
+
 ## What a policy bundle is
 
 Here, it is useful to define a `policy bundle` as a related set of rules that ships together:
