@@ -72,6 +72,7 @@
 - Albumentations，[AlbumentationsX MCP integration](https://albumentations.ai/docs/integrations/mcp/)
 - [GitHub Engineering, How we make AI coding more cost efficient without sacrificing task quality](https://github.blog/ai-and-ml/github-copilot/how-we-make-ai-coding-more-cost-efficient-without-sacrificing-task-quality/) (2026-09-02)
 - [GitHub Engineering, Project HydraFusion: Frontier quality via multi-model orchestration](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) (2026-09-04)
+- GitHub, [使用 Copilot 将 GitHub Copilot 运行时迁移到 Rust](https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/) (2026-09-16)
 
 - GitHub，[dKosarevsky/albu-mcp v1.21.1 release](https://github.com/dKosarevsky/albu-mcp/releases/tag/v1.21.1) 与 [171e2ca 源码快照](https://github.com/dKosarevsky/albu-mcp/tree/171e2ca44830a16c363c8e3614825f2a0d2215b8)
 - Agent2Agent Protocol, [A2A specification](https://github.com/a2aproject/A2A/blob/main/docs/specification.md)

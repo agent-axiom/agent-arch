@@ -108,6 +108,28 @@ Then it helps to stay realistic:
 - verify vendor SDK maturity before committing architecturally;
 - avoid choosing the language before you know the real platform constraints.
 
+## GitHub Copilot case: a shared runtime as an embeddable library
+
+[GitHub, Migrating the GitHub Copilot runtime to Rust, using Copilot](https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/) (September 16, 2026) describes a packaging problem as well as a language choice. The original SDK launched the headless CLI as a Node.js subprocess and used JSON-RPC over stdin/stdout. Every consumer inherited another process, V8, startup costs, and cross-process event and filesystem traffic, even when its own application used a different language.
+
+The target was a shared runtime without the terminal UI: a native library exposing a C ABI for embedding through different SDKs' FFI mechanisms. A separate stdin/stdout or socket server remains available when a process boundary is desirable. This does not mean the entire CLI became Rust: at publication, moving the UI exclusively onto the public SDK surface was still ongoing, with some calls into runtime internals remaining.
+
+The architectural lesson is to separate the user interface, public SDK, and execution core, then choose a language for the core's constraints. A C ABI enables cross-language integration but does not automatically define memory ownership, callback ordering, cancellation, or safe session disposal. The authors describe regressions where an opaque handle outlived its native object and where recorded cancellation failed to stop the active model loop. Successful compilation does not establish behavioral compatibility.
+
+### Incremental replacement with independent validation preserved
+
+GitHub chose in-place component replacement: a limited TypeScript slice became a Rust implementation with a thin compatible shim, and the old implementation was removed in the same change. Pure helpers without I/O or shared state came first; highly coupled session orchestration came near the end. Existing CLI and SDK end-to-end tests ran at every stage, with incremental releases. This is the authors' account of one migration, not a universal requirement to delete the old implementation immediately.
+
+The transferable sequence proposed by the book is:
+
+1. Freeze observable behavior and independent end-to-end checks, including persisted-session formats, callbacks, cancellation, and completion. Do not weaken tests to accommodate the port; contract changes require separate review.
+2. Replace bounded components behind explicit interfaces, preserving semantics first and treating optimization or redesign as a separate phase.
+3. Release small increments with observability and a verified return path; check persisted-state compatibility separately, because rolling back a binary does not guarantee it.
+
+“Run both and compare” is easier for a pure function than for an orchestrator that owns mutable state, invokes tools, and receives callbacks. Two live implementations can diverge on events or duplicate external effects. Comparison first needs isolated state, controlled inputs, and suppressed or simulated side effects; this is the book's recommendation, not a claim that GitHub used such a shadow mode.
+
+The article's speedups are system measurements through the C# SDK with a deterministic localhost response server: model and network latency were excluded, and other changes accompanied the language migration. They are neither predictions of real LLM-task duration nor a controlled Rust-versus-TypeScript comparison. Practical placement criteria appear in the [language and execution-mode comparison](rust-vs-python-typescript.en.md).
+
 ## Conclusion
 
 Rust already belongs in the book as a language for the **platform layer of agent systems**:

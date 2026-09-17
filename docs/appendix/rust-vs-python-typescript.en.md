@@ -28,6 +28,24 @@ For most teams in 2026, the practical setup looks like this:
 | MCP server and integration layer | strong | strong | strong |
 | Control plane and policy enforcement | very strong | medium | medium |
 
+## Also choose runtime placement: library or separate process
+
+The [GitHub Copilot Rust migration](https://github.blog/ai-and-ml/generative-ai/migrating-the-github-copilot-runtime-to-rust-using-copilot/) shows that language and process boundary are separate choices. A native core can be embedded in a Python/TypeScript application or remain a separate server without requiring a rewrite of the user-facing layer.
+
+| Criterion | In-process through FFI | Separate process through IPC/RPC |
+| --- | --- | --- |
+| Startup and memory | No mandatory second-process launch; library loading, initialization, and core memory remain | Separate startup and process memory; server reuse can amortize costs |
+| Data transfer | Fewer mandatory IPC crossings; copying, serialization, and callbacks can still be expensive | Explicit protocol, serialization, queues, and backpressure |
+| Failure boundary | A native crash can terminate the host application | The process can restart independently; session state needs recovery |
+| Lifecycle | Ownership of handles, buffers, threads, callbacks, and disposal order | Ownership of child-process startup, supervision, shutdown, and cleanup |
+| Compatibility | ABI version, platform builds, errors, and memory-transfer rules | Protocol version, message compatibility, and state formats |
+
+This is not an automatic recommendation for FFI. Before integration, define buffer and handle ownership, prohibit callbacks after disposal, specify cancellation propagation, error translation, and panic handling across the language boundary. Identify asynchronous calls that must not block the host's event loop. Safe Rust does not automatically make foreign code or the FFI contract safe.
+
+A separate process improves failure separation but is not a sandbox by itself: permissions, filesystem, and network restrictions still matter. An embedded runtime also does not require untrusted code to execute inside the host process; tools can remain behind a separate execution boundary.
+
+Compare under the same task and policy: cold/warm startup, memory across the full process tree, session creation and disposal, p50/p95 latency, cancellation, callback load, and crash recovery. Measure overhead without a real model separately from model-backed user tasks; runtime savings do not imply the same speedup for the whole agent. See the [Copilot case](rust-agent-platforms.en.md) for incremental migration.
+
 ## When to choose Rust
 
 Rust is especially justified when you are building:
