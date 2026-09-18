@@ -228,6 +228,14 @@ GitHub 报告其最佳调优配置相对 Opus 5 的结果：TerminalBench 2.1 �
 
 参见[协调器实践](../book/part-i/practical-manager-handoffs.md)和[运行时契约](../book/part-vii/chapter-16.md)。
 
+### Wood Mackenzie：工具成为 UI 契约的一部分
+
+[AWS / Wood Mackenzie：基于 Amazon Bedrock AgentCore 的共享智能体平台](https://aws.amazon.com/blogs/machine-learning/a-shared-agentic-platform-for-wood-mackenzie-on-amazon-bedrock-agentcore/)（2026 年 9 月 17 日）介绍了 APEX：在 AgentCore 中运行的 Strands 智能体、共享前端 SDK 和 CopilotKit。AG-UI 传递事件及状态更新，客户端把工具绑定到组件。更复杂的组合使用 A2UI JSON 界面描述，由客户端可信目录渲染，而不是作为任意代码执行。
+
+在 Lens 中，`extractWidgetConfig` 读取已有仪表板组件的配置和数据，结果以表格显示在助手面板。另一个 Woody 模型训练流程会暂停等待人工审查，Task Tracker 显示状态与参数。这是作者的描述，不是对协议保证或审批安全性的独立审计。
+
+本书结论是：工具模式变化不仅可能破坏执行，也可能破坏展示或用户同意的含义。建议对模式到 UI 的绑定进行版本管理，并检查未知组件、不兼容模式、过期审批和重复事件。不能把这些措施归为 AWS 已被验证的实现。参见[工具契约](../book/part-iv/chapter-8.zh.md)及[变更管理](../book/part-viii/chapter-20.zh.md)。
+
 ### SMART：规格是源文件，代码是构建产物
 
 [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) 描述了 SMART，一个用于 ML 系统的符号性能建模库。主分支约有 50 份设计文档（约 9,000 行）和少量辅助代码。每次新版本都重新生成实现，人类修改则进入文档。这是研究案例，不是建议所有成熟服务都从零重写。

@@ -239,6 +239,16 @@ tools:
 
 It looks ordinary. Good. The less magic in the contract layer, the more stable the tooling layer becomes.
 
+### A tool schema can also be a UI contract
+
+In the [Wood Mackenzie platform on AgentCore](https://aws.amazon.com/blogs/machine-learning/a-shared-agentic-platform-for-wood-mackenzie-on-amazon-bedrock-agentcore/), AG-UI carries events between agent and application, while the client binds a tool invocation and its arguments to a UI component. For richer interfaces, the agent returns a declarative A2UI blueprint rendered from the client's trusted widget catalog. These are related paths, not a claim that every tool invocation is automatically A2UI.
+
+Argument and result schemas therefore may have another consumer: the renderer. A backend can accept a new field or unit while an older interface hides it, displays an incorrect amount, or approves the wrong action. The book's proposed contract ties together `tool_id`, `tool_schema_version`, `render_binding_version`, and a component-catalog version. These are illustrative fields, not required AG-UI/A2UI fields or an implemented reference-runtime feature.
+
+The client should validate schemas and select components only from an approved catalog. Unknown widgets or incompatible bindings produce an explicit unsupported state, not arbitrary code loading. A validated text fallback may serve read-only results; sensitive actions must not silently fall back to a simplified approval UI that hides material fields. A trusted widget does not make its data trustworthy or replace server authorization.
+
+A button click is not sufficient approval evidence. The server binds confirmation to a verified principal, a specific action, resource, exact material arguments, and state revision. If the agent or user changes those values after the form is shown, the old approval is invalid: require a current preview and a new decision. Rendering, event receipt, and successful tool execution are different states. See [Chapter 20](../part-viii/chapter-20.en.md) for update checks.
+
 ## 7. The Execution Layer Should Normalize Errors
 
 Another common failure: every external service returns errors in its own style, and the agent gets them almost unprocessed.

@@ -228,6 +228,14 @@ Proposed validation scenario (not a report of an executed experiment):
 
 See the [coordinator practice](../book/part-i/practical-manager-handoffs.md) and [runtime contract](../book/part-vii/chapter-16.md).
 
+### Wood Mackenzie: tools as part of the UI contract
+
+[AWS / Wood Mackenzie, A shared agentic platform for Wood Mackenzie, on Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/a-shared-agentic-platform-for-wood-mackenzie-on-amazon-bedrock-agentcore/) (September 17, 2026) describes APEX: Strands agents in AgentCore, a shared frontend SDK, and CopilotKit. AG-UI carries events and state updates; the client binds tools to components. For richer composition, A2UI provides a JSON interface description rendered from the client's trusted catalog rather than executed as arbitrary code.
+
+In Lens, `extractWidgetConfig` reads configuration and data from existing dashboard widgets, and the result appears as a table in the assistant panel. A separate Woody model-training workflow pauses for human review; a Task Tracker displays state and parameters. This is the authors' description, not an independent audit of protocol guarantees or approval security.
+
+The book's lesson: changing a tool schema can break not only execution but also presentation or the meaning of user consent. We propose versioning schema-to-UI bindings and checking unknown components, incompatible schemas, stale approvals, and duplicate events. Do not attribute these measures to AWS as a verified implementation. See the [tool contract](../book/part-iv/chapter-8.en.md) and [change management](../book/part-viii/chapter-20.en.md).
+
 ### SMART: specifications as source, code as a build product
 
 [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) describes SMART, a symbolic ML-systems performance-modeling library. Its main branch contains around 50 design docs (roughly 9,000 lines) and a handful of utilities. Implementations are regenerated for new versions, while humans edit the documents. This is a research case, not a recommendation to rewrite every mature service from scratch.

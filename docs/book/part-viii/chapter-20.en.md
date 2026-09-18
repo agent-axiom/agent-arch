@@ -151,6 +151,22 @@ A practical model usually looks like this:
 
 This is an important practical rule: eval strategy should be tied to the class of change, not treated as one universal test.
 
+### Compatibility between tool schemas and user interfaces
+
+The [Wood Mackenzie case](https://aws.amazon.com/blogs/machine-learning/a-shared-agentic-platform-for-wood-mackenzie-on-amazon-bedrock-agentcore/) adds a client-side component binding to the tool contract. The following discipline is the book's recommendation, not a claimed guarantee of AWS, AG-UI, or A2UI. Version and validate the complete chain: tool schema → render binding → component catalog → approval format. Passing backend tests is insufficient.
+
+A release should declare supported old/new client and backend combinations, handling of already-open forms, and resumed sessions. Check semantics as well as syntax: currencies, units, defaults, hidden fields, and target resources. Even an optional field can be a breaking change if it changes consequences but is invisible in the old UI. An unknown version blocks the dependent sensitive action until the interface is updated; backend rollback does not automatically restore an old form's validity.
+
+Proposed acceptance scenarios:
+
+1. Unknown component: explicit error or safe read-only representation, without executing supplied code or enabling a dangerous action button.
+2. New schema with old binding: detect mismatch before approval; never silently discard material fields.
+3. Amount, resource, or state revision changes after preview: the server rejects stale approval and requires a current preview.
+4. Duplicate or late UI event: it neither approves another operation nor repeats a side effect; operation binding and idempotency apply.
+5. Rollback or reconnect with an open form: recheck versions and server state; displayed success cannot substitute for confirmed execution.
+
+These are proposed checks, not reported tests executed against Wood Mackenzie's platform. See [Chapter 8](../part-iv/chapter-8.en.md) for the architectural boundary.
+
 ## 7. High-risk changes should go through formal gates
 
 When a change affects autonomy, side effects, memory writes, or egress boundaries, visual review alone is not enough.
