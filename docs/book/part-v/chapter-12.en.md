@@ -204,6 +204,16 @@ Cloudflare AI Gateway spend limits show that this budget gate can live on the ru
 
 For autonomous agents, one more boundary matters here: the budget should attach to agent identity, not only to an API key or provider account. If a coding agent, support agent, and incident agent all pass through the same AI gateway, SLO must distinguish `agent_identity`, `provider_route`, `fallback_reason`, `rate_limit_decision`, and degraded mode. Otherwise, fallback to a cheaper or more available model can silently change quality, safety posture, or latency, while the cost dashboard only shows that spend went down. A good contract looks like this: **identity-bound spend limit -> provider routing decision -> fallback/degraded mode -> run-level SLO impact -> trace attribution**.
 
+### Environment startup and memory need separate budgets
+
+The [new AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/the-new-agentcore-runtime-elastic-optimized-and-consistently-fast-starts/) illustrates why environment-start latency must be separated from model execution time. AWS measures an echo agent without a model or tools: 5,000 cold invocations per agent across five image sizes from 200 MB to 2 GB, within default quotas. A client in us-west-2 calls us-east-1 over the public network. The reported roughly two-second P75 includes the cross-region round trip; it is neither pure microVM restore time nor a universal user-response SLO.
+
+Proposed budget decomposition: queue/environment allocation → environment readiness → first useful response → task completion. Define interval boundaries to avoid adding overlapping stages. Measure cold initialization, startup-snapshot restore, reuse of an already-ready environment, and task resume separately; provider terminology may classify snapshot restore as a cold start. Each path needs frequency, p50/p95/p99, failures, timeouts, and workload context: region, image size, concurrency, quotas, and runtime version. Keep failed starts in the denominator.
+
+For cost, distinguish the memory limit, actual resident memory, and billed GB-hours. AWS reports demand paging and reclamation of released or cold memory instead of holding the peak until session end, alongside a higher memory rate. Fewer GB-hours do not imply an equal bill reduction. Reconcile the time integral of billed memory with the current rate and billing records; account separately for CPU, storage, and other charged resources. An application's memory-release call does not prove an immediate billing decrease.
+
+Test a “burst → idle → work again” profile: peak, steady footprint, reclamation delay, full-session cost, and subsequent access latency after reclamation. If the provider does not expose a required quantity, record it as unknown rather than substituting RSS. Starting a session when a chat opens may reduce user waiting but needs a lifetime cap and accounting for unused sessions. These are proposed book metrics, not results from its own load tests. See [Chapter 16](../part-vii/chapter-16.en.md) for startup snapshots versus checkpoints.
+
 ## 8. Escalation SLO Protect the Humans Around the System
 
 Human-in-the-loop is not a free safety net.

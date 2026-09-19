@@ -204,6 +204,16 @@ Cloudflare AI Gateway spend limits 说明，这类 budget gate 不只应该存�
 
 对自主智能体来说，这里还有一条边界很重要：预算应该绑定到 agent identity，而不只是 API key 或 provider account。如果 coding agent、support agent 和 incident agent 都通过同一个 AI gateway，SLO 必须区分 `agent_identity`、`provider_route`、`fallback_reason`、`rate_limit_decision` 和 degraded mode。否则，fallback 到更便宜或更可用的模型可能会悄悄改变质量、安全姿态或延迟，而 cost dashboard 只会显示花费下降。一个好的契约应该是：**identity-bound spend limit -> provider routing decision -> fallback/degraded mode -> run-level SLO impact -> trace attribution**。
 
+### 环境启动与内存需要独立预算
+
+[新版 AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/the-new-agentcore-runtime-elastic-optimized-and-consistently-fast-starts/)说明了为何环境启动延迟必须与模型执行时间分开。AWS 使用不调用模型或工具的回显智能体，针对从 200 MB 到 2 GB 的五种镜像大小，在默认配额内为每个智能体发送 5,000 次冷调用。us-west-2 的客户端经公共网络调用 us-east-1。文中约两秒的 P75 包括跨区域往返时间，并非纯 microVM 恢复时间，也不是通用的用户响应 SLO。
+
+建议拆分预算：排队/环境分配 → 环境就绪 → 首个有用响应 → 任务完成。明确各时间区间边界，避免累加重叠阶段。分别测量冷初始化、启动快照恢复、已就绪环境复用和任务恢复；提供方可能将快照恢复归为冷启动。每条路径需记录频率、p50/p95/p99、失败、超时及负载背景：区域、镜像大小、并发、配额和运行时版本。不要从分母中排除启动失败。
+
+成本方面，应区分内存上限、实际驻留内存与计费 GB-hours。AWS 描述了按需分页及回收已释放或变冷的内存，不再将峰值保持到会话结束，同时提高内存单价。GB-hours 减少不代表账单同比例减少。应将计费内存随时间的积分与现行费率和账单核对；另计 CPU、存储及其他收费资源。应用调用释放内存并不能证明账单立即降低。
+
+检查“突发负载 → 空闲 → 再次工作”曲线：峰值、稳态占用、回收延迟、完整会话成本和回收后再次访问的延迟。提供方未暴露所需指标时应标记未知，而不是用 RSS 替代。打开聊天时预先启动会话可减少用户等待，但需要生命周期上限并核算未使用会话。以上是本书建议指标，不是本书已执行的负载测试结果。启动快照与检查点的区别见[第 16 章](../part-vii/chapter-16.zh.md)。
+
 ## 8. 升级 SLO 保护的是系统周围的人
 
 人在环路不是一个免费的安全网。

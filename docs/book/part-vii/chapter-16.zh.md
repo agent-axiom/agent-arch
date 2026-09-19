@@ -269,6 +269,20 @@ OpenAI 关于 Responses API computer-environment 的文章把同一层描述成 
 
 这样，围绕文件、shell 和 memory 的长时间工作就不会变成磁盘上一团不透明目录。它会成为同一个 runtime-control 层的一部分，和 approvals、background runs、capability sessions、[追踪证据（trace evidence）](../../appendix/trace-schema.zh.md) 放在一起管理。
 
+### 初始化快照不是任务检查点
+
+[AWS：新版 AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/the-new-agentcore-runtime-elastic-optimized-and-consistently-fast-starts/)（2026 年 9 月 18 日）描述了先启动容器直至健康检查成功，再对已初始化环境制作快照。新实例从快照恢复，而非重复加载和初始化。应区分三种用途：
+
+| 工件 | 保存内容 | 本身不保证的事项 |
+| --- | --- | --- |
+| 初始化快照 | 准备好的环境、已加载依赖与启动配置 | 延续某个用户的具体任务 |
+| 智能体检查点 | 特定运行的状态、步骤游标与证据引用 | 没有独立契约时的进程内存、套接字或文件恢复 |
+| 活动会话快照 | 提供方机制边界内的执行状态 | 权限仍有效、外部连接仍存活或副作用恰好执行一次 |
+
+文章使用 `platformVersion: V2` 选择新版运行时。初始化快照与内存回收被描述为已可用；带内存快照的活动会话暂停/恢复以及终止前钩子列在“即将推出”部分。同一部分还包括基线定价、更大资源、x86 和会话上下文键。这是发布时的状态，不是对所有未来配置的承诺。
+
+本书建议记录快照用途、代码与配置版本、所有者和数据边界。共享启动快照不得把一个用户的状态带入另一个用户的运行；运行身份和敏感数据应另行绑定。恢复后检查配置与权限是否仍有效、连接是否需要更新，以及标识符是否仍唯一。快速恢复环境不能替代任务日志、检查点或对中断外部操作结果的核对。这些是适配器要求，不是已经验证的 AWS 保证或参考运行时已实现的集成。
+
 ### 8.3. Stateful named agent instance 作为一种运行时拓扑
 
 Cloudflare Agents SDK 展示了另一个有用的基线模式：智能体不一定只是 transient execution loop，也可以是一个**有名字的耐久运行时对象**。在这个模型里，每个 agent instance 都运行在 Durable Object 之上，拥有自己的 durable SQL/key-value state、WebSocket 连接、scheduled tasks，能在事件到来时醒来，也能在空闲时 hibernate。[^cloudflare-agents]

@@ -102,6 +102,7 @@ Below is the main set of primary sources used by the current version of the book
 - [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) (2026-08-20)
 - Cloudflare, [Give every teammate and agent the right level of access to your Workers](https://blog.cloudflare.com/workers-granular-authorization/); [Workers roles and permissions](https://developers.cloudflare.com/workers/authorization/); [Workers](https://developers.cloudflare.com/workers/authorization/workers/) (2026-09-15)
 - AWS / Wood Mackenzie, [A shared agentic platform for Wood Mackenzie, on Amazon Bedrock AgentCore](https://aws.amazon.com/blogs/machine-learning/a-shared-agentic-platform-for-wood-mackenzie-on-amazon-bedrock-agentcore/) (2026-09-17)
+- AWS, [The new AgentCore Runtime: Elastic, optimized, and consistently fast starts](https://aws.amazon.com/blogs/machine-learning/the-new-agentcore-runtime-elastic-optimized-and-consistently-fast-starts/) (2026-09-18)
 
 - Cloudflare, [Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 - Cloudflare Agents SDK, [Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/) and [Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)

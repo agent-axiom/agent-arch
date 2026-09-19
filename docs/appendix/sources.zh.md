@@ -102,6 +102,7 @@
 - [Cloudflare, From all-or-nothing to task-based OAuth consent](https://blog.cloudflare.com/task-based-oauth-consent/) (2026-08-20)
 - Cloudflare, [为每位成员和智能体分配合适的 Workers 访问权限](https://blog.cloudflare.com/workers-granular-authorization/); [Workers 角色与权限](https://developers.cloudflare.com/workers/authorization/); [Workers](https://developers.cloudflare.com/workers/authorization/workers/) (2026-09-15)
 - AWS / Wood Mackenzie, [基于 Amazon Bedrock AgentCore 的 Wood Mackenzie 共享智能体平台](https://aws.amazon.com/blogs/machine-learning/a-shared-agentic-platform-for-wood-mackenzie-on-amazon-bedrock-agentcore/) (2026-09-17)
+- AWS, [新版 AgentCore Runtime：弹性、优化与一致的快速启动](https://aws.amazon.com/blogs/machine-learning/the-new-agentcore-runtime-elastic-optimized-and-consistently-fast-starts/) (2026-09-18)
 
 - Cloudflare, [Build Agents on Cloudflare](https://developers.cloudflare.com/agents/)
 - Cloudflare Agents SDK, [Store and sync state](https://developers.cloudflare.com/agents/api-reference/store-and-sync-state/) 与 [Schedule tasks](https://developers.cloudflare.com/agents/api-reference/schedule-tasks/)

@@ -269,6 +269,20 @@ For a reference runtime, that means sandbox state should not disappear inside a 
 
 Then long-running work over files, shell, and memory does not become an opaque directory on disk. It becomes part of the same runtime-control layer that already holds approvals, background runs, capability sessions, and [trace evidence](../../appendix/trace-schema.en.md).
 
+### An initialization snapshot is not a task checkpoint
+
+[AWS, The new AgentCore Runtime](https://aws.amazon.com/blogs/machine-learning/the-new-agentcore-runtime-elastic-optimized-and-consistently-fast-starts/) (September 18, 2026) describes starting a container until it reports healthy, then snapshotting the initialized environment. New instances restore it instead of repeating loading and initialization. Distinguish three purposes:
+
+| Artifact | What it preserves | What it does not guarantee by itself |
+| --- | --- | --- |
+| Initialization snapshot | Prepared environment, loaded dependencies, and startup configuration | Continuation of a particular user's task |
+| Agent checkpoint | A specific run's state, step cursor, and evidence references | Process-memory, socket, or file recovery without a separate contract |
+| Active-session snapshot | Execution state within the provider mechanism's boundaries | Current authority, live external connections, or exactly-once side effects |
+
+The article selects the new runtime with `platformVersion: V2`. Initialization snapshots and memory reclamation are described as available; active-session suspend/resume with memory snapshotting and pre-termination hooks are listed as “coming soon.” That section also lists baseline pricing, larger resources, x86, and session context keys. This is publication-time status, not a promise for every future configuration.
+
+The book proposes recording snapshot purpose, code/configuration versions, ownership, and data boundaries. A shared startup snapshot must not carry one user's state into another's run; bind run identity and sensitive data separately. After restore, check configuration and authority freshness, connection renewal needs, and uniqueness of identifiers. Fast environment restoration does not replace a task journal, checkpoint, or reconciliation of interrupted external operations. These are adapter requirements, not verified AWS guarantees or an implemented reference-runtime integration.
+
 ### 8.3. Stateful Named Agent Instance as a Runtime Topology
 
 Cloudflare Agents SDK shows another useful baseline pattern: an agent can be not only a transient execution loop, but a **named durable runtime object**. In that model, each agent instance runs on a Durable Object with its own durable SQL/key-value state, WebSocket connections, scheduled tasks, the ability to wake on an event, and the ability to hibernate when idle.[^cloudflare-agents]
