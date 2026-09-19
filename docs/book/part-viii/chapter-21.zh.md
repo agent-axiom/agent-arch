@@ -121,6 +121,12 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 **保障案例主线说明（Assurance case-spine note）：**[发现与响应记录（finding and response record）](../../appendix/incident-record-schema.zh.md)应该通过不同遏制路径（containment paths）闭合三个规范案例（canonical cases）。支持分诊（Support triage）连接重复结果检测（duplicate-outcome detection）、[仅审批遏制（approval-only containment）](../../appendix/approval-schema.zh.md)、`create_support_ticket` 负责人（owner）、更新后的评测（updated eval）和可追踪结果（traceable outcome）。内部知识助手（Internal knowledge assistant）连接[检索投毒信号（retrieval-poisoning signal）](../../appendix/memory-retrieval-schema.zh.md)、来源扎根评审（source-grounding review）、租户边界遏制（tenant-boundary containment）、[记忆写入隔离（memory-write quarantine）](../../appendix/memory-retrieval-schema.zh.md)和新鲜度修复（freshness remediation）。事故协调（Incident coordination）连接升级滥用信号（escalation abuse signal）、通知节流（notification throttling）、响应者角色负责人（responder-role owner）、[事故状态回滚（incident-state rollback）](../../appendix/incident-record-schema.zh.md)和[事故后控制更新（post-incident control update）](../../appendix/lifecycle-artifact-schema.zh.md)。
 
+### Google 案例：快速分诊与跨变更检查
+
+[Google Cloud 案例](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) 的流程是：发现 → 结构化可达性验证 → 修复建议 → 在原变更请求中进行人工评审。快速的提交前检查针对单项变更；提交后的夜间集成扫描寻找多项变更共同引入的漏洞。第二个闭环并不会使第一个闭环变得完整，也不会自动阻止缺陷在夜间检查前进入生产环境。
+
+本书建议为每个闭环保留已检查的修订版、配置、发现负责人和证据引用。修复必须有针对性测试：补丁前暴露缺陷，补丁后通过，并在新修订版上重新验证可达性。夜间发现应进入相同的分诊、修复和回归流程，同时单独决定遏制措施与发布。不能仅因代理生成了有说服力的解释就允许自动应用补丁。这些是建议的验收条件，不是 Mantis 已声明的保证，也不是参考运行时已实现的集成。
+
 ## 5. 检测不能只盯着错误率
 
 在普通服务里，检测常常围绕错误率、延迟和基础设施信号展开。对智能体系统来说，这远远不够。

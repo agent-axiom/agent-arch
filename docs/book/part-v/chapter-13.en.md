@@ -368,6 +368,14 @@ For eval architecture, the pattern transfers almost directly:
 
 The core lesson is that a good eval loop does not merely count a score. It turns cheap model noise into verifiable artifacts that can be deduplicated, replayed, challenged, assigned to an owner, and safely carried into patch review.
 
+### Structural evidence of reachability
+
+Google refines this funnel with localized threat models derived from live codebase metadata and dependencies, and a separate triage agent using AST parsing, call-graph traversal and pre-indexed domain safety rules.[Google Cloud](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) The result should contain a checkable path from an attacker-accessible entry point to a dangerous operation, access conditions and a code snippet or test demonstrating the issue, not merely agreement from a second LLM.
+
+For the book's proposed contract, bind evidence to the code snapshot, build configuration, threat-model version and graph revision. A graph path alone does not establish satisfiable conditions or exploitability: reflection, dynamic dispatch and external dependencies limit analysis coverage. No path in an incomplete or stale graph means “not established,” not “safe.” Changes to code or assumptions require revalidation. Keep development, discovery and triage rules, contexts and harnesses separate; structural checks complement rather than replace independent verification.
+
+Google reports over 92% precision and triage under a minute, and false-positive rates of 3% for some localized threat models. These are the authors' results in their setting: without shared datasets and denominators, do not combine them into one metric, transfer them to another codebase or treat them as a detection-completeness guarantee. Fields and validation scenarios are in the [evaluation schema](../../appendix/eval-schema.md).
+
 ### 5.3. Multi-Turn Consistency Also Deserves Its Own Checks
 
 Another useful signal from recent work is that an agent may look reasonable in a short scenario while gradually drifting into contradiction across a longer interaction loop.

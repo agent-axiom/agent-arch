@@ -17,6 +17,8 @@
 
 - [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) (arXiv:2609.05364v1)
 
+- Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

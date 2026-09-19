@@ -121,6 +121,12 @@ This is an important SDLC-like point: findings must live as managed engineering 
 
 **Assurance case-spine note:** the [finding and response record](../../appendix/incident-record-schema.en.md) should close all three canonical cases through different containment paths. Support triage links duplicate-outcome detection, [approval-only containment](../../appendix/approval-schema.en.md), `create_support_ticket` owner, updated eval, and traceable outcome. Internal knowledge assistant links [retrieval-poisoning signal](../../appendix/memory-retrieval-schema.en.md), source-grounding review, tenant-boundary containment, [memory-write quarantine](../../appendix/memory-retrieval-schema.en.md), and freshness remediation. Incident coordination links escalation abuse signal, notification throttling, responder-role owner, [incident-state rollback](../../appendix/incident-record-schema.en.md), and [post-incident control update](../../appendix/lifecycle-artifact-schema.en.md).
 
+### Google case: fast triage and cross-change checks
+
+The [Google Cloud case](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) follows finding → structural reachability validation → proposed fix → human review within the original change request. Fast presubmit scanning examines individual changes; nightly post-submit integration scanning looks for vulnerabilities introduced across multiple changes. The second loop does not make the first complete or automatically prevent a defect from reaching production before the nightly check.
+
+As a book recommendation, retain the checked revision and configuration, finding owner and evidence references for each loop. Require a targeted test that exposes the defect before the patch and passes afterward, plus renewed reachability validation on the new revision. Nightly findings should enter the same triage, remediation and regression process, with a separate containment and release decision. Do not authorize automatic patch application merely because an agent generated a convincing explanation. These are proposed acceptance conditions, not claimed Mantis guarantees or an implemented reference-runtime integration.
+
 ## 5. Detection must look wider than error rate
 
 For ordinary services, detection often revolves around error rate, latency, and infrastructure signals. For agent systems, that is too narrow.

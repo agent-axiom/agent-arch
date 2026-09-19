@@ -17,6 +17,8 @@
 
 - [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) (arXiv:2609.05364v1)
 
+- Google Cloud, [Использование агентов для защиты инфраструктурного кода Google](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

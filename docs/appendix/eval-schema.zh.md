@@ -12,6 +12,19 @@
 
 如果追踪模式那一页回答的是“怎样描述一次运行里实际发生了什么”，这一页回答的就是“怎样把我们对系统的期待描述成评测工件”。
 
+## 建议扩展：漏洞可达性证据
+
+借鉴 [Google Cloud 案例](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure)，评估记录可关联 `finding_id`、`code_snapshot_ref`、`build_config_ref`、`threat_model_ref`/`threat_model_version`、`call_graph_ref`/`graph_code_revision`、`reachability_evidence_ref`、`validator_version`、`scan_stage`（`presubmit` 或 `nightly`）及 `review_decision`。证据应标明入口、危险操作、条件与分析限制；引用指向访问受控的产物，而非将秘密或敏感代码复制到公开报告。明确区分 `confirmed`、`refuted` 和 `inconclusive`；分析不完整不能成为否定发现的依据。这些是建议字段，并非参考运行时目前支持的模式。
+
+以下是尚未执行的建议场景：
+
+- **过期调用图：** 将修订版 A 的调用图用于已变化的修订版 B。应拒绝过期证据并重新构建或验证，而不是给出已验证安全的结果。
+- **跨变更缺陷：** 两项变更分别通过快速检查，但合并后打开了被禁止的路径。夜间场景检查合并快照，并创建关联两项变更的发现。
+- **模型不足：** 路径依赖动态分派或未知访问条件。应返回 `inconclusive` 并升级处理，而不是自信地确认或否定。
+- **修复：** 测试在补丁前暴露缺陷、补丁后通过；旧证据不得复用于新修订版。人工评审仍是独立决策。
+
+按闭环分别衡量精确率、标注数据集上的召回率、`inconclusive` 比例和延迟；保留分母，不得默默排除超时。已确认发现的高精确率不能证明没有漏检缺陷。
+
 ## 为什么需要显式的评测数据集模式
 
 很多团队说自己“有评测”，但现实里常常只是：

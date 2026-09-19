@@ -12,6 +12,19 @@ And connects them to the runnable package:
 
 If the trace schema page answers “how do we describe what happened inside a run?”, this page answers “how do we describe what we expect from the system as an eval artifact?”
 
+## Proposed extension: vulnerability reachability evidence
+
+Inspired by the [Google Cloud case](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure), an evaluation record can link `finding_id`, `code_snapshot_ref`, `build_config_ref`, `threat_model_ref`/`threat_model_version`, `call_graph_ref`/`graph_code_revision`, `reachability_evidence_ref`, `validator_version`, `scan_stage` (`presubmit` or `nightly`) and `review_decision`. Evidence should identify the entry point, dangerous operation, conditions and analysis limitations; references point to access-controlled artifacts rather than copying secrets or sensitive code into public reports. Distinguish `confirmed`, `refuted` and `inconclusive`; incomplete analysis is not a negative finding. These are proposed fields, not a currently supported reference-runtime schema.
+
+Proposed scenarios, not yet executed:
+
+- **Stale graph:** a graph from revision A is used for changed revision B. Expect rejection of stale evidence and rebuild/revalidation, not a verified-safe result.
+- **Cross-change defect:** two changes individually pass the fast loop but jointly open a forbidden path. The nightly scenario checks the combined snapshot and creates a finding referencing both changes.
+- **Insufficient model:** a path depends on dynamic dispatch or unknown access conditions. Expect `inconclusive` and escalation, not confident confirmation or dismissal.
+- **Remediation:** a test exposes the defect before the patch and passes afterward; old evidence is not reused for the new revision. Human review remains a separate decision.
+
+Measure precision, recall on a labeled set, the `inconclusive` share and latency separately for each loop; retain denominators and do not silently exclude timeouts. High precision among confirmed findings does not establish absence of missed defects.
+
 ## Why an explicit eval dataset schema matters
 
 Many teams say they “have evals”, but in practice that often means:

@@ -17,6 +17,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - [Design Docs Are All You Need: An AI-native Machine-Learning Performance Tool](https://arxiv.org/html/2609.05364v1) (arXiv:2609.05364v1)
 
+- Google Cloud, [Using AI agents to secure Google infrastructure](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security
