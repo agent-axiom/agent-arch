@@ -19,6 +19,8 @@
 
 - Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Worker Previews：依赖隔离](https://blog.cloudflare.com/worker-previews/); [资源文档](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

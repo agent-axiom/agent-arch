@@ -631,6 +631,14 @@ Keep solver changes in a staged isolated workspace. Only a validated candidate m
 
 Check both A → B and B → A orderings, duplicate completion delivery, and late results from an old attempt. A concrete scenario appears in the [case studies](../../appendix/case-studies.md).
 
+### Preview isolation is not dependency isolation
+
+[Worker Previews](https://blog.cloudflare.com/worker-previews/) illustrates a separate runtime boundary: its own code, URL and local state do not imply separate external resources. According to [Cloudflare documentation](https://developers.cloudflare.com/workers/previews/resources/), checked on September 26, 2026, a local Durable Object without `script_name` automatically receives a namespace and storage per Preview. However, identical D1 `database_id`, KV `id`, R2 `bucket_name` or queue names connect different Previews to the same resource. A different Hyperdrive configuration does not isolate data if it still points to the same database or schema.
+
+The book's proposed contract is to resolve bindings into an actual dependency graph before the first test action. For each edge, record resource identity, environment and owner, allowed reads and side effects, sharing scope across branches and cleanup responsibility. Bind this record to code and configuration revisions and the run policy; a changed binding requires revalidation. Names such as `preview`/`staging` or a separate URL are insufficient. Check transitive paths too: downstream services, their stores, queues and consumers, and external APIs. An unknown destination blocks the dependent run; a missing record is not authorization.
+
+Enforce the boundary through limited authority and routing/egress controls, not only a preflight report or instructions to the agent. A shared test resource is acceptable under an explicit sharing contract, but is not branch isolation; mutating tests need separate resources or demonstrated data isolation and coordination. Production reads are not harmless either: they can disclose data. Deleting a Preview does not roll back external changes; clean up only resources with verified ownership. This is architectural guidance, not an implemented reference-runtime mechanism. Release checks are in [chapter 20](../part-viii/chapter-20.md).
+
 ## 14. Common Mistakes
 
 Very typical problems:

@@ -167,6 +167,14 @@ Proposed acceptance scenarios:
 
 These are proposed checks, not reported tests executed against Wood Mackenzie's platform. See [Chapter 8](../part-iv/chapter-8.en.md) for the architectural boundary.
 
+### Check dependencies before running a Preview
+
+The [Worker Previews documentation](https://developers.cloudflare.com/workers/previews/resources/) refines an ADLC assumption: the test run itself can have production consequences. Check the environment before migrations, seeding and the first test requests, not only before merging. The book's proposed gate compares actual resource identifiers and service/asynchronous destinations with the approved dependency graph from [chapter 16](../part-vii/chapter-16.md).
+
+For a run declared isolated, reject production targets, unknown destinations and unintentionally shared mutable resources. Intentional use of a shared test resource requires a separate mode and owner, not a silent exception. In Cloudflare, a service binding from Preview A currently invokes Worker B's regular production deployment, not a matching Preview B. If this path is needed, use a separately deployed test Worker with verified non-production dependencies or a mock; here `production` denotes B's deployment slot and does not itself establish that its business resources are production resources. `ctx.exports` keeps calls within the same Worker, but does not solve arbitrary cross-service routing.
+
+For acceptance, retain Preview and build IDs, configuration version, the approved graph and evidence of actual accesses. A binding change after validation invalidates the previous approval. An HTTP test does not establish background-handler coverage: at the verification date, a Preview can produce messages but cannot be a queue consumer; Cron Triggers target production. Mark unsupported paths untested instead of silently redirecting them to production for a green result. Negative scenarios are in the [case study](../../appendix/case-studies.md); these are proposed checks, not executed cloud tests.
+
 ## 7. High-risk changes should go through formal gates
 
 When a change affects autonomy, side effects, memory writes, or egress boundaries, visual review alone is not enough.

@@ -29,6 +29,22 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Worker Previews: separate branches, shared dependencies
+
+The [Worker Previews announcement](https://blog.cloudflare.com/worker-previews/) gives each branch separate code, configuration, a URL and observability. The [resource documentation](https://developers.cloudflare.com/workers/previews/resources/) (updated September 22, checked September 26, 2026) draws a narrower boundary: local Durable Objects without `script_name` are isolated automatically, but D1/KV/R2 resources with identical identifiers or names remain shared. A new Preview is not a copy of the entire infrastructure. This clarifies product capabilities; it is not a report of an observed Cloudflare incident.
+
+A service binding invokes another Worker's production deployment rather than the matching branch; a Workflow binding uses an already deployed Workflow with its code, dependencies and instances. Workflow isolation requires a separately deployed non-production resource. Messages sent by a Preview to a production queue can be processed by its production consumer. The article describes automatic multi-Worker and asynchronous-flow isolation as future work, not a current guarantee.
+
+Proposed negative scenarios (not executed here):
+
+1. **Two branches share a database:** different Previews use one D1 `database_id`. The gate detects the match before a write; separate URLs do not establish isolation. An intentionally shared staging database uses a separate mode with conflict controls.
+2. **Another Worker is called:** A-preview calls B through a service binding. Validation establishes B's actual destination and dependencies; production or unknown dependencies block the test before invocation. The presence of B-preview does not automatically change routing.
+3. **Queue:** a Preview sends to a queue with a production consumer. The gate blocks sending; local `send` success proves neither test isolation nor execution by a Preview consumer.
+4. **Migration mismatch:** migration configuration targets a different database from the Preview binding. Comparing actual IDs stops the migration before schema changes. Both configurations must target the same approved physical database.
+5. **Change after approval:** a binding changes after graph validation. The old approval no longer applies; limited authority prevents writes to the new unauthorized destination. Preview cleanup must not delete another branch's shared resource either.
+
+The portable lesson is to check the reachable resource and side-effect graph, not the environment's name. The contract is in [chapter 16](../book/part-vii/chapter-16.md), the gate in [chapter 20](../book/part-viii/chapter-20.md). These recommendations do not claim that the reference runtime implements these checks.
+
 ### Cloudflare Agents SDK: agent as a named durable object
 
 Cloudflare Agents SDK shows a pattern where an agent is not only a transient loop around a model, but an addressable `Agent` instance on top of a Durable Object: it has a stable name, durable SQL/key-value state, WebSocket connections, scheduled tasks, wakeups, and hibernation. The architectural lesson for the book is simple: when an agent is bound to a real-world entity — customer case, tenant workspace, incident room, device, project, or research dossier — the runtime should make it clear who owns state, which runs changed it, which scheduled tasks can wake the instance, and which traces prove safe resume.

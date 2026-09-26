@@ -19,6 +19,8 @@
 
 - Google Cloud, [Использование агентов для защиты инфраструктурного кода Google](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Worker Previews — изоляция зависимостей](https://blog.cloudflare.com/worker-previews/); [документация ресурсов](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем
