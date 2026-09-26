@@ -12,6 +12,22 @@
 
 如果追踪模式那一页回答的是“怎样描述一次运行里实际发生了什么”，这一页回答的就是“怎样把我们对系统的期待描述成评测工件”。
 
+## 建议评估：含重复上下文和子代理的会话
+
+为验证 [Trajectory 投影](https://www.langchain.com/blog/langsmith-trajectories-tracing)，准备一个合成多轮会话：用户消息 `u1` 出现在三个大语言模型输入中；子代理返回 `s1`，随后协调者将其纳入上下文；工具对同一操作调用两次，使用不同 `tool_call_ref` 和 `attempt_ref`，即使参数相同。第一次超时，第二次取得结果。这是两个观察到的调用，不是两次副作用的证明：超时后第一次尝试的结果可能仍然未知。
+
+固定 `input_snapshot_ref`、`projection_version`、`redaction_policy_version`、`expected_message_refs`、`expected_attempt_refs`、`expected_source_links` 及评分规则版本。这些是建议产物字段，不是参考运行时现有 API。独立标准依据合成原始事件确定预期元素，不能由受测投影自己产生。
+
+建议场景的验收标准（未在此执行）：
+
+- `u1` 和 `s1` 各显示一次，但来源链接覆盖全部出现位置；保留 `s1` 的作者和分支。
+- 两次工具尝试、超时、后续结果及其关联均保留；未经确认的结果不能变成成功。
+- 文本相同但 ID 不同的消息不能折叠；同一 ID 下版本或内容冲突应被发现。
+- 并行分支与迟到事件不能制造因果关系；同一快照重建结果确定，新快照有新引用。
+- 截断、隐藏或缺失分支明确降低覆盖度；证据不足时不能宣称整段会话成功。
+
+在相同快照和评分规则下，对比直接拼接上下文与已验证投影作为评估器输入的表现：输入大小、评估成本、延迟及与专家标准的一致性。单独统计错误合并、遗漏尝试和无法解析的链接；这些缺陷应阻止使用投影作发布决策。节省评估器令牌不会追溯减少代理执行成本。真实数据仅能在许可访问、脱敏及保留规则下导出。
+
 ## 建议扩展：漏洞可达性证据
 
 借鉴 [Google Cloud 案例](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure)，评估记录可关联 `finding_id`、`code_snapshot_ref`、`build_config_ref`、`threat_model_ref`/`threat_model_version`、`call_graph_ref`/`graph_code_revision`、`reachability_evidence_ref`、`validator_version`、`scan_stage`（`presubmit` 或 `nightly`）及 `review_decision`。证据应标明入口、危险操作、条件与分析限制；引用指向访问受控的产物，而非将秘密或敏感代码复制到公开报告。明确区分 `confirmed`、`refuted` 和 `inconclusive`；分析不完整不能成为否定发现的依据。这些是建议字段，并非参考运行时目前支持的模式。

@@ -21,6 +21,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Cloudflare, [Worker Previews — dependency isolation](https://blog.cloudflare.com/worker-previews/); [resource documentation](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
 
+- LangChain, [LangSmith Trajectories — readable session projection](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

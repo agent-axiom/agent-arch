@@ -12,6 +12,23 @@
 
 - [参考包](reference-package.zh.md)
 
+## 建议的会话投影：去除重复上下文
+
+借鉴 [LangSmith Trajectories](https://www.langchain.com/blog/langsmith-trajectories-tracing)，可读历史是追踪的派生产物，不替代事件，也不是 `trajectory_policy_decision`。以下字段和规则是本书建议，不是参考运行时当前模式，也不是对 LangSmith 去重内部机制的声明。
+
+| 字段 | 用途 |
+| --- | --- |
+| `session_ref`, `input_snapshot_ref` | 会话范围及具有事件纳入边界的固定原始追踪集合 |
+| `projection_version`, `redaction_policy_version` | 可复现的构建与许可数据展示规则 |
+| `message_id`, `message_version`, `actor_ref`, `branch_ref` | 会话中逻辑消息的身份、版本和来源 |
+| `source_event_refs` | 所有原始出现位置，包括 trace/span/event 及输入或输出中的消息位置 |
+| `tool_call_ref`, `attempt_ref`, `parent_ref` | 调用与结果关联、不同尝试及子代理交接 |
+| `display_order`, `order_basis`, `coverage_status` | 阅读顺序、排序依据及可用证据完整性 |
+
+仅在身份和版本已确定时移除重复出现项。文本或内容哈希相同并不足够；标识范围必须考虑会话与来源，同一 ID 下内容冲突不得默默合并。没有稳定 ID 时保留歧义项并标记不确定性。修改后的消息及新的调用尝试分别保留。组装后的流式片段可共享逻辑身份，但原始片段引用与组装规则仍须可检查。
+
+保留消息角色、访问权限允许的系统指令及因果链接。并行分支使用确定性的展示顺序，同时单独保存已知偏序；时钟与事件到达顺序不能证明因果关系。迟到事件创建新投影版本，不能默默改变已经评分的输入。投影不能恢复隐藏推理或缺失事件。区分缺失、脱敏和截断，并对来源链接实施访问控制。原始追踪因保留期限被删除后，链接将不可用；没有获准保存的证据快照，导出不能承诺可复现。
+
 ## 为什么需要显式的追踪模式
 
 如果团队没有显式的追踪模式，通常会落入两种情况之一：

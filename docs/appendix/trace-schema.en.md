@@ -12,6 +12,23 @@ And the runnable package:
 
 - [Reference Package](reference-package.en.md)
 
+## Proposed session projection without repeated context
+
+Inspired by [LangSmith Trajectories](https://www.langchain.com/blog/langsmith-trajectories-tracing), a readable history is derived from traces, not a replacement for events or for `trajectory_policy_decision`. The following fields and rules are book proposals, not the current reference-runtime schema or claims about LangSmith's deduplication internals.
+
+| Field | Purpose |
+| --- | --- |
+| `session_ref`, `input_snapshot_ref` | Session scope and a fixed source-trace set with an event inclusion boundary |
+| `projection_version`, `redaction_policy_version` | Reproducible construction and permitted data-presentation rules |
+| `message_id`, `message_version`, `actor_ref`, `branch_ref` | Logical message identity, version and provenance within the session |
+| `source_event_refs` | Every source occurrence, including trace/span/event and message position within input or output |
+| `tool_call_ref`, `attempt_ref`, `parent_ref` | Call/result linkage, distinct attempts and subagent handoffs |
+| `display_order`, `order_basis`, `coverage_status` | Reading order, its basis and completeness of available evidence |
+
+Remove repeated occurrences only when identity and version are established. Matching text or a content hash is insufficient; identifier scope must account for session and origin, and conflicting contents under one ID must not be silently merged. Without stable IDs, retain ambiguous items and mark uncertainty. A changed message and a new invocation attempt remain separate. Assembled streaming fragments may share one logical identity, but source-fragment links and the assembly rule must remain checkable.
+
+Preserve roles, system instructions within permitted access and causal links. For parallel branches, define deterministic display order while retaining known partial order separately; clocks and arrival order do not establish causality. A late event creates a new projection version rather than silently changing an already scored input. The projection cannot recover hidden reasoning or missing events. Distinguish missing, redacted and truncated data; enforce access controls on source links. If retention deletes a source trace, the link becomes unavailable: export must not promise reproducibility without an authorized evidence snapshot.
+
 ## Why an explicit trace schema matters
 
 Without an explicit trace schema, teams usually end up in one of two bad states:

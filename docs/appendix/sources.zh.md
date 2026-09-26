@@ -21,6 +21,8 @@
 
 - Cloudflare, [Worker Previews：依赖隔离](https://blog.cloudflare.com/worker-previews/); [资源文档](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
 
+- LangChain, [LangSmith Trajectories — 可读会话投影](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

@@ -62,6 +62,14 @@ When that structure exists, the team stops seeing the system as a chaotic stream
 
 That distinction matters because this chapter is not asking how to aggregate, correlate, or alert across the estate. It is asking what raw execution history must survive so those later functions can exist at all.
 
+### A trace and a readable session projection are different artifacts
+
+[LangSmith Trajectories](https://www.langchain.com/blog/langsmith-trajectories-tracing) separates the execution tree from a behavioral view. In its [documentation](https://docs.langchain.com/langsmith/observability-concepts#trajectories), a run is a unit of work, a trace groups related runs, a thread links traces across a multi-turn session, and a trajectory projects human, agent, tool and subagent messages into a readable sequence. Context re-included in later calls should not look like new actions: each message appears once, in first-appearance order.
+
+The full trace remains the primary execution evidence: timing, nesting, individual attempts and metadata are not replaced by a linear history. The projection helps locate a behavioral step and then navigate to its underlying trace. It is neither an LLM summary nor a cost ledger: including a message in a prompt again may still consume tokens even if it is displayed once. A convenient display order also does not establish causal order across parallel branches.
+
+The book's proposed contract retains stable message identity and version, actor/branch, call-to-result linkage, references to every source occurrence and transformation version. Identical text is not identity: two actual tool calls remain two calls. Incomplete traces, hidden data and ambiguous matches are explicit. Projection and export inherit access controls and sensitive-data redaction; a link must not grant broader access. Rules are in the [trace schema](../../appendix/trace-schema.md). This is a proposed extension, not a description of LangSmith's algorithm or the implemented reference runtime.
+
 ## 4. What the Trace Should Look Like in the Support Scenario
 
 The point of the diagram below is not just to look nice. It is to show where the failure can actually happen.

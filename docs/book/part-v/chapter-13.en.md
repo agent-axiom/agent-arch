@@ -420,6 +420,14 @@ There is one more common source of self-deception: a judge prompt calibrated on 
 
 The last rule is very simple: if you are evaluating a prompt change, do not change both the prompt and the model at the same time. Otherwise you lose the chance to make an honest causal claim about what actually improved or worsened the system.
 
+### Evaluate the session projection, verify execution against traces
+
+[LangSmith Trajectories](https://www.langchain.com/blog/langsmith-trajectories-tracing) routes readable session histories to online evaluators, annotation queues and datasets. The evaluator gets less repeated context, not a guarantee of better verdicts. Questions about latency, attempt counts, cost and side effects require source traces, not only a flat message sequence.
+
+A proposed eval should separately check projection correctness and agent behavior. Fix the trace-set snapshot, projection version, redaction policy and rubric; score the whole session without changing the success criterion as the input shrinks. In the control scenario, one message appears in several LLM inputs, a subagent returns a result, and a tool is genuinely invoked again. The projection removes only repeated representations of the original message; both calls and attempts remain distinguishable. Check source links and agreement with an expert oracle before measuring input size, latency and scoring consistency.
+
+An unavailable branch or hidden result does not mean successful completion. Missing evidence should produce `insufficient_evidence` or a limited conclusion, not a confident whole-session score. Rerun regression checks when projection rules change; do not compare scores from different snapshots as though the input were unchanged. The concrete scenario is in the [evaluation schema](../../appendix/eval-schema.md); it is proposed validation, not a report of a LangSmith experiment.
+
 ## 6. What to Include in an Eval Dataset
 
 A common mistake is building an eval dataset out of pleasant demo scenarios. Those sets help very little.

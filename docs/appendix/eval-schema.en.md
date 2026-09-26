@@ -12,6 +12,22 @@ And connects them to the runnable package:
 
 If the trace schema page answers “how do we describe what happened inside a run?”, this page answers “how do we describe what we expect from the system as an eval artifact?”
 
+## Proposed eval: repeated context and a subagent across a session
+
+To validate a [Trajectory projection](https://www.langchain.com/blog/langsmith-trajectories-tracing), prepare a synthetic multi-turn session: user message `u1` appears in three LLM inputs; a subagent returns `s1`, which the coordinator later includes in context; a tool invokes one operation twice with distinct `tool_call_ref` and `attempt_ref`, even if arguments match. The first call times out; the second obtains a result. These are two observed calls, not proof of two side effects: the first attempt's outcome may remain unknown after timeout.
+
+Fix `input_snapshot_ref`, `projection_version`, `redaction_policy_version`, `expected_message_refs`, `expected_attempt_refs`, `expected_source_links` and the rubric version. These are proposed artifact fields, not an existing reference-runtime API. An independent oracle derives expected elements from synthetic source events, not from the projection being tested.
+
+Proposed scenario criteria (not executed here):
+
+- `u1` and `s1` each appear once while source links cover all their occurrences; `s1` retains its actor and branch.
+- Both tool attempts, the timeout, the later result and their links remain; an unconfirmed outcome does not become success.
+- Equal text with different IDs does not collapse; a version/content conflict under one ID is detected.
+- A parallel branch and a late event do not invent causality; rebuilding one snapshot is deterministic, and a new snapshot gets a new reference.
+- Truncated, hidden or missing branches explicitly reduce coverage; the evaluator does not claim whole-session success without sufficient evidence.
+
+Compare evaluator input made by directly concatenating context with a validated projection of the same snapshot and rubric: input size, evaluation cost, latency and expert-oracle agreement. Separately count false merges, missing attempts and unresolved links; such defects block using the projection for release decisions. Saving evaluator tokens does not retroactively reduce agent execution cost. Export real data only with authorized access, redaction and retention rules.
+
 ## Proposed extension: vulnerability reachability evidence
 
 Inspired by the [Google Cloud case](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure), an evaluation record can link `finding_id`, `code_snapshot_ref`, `build_config_ref`, `threat_model_ref`/`threat_model_version`, `call_graph_ref`/`graph_code_revision`, `reachability_evidence_ref`, `validator_version`, `scan_stage` (`presubmit` or `nightly`) and `review_decision`. Evidence should identify the entry point, dangerous operation, conditions and analysis limitations; references point to access-controlled artifacts rather than copying secrets or sensitive code into public reports. Distinguish `confirmed`, `refuted` and `inconclusive`; incomplete analysis is not a negative finding. These are proposed fields, not a currently supported reference-runtime schema.
