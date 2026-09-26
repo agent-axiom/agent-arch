@@ -123,6 +123,20 @@ For this book, the important addition to the evals, traces, and ADLC chapters is
 
 The minimal portable contract is: **expert correction → production trace → reviewed finding → targeted eval → scoped Codex task → regression gate → engineering review → shipped improvement**. For high-stakes domains, this is both an HCI pattern and an assurance pattern: practitioners steer direction, production traces preserve evidence, Codex investigates within a bounded worktree with read-only production context, and engineers remain responsible for product changes before rollout.
 
+### Microsoft CodeAct/Hyperlight: code isolation and host-tool authority
+
+[Microsoft Agent Framework](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) describes CodeAct as a way to combine suitable operations in a program and return a consolidated result. In the Python example, `HyperlightCodeActProvider` supplies the execution tool, while generated code accesses registered tools through `call_tool(...)`. Hyperlight isolates model-generated code; tools themselves execute in the application's runtime. The `never_require` example uses only arithmetic, and the source says actions needing individual approval should remain explicitly gated. This describes an architectural boundary, not a reported Microsoft vulnerability.
+
+The practical lesson is that “run this program” does not delegate all application-process authority to the program. Proposed tool-bridge scenarios (not executed here):
+
+1. **Denied tool:** the program names an unregistered tool or one unavailable to the current principal. The bridge rejects the call before adapter entry and records the denial; approval of `execute_code` is not an exception.
+2. **Write without approval:** reading is allowed, but the next operation changes data. The read may finish; the write does not start without its own applicable approval. If such suspension is unsupported, the tool is not exported to the automatic set.
+3. **Revocation between calls:** the first call succeeds, then authority is revoked. Current policy blocks the second call even if the program is still running; the first remains recorded as a partial result.
+4. **Arguments changed after approval:** resource, amount or caller changes. The old approval does not cover the new operation; authority is still checked independently of approval.
+5. **Failure after a side effect:** a tool starts a write, then the program fails or the channel loses the response. Outer failure does not establish that no write occurred. Validation requires a retained operation identifier and reconciliation/idempotency before retry; partial effects are not hidden behind a single “program not executed” status.
+
+The bridge contract is in [chapter 16](../book/part-vii/chapter-16.md), the trust boundary in [chapter 9](../book/part-iv/chapter-9.md). These recommendations do not promise all scenarios are supported by a particular provider version or implemented in the reference runtime.
+
 ### Microsoft AutoJack: localhost stops being a trust boundary
 
 Microsoft Defender Security Research describes AutoJack as an exploit chain in AutoGen Studio where untrusted web content rendered by a browsing agent could reach a local MCP WebSocket and spawn a host process. The concrete issue was fixed before the affected MCP surface shipped in a PyPI release, but the architectural lesson is broader than one project: if an agent can browse the open web and also reach privileged local services, `localhost` becomes part of the attack surface.

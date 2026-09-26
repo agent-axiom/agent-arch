@@ -384,6 +384,14 @@ Cloudflare 还展示了一个适合大型 MCP estate 的模式：不要把所有
 
 GitHub Agent Finder 从客户端侧展示了同一个转向：capability discovery 应该成为 runtime operation，而不是 prompt assembly 的习惯。[^github-agent-finder] Agent 应该能够在批准的 MCP servers、skills、canvases、agents 和 tools registry 中搜索，拿到针对任务的 ranked matches，并只加载实际需要的资源。关键 safety 细节是 discovery 受 managed settings 限制，而且不会悄悄安装或连接新资源。因此在 production architecture 中，trace 应该保存 `capability_search_query`、`registry_scope`、ranked candidates、selected resource、policy decision，以及 human/platform approval state。
 
+### 程序沙箱不会自动限制工具权限
+
+[Microsoft Agent Framework，2026 年 9 月 24 日](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) 明确了 CodeAct/Hyperlight 的边界：模型将操作序列表达为程序，Hyperlight 隔离生成的代码，而通过 `call_tool(...)` 提供的已注册工具在应用运行时中执行。工具保留自身权限与责任。这不是沙箱逃逸：获准的工具桥接本身就是通往宿主资源和外部系统的另一条路径。
+
+因此，准许 `execute_code` 并不等于授权程序内部的所有动作。工具在目录中可见，也不能证明特定用户有权操作所选资源。检查必须位于桥接的可信一侧，在每次实际调用前验证工具、参数、目标资源、当前身份和委派权限。生成代码不能自行指定可信 principal、tenant 或审批状态；包装层不能默默用应用的完整账号权限替代调用者的受限权限。
+
+Microsoft 示例为纯算术工具允许自动执行，并非建议对写操作启用 `never_require`。程序审批、语法检查和内存隔离不能替代对具体敏感动作的批准。嵌套调用契约见[第 16 章](../part-vii/chapter-16.md)；这是本书建议，不代表提供方已实现全部检查。
+
 ### 5.8. Tool surface design 是 safety contract 的一部分
 
 AWS 关于 MCP tool design 的实践框架给 Cloudflare Code Mode 补上了另一层：问题不只是 gateway 放在哪里，而是 agent 到底看见了哪种 **tool surface**。[^aws-mcp-tool-design] 如果 prompt 里预先塞进几十个相似工具、宽 schema 和含糊名称，平台会同时遇到 context bloat 和 tool confusion。模型可能选错操作、把相邻 schema 的字段混在一起，或者把通用工具当成绕过高风险动作的路径。

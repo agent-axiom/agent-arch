@@ -23,6 +23,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - LangChain, [LangSmith Trajectories — readable session projection](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).
 
+- Microsoft Agent Framework, [CodeAct and the tool authority boundary](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) (2026-09-24).
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

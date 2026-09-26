@@ -23,6 +23,8 @@
 
 - LangChain, [LangSmith Trajectories — 可读会话投影](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).
 
+- Microsoft Agent Framework, [CodeAct 与工具权限边界](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) (2026-09-24).
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

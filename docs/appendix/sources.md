@@ -23,6 +23,8 @@
 
 - LangChain, [LangSmith Trajectories — читаемая проекция сессии](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).
 
+- Microsoft Agent Framework, [CodeAct и граница полномочий инструментов](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) (2026-09-24).
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

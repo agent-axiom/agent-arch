@@ -384,6 +384,14 @@ The pattern still has to remain governed. A `search/execute` portal should not b
 
 GitHub's Agent Finder points in the same direction from the client side: capability discovery becomes a runtime operation instead of a prompt assembly habit.[^github-agent-finder] An agent should be able to search an approved registry of MCP servers, skills, canvases, agents, and tools, receive ranked task-specific matches, and load only the resource it actually needs. The safety detail is that discovery is scoped by managed settings and does not silently install or connect new resources. In a production architecture, that means the trace should preserve `capability_search_query`, `registry_scope`, ranked candidates, selected resource, policy decision, and human or platform approval state.
 
+### A program sandbox does not automatically constrain tool authority
+
+[Microsoft Agent Framework, September 24, 2026](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) clarifies the CodeAct/Hyperlight boundary: the model expresses a sequence as a program, Hyperlight isolates generated code, and registered tools available through `call_tool(...)` execute in the application's runtime. They retain their own permissions and responsibilities. This is not a sandbox escape: the permitted tool bridge is already a separate path to host resources and external systems.
+
+Admission of `execute_code` therefore does not authorize every action inside the program. Visibility in a tool catalog does not establish a particular user's right to operate on a selected resource either. Checks belong on the trusted side of the bridge before each actual invocation: tool, arguments, target resource, current identity and delegated authority. Generated code must not supply the trusted principal, tenant or approval status; the wrapper must not silently substitute the application's full account for the caller's limited authority.
+
+Microsoft's example allows automatic execution for a pure arithmetic tool. It is not a recommendation to enable `never_require` for writes. Program approval, syntax checking and memory isolation do not replace approval of a specific sensitive action. The nested-call contract is in [chapter 16](../part-vii/chapter-16.md); it is book guidance, not a claim that the provider already implements every listed check.
+
 ### 5.8. Tool Surface Design Is Part of the Safety Contract
 
 AWS's practical guidance on MCP tool design adds another layer to the Cloudflare Code Mode pattern: the problem is not only where the gateway sits, but which **tool surface** the agent sees at all.[^aws-mcp-tool-design] If a prompt receives dozens of similar tools, broad schemas, and ambiguous names upfront, the platform gets two failures at once: context bloat and tool confusion. The model may choose the wrong operation, mix fields from neighboring schemas, or use a generic tool as a path around a riskier action.

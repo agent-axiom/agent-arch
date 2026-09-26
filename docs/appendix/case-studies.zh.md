@@ -123,6 +123,20 @@ OpenAI 和 Thrive Holdings 把面向 Crete firm network 的 Tax AI 描述成 sel
 
 最小可移植契约是：**expert correction → production trace → reviewed finding → targeted eval → scoped Codex task → regression gate → engineering review → shipped improvement**。对 high-stakes domains 来说，这既是 HCI pattern，也是 assurance pattern：practitioners steer direction，production traces preserve evidence，Codex 在带 read-only production context 的 bounded worktree 中调查，真正的 product changes 在 rollout 前仍由 engineers 负责。
 
+### Microsoft CodeAct/Hyperlight：代码隔离与宿主工具权限
+
+[Microsoft Agent Framework](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) 将 CodeAct 描述为以程序组合适当操作并返回汇总结果的方式。Python 示例中，`HyperlightCodeActProvider` 提供执行工具，生成代码通过 `call_tool(...)` 使用已注册工具。Hyperlight 隔离模型生成代码；工具本身在应用运行时执行。`never_require` 示例仅使用算术，来源要求需要单独批准的动作仍通过明确审批门禁。这是架构边界说明，不是 Microsoft 漏洞报告。
+
+实践结论是：“运行此程序”并不把应用进程的全部权限委派给程序。建议的工具桥接场景（未在此执行）：
+
+1. **禁止的工具：** 程序指定未注册或当前 principal 无权使用的工具。桥接在进入适配器之前拒绝并记录；`execute_code` 获批不能成为例外。
+2. **未经批准的写入：** 读取获准，但下一操作修改数据。读取可以完成；写入必须有适用的单独审批才能开始。若不支持此类暂停，就不能将工具导出到自动集合。
+3. **调用之间撤权：** 第一次成功后权限被撤销。即使程序仍在运行，当前策略也应阻止第二次；第一次作为部分结果记录。
+4. **批准后参数变化：** 资源、金额或调用者改变。旧审批不适用于新操作；权限检查仍独立于审批。
+5. **副作用后的失败：** 工具开始写入后程序失败，或通道丢失响应。外层失败不能证明没有写入。验证要求保留操作标识，并在重试前核对或采用幂等机制；不能用单一“程序未执行”状态隐藏部分效果。
+
+桥接契约见[第 16 章](../book/part-vii/chapter-16.md)，信任边界见[第 9 章](../book/part-iv/chapter-9.md)。这些建议不承诺具体提供方版本支持全部场景，也不表示参考运行时已经实现它们。
+
 ### Microsoft AutoJack：localhost 不再是信任边界
 
 Microsoft Defender Security Research 把 AutoJack 描述为 AutoGen Studio 中的一条 exploit chain：由 browsing agent 渲染的不可信网页可以触达本地 MCP WebSocket，并在 host 上启动进程。这个具体问题在受影响的 MCP surface 进入 PyPI release 之前已经修复，但架构教训并不限于某个项目：如果 agent 既能浏览 open web，又能访问有特权的本地服务，`localhost` 就会变成 attack surface 的一部分。

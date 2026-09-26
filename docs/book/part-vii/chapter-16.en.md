@@ -639,6 +639,16 @@ The book's proposed contract is to resolve bindings into an actual dependency gr
 
 Enforce the boundary through limited authority and routing/egress controls, not only a preflight report or instructions to the agent. A shared test resource is acceptable under an explicit sharing contract, but is not branch isolation; mutating tests need separate resources or demonstrated data isolation and coordination. Production reads are not harmless either: they can disclose data. Deleting a Preview does not roll back external changes; clean up only resources with verified ownership. This is architectural guidance, not an implemented reference-runtime mechanism. Release checks are in [chapter 20](../part-viii/chapter-20.md).
 
+### Nested CodeAct calls pass their own gate
+
+In [CodeAct/Hyperlight](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/), the agent's outer tool may be `execute_code`, but the authorization unit remains the particular action of a registered application tool. The proposed architecture is generated program → trusted bridge → policy/approval check → adapter → resource. Every route to a registered tool must traverse this gate; direct adapter access is not an alternative authorized route.
+
+For each nested call, the bridge obtains authenticated session context from the trusted side, resolves names only through an approved registry, and checks schema, target resource, current authority, limits and required approvals. Link `code_execution_ref`, `tool_call_ref`, `attempt_ref`, policy version, decision and outcome to the parent trace, retaining safe references to arguments. Final program stdout alone is insufficient for audit. Side-effect and budget counters cover the whole run, including loops, parallel calls and retries; re-entering `execute_code` does not reset them.
+
+Approval binds a normalized operation, arguments, resource and caller, with limited lifetime and scope; it is not indefinite permission for the entire program. Check these conditions immediately before the action and after a pause: revocation between calls denies the next one but does not undo an already completed first call. Approval does not expand authority. If the bridge cannot safely suspend and resume for individual approval, keep that tool outside the automatic CodeAct set and invoke it through the ordinary approval-gated path.
+
+An error, cancellation or sandbox termination does not guarantee cancellation of an already started host call or rollback of its effect. Retain each operation's result; an unknown outcome after timeout requires reconciliation or idempotent continuation, not blind re-execution of the whole program. This is a proposed contract, not an implemented CodeAct integration in the reference runtime. Acceptance scenarios are in the [case study](../../appendix/case-studies.md).
+
 ## 14. Common Mistakes
 
 Very typical problems:
