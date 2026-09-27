@@ -649,6 +649,14 @@ Approval binds a normalized operation, arguments, resource and caller, with limi
 
 An error, cancellation or sandbox termination does not guarantee cancellation of an already started host call or rollback of its effect. Retain each operation's result; an unknown outcome after timeout requires reconciliation or idempotent continuation, not blind re-execution of the whole program. This is a proposed contract, not an implemented CodeAct integration in the reference runtime. Acceptance scenarios are in the [case study](../../appendix/case-studies.md).
 
+### VM isolation does not establish absence of residual storage data
+
+The [Cloudflare Containers and Sandboxes report of September 24, 2026](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) exposes a boundary below the sandbox: a separate VM did not prevent access to residual data in disk blocks reassigned from a cross-tenant pool. A partial write could leave the previous owner's bytes readable. Fixing new allocations did not sanitize blocks already mapped into existing disks and cached image-layer snapshots. This differs from a shared binding or an intentionally shared snapshot.
+
+The book's proposed contract is that transferring storage between trust domains must not expose previous data to the new owner through ordinary reads or guest-accessible low-level paths. Validate newly allocated blocks, partial writes, reuse, clone/restore and prepared-image caches. Zeroing before exposing a block is one way to enforce the boundary; it is not immediate physical destruction of every media copy. Deleting a file, formatting the guest filesystem or stopping the VM does not by itself establish sanitization of underlying storage.
+
+Retain provenance, owner scope, preparation generation and reuse eligibility for disks, snapshots and derived caches. Allocator remediation and cleanup of pre-existing artifacts are separate readiness conditions: an old snapshot can restore old mappings without a new allocation. Block restore and cloning of unverified generations until recreation or verified sanitization. In managed services, these operations may belong exclusively to the provider: require provider evidence and explicit verification limits, not a promise from agent code. This is a proposed infrastructure contract, not an implemented reference-runtime feature. Cleanup completion is covered in [chapter 23](../part-viii/chapter-23.md).
+
 ## 14. Common Mistakes
 
 Very typical problems:

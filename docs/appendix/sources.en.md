@@ -25,6 +25,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Microsoft Agent Framework, [CodeAct and the tool authority boundary](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) (2026-09-24).
 
+- Cloudflare, [Containers — residual data and cross-tenant isolation](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) (2026-09-24).
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

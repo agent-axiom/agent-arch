@@ -25,6 +25,8 @@
 
 - Microsoft Agent Framework, [CodeAct 与工具权限边界](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) (2026-09-24).
 
+- Cloudflare, [Containers：残留数据与跨租户隔离](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) (2026-09-24).
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

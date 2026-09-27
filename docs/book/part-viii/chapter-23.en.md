@@ -134,6 +134,14 @@ In the [OpenAI Agents API](https://developers.openai.com/api/docs/guides/agents-
 
 Proposed adapter sequence: stop new input; under shared coordination, block new provisioning and reconcile startups already in flight; retain non-secret references and necessary audit data; separately delete the session and stop provider compute; confirm both outcomes. Keep an unfinished-cleanup record for retries and provider reconciliation. If compute appears after deletion was requested, the controller must discover and release it rather than lose it with the mapping. A failed stop means retirement is incomplete even if the session was deleted. File and snapshot retention remains a separate policy decision, not an implicit effect of deleting the session.
 
+### A storage fix and completed cleanup are different states
+
+In the [Cloudflare incident](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/), restoring zeroing for new blocks stopped the original reproduction technique but did not sanitize already mapped blocks. Retiring old disks and recreating cached snapshots were also necessary. A successful fix rollout or session deletion therefore does not establish completed cleanup.
+
+The proposed closure process is to identify affected pools, disks, snapshots and derived caches; block issuance and restore of unverified generations; coordinate stopping or moving workloads; recreate or sanitize affected artifacts; reconcile actual inventory with intended coverage; and confirm results with the infrastructure owner. Account for concurrent creation/cloning or an old layer can reappear during cleanup. Retain `remediation_version`, affected-resource scope, artifact generation, cleanup status, non-secret evidence references, verifier and unresolved exceptions. These are proposed accounting fields, not a current runtime schema.
+
+Missing confirmation, an unreachable host or a remaining cache means cleanup of that scope is incomplete, even if new-allocation tests pass. Unknown status must not become safe reuse. If a copy must be retained for investigation or retention policy, isolate it, prohibit issuance to new tenants and record an owner and deadline: “retained under restricted access” is not “sanitized.” An application-level deletion log proves only that operation, not physical erasure of every underlying copy. The [case and synthetic checks](../../appendix/case-studies.md) show how to separate these conditions.
+
 ## 6. Memory and audit data need their own discipline
 
 As soon as a system is retired, an uncomfortable question appears: what should happen to accumulated state?

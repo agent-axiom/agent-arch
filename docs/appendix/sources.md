@@ -25,6 +25,8 @@
 
 - Microsoft Agent Framework, [CodeAct и граница полномочий инструментов](https://devblogs.microsoft.com/agent-framework/interactive-experiences-memory-and-resilient-execution/) (2026-09-24).
 
+- Cloudflare, [Containers — остаточные данные и межклиентская изоляция](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) (2026-09-24).
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

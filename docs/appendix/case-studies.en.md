@@ -29,6 +29,20 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Containers: residual blocks and pre-existing snapshots
+
+[Cloudflare's September 24, 2026 report](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) describes cross-tenant residual-data exposure in Containers and Sandboxes built on them. Workloads ran in separate Firecracker VMs, but `skip_block_zeroing` in a shared dm-thin pool allowed block reuse without prior zeroing. A partial write could leave unwritten portions containing the previous owner's data. Researchers could not select a particular victim, host or data; the report did not demonstrate modification of another customer's active data or an availability impact.
+
+Cloudflare restored zeroing for new allocations, then retired old disks and cleared cached layer snapshots that could bypass new allocation. The author's timeline records fix rollout completion on September 7 and pre-mitigation cached-snapshot cleanup completion on September 19. At publication, the provider reported full remediation without customer action. Review of available retained disk telemetry found no malicious use of this technique; this is a bounded investigation conclusion, not proof that no compromise of any kind occurred.
+
+Proposed acceptance scenarios use only a controlled lab, synthetic markers and two test tenants; they were not executed here and do not require probing other customers' cloud data:
+
+1. **Reallocation:** test tenant A writes a marker; the resource is released and deliberately reassigned to B. After B's partial write, the old marker is unreadable through guest paths authorized in the test. The lab confirms actual reuse: accidentally receiving a fresh block does not establish protection.
+2. **Old snapshot:** after allocator remediation, restoring/cloning a prebuilt snapshot containing a synthetic residual marker must be blocked until sanitization or produce a verified sanitized result. Passing only with a new empty disk is insufficient.
+3. **Incomplete cleanup:** one old cache or host remains outside verified coverage. The gate does not close remediation for that scope or permit issuance of its artifacts; reconciliation detects the gap. An artifact created from an old layer during cleanup remains blocked too.
+
+The lesson is that execution isolation, safe storage reuse and completed cleanup of old generations are three verifiable properties, not one “sandbox” label. The contract is in [chapter 16](../book/part-vii/chapter-16.md), cleanup closure in [chapter 23](../book/part-viii/chapter-23.md). Scenarios are book recommendations, not claims of Cloudflare tests performed by us or a ready-made reference-runtime mechanism.
+
 ### Cloudflare Worker Previews: separate branches, shared dependencies
 
 The [Worker Previews announcement](https://blog.cloudflare.com/worker-previews/) gives each branch separate code, configuration, a URL and observability. The [resource documentation](https://developers.cloudflare.com/workers/previews/resources/) (updated September 22, checked September 26, 2026) draws a narrower boundary: local Durable Objects without `script_name` are isolated automatically, but D1/KV/R2 resources with identical identifiers or names remain shared. A new Preview is not a copy of the entire infrastructure. This clarifies product capabilities; it is not a report of an observed Cloudflare incident.
