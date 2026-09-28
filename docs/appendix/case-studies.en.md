@@ -29,6 +29,20 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Forge: consistency across derived interfaces
+
+In the [September 28, 2026 Forge announcement](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), Cloudflare describes an open, pluggable pipeline: OpenAPI is an input, transformers can pass outputs to one another, and CI is intended for lint and installable preview builds. One example is OpenAPI → TypeScript SDK → cf CLI and Cap’n Web specifications. This is not a requirement to build every CLI through TypeScript.
+
+Maturity matters: at publication, Forge already generates outputs required for cf CLI; moving Cloudflare API documentation and SDKs onto it is planned for the following months. Input formats beyond OpenAPI are described as future directions. The authors also describe ongoing work on feeding handwritten commands such as `cf dev` and `cf build` back into documentation and versioning without breaking old clients—not evidence of universal compatibility already delivered.
+
+The following are three proposed book scenarios, not executed Forge test results:
+
+1. **Stale tool description.** Change a required parameter or an operation's side effect while retaining the old agent-catalog description. Checking implementation, schema and catalog together must detect the mismatch and block release; regeneration from the same erroneous schema is not an independent check.
+2. **Incompatible SDK.** Change a response shape so a supported old client cannot parse it. The new SDK may build successfully, but the old-client contract test must stop routine rollout pending a compatibility or migration decision.
+3. **Undocumented handwritten command.** Add a local CLI command absent from OpenAPI. Comparing the command registry, help and published documentation must reveal the omission; handwritten-extension metadata becomes an input to the generation graph, not a disposable manual patch to a generated page.
+
+The transferable lesson: [Chapter 20](../book/part-viii/chapter-20.en.md) governs coordinated changes across interfaces, while [Chapter 22](../book/part-viii/chapter-22.en.md) preserves their exact lineage. Generation reduces drift but does not replace tool authorization or independent API validation.
+
 ### Cloudflare Containers: residual blocks and pre-existing snapshots
 
 [Cloudflare's September 24, 2026 report](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) describes cross-tenant residual-data exposure in Containers and Sandboxes built on them. Workloads ran in separate Firecracker VMs, but `skip_block_zeroing` in a shared dm-thin pool allowed block reuse without prior zeroing. A partial write could leave unwritten portions containing the previous owner's data. Researchers could not select a particular victim, host or data; the report did not demonstrate modification of another customer's active data or an availability impact.

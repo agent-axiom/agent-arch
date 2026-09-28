@@ -243,6 +243,20 @@ Anthropic 后续关于 harness 设计的工作又补上了另一层供应链含�
 
 这也正是本章边界重要的地方。[遥测](../../appendix/trace-schema.zh.md)也许能告诉你[暂停、重新初始化或委派动作](../../appendix/lifecycle-artifact-schema.zh.md)确实发生过，但来源追踪必须保留下来，说明究竟是哪一组[经过评审的契约族](../../appendix/lifecycle-artifact-schema.zh.md)让这些行为在当时被平台视为正当。没有这一层，事故复盘即使看见了事件，也依然解释不了平台为什么认为这些行为有效。
 
+### 8.1. API → SDK → CLI/文档的来源链
+
+对于派生接口，仅保存 API 版本并不足够。Forge 展示了一个生成器的输出如何成为另一个生成器的输入，而手写 CLI 命令带来了 OpenAPI 中不存在的信息。[^cloudflare-forge] 本书建议为该图保存以下来源信息：
+
+- API 描述的修订与摘要；聚合多个服务时，保存精确的源修订集合；
+- 生成器、各转换器、模板、配置、依赖和构建环境的版本或摘要；
+- 输入输出图，以及手写扩展和命令元数据的修订；
+- 每个 SDK、CLI、工具目录和文档包的摘要，以及 CI 运行、兼容性检查和发布决策的链接；
+- 已发布工件与已检查构建的对应关系，以及允许配合使用的服务版本。
+
+应在干净环境中重新构建以检查可复现性；如果工具引入时间戳或其他非确定性，必须明确记录例外和比较规则。摘要相同只能证明字节相同，不能证明 API 描述正确或生成器可信。来源管理仍需要可信构建过程和独立行为检查。
+
+不能把新 SDK 与误留的旧文档一起发布，仅凭相同发布编号就认定它们一致。保留已检查组合的清单和可供回退的上一组工件；回退客户端本身不会回退服务或数据迁移。这是本书建议的契约，不代表 Forge 或参考运行时已实现该清单。变更门禁见[第 20 章](chapter-20.zh.md)。
+
 ## 9. 一个已批准工件策略示例
 
 下面这个骨架很实用：
@@ -387,3 +401,5 @@ def artifact_ready(
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
 
 [^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
+
+[^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.

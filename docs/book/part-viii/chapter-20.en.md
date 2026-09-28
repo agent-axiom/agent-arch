@@ -133,6 +133,16 @@ If a change arrives as “I improved behavior a bit,” it is almost impossible 
 !!! example "Case thread: change packet for duplicate protection"
     For the support-triage fix, the minimum change packet should classify the change as `high-risk`, because it changes a write capability, retry behavior, and the rollout gate. The packet should include the `side_effect_unknown` policy-bundle diff, the updated `create_support_ticket` contract, a duplicate-ticket eval, a rollback hook that can disable the write path, and first-wave canary monitoring. Without that, “we fixed retry” sounds safer than it really is.
 
+### 5.1. Generated interfaces form one change packet
+
+An API change can leave the backend working while the SDK, CLI, documentation and agent-facing tool description drift apart. Review the graph of derived interfaces: for example, **API definition → SDK → CLI → documentation**, including additional inputs from handwritten commands. Forge illustrates chained transformers and CI preview builds.[^cloudflare-forge]
+
+The book's proposed contract is to identify every affected output before merge, rebuild it from one pinned set of inputs, and attach diffs and check results to the change packet. Changes to generators, templates or handwritten extensions require the same review even when the API definition is unchanged. Lint and compilation are insufficient: check request serialization, response parsing, CLI help and documentation examples; tool descriptions must match available operations, parameters and side effects.
+
+Evaluate compatibility separately: new client against the target service, supported old client against the new service, and, during gradual upgrades, new client against the old service. Successful generation does not prove behavioral compatibility; use independent contract examples and implementation checks in an authorized test environment. A preview package must not silently call production. An incompatible change blocks routine release or requires an explicit migration and deployment order; matching version labels are not enough.
+
+This is a recommended release gate, not an implemented reference-runtime feature or a Forge guarantee. See [Chapter 22](chapter-22.en.md) for output lineage and [case studies](../../appendix/case-studies.en.md) for negative scenarios.
+
 ## 6. Evals should map to the change type
 
 Not every change needs the same validation.
@@ -360,3 +370,5 @@ After change management, the natural next step is the assurance loop: red teamin
 [^microsoft-maturity]: [Microsoft Learn, Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
 [^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+[^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.

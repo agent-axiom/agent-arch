@@ -19,6 +19,7 @@ Below is the main set of primary sources used by the current version of the book
 
 - Google Cloud, [Using AI agents to secure Google infrastructure](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 - Cloudflare, [Worker Previews — dependency isolation](https://blog.cloudflare.com/worker-previews/); [resource documentation](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
 
 - LangChain, [LangSmith Trajectories — readable session projection](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).

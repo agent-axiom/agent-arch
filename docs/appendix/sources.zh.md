@@ -19,6 +19,7 @@
 
 - Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Forge：用于生成 SDK、CLI 和文档的开源流水线](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 - Cloudflare, [Worker Previews：依赖隔离](https://blog.cloudflare.com/worker-previews/); [资源文档](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
 
 - LangChain, [LangSmith Trajectories — 可读会话投影](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).

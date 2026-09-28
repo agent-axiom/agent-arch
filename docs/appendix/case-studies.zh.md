@@ -29,6 +29,20 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### Cloudflare Forge：派生接口的一致性
+
+在 [2026 年 9 月 28 日的 Forge 公告](https://blog.cloudflare.com/forge-open-source-generation-pipeline/)中，Cloudflare 描述了一个开源、可插拔的流水线：以 OpenAPI 为输入，转换器可相互传递输出，CI 用于 lint 和可安装的预览构建。示例链为 OpenAPI → TypeScript SDK → cf CLI 与 Cap’n Web 描述。这并不要求所有 CLI 都通过 TypeScript 构建。
+
+必须区分成熟度：公告发布时，Forge 已生成 cf CLI 所需的输出；Cloudflare API 文档和 SDK 的迁移计划在随后几个月进行。OpenAPI 之外的输入格式属于未来方向。作者还描述了将 `cf dev`、`cf build` 等手写命令纳入文档，以及不破坏旧客户端的版本管理工作；这不是已经实现普遍兼容性的证据。
+
+以下是本书建议的三个场景，不是已执行的 Forge 测试结果：
+
+1. **工具描述过期。** 修改必需参数或操作副作用，却保留智能体目录中的旧描述。实现、模式与目录的联合检查应发现不一致并阻止发布；从同一错误模式重新生成不属于独立检查。
+2. **SDK 不兼容。** 修改响应形状，使受支持的旧客户端无法解析。新 SDK 可能构建成功，但旧客户端契约测试应阻止常规发布，直到确定兼容方案或迁移决策。
+3. **手写命令没有文档。** 添加 OpenAPI 中不存在的本地 CLI 命令。比较命令注册表、帮助信息和已发布文档，应发现遗漏；手写扩展元数据应成为生成图的输入，而不是在生成页面上进行会丢失的手工修补。
+
+可迁移的结论：[第 20 章](../book/part-viii/chapter-20.zh.md)管理各接口的一致变更，[第 22 章](../book/part-viii/chapter-22.zh.md)保留准确来源。生成可以减少偏差，但不能代替工具授权或独立 API 验证。
+
 ### Cloudflare Containers：残留块与既有快照
 
 [Cloudflare 于 2026 年 9 月 24 日的报告](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) 描述了 Containers 及其上构建的 Sandboxes 中跨租户残留数据暴露。负载运行在独立 Firecracker 虚拟机中，但共享 dm-thin 池的 `skip_block_zeroing` 配置允许不预先清零就重用块。部分写入可能使未覆盖部分保留前一所有者的数据。研究者无法选择特定受害者、主机或数据；报告未展示修改其他客户的活动数据或影响可用性。

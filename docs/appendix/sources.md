@@ -19,6 +19,7 @@
 
 - Google Cloud, [Использование агентов для защиты инфраструктурного кода Google](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Introducing Forge — конвейер генерации SDK, CLI и документации](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 - Cloudflare, [Worker Previews — изоляция зависимостей](https://blog.cloudflare.com/worker-previews/); [документация ресурсов](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
 
 - LangChain, [LangSmith Trajectories — читаемая проекция сессии](https://www.langchain.com/blog/langsmith-trajectories-tracing); [LangSmith](https://docs.langchain.com/langsmith/observability-concepts#trajectories) (2026-09-26).

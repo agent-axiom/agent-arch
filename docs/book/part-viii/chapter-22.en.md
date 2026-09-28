@@ -243,6 +243,20 @@ Those are provenance questions because they determine the governed identity of t
 
 That is exactly where this chapter's boundary matters. [Telemetry](../../appendix/trace-schema.en.md) may show that a [pause, re-init, or delegated action](../../appendix/lifecycle-artifact-schema.en.md) happened. Provenance has to preserve which [reviewed contract family](../../appendix/lifecycle-artifact-schema.en.md) made that behavior legitimate in the first place. Without that layer, incident review can see events but still fail to explain why the platform considered them valid.
 
+### 8.1. Lineage of API → SDK → CLI/documentation
+
+Saving only an API version is insufficient for a derived interface. Forge shows how one generator output becomes another input, while handwritten CLI commands introduce information absent from OpenAPI.[^cloudflare-forge] The proposed provenance packet for this graph includes:
+
+- API-definition revision and digest; for multiple services, the exact set of source revisions;
+- versions or digests of the generator, every transformer, templates, configuration, dependencies and build environment;
+- the input/output graph and revisions of handwritten extensions and command metadata;
+- a digest for each SDK, CLI, tool catalog and documentation bundle, linked to the CI run, compatibility checks and release decision;
+- a mapping from published artifacts to checked builds and the service versions with which they are approved for use.
+
+Rebuilding in a clean environment should check reproducibility; where a tool introduces timestamps or other nondeterminism, record exceptions and comparison rules explicitly. Digest equality establishes byte identity, not the correctness of the API definition or trust in the generator. Provenance still requires a trusted build process and independent behavioral checks.
+
+Do not ship a new SDK with accidentally retained old documentation and call the bundle consistent merely because it has one release number. Preserve a manifest of the checked combination and the previous bundle for rollback; rolling back a client does not itself roll back the service or data migration. This is a proposed book contract, not a claim that Forge or the reference runtime already implements this manifest. See [Chapter 20](chapter-20.en.md) for the change gate.
+
 ## 9. Example approved artifact policy
 
 Here is a practical skeleton:
@@ -387,3 +401,5 @@ After supply chain and artifact discipline, the natural final operational topic 
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
 
 [^anthropic-harness]: Anthropic, [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
+
+[^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.

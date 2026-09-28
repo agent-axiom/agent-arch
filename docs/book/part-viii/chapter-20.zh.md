@@ -133,6 +133,16 @@ flowchart LR
 !!! example "贯穿案例：防重复保护的变更包"
     对支持分诊修复来说，最小变更包应该把风险等级标为 `high-risk`，因为它改变了写能力、重试行为和发布（rollout）门禁。这个包应该包含 `side_effect_unknown` 策略包 diff、更新后的 `create_support_ticket` 契约、重复工单评测、可关闭写路径的回滚钩子，以及第一波金丝雀监控。否则，“我们修好了重试”听起来会比真实情况安全得多。
 
+### 5.1. 生成的接口应属于同一个变更包
+
+API 变更后，后端可能仍然正常，但 SDK、CLI、文档和面向智能体的工具描述已经不一致。因此应审查派生接口图，例如 **API 描述 → SDK → CLI → 文档**，并包括手写命令带来的额外输入。Forge 展示了可串联的转换器及 CI 预览构建。[^cloudflare-forge]
+
+本书建议的契约是：合并前识别所有受影响的输出，从同一组固定输入重新构建，并把差异和检查结果放入变更包。即使 API 描述未变，生成器、模板或手写扩展的修改也需要相同审查。仅做 lint 和编译并不够：还要检查请求序列化、响应解析、CLI 帮助和文档示例；工具描述必须与可用操作、参数及副作用一致。
+
+兼容性需要单独评估：新客户端与目标服务、受支持的旧客户端与新服务，以及渐进升级时的新客户端与旧服务。生成成功不等于行为兼容；应使用独立契约样例，并在获准的测试环境中检查实现。预览包不得悄悄调用生产环境。不兼容变更应阻止常规发布，或要求明确的迁移方案与部署顺序；文件上的版本标签相同不能替代这些检查。
+
+这是建议的发布门禁，不是参考运行时已实现的功能，也不是 Forge 的保证。输出来源见[第 22 章](chapter-22.zh.md)，反例场景见[实践案例](../../appendix/case-studies.zh.md)。
+
 ## 6. 评测应该和变更类型绑定
 
 不是所有变更都需要同一套验证方式。
@@ -360,3 +370,5 @@ def classify_change(affected_surfaces: tuple[str, ...]) -> str:
 [^microsoft-maturity]: [Microsoft Learn, Agentic AI adoption maturity model](https://learn.microsoft.com/en-us/microsoft-copilot-studio/guidance/maturity-model-overview)
 [^google-supply-chain]: [Google Research, Securing the AI Software Supply Chain](https://research.google/pubs/securing-the-ai-software-supply-chain/)
 [^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
+
+[^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
