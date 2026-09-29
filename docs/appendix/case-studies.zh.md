@@ -29,6 +29,19 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### Cloudflare Kitesurf/WebMCP：执行与确认是不同能力
+
+[2026 年 9 月 28 日的 Kitesurf 更新](https://blog.cloudflare.com/kitesurf-update/)增加了 WebMCP；[限制文档](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations)另行指出，尚未实现 `tools` 权限策略、基于 origin 的工具过滤，也不通过 CDP 提供 iframe/popup 中的工具。智能体 CDP 会话没有实时视图，因此人无法完成等待交互的工具，例如演示中的 `complete_booking`。playground 中存在手动 WebMCP 面板，但它不能在已经等待的智能体会话内提供确认。不能把这些限制推广到所有 WebMCP 实现，也不能将其解释为 Kitesurf 完全没有隔离。
+
+以下是本书建议的负面场景，并非已经执行的供应商测试：
+
+1. **发现后发生导航。** 发现工具后改变 origin，或在同一 origin 内替换文档，再使用旧引用调用。适配器应拒绝过期绑定；新页面上的同名工具不能继承旧授权。
+2. **没有 UI 的确认。** 在缺少人工通道的后端上选择已知需要人工交互的工具。敏感调用应在执行前被阻止并说明原因；若交互要求在调用后才被发现，应限制等待并核对结果，不能盲目重试。
+3. **审批后替换上下文。** 修改账号、参数或工具定义。即使 URL 不变，旧审批也不能授权新调用。
+4. **目录不完整。** 将必需工具放入 iframe/popup。Kitesurf CDP 未发现它意味着发现能力有限，而不是证明功能不存在；改用其他路径不能绕过策略和确认。
+
+实践结论：[第 9 章](../book/part-iv/chapter-9.zh.md)描述后端矩阵，[第 16 章](../book/part-vii/chapter-16.zh.md)描述可验证的调用绑定及有界等待。协议支持、功能可用性和动作授权必须分别检查。
+
 ### Cloudflare Forge：派生接口的一致性
 
 在 [2026 年 9 月 28 日的 Forge 公告](https://blog.cloudflare.com/forge-open-source-generation-pipeline/)中，Cloudflare 描述了一个开源、可插拔的流水线：以 OpenAPI 为输入，转换器可相互传递输出，CI 用于 lint 和可安装的预览构建。示例链为 OpenAPI → TypeScript SDK → cf CLI 与 Cap’n Web 描述。这并不要求所有 CLI 都通过 TypeScript 构建。

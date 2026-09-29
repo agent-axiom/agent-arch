@@ -362,6 +362,22 @@ GitHub Copilot browser tools in VS Code 展示了下一步：live browser 正在
 
 控制层也必须显式。用户自己的 tabs 需要 share/revoke 语义，agent-owned tabs 需要隔离 session、不能读取普通浏览器 cookies/storage，敏感 permission prompts 需要人类批准，enterprise 环境还需要 network domain controls 和 workspace trust。这样 browser tool 才是受治理能力，而不是 agent process 对全部 web state 的直接访问。
 
+#### WebMCP：能够调用不等于能够安全完成
+
+WebMCP 允许页面发布结构化工具，但支持 API 并不意味着不同浏览器后端具有相同的安全边界。Cloudflare 于 2026 年 9 月 28 日更新的文档区分了 Chrome Lab 和 Kitesurf。[^cloudflare-webmcp] 下表记录文档中的能力，而非安全认证：
+
+| 能力 | Browser Run 中的 Chrome Lab | 通过智能体 CDP 会话使用 Kitesurf |
+| --- | --- | --- |
+| WebMCP 发现与执行 | 实验性 Lab 会话支持 | 由自身实现支持 |
+| `tools` 权限策略及基于 origin 的过滤 | 本文档未确立保证，需单独验证 | 明确尚未实现 |
+| 通过 CDP 获取 iframe/popup 工具 | 覆盖范围需要验证 | 不提供 |
+| 人在同一会话中交互 | 文档提供实时视图和按会话 ID 打开的方式 | 无实时视图；不出现在 `wrangler browser list` 中 |
+| 工具等待人工交互 | 操作员可用时，可通过实时视图进行 | 无法通过该智能体路径确认 |
+
+Chrome Lab 属于实验功能，文档明确不建议用于生产负载。Kitesurf playground 支持在 DevTools 中手动运行工具，但这不能证明人能够接入智能体 CDP 会话中尚未完成的调用。页面渲染、截图或终端查看同样不能证明存在针对该操作的确认通道。
+
+本书建议为每个后端版本与连接方式维护能力配置；“未验证”不能视为“支持”。敏感调用前，应检查工具来源、当前文档与会话，以及所需的确认路径。缺少这些保证时，应阻止该路径或明确交由人处理。发现的工具及其描述仍是不可信数据；方法名不是授权。执行契约见[第 16 章](../part-vii/chapter-16.zh.md)。
+
 ### 5.6. Secure MCP Tunnel 让私有可达性显式化
 
 OpenAI Secure MCP Tunnel 为 private MCP server 增加了一种有用的部署模式：私有侧主动建立 outbound-only 连接，而不是从公网接受 inbound traffic。[^openai-secure-mcp-tunnel] `tunnel-client` 运行在本来就能访问 private MCP server 的网络内，对 OpenAI-hosted endpoint 做 long-poll，拉取 queued MCP work，把 JSON-RPC requests 本地转发给 server，再通过同一路径返回 responses。这个形态还有天然的 backpressure 点：client 只请求自己准备好处理的工作量。
@@ -743,3 +759,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
 [^microsoft-networked-agents]: Microsoft Research, [Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
+
+[^cloudflare-webmcp]: Cloudflare, [WebMCP：能力与限制](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.

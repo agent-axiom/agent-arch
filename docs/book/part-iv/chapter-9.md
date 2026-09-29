@@ -363,6 +363,22 @@ GitHub Copilot browser tools в VS Code показывают следующий 
 
 Контрольный слой тоже должен быть явным. Для пользовательских вкладок нужен механизм share/revoke, для agent-owned tabs — отдельная сессия без cookies/storage обычного браузера, для чувствительных permission prompts — человеческое подтверждение, а для enterprise среды — network domain controls и workspace trust. Тогда browser tool становится управляемой capability, а не прямым доступом агентного процесса ко всему web state.
 
+#### WebMCP: поддержка вызова не равна готовности к безопасному завершению
+
+WebMCP позволяет странице публиковать структурированные инструменты, но поддержка API не доказывает одинаковых границ безопасности у разных браузерных backend’ов. Документация Cloudflare от 28 сентября 2026 года различает Chrome Lab и Kitesurf.[^cloudflare-webmcp] Ниже — матрица документированных возможностей, а не сертификация безопасности:
+
+| Возможность | Chrome Lab в Browser Run | Kitesurf через агентную CDP-сессию |
+| --- | --- | --- |
+| Обнаружение и вызов WebMCP | Поддерживаются в экспериментальной Lab-сессии | Поддерживаются собственной реализацией |
+| `tools` permissions policy и фильтрация по origin | В этой документации гарантии не установлены; требуется отдельная проверка | Прямо указано, что не реализованы |
+| Инструменты iframe/popup через CDP | Полнота покрытия требует проверки | Не предоставляются |
+| Человек взаимодействует с той же сессией | Документированы live view и открытие по session ID | Нет live view; сессия не появляется в `wrangler browser list` |
+| Инструмент ожидает действие человека | Возможен через live view при доступном операторе | Подтвердить через такой агентный путь нельзя |
+
+Chrome Lab экспериментален и, по документации, не предназначен для production. Kitesurf playground позволяет вручную запускать инструменты из панели DevTools, но это не доказательство возможности подключить человека к уже ожидающему вызову в агентной CDP-сессии. Рендеринг страницы, screenshot или терминальный просмотр также не доказывают наличие канала подтверждения именно этой операции.
+
+Рекомендация книги: хранить профиль возможностей для конкретной версии backend’а и способа подключения; значение «не проверено» не приравнивать к «поддерживается». Перед чувствительным вызовом проверять происхождение инструмента, актуальный документ и сессию, а также доступность нужного пути подтверждения. Если этих гарантий нет, блокировать данный путь или явно передавать задачу человеку. Обнаруженный инструмент и его описание остаются недоверенными данными; название метода не является разрешением. Контракт исполнения см. в [главе 16](../part-vii/chapter-16.md).
+
 ### 5.6. Secure MCP Tunnel делает приватную достижимость явной
 
 OpenAI Secure MCP Tunnel добавляет полезный deployment pattern для private MCP server: приватная сторона сама открывает outbound-only соединение, вместо того чтобы принимать inbound traffic из публичного интернета.[^openai-secure-mcp-tunnel] `tunnel-client` запускается внутри сети, которая уже может достучаться до private MCP server, long-poll-ит OpenAI-hosted endpoint для queued MCP work, локально пересылает JSON-RPC requests и возвращает responses тем же путем. У этой формы есть естественная точка backpressure: client запрашивает только тот объем работы, который готов обработать.
@@ -1065,3 +1081,5 @@ runtime_review_events:
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
 [^microsoft-networked-agents]: Microsoft Research, [Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
+
+[^cloudflare-webmcp]: Cloudflare, [WebMCP — возможности и ограничения](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.

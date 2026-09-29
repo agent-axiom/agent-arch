@@ -29,6 +29,19 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Kitesurf/WebMCP: execution and confirmation are separate capabilities
+
+The [September 28, 2026 Kitesurf update](https://blog.cloudflare.com/kitesurf-update/) adds WebMCP; the [limitations documentation](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations) separately identifies missing `tools` permissions policy, origin-based tool filtering and iframe/popup tools over CDP. Agent CDP sessions have no live view, so a human cannot complete tools waiting for interaction, such as the demonstration `complete_booking`. A manual WebMCP panel exists in the playground, but does not provide confirmation inside an already waiting agent session. Do not generalize these limitations to all WebMCP implementations or interpret them as absence of all Kitesurf isolation.
+
+Proposed negative scenarios—not executed provider tests:
+
+1. **Navigation after discovery.** Discover a tool, change origin or replace the document within the same origin, and call the stale reference. The adapter must reject the stale binding; an identically named tool on the new page does not inherit authorization.
+2. **Confirmation without UI.** Select a tool known to require human interaction on a backend without that channel. Block the sensitive call before execution with an explicit reason; if the need for interaction is discovered later, bound the wait and reconcile the outcome without blind retries.
+3. **Context substitution after approval.** Change the account, arguments or tool definition. The old approval must not authorize the new call even when the URL stays unchanged.
+4. **Incomplete catalog.** Place a required tool in an iframe/popup. Its absence from Kitesurf CDP discovery indicates a discovery limitation, not proof the feature does not exist; using another path must not bypass policy or confirmation.
+
+The practical lesson: [Chapter 9](../book/part-iv/chapter-9.en.md) describes the backend matrix; [Chapter 16](../book/part-vii/chapter-16.en.md) describes verifiable call binding and bounded waiting. Protocol support, feature availability and action authorization are separate checks.
+
 ### Cloudflare Forge: consistency across derived interfaces
 
 In the [September 28, 2026 Forge announcement](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), Cloudflare describes an open, pluggable pipeline: OpenAPI is an input, transformers can pass outputs to one another, and CI is intended for lint and installable preview builds. One example is OpenAPI → TypeScript SDK → cf CLI and Cap’n Web specifications. This is not a requirement to build every CLI through TypeScript.

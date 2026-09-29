@@ -362,6 +362,22 @@ The practical contract for that surface should account for stale DOM refs, auth/
 
 The control layer should also be explicit. User-owned tabs need share/revoke semantics, agent-owned tabs need an isolated session without normal browser cookies/storage, sensitive permission prompts need human approval, and enterprise environments need network domain controls and workspace trust. Then a browser tool is a governed capability rather than direct agent-process access to all web state.
 
+#### WebMCP: callable does not mean safely completable
+
+WebMCP lets a page publish structured tools, but API support does not establish equivalent security boundaries across browser backends. Cloudflare's documentation dated September 28, 2026 distinguishes Chrome Lab from Kitesurf.[^cloudflare-webmcp] This matrix records documented capabilities, not security certification:
+
+| Capability | Chrome Lab in Browser Run | Kitesurf through an agent CDP session |
+| --- | --- | --- |
+| WebMCP discovery and execution | Supported in an experimental Lab session | Supported by its own implementation |
+| `tools` permissions policy and origin filtering | Guarantees not established by this documentation; verify separately | Explicitly not implemented |
+| iframe/popup tools over CDP | Coverage needs verification | Not exposed |
+| Human interaction with the same session | Live view and opening by session ID are documented | No live view; session absent from `wrangler browser list` |
+| Tool waiting for human interaction | Possible through live view with an available operator | Cannot be confirmed through this agent path |
+
+Chrome Lab is experimental and documented as unsuitable for production workloads. The Kitesurf playground supports manually running tools in DevTools, but does not establish human access to a pending call in an agent CDP session. Page rendering, screenshots or terminal viewing likewise do not establish an approval channel for that specific operation.
+
+The book recommends a capability profile for each backend version and connection mode; “unverified” must not mean “supported.” Before a sensitive call, verify tool origin, current document and session, and the required confirmation path. Without those guarantees, block that path or explicitly hand the task to a human. Discovered tools and their descriptions remain untrusted data; a method name is not authorization. See [Chapter 16](../part-vii/chapter-16.en.md) for the execution contract.
+
 ### 5.6. Secure MCP Tunnel Makes Private Reachability Explicit
 
 OpenAI's Secure MCP Tunnel adds a useful deployment pattern for private MCP servers: the private side initiates an outbound-only connection instead of accepting inbound traffic from the public internet.[^openai-secure-mcp-tunnel] A `tunnel-client` runs inside the network that can already reach the private MCP server, long-polls an OpenAI-hosted endpoint for queued MCP work, forwards JSON-RPC requests locally, and returns responses through the same path. The design also creates a natural backpressure point, because the client asks only for work it is ready to process.
@@ -743,3 +759,5 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^microsoft-tools-acting]: Microsoft Security Blog, [Securing AI agents: When AI tools move from reading to acting](https://www.microsoft.com/en-us/security/blog/2026/06/30/securing-ai-agents-ai-tools-move-from-reading-acting/)
 [^microsoft-networked-agents]: Microsoft Research, [Red-teaming a network of agents: Understanding what breaks when AI agents interact at scale](https://www.microsoft.com/en-us/research/blog/red-teaming-a-network-of-agents-understanding-what-breaks-when-ai-agents-interact-at-scale/)
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
+
+[^cloudflare-webmcp]: Cloudflare, [WebMCP — capabilities and limitations](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.

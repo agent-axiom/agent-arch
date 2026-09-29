@@ -439,6 +439,14 @@ In practice, that means the baseline runtime benefits from one shared set of rul
 
 Without those distinctions, session expiry tends to look like a random failure even when it is actually a normal lifecycle event.
 
+### 9.3. Browser tools are bound to a document and confirmation path
+
+Kitesurf's WebMCP limitations show why browser-adapter capabilities belong in the runtime contract.[^cloudflare-webmcp] The book's proposed contract binds a discovered tool to `backend/version`, `browser_session_id`, principal, tab/target, frame, origin and document identity or navigation generation, plus tool identity/schema. These are recommended adapter fields, not claimed standard WebMCP fields or an implemented reference-runtime integration.
+
+Recheck that context, policy, arguments and required approval before execution. Changing the origin, replacing the document even within the same origin, switching accounts or replacing the tool invalidates the previous binding and requires rediscovery and authorization review. Approval binds to the specific operation, arguments and context, not just a tool name. Checking the URL before a call does not eliminate a navigation race: the adapter must bind execution to the checked context or reject stale calls. If it cannot enforce this, the sensitive path must not be described as safe. These are not claims that Kitesurf already performs these checks.
+
+For tools that can wait for human interaction, verify before launch that a human can participate in the same session, identify the responsible operator and bound the wait. Missing UI is not consent; the agent must not click instead of the human or automatically bypass the requirement through another tool. Channel loss or timeout produces a blocked/escalated state, but cancelling the client wait does not prove cancellation of the site's action. If execution has started and its outcome is unknown, reconcile before retrying or switching backends. A manual invocation in a separate playground does not resume the previous operation. See [Chapter 9, §5.5](../part-iv/chapter-9.en.md) for the capability matrix.
+
 ## 10. What Is Worth Building Into the Baseline From the Start
 
 Some things are tempting to "add later", but in practice it is better to include them from day one:
@@ -781,3 +789,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^openai-sandbox-agents]: [OpenAI Agents SDK, Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), and [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 
 [^openai-computer-environment]: OpenAI, [From model to agent: Equipping the Responses API with a computer environment](https://openai.com/index/equip-responses-api-computer-environment/)
+
+[^cloudflare-webmcp]: Cloudflare, [WebMCP — capabilities and limitations](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.

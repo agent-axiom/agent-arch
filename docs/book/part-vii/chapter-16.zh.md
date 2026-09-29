@@ -439,6 +439,14 @@ stateful MCP guidance 的另一个重要含义是：进度事件和 elicitation 
 
 如果没有这些区分，会话过期往往会被误看成随机故障，而不是正常生命周期事件。
 
+### 9.3. 浏览器工具必须绑定文档与确认路径
+
+Kitesurf 的 WebMCP 限制说明，浏览器适配器能力应纳入运行时契约。[^cloudflare-webmcp] 本书建议把发现的工具绑定到 `backend/version`、`browser_session_id`、主体、标签页/target、frame、origin、文档身份或导航代次，以及工具身份/模式。这些是建议的适配器字段，不是声称 WebMCP 标准已提供的字段，也不是参考运行时已实现的集成。
+
+执行前重新检查上述上下文、策略、参数和所需审批。origin 改变、同一 origin 内文档被替换、切换账号或替换工具，都应使旧绑定失效，并要求重新发现和审查权限。审批必须绑定具体操作、参数与上下文，而非仅绑定工具名。调用前检查 URL 并不能消除导航竞态：适配器必须将执行绑定到已检查的上下文，或拒绝过期调用。如果无法执行此控制，就不能宣称敏感路径安全。这些要求不代表 Kitesurf 已经实现相应检查。
+
+对于可能等待人工交互的工具，启动前应验证人能够参与同一会话，指定负责操作员并限制等待时间。缺少 UI 不等于同意；智能体不得代替人点击，也不得自动通过其他工具绕过要求。通道丢失或超时应记录为阻塞/升级处理，但取消客户端等待并不证明网站动作已取消。如果执行已经开始且结果未知，重试或切换后端前必须核对结果。在独立 playground 中手动调用并不是恢复原操作。能力矩阵见[第 9 章 §5.5](../part-iv/chapter-9.zh.md)。
+
 ## 10. 从一开始就值得内置进去的东西
 
 有些东西很容易让人想“以后再补”，但实际上最好第一天就放进去：
@@ -780,3 +788,5 @@ solver 的变更保存在隔离的暂存工作区。只有通过验证的候选�
 [^openai-sandbox-agents]: OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 
 [^openai-computer-environment]: OpenAI, [From model to agent: Equipping the Responses API with a computer environment](https://openai.com/index/equip-responses-api-computer-environment/)
+
+[^cloudflare-webmcp]: Cloudflare, [WebMCP：能力与限制](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
