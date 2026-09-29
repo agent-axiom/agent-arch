@@ -19,6 +19,7 @@
 
 - Google Cloud, [Использование агентов для защиты инфраструктурного кода Google](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [CryptoLabe — ИИ для планирования постквантовой миграции](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
 - Cloudflare, [Kitesurf — обновление агентного браузера](https://blog.cloudflare.com/kitesurf-update/); [WebMCP — ограничения](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations), 2026-09-28.
 - Cloudflare, [Introducing Forge — конвейер генерации SDK, CLI и документации](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 - Cloudflare, [Worker Previews — изоляция зависимостей](https://blog.cloudflare.com/worker-previews/); [документация ресурсов](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).

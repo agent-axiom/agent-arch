@@ -29,6 +29,18 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### Cloudflare CryptoLabe：独立扫描之间共享冷却期
+
+在 [2026 年 9 月 29 日的文章](https://blog.cloudflare.com/ai-driven-cryptography-discovery/)中，Cloudflare 描述了仍在演进的内部密码学清单工具 CryptoLabe。本案例关注负载控制，而非密码学：仓库扫描有各自的持久协调器，并通过 AI Gateway 调用模型。并发增加后出现 HTTP 429，独立重试进一步放大突发请求。作者报告使用一个全局 Durable Object 调节每个模型请求，包括重试，并把一次扫描触发的冷却共享给其他扫描。
+
+文章没有给出该调节器的通用恢复算法，也没有证明其他系统可达到某个特定 SLO。以下是本书建议的三个场景，不是已经执行的 CryptoLabe 测试：
+
+1. **同时出现 429。** 同一配额池中的多个运行遇到临时限流。并发更新不能缩短共享暂停；新请求等待后逐步消耗许可。独立配额池中的对照运行不应被阻塞，过期任务不能发送。
+2. **重试绕过。** SDK 或 workflow 在失败后重试。实际网络尝试计数应表明，首次请求和重试都取得了共享准入；隐藏重试或重新入队均不能重置尝试预算。
+3. **协调器重启。** 在冷却期间、队列非空且已发出许可时停止协调器。新所有者恢复或保守核对状态，阻止旧所有者继续发放许可，不一次释放整个队列。已发送请求的未知结果在核对前仍是未知。
+
+[第 10 章](../book/part-iv/chapter-10.zh.md)定义共享配额范围和准入规则，[第 16 章](../book/part-vii/chapter-16.zh.md)描述协调器位置与恢复。共享队列不得跨租户暴露请求内容，也不得借用其他运行来扩大权限。
+
 ### Cloudflare Kitesurf/WebMCP：执行与确认是不同能力
 
 [2026 年 9 月 28 日的 Kitesurf 更新](https://blog.cloudflare.com/kitesurf-update/)增加了 WebMCP；[限制文档](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations)另行指出，尚未实现 `tools` 权限策略、基于 origin 的工具过滤，也不通过 CDP 提供 iframe/popup 中的工具。智能体 CDP 会话没有实时视图，因此人无法完成等待交互的工具，例如演示中的 `complete_booking`。playground 中存在手动 WebMCP 面板，但它不能在已经等待的智能体会话内提供确认。不能把这些限制推广到所有 WebMCP 实现，也不能将其解释为 Kitesurf 完全没有隔离。

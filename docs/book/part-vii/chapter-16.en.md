@@ -96,6 +96,16 @@ When all of this is packed into one big handler, the first demos come fast, but 
 
 **Runtime case-spine note:** the baseline runtime should support all three canonical cases without local bypasses. Support triage needs a write-capability path with approval hooks, idempotency contract, and duplicate-ticket telemetry. Internal knowledge assistant needs a retrieval path with source grounding, tenant filters, freshness checks, and guarded memory writes. Incident coordination needs an escalation path with responder-role checks, notification dispatch, incident-state updates, and post-incident background tasks.
 
+### 4.1. The quota coordinator sits above individual runs
+
+CryptoLabe's per-repository coordinator and global model-request regulator have different roles.[^cloudflare-cryptolabe] A semaphore inside one agent cannot govern a shared quota: all processes consuming that pool must acquire permission from a shared logical coordinator before a network attempt. It may sit in a gateway or a separate admission service; one logical coordination point does not require one physical machine.
+
+The proposed recovery contract preserves quota scope, shared cooldown, limiter state, queued deadlines and attempt/permit identifiers. A restarted coordinator must not assume capacity is completely free. Restore or conservatively reconcile accounting for already admitted requests, discard expired/cancelled tasks and drain the queue gradually. Persist cooldown in a clock-aware portable representation; an old process's local monotonic timestamp cannot be reused after restart.
+
+On ownership changes, a lease/coordinator generation and fencing must prevent old and new instances from issuing permits concurrently. If admission state is unavailable, requests remain in bounded waiting or fail explicitly; silently switching to unrestricted direct dispatch is prohibited. Permission to send does not prove completion: an unknown outcome must not automatically become a fresh attempt, especially for side-effecting operations.
+
+Observability links a safe pool reference, `run_id`, `attempt_id`, limit reason, queue wait, remaining cooldown and coordinator generation. These fields and recovery controls are book recommendations, not documented guarantees of Cloudflare's internal implementation. See [Chapter 10, §5.1](../part-iv/chapter-10.en.md) for the shared retry policy.
+
 ## 5. Do Not Mix Orchestration With Business Adapters
 
 One of the most expensive mistakes in early implementations is when the runtime knows too much about concrete external systems.
@@ -791,3 +801,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^openai-computer-environment]: OpenAI, [From model to agent: Equipping the Responses API with a computer environment](https://openai.com/index/equip-responses-api-computer-environment/)
 
 [^cloudflare-webmcp]: Cloudflare, [WebMCP — capabilities and limitations](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
+
+[^cloudflare-cryptolabe]: Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.

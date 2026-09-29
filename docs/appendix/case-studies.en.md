@@ -29,6 +29,18 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare CryptoLabe: shared cooldown across independent scans
+
+In its [September 29, 2026 article](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), Cloudflare describes CryptoLabe, an evolving internal cryptography inventory tool. This case concerns load control, not cryptography: repository scans have their own durable coordinators and call models through AI Gateway. Increased concurrency produced HTTP 429 responses; independent retries amplified the bursts. The authors report using one global Durable Object to pace every model request, including retries, and share one scan's cooldown with all the others.
+
+The article does not specify a universal recovery algorithm for that regulator or establish a particular SLO for other systems. The following are three proposed book scenarios, not executed CryptoLabe tests:
+
+1. **Simultaneous 429s.** Several runs in one pool encounter transient rate limits. Racing updates must not shorten the shared pause; new dispatches wait, then consume permits gradually. A control run in an independent pool stays unblocked; expired tasks are not dispatched.
+2. **Retry bypass.** An SDK or workflow retries after failure. Actual network-attempt counters must show that initial requests and retries both obtained shared admission; neither hidden retry nor re-enqueue resets the attempt budget.
+3. **Coordinator restart.** Stop it during cooldown with queued work and outstanding permits. The new owner restores or conservatively reconciles state, fences stale permit issuance and does not flush the entire queue. An unknown outcome of an already sent request remains unknown until reconciled.
+
+[Chapter 10](../book/part-iv/chapter-10.en.md) defines shared quota scope and admission rules; [Chapter 16](../book/part-vii/chapter-16.en.md) covers coordinator placement and recovery. A shared queue must not expose request contents across tenants or expand one run's authority through another.
+
 ### Cloudflare Kitesurf/WebMCP: execution and confirmation are separate capabilities
 
 The [September 28, 2026 Kitesurf update](https://blog.cloudflare.com/kitesurf-update/) adds WebMCP; the [limitations documentation](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations) separately identifies missing `tools` permissions policy, origin-based tool filtering and iframe/popup tools over CDP. Agent CDP sessions have no live view, so a human cannot complete tools waiting for interaction, such as the demonstration `complete_booking`. A manual WebMCP panel exists in the playground, but does not provide confirmation inside an already waiting agent session. Do not generalize these limitations to all WebMCP implementations or interpret them as absence of all Kitesurf isolation.

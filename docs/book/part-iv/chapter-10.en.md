@@ -100,6 +100,18 @@ That is why limits are useful not only at the whole-service level, but also:
 - per workflow;
 - per risk class.
 
+### 5.1. A shared quota needs a shared cooldown, not just local backoff
+
+Independent runs can each obey local backoff while making overload worse for peers sharing one provider or gateway quota. Cloudflare's CryptoLabe uses a single global Durable Object to pace every model request, including retries; a rate limit encountered by one scan triggers a cooldown shared by all scans.[^cloudflare-cryptolabe]
+
+The book's proposed contract is **initial request or retry → bounded shared queue → regulator permit → dispatch**. Define the coordination scope by the actual quota pool: provider/gateway, account or project, model/group and region—only dimensions that actually determine the limit. Different credentials may consume the same quota, so a limiter per process is insufficient. Do not pause independent pools together. Store a safe pool reference, not secrets.
+
+On a confirmed transient rate limit, the adapter updates shared `cooldown_until` without shortening an existing pause, respects valid `Retry-After`, and otherwise uses policy-bounded backoff. After cooldown, release requests gradually with concurrency limits and jitter, not as one simultaneous queue flush. The pause does not cancel requests already sent. Bound queue length, deadlines and cancellation, with fair allocation across runs/tenants; preserve local attempt and cost budgets.
+
+Every actual network attempt must use this path, including hidden SDK/workflow retries and fallback that shares the same pool. Integrate built-in retries with the regulator or disable them in favor of one retry owner. Request pacing does not replace token, concurrency, spending or idempotency controls.
+
+Not every `429` means transient overload: an exhausted spend limit needs an explicit budget decision, not waiting and spending again. Classify the cause using documented provider responses; when unknown, bound further attempts and escalate. Shared cooldown does not reset the task deadline. This is a recommended contract, not an implemented reference-runtime feature; see [Chapter 16](../part-vii/chapter-16.en.md) for coordinator placement and recovery.
+
 ## 6. Rollback Boundaries Must Be Defined in Advance
 
 It is dangerous to discover only during an incident that an operation is "not actually reversible".
@@ -278,3 +290,5 @@ Part IV now closes the basic execution layer: contracts, sandboxing, capability 
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
+
+[^cloudflare-cryptolabe]: Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.

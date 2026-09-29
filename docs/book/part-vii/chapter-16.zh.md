@@ -96,6 +96,16 @@ flowchart LR
 
 **运行时案例主线说明（Runtime case-spine note）：**基线运行时（baseline runtime）应该支持三个规范案例（canonical cases），并留下追踪证据（trace evidence），而不依赖本地绕路。支持分诊（Support triage）需要带审批钩子（approval hooks）、幂等契约（idempotency contract）和重复工单遥测（duplicate-ticket telemetry）的写入能力路径（write-capability path）。内部知识助手（Internal knowledge assistant）需要带来源锚定（source grounding）、租户过滤器（tenant filters）、新鲜度检查（freshness checks）和受保护记忆写入（guarded memory writes）的检索路径。事故协调（Incident coordination）需要带响应者角色检查（responder-role checks）、通知分发（notification dispatch）、事故状态更新（incident-state updates）和事件后后台任务（post-incident background tasks）的升级路径。
 
+### 4.1. 配额协调器位于单次运行之上
+
+CryptoLabe 中，每仓库协调器与全局模型请求调节器承担不同职责。[^cloudflare-cryptolabe] 单个智能体内的信号量不能管理共享配额：消耗该配额池的所有进程，都必须在网络尝试前向共享逻辑协调器取得许可。它可以位于网关或独立准入服务中；一个逻辑协调点不等于一台物理机器。
+
+建议的恢复契约保存配额范围、共享冷却、限流器状态、带截止时间的队列，以及尝试/许可标识符。协调器重启后不能假定容量完全空闲。应恢复或保守核对已经获准请求的计数，清理过期/取消任务，并逐步释放队列。冷却时间必须采用考虑时钟的可迁移表示；旧进程的本地单调时钟值不能在重启后直接复用。
+
+所有者切换时，应通过租约/协调器代次和隔离旧所有者的机制，防止新旧实例同时发放许可。准入状态不可用时，请求应有界等待或明确失败；不得静默切换为不受限制的直接发送。发送许可不证明请求完成：尤其对有副作用的操作，未知结果不能自动变成新的尝试。
+
+可观测记录应关联安全的配额池引用、`run_id`、`attempt_id`、限流原因、排队时间、剩余冷却期和协调器代次。这些字段及恢复措施是本书建议，不是 Cloudflare 内部实现已提供的文档保证。共享重试策略见[第 10 章 §5.1](../part-iv/chapter-10.zh.md)。
+
 ## 5. 不要把编排和业务适配器混在一起
 
 早期实现里最贵的错误之一，就是运行时直接知道太多具体外部系统的细节。
@@ -790,3 +800,5 @@ solver 的变更保存在隔离的暂存工作区。只有通过验证的候选�
 [^openai-computer-environment]: OpenAI, [From model to agent: Equipping the Responses API with a computer environment](https://openai.com/index/equip-responses-api-computer-environment/)
 
 [^cloudflare-webmcp]: Cloudflare, [WebMCP：能力与限制](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
+
+[^cloudflare-cryptolabe]: Cloudflare, [CryptoLabe：利用 AI 规划后量子迁移](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.

@@ -100,6 +100,18 @@
 - 每个工作流；
 - 每个风险等级。
 
+### 5.1. 共享配额需要共享冷却，而不仅是局部退避
+
+多个独立运行即使各自遵守退避，也可能加重共享同一供应商或网关配额的其他运行的过载。Cloudflare 的 CryptoLabe 使用一个全局 Durable Object，调节所有模型请求，包括重试；某次扫描遇到限流时，所有扫描共享冷却期。[^cloudflare-cryptolabe]
+
+本书建议的契约是：**首次请求或重试 → 有界共享队列 → 调节器许可 → 发送**。协调范围应对应真实配额池：供应商/网关、账号或项目、模型/模型组及区域——仅采用实际决定限额的维度。不同凭据可能消耗同一配额，因此每进程一个限流器并不足够。独立配额池不应一起暂停。使用安全的配额池引用，不保存秘密值。
+
+确认是临时限流后，适配器更新共享的 `cooldown_until`，不能缩短已有暂停；遵守有效的 `Retry-After`，缺少该信息时按策略进行有界退避。冷却结束后，以并发限制和随机抖动逐步放行，不能同时释放整个队列。暂停不会取消已经发送的请求。队列应限制长度，支持截止时间与取消，并在运行/租户间公平分配；每次运行自身的尝试次数和费用预算仍有效。
+
+所有实际网络尝试都必须经过该路径，包括 SDK/workflow 隐藏重试，以及使用相同配额池的降级路径。应将内置重试接入调节器，或关闭它们并由单一组件负责重试。请求速率控制不能代替令牌量、并发数、费用预算或幂等性控制。
+
+并非每个 `429` 都是临时过载：费用上限耗尽需要明确的预算决策，而不是等待后继续消耗。根据供应商文档中的响应分类；原因未知时，限制后续尝试并升级处理。共享冷却不能重置任务截止时间。这是建议契约，不是参考运行时已实现的功能；协调器位置和恢复见[第 16 章](../part-vii/chapter-16.zh.md)。
+
 ## 6. 回滚边界必须提前定义
 
 最危险的事情之一，就是在事故里才发现某个操作“其实根本无法回滚”。
@@ -278,3 +290,5 @@ OpenAI 指南里的另一个实践建议也很值得形式化：run loop 必须�
 
 [^openai-practical]: [OpenAI, A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
+
+[^cloudflare-cryptolabe]: Cloudflare, [CryptoLabe：利用 AI 规划后量子迁移](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.

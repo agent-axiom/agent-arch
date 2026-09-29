@@ -19,6 +19,7 @@ Below is the main set of primary sources used by the current version of the book
 
 - Google Cloud, [Using AI agents to secure Google infrastructure](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
 - Cloudflare, [The road to the agentic browser: A Kitesurf update](https://blog.cloudflare.com/kitesurf-update/); [WebMCP — limitations](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations), 2026-09-28.
 - Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 - Cloudflare, [Worker Previews — dependency isolation](https://blog.cloudflare.com/worker-previews/); [resource documentation](https://developers.cloudflare.com/workers/previews/resources/) (2026-09-22; 2026-09-26).
