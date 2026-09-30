@@ -19,6 +19,8 @@
 
 - Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Cloudflare Containers：为大规模智能体沙箱重构](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
+
 - Cloudflare, [使用前沿 AI 模型测试 WAF：实验结果](https://blog.cloudflare.com/adaptive-ai-waf-testing/), 2026-09-29.
 - Cloudflare, [CryptoLabe：利用 AI 规划后量子迁移](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
 - Cloudflare, [Kitesurf：面向智能体的浏览器更新](https://blog.cloudflare.com/kitesurf-update/); [WebMCP：限制](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations), 2026-09-28.

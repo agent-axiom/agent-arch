@@ -675,6 +675,14 @@ The book's proposed contract is that transferring storage between trust domains 
 
 Retain provenance, owner scope, preparation generation and reuse eligibility for disks, snapshots and derived caches. Allocator remediation and cleanup of pre-existing artifacts are separate readiness conditions: an old snapshot can restore old mappings without a new allocation. Block restore and cloning of unverified generations until recreation or verified sanitization. In managed services, these operations may belong exclusively to the provider: require provider evidence and explicit verification limits, not a promise from agent code. This is a proposed infrastructure contract, not an implemented reference-runtime feature. Cleanup completion is covered in [chapter 23](../part-viii/chapter-23.md).
 
+### The workspace image is pinned state, not a floating default
+
+Cloudflare Containers with the `durable_object` policy lets code select an image when a particular environment starts and keep a running container on its existing image. Upgrading becomes a workspace-controller decision, not an automatic consequence of a fleet deployment.[^cloudflare-workspace-image]
+
+Proposed book contract, not an implemented reference-runtime feature: persist `workspace_id`, an immutable image reference (`image_digest` or an equivalent version identifier), `environment_generation`, the selection-policy version, and task-checkpoint and filesystem-snapshot references outside the container. Distinguish desired from actually running versions and verify them after startup. A floating tag or changed default must not silently change a pinned workspace on restart. If the old image is unavailable or prohibited by current security policy, stop with an explicit status instead of substituting a new one. Pinning does not override urgent revocation of a vulnerable image.
+
+One lifecycle owner performs the transition at a coordinated boundary: stop admitting commands, drain or reconcile ongoing actions, save consistent state, check file and dependency compatibility, then start and verify the new generation. Late commands from the old generation must not enter the new one. A filesystem snapshot is not a process checkpoint; restoring a complete old filesystem snapshot does not itself upgrade its tools. Data transfer into a new image needs an explicit, tested mechanism, not an assumed universal combination of snapshot and replacement image.
+
 ## 14. Common Mistakes
 
 Very typical problems:
@@ -803,3 +811,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^cloudflare-webmcp]: Cloudflare, [WebMCP — capabilities and limitations](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
 
 [^cloudflare-cryptolabe]: Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
+
+[^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers, rebuilt to scale agent sandboxes](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.

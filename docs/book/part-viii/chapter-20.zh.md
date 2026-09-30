@@ -229,6 +229,14 @@ OpenAI 和 Microsoft 虽然表述不同，但都指向同一个运营结论：�
 
 如果这些东西都被塞进一个不可分的部署工件，回滚就会太粗暴，也太慢。
 
+### 镜像升级：新启动灰度，现有工作区显式迁移
+
+应区分由策略选择镜像的新工作区，以及需要显式迁移的已固定工作区。Cloudflare 展示了基于 Durable Object 身份的灰度、活动项目版本固定、自然检查点上的迁移，以及对未来启动的镜像选择回滚。[^cloudflare-workspace-image] 确定性的灰度分组不应在每次重试时重新抽取；除了启动成功，还应衡量任务完成、文件保留和恢复失败。
+
+本书建议：扩大灰度前，在新任务与恢复任务上验证“镜像 + 保存状态格式”的组合。迁移应遵循第 16 章的所有者和代次契约，而不是在命令执行中替换环境。紧急撤销版本可能需要受控中断，但尚未确定结果的外部动作仍需核对。
+
+**镜像回滚不是工作区回滚。** 修改选择影响后续启动，不会恢复已修改的文件、数据库模式或已发送的请求。旧镜像可能无法读取迁移后的数据。因此变更包需要向后兼容性、单独的数据恢复或补偿方案，以及停止条件。未经确认兼容，不得在新数据上自动重启旧镜像。已经运行的灰度实例需要单独的停止决策；改变默认值不会将其停止。
+
 ## 9. 变更管理必须考虑影响半径
 
 好的流程几乎都会问一句：“如果这次变更错了，最大伤害会有多大？”
@@ -372,3 +380,5 @@ def classify_change(affected_surfaces: tuple[str, ...]) -> str:
 [^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 
 [^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
+
+[^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers：为大规模智能体沙箱重构](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.

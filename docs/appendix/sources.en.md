@@ -19,6 +19,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Google Cloud, [Using AI agents to secure Google infrastructure](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Cloudflare Containers, rebuilt to scale agent sandboxes](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
+
 - Cloudflare, [We tested our own WAF with frontier AI models. Here’s what we found](https://blog.cloudflare.com/adaptive-ai-waf-testing/), 2026-09-29.
 - Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
 - Cloudflare, [The road to the agentic browser: A Kitesurf update](https://blog.cloudflare.com/kitesurf-update/); [WebMCP — limitations](https://developers.cloudflare.com/browser-run/features/webmcp/#limitations), 2026-09-28.

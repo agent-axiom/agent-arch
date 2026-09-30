@@ -29,6 +29,18 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Containers: the workspace owns its image version
+
+In its [September 30, 2026 article](https://blog.cloudflare.com/faster-agent-sandboxes/), Cloudflare describes `durable_object` scheduling: controller code chooses the image and instance size at startup. “Rollouts are now just code” illustrates canaries, pinning active projects, checkpoint transitions and image selection for future starts. Filesystem snapshots are announced in public beta; file persistence does not promise process continuation or automatic state migration across images.
+
+The transferable lesson is to separate publishing a new default from transitioning an individual workspace. Immutable image identity, generations and compatibility checks in chapters 16 and 20 are book recommendations, not documented Cloudflare guarantees or implemented reference-runtime features.
+
+Three proposed synthetic validation scenarios, not results of an executed experiment:
+
+1. **Upgrade during a task:** publish v2 while a command runs in v1. The active workspace remains on v1 until a coordinated boundary; a new canary workspace gets v2, and a late v1 command cannot run in the new generation.
+2. **Restart a pinned environment:** restart a v1 workspace after changing the default. Obtain the same immutable image or an explicit stop if unavailable/revoked; verify saved files, not just startup success.
+3. **Rollback after a write:** v2 changes a test-file format and produces an effect in a fake external service. Selecting v1 for future starts must not report those changes as undone; incompatible restart is blocked pending separate recovery, and the effect is not repeated without reconciliation.
+
 ### Cloudflare: adaptive WAF testing and misleading metric success
 
 In its [September 29, 2026 article](https://blog.cloudflare.com/adaptive-ai-waf-testing/), Cloudflare describes testing one WAF configuration in an authorized customer staging environment. Of 45 scenarios, 44 covered six attack categories and one covered log injection. The model proposed mutations and separately reviewed responses, but code controlled dispatch: hostname allowlist, redirects disabled, attempt logging and a hard limit. Models could not see internal WAF rules or deploy protection rules.

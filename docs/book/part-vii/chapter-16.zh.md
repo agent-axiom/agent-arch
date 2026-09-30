@@ -674,6 +674,14 @@ solver 的变更保存在隔离的暂存工作区。只有通过验证的候选�
 
 为磁盘、快照和派生缓存保留来源、所有者范围、准备代次和重用资格。分配器修复与既有产物清理是独立的就绪条件：旧快照可能无需新分配就恢复旧映射。未经确认的代次在重建或验证清理之前，应禁止恢复和克隆。托管服务中这些操作可能仅由提供方执行，因此需要提供方证据和明确验证限制，不能依赖代理代码的承诺。这是建议的基础设施契约，不是参考运行时已实现功能。清理完成条件见[第 23 章](../part-viii/chapter-23.md)。
 
+### 工作区镜像是固定状态，而非浮动默认值
+
+采用 `durable_object` 策略的 Cloudflare Containers 允许代码在具体环境启动时选择镜像，并让运行中的容器继续使用原镜像。因此，升级是工作区控制器的决策，而不是整体部署自动触发的结果。[^cloudflare-workspace-image]
+
+以下是本书建议的契约，并非参考运行时已实现的功能：在容器外持久保存 `workspace_id`、不可变镜像引用（`image_digest` 或等价版本标识）、`environment_generation`、选择策略版本，以及任务检查点和文件系统快照引用。区分期望版本与实际运行版本，并在启动后核对。浮动标签或默认值变化不得在重启时悄悄改变固定工作区。若旧镜像不可用或被当前安全策略禁止，应明确停止，而不是替换为新镜像。固定版本不能覆盖对漏洞镜像的紧急撤销。
+
+由一个生命周期所有者在协调后的边界执行迁移：停止接收新命令，等待或核对进行中动作的结果，保存一致状态，检查文件与依赖兼容性，再启动并验证新代次。旧代次的迟到命令不得进入新代次。文件系统快照不是进程检查点；恢复完整的旧文件系统快照不会自动升级其中的工具。向新镜像迁移数据需要明确且经过验证的机制，不能假定任意快照都能与替换镜像直接组合。
+
 ## 14. 常见错误
 
 非常典型的问题有：
@@ -802,3 +810,5 @@ solver 的变更保存在隔离的暂存工作区。只有通过验证的候选�
 [^cloudflare-webmcp]: Cloudflare, [WebMCP：能力与限制](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
 
 [^cloudflare-cryptolabe]: Cloudflare, [CryptoLabe：利用 AI 规划后量子迁移](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
+
+[^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers：为大规模智能体沙箱重构](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.

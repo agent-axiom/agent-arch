@@ -229,6 +229,14 @@ You often need to roll back independently:
 
 If all of those are fused into one indivisible deploy artifact, rollback becomes too blunt and too slow.
 
+### Image upgrades: canary new starts, migrate existing workspaces
+
+Separate new workspaces whose image is selected by policy from already pinned workspaces requiring an explicit transition. Cloudflare illustrates a canary based on Durable Object identity, active-project pinning, migration at a natural checkpoint and rollback of image selection for future starts.[^cloudflare-workspace-image] A deterministic canary cohort must not be rerolled on every retry; measure task completion, file preservation and resume failures, not just successful startup.
+
+Book recommendation: before expanding the canary, verify the “image + saved-state format” pair on both new and resumed tasks. Migrate through the owner/generation contract in chapter 16 rather than replacing the environment during a command. Urgent version revocation may require controlled interruption, but unresolved external actions still need reconciliation.
+
+**Image rollback is not workspace rollback.** Changing selection affects subsequent starts; it does not restore modified files, database schemas or sent requests. The old image may not read migrated data. The change package therefore needs backward compatibility, a separate data-recovery or compensation plan, and a stop criterion. Without confirmed compatibility, do not automatically restart the old image over new data. An already running canary needs a separate shutdown decision; changing the default does not stop it.
+
 ## 9. Change management must account for blast radius
 
 A strong process almost always asks: “What is the maximum damage this change can cause if we are wrong?”
@@ -372,3 +380,5 @@ After change management, the natural next step is the assurance loop: red teamin
 [^nist-sp53]: NIST, [SP 800-53 Rev. 5: Security and Privacy Controls for Information Systems and Organizations](https://csrc.nist.gov/pubs/sp/800/53/r5/upd1/final)
 
 [^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
+
+[^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers, rebuilt to scale agent sandboxes](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
