@@ -19,6 +19,8 @@
 
 - Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Auto Router：模型切换成本](https://blog.cloudflare.com/auto-router/), 2026-09-30.
+
 - Cloudflare, [Cloudflare Containers：为大规模智能体沙箱重构](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
 
 - Cloudflare, [使用前沿 AI 模型测试 WAF：实验结果](https://blog.cloudflare.com/adaptive-ai-waf-testing/), 2026-09-29.

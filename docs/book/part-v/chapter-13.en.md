@@ -526,6 +526,12 @@ For a release gate, this is its own failure pattern: **model unchanged → harne
 
 The practical contract after this kind of incident is concrete: prompt changes get per-model eval suites and ablations; intelligence/latency tradeoffs get soak periods and gradual rollout; context-pruning changes get stale-session regression cases; dogfooding uses the public build, not only an internal testing build. User feedback also becomes a gate signal, but it has to be linked to specific version slices so broad complaints do not disappear into normal variance.
 
+### Router evaluation requires whole sessions
+
+Compare a fixed model, tariff-only routing and switching-cost-aware routing on a held-out set of multi-turn tasks. Keep allowed tools, quality criteria and total budgets equal; define cache state explicitly and do not warm one variant by running another. Repeat by task and stratify by session length, cache state and fallback reason instead of reporting only mean request price.[^cloudflare-auto-router]
+
+Include three proposed scenarios: a long session with a hot cache and a cheaper new candidate; a pause beyond TTL or a changed prefix; and forced fallback after outage or route revocation. Check completed-task quality, spend across all attempts, latency and policy compliance. The first may correctly retain the model or switch with justified savings; the second must reprice without a fictitious cache hit; the third must choose an eligible route or explicitly stop without duplicating an external effect. This is a validation plan, not an executed experiment; source details appear in the [case studies](../../appendix/case-studies.en.md).
+
 ## 8. Practical Rules for the Eval Loop
 
 If you need a short engineering frame, rules like these are usually enough:
@@ -732,3 +738,5 @@ By this point Part V forms a coherent operational block: traces, SLO, and the ev
 [^google-evaluate-agent-performance]: Google Cloud Blog, [Evaluate agent performance](https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^laconian-case]: Primary materials from Laconian, an open-source project by the author of this book, pinned to revision `669c45e849f75c99f81af19561d09cf24664e935`: [README](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md), [`if` skill contract](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md), [skill/evaluation-harness boundary](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md), [fidelity-before-compression rationale](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md), and [benchmark methodology](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md).
+
+[^cloudflare-auto-router]: Cloudflare, [Auto Router: model-switching cost](https://blog.cloudflare.com/auto-router/), 2026-09-30.

@@ -526,6 +526,12 @@ Anthropic 关于 Claude Code quality reports 的复盘，把同一个问题展�
 
 这类事故之后的实践契约很具体：prompt changes 要有 per-model eval suite 和 ablation；intelligence/latency tradeoff 要有 soak period 和 gradual rollout；context-pruning changes 要有 stale-session regression cases；dogfooding 要使用 public build，而不只是 internal testing build。User feedback 也应该进入 gate signal，但必须绑定到具体 version slices，否则广泛抱怨会被 normal variance 稀释掉。
 
+### 路由器评估需要完整会话
+
+在独立的多轮任务测试集上比较固定模型、仅按费率路由和考虑切换成本的路由。保持允许工具、质量标准及总预算一致；明确缓存状态，不要通过运行一个方案为另一个方案预热。按任务重复试验，并按会话长度、缓存状态及回退原因分组，而非只报告平均请求价格。[^cloudflare-auto-router]
+
+加入三个建议场景：缓存有效的长会话遇到更便宜的新候选；暂停超过 TTL 或前缀改变；故障或路由权限撤销后强制回退。检查任务完成质量、所有尝试总成本、延迟及策略遵守情况。第一种情况既可以保留模型，也可以基于合理收益切换；第二种必须重新计价，不能虚构缓存命中；第三种必须选择合格路由或明确停止，且不能重复外部副作用。这是验证计划，不是已执行实验；来源细节见[实践案例](../../appendix/case-studies.zh.md)。
+
 ## 8. 评测回路的实用规则
 
 如果要把工程规则压缩成一小组，通常这些就够了：
@@ -730,3 +736,5 @@ Google 的 Discovery Bench 还补了第二个提醒：团队也要 **evaluate yo
 [^google-evaluate-agent-performance]: Google Cloud Blog, [Evaluate agent performance](https://cloud.google.com/blog/products/data-analytics/evaluate-agent-performance).
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^laconian-case]: Laconian 是本书作者的开源项目；以下 primary materials 固定在 revision `669c45e849f75c99f81af19561d09cf24664e935`：[README](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md)、[`if` skill contract](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md)、[skill/evaluation-harness boundary](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md)、[fidelity-before-compression rationale](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md)与[benchmark methodology](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md)。
+
+[^cloudflare-auto-router]: Cloudflare, [Auto Router：模型切换成本](https://blog.cloudflare.com/auto-router/), 2026-09-30.

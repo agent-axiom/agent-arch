@@ -214,6 +214,14 @@ For cost, distinguish the memory limit, actual resident memory, and billed GB-ho
 
 Test a “burst → idle → work again” profile: peak, steady footprint, reclamation delay, full-session cost, and subsequent access latency after reclamation. If the provider does not expose a required quantity, record it as unknown rather than substituting RSS. Starting a session when a chat opens may reduce user waiting but needs a lifetime cap and accounting for unused sessions. These are proposed book metrics, not results from its own load tests. See [Chapter 16](../part-vii/chapter-16.en.md) for startup snapshots versus checkpoints.
 
+### Model-switching cost in a long session
+
+A low price per million tokens does not guarantee a low completed-task cost. Cloudflare Auto Router accounts for prompt-cache reads and rewrites: a model with a live cache can be cheaper than a new candidate that must process the entire context. Across turns it applies a switching penalty that grows with context size; within one user-input loop the source recommends keeping the model while the cache is hot.[^cloudflare-auto-router]
+
+To decide whether to stay or switch, compare **expected remaining costs**: transition input/cache writes, future cache reads, output tokens, repeated reasoning, retries and tool calls. Sunk costs are not a reason to stay, but remain part of total task cost. Do not count repeated reasoning twice on top of output usage: it explains part of the charge rather than adding a separate bill item. Future turn count is uncertain; test multiple payback horizons instead of promising savings from one tariff.
+
+A live cache is observed or estimated state with a TTL, scope and compatible prefix, not a property of a model name. Expired or unknown caches must not be priced as guaranteed hits. Neither cache nor reasoning portability is assumed, even within one model family. Estimate repeated reasoning from available counters and behavior, without requiring hidden reasoning text. For SLOs compare success rate, total spend across all attempts divided by successful tasks, p95 latency and switch count; with zero successes, cost per success is not zero.
+
 ## 8. Escalation SLO Protect the Humans Around the System
 
 Human-in-the-loop is not a free safety net.
@@ -381,3 +389,5 @@ After SLO, the next step in the same story is the eval loop: offline evals, onli
 - [Sources](../../appendix/sources.en.md)
 
 [^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).
+
+[^cloudflare-auto-router]: Cloudflare, [Auto Router: model-switching cost](https://blog.cloudflare.com/auto-router/), 2026-09-30.

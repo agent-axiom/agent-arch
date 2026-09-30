@@ -214,6 +214,14 @@ Cloudflare AI Gateway spend limits 说明，这类 budget gate 不只应该存�
 
 检查“突发负载 → 空闲 → 再次工作”曲线：峰值、稳态占用、回收延迟、完整会话成本和回收后再次访问的延迟。提供方未暴露所需指标时应标记未知，而不是用 RSS 替代。打开聊天时预先启动会话可减少用户等待，但需要生命周期上限并核算未使用会话。以上是本书建议指标，不是本书已执行的负载测试结果。启动快照与检查点的区别见[第 16 章](../part-vii/chapter-16.zh.md)。
 
+### 长会话中的模型切换成本
+
+每百万 token 的低价并不保证完成任务的成本更低。Cloudflare Auto Router 会考虑提示词缓存的读取和重写：仍有有效缓存的模型可能比需要重新处理整个上下文的新候选更便宜。跨轮次的切换惩罚随上下文规模增加；在同一次用户输入循环内，来源建议在缓存有效时继续使用原模型。[^cloudflare-auto-router]
+
+决定继续还是切换时，应比较**预期剩余成本**：切换时的输入和缓存写入、未来缓存读取、输出 token、重复推理、重试及工具调用。已发生的成本不是继续使用原模型的理由，但仍计入任务总成本。不要在输出用量之外再次计算重复推理：它解释部分费用，而不是额外账单项。未来轮次数未知，应检查多个回本周期，不能凭单一费率承诺节省。
+
+有效缓存是带有 TTL、作用域及兼容前缀的观测或估计状态，而非模型名称的属性。过期或未知缓存不能按保证命中计价。即使同属一个模型家族，也不能假定缓存或推理状态可迁移。通过可用计数器和行为估计重复推理，不要求读取隐藏推理文本。SLO 应比较成功率、所有尝试总费用除以成功任务数、p95 延迟和切换次数；没有成功任务时，每次成功成本不能记为零。
+
 ## 8. 升级 SLO 保护的是系统周围的人
 
 人在环路不是一个免费的安全网。
@@ -381,3 +389,5 @@ def classify_run_health(run: RunHealth) -> str:
 - [参考来源](../../appendix/sources.zh.md)
 
 [^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).
+
+[^cloudflare-auto-router]: Cloudflare, [Auto Router：模型切换成本](https://blog.cloudflare.com/auto-router/), 2026-09-30.

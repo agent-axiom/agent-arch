@@ -683,6 +683,14 @@ Proposed book contract, not an implemented reference-runtime feature: persist `w
 
 One lifecycle owner performs the transition at a coordinated boundary: stop admitting commands, drain or reconcile ongoing actions, save consistent state, check file and dependency compatibility, then start and verify the new generation. Late commands from the old generation must not enter the new one. A filesystem snapshot is not a process checkpoint; restoring a complete old filesystem snapshot does not itself upgrade its tools. Data transfer into a new image needs an explicit, tested mechanism, not an assumed universal combination of snapshot and replacement image.
 
+### Model routing accounts for session state
+
+Beyond choosing an execution topology, the runtime needs a model-transition contract. Cloudflare describes filtering eligible candidates before quality/price scoring and accounting separately for cache costs.[^cloudflare-auto-router] The following book recommendation is neither a description of every internal Auto Router field nor an implemented reference-runtime feature.
+
+Record the current model/provider, turn ID, routing-policy version, eligible candidates, estimated context size, cache state (`live`, `expired`, `unknown`) with observation source/time, transition reason and predicted remaining spend. Reconcile predictions against actual usage after the response. Prefer turn boundaries over switching during an unfinished response stream or tool-call chain. Before transition, check message, tool-result and context-window compatibility; a shared family name proves none of these.
+
+Data-handling policy, permitted providers, required capabilities and budget limits are hard constraints before optimization. A warm cache never justifies a forbidden route; revocation or outage may require a forced transition with an explicit reason and cold-start accounting. If no candidate is eligible, stop or escalate. Switching does not reset budgets or authorize repeating an external effect: reconcile an ambiguous outcome first. A minimum expected benefit and a limit on discretionary switch frequency can prevent oscillation, but must not block mandatory transitions.
+
 ## 14. Common Mistakes
 
 Very typical problems:
@@ -813,3 +821,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^cloudflare-cryptolabe]: Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
 
 [^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers, rebuilt to scale agent sandboxes](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
+
+[^cloudflare-auto-router]: Cloudflare, [Auto Router: model-switching cost](https://blog.cloudflare.com/auto-router/), 2026-09-30.

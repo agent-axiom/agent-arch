@@ -29,6 +29,14 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Auto Router: savings depend on transition cost
+
+In its [September 30, 2026 article](https://blog.cloudflare.com/auto-router/), Cloudflare announces Auto Router in public beta. After filtering compatible and available models, a classifier and scoring matrix combine expected quality and cost. For long sessions the article describes cache-read/write accounting and a switching penalty that grows with context; the gateway can try the next eligible candidate if the first is unavailable.
+
+The article notes that many models cannot reuse another model's reasoning, potentially requiring repeated reasoning at output prices. However, preferring the same model family to preserve reasoning is described as a **future improvement**, not a current guarantee. Zero-data-retention filtering is also on the roadmap; strict retention requirements cannot be assumed automatically satisfied by this product.
+
+In the authors' internal benchmark of 97 tasks with three repetitions, Auto Router completed 252/291 trials (86.6%) for $2.10 total; Claude Opus 5.5 completed 281/291 (96.6%) for $5.91; GPT-6 Sol completed 245/291 (84.2%) for $2.64. These are author-reported results with simulated workspace tools, not independent replication or proof of equal quality. Total cost and cost per success have different denominators; savings do not transfer automatically to another task mix. The contract and three proposed scenarios in chapters 12, 13 and 16 are book recommendations, not evidence of provider implementation.
+
 ### Cloudflare Containers: the workspace owns its image version
 
 In its [September 30, 2026 article](https://blog.cloudflare.com/faster-agent-sandboxes/), Cloudflare describes `durable_object` scheduling: controller code chooses the image and instance size at startup. “Rollouts are now just code” illustrates canaries, pinning active projects, checkpoint transitions and image selection for future starts. Filesystem snapshots are announced in public beta; file persistence does not promise process continuation or automatic state migration across images.

@@ -557,6 +557,12 @@ GitHub Copilot agentic harness дает хороший практический 
 
 Практический контракт после такого инцидента: prompt changes получают per-model eval suite and ablation; intelligence/latency tradeoffs получают soak period and gradual rollout; context-pruning changes получают stale-session regression cases; dogfooding должно использовать public build, а не только internal testing build. User feedback тоже становится сигналом gate, но его нужно связывать с конкретными version slices, чтобы broad complaint не растворялся в normal variance.
 
+### Оценка маршрутизатора требует целых сессий
+
+Сравнивай фиксированную модель, маршрутизацию только по тарифу и маршрутизацию с ценой переключения на отдельном наборе многоходовых задач. Варианты должны иметь одинаковые разрешённые инструменты, критерии качества и общий бюджет; состояние кэша задавай явно и не прогревай один вариант запуском другого. Нужны повторения по задачам и разбиение по длине сессии, состоянию кэша и причине fallback, а не только средняя цена запроса.[^cloudflare-auto-router]
+
+Включи три предлагаемых сценария: длинную сессию с горячим кэшем и дешёвым новым кандидатом; паузу дольше TTL либо изменение префикса; вынужденный fallback при outage или отзыве маршрута. Проверяй качество завершённой задачи, общую стоимость всех попыток, задержку и соблюдение политики. В первом случае допустим как отказ от переключения, так и экономически обоснованный переход; во втором — пересчёт без фиктивного cache hit; в третьем — разрешённый маршрут либо явная остановка, без двойного внешнего эффекта. Это план проверки, не выполненный эксперимент; детали источника см. в [практических кейсах](../../appendix/case-studies.md).
+
 ## 8. Практические правила для контура оценки
 
 Если нужен короткий инженерный каркас, обычно достаточно таких правил:
@@ -865,3 +871,5 @@ rollout_judgment:
 [^aws-toolsimulator]: AWS, [ToolSimulator: scalable tool testing for AI agents](https://aws.amazon.com/blogs/machine-learning/toolsimulator-scalable-tool-testing-for-ai-agents/).
 [^amershi]: Microsoft Research, [Guidelines for Human-AI Interaction](https://www.microsoft.com/en-us/research/publication/guidelines-for-human-ai-interaction/)
 [^laconian-case]: Первичные материалы Laconian, открытого проекта автора книги, на зафиксированной ревизии `669c45e849f75c99f81af19561d09cf24664e935`: [README](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/README.md), [контракт навыка `if`](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/skills/if/SKILL.md), [граница навыка и оценочной обвязки](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/design.md), [обоснование приоритета сохранения смысла над сжатием](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/docs/philosophy.md) и [методология бенчмарка](https://github.com/agent-axiom/laconian/blob/669c45e849f75c99f81af19561d09cf24664e935/benchmarks/methodology.md).
+
+[^cloudflare-auto-router]: Cloudflare, [Auto Router: цена переключения модели](https://blog.cloudflare.com/auto-router/), 2026-09-30.
