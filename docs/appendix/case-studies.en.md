@@ -29,6 +29,16 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare: adaptive WAF testing and misleading metric success
+
+In its [September 29, 2026 article](https://blog.cloudflare.com/adaptive-ai-waf-testing/), Cloudflare describes testing one WAF configuration in an authorized customer staging environment. Of 45 scenarios, 44 covered six attack categories and one covered log injection. The model proposed mutations and separately reviewed responses, but code controlled dispatch: hostname allowlist, redirects disabled, attempt logging and a hard limit. Models could not see internal WAF rules or deploy protection rules.
+
+The authors report **1,107 recorded attempts** and **607 post-triage results: 558 blocked requests and 49 WAF-relevant findings for investigation**. Of the findings, 48 concerned CMDi and SSRF. Review excluded malformed, benign and out-of-scope observations and failures before reaching the target; duplicates were combined. 49 is not a confirmed-compromise count, and 607 is not the original attempt count. These aggregates do not establish an exploitation success rate.
+
+One instructive request produced a redirect instead of the expected block page: it was retained as an edge-pass observation, but there was no successful origin response or evidence of an application effect. Other mutations could “successfully” pass because they became benign. The transferable lesson is to check transport, defensive decisions, semantics and effects separately rather than trust one model score.
+
+Results concern the stated configuration: Attack Score blocked values ≤30, the full Cloudflare Managed Ruleset was enabled, and OWASP Core Ruleset used Paranoia Level 3; an allowlisted test User-Agent passed automated-traffic controls. This measures neither every defensive layer nor individual rules, and gives no guarantee for another configuration. Findings underwent engineering replay and false-positive risk checks before changes were released. Book recommendations and three synthetic scenarios are in the [eval schema](eval-schema.en.md); this case reports the authors' results, not an independent replication.
+
 ### Cloudflare CryptoLabe: shared cooldown across independent scans
 
 In its [September 29, 2026 article](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), Cloudflare describes CryptoLabe, an evolving internal cryptography inventory tool. This case concerns load control, not cryptography: repository scans have their own durable coordinators and call models through AI Gateway. Increased concurrency produced HTTP 429 responses; independent retries amplified the bursts. The authors report using one global Durable Object to pace every model request, including retries, and share one scan's cooldown with all the others.

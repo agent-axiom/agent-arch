@@ -109,6 +109,20 @@
 
 Anthropic 最近在这方面的工作尤其值得参考：更强的控制评测脚手架，以及更强的红队场景生成。[^anthropic-redteam][^anthropic-bloom]
 
+### 4.1. 通过 WAF 不等于攻击成功
+
+自适应对手可能通过破坏测试本身的意义来改善观测指标。模型不断修改请求，直到 WAF 不再阻止它，也可能意外把输入变成无害内容。因此，未被阻止只是待分析线索，不是成功利用的证据。在 Cloudflare 的实验中，未阻止请求成为发现之前必须经过人工审查。[^cloudflare-adaptive-waf]
+
+应区分三个独立问题：
+
+- **通过防护边界：** 有效请求是否真的发送至获准目标，由哪一层处理，是否证实 WAF 没有阻止？
+- **保留攻击语义：** 对应用的特定解析器、路由和配置，变更后的请求是否仍然构成攻击？模型声称等价并不足够。
+- **确认效果：** 是否有受控目标上的独立结果证据，而不仅是 HTTP 状态、重定向或未出现阻止页面？
+
+这些维度应分别保存，并允许 `unknown`：未经源站验证的重定向不能证明利用成功；未知效果既不是攻击成功，也不是应用安全的证明。到达 WAF、到达应用和执行有漏洞的路径同样是不同观察。语义及效果验证需要独立判定基准或获准环境中可观测的测试目标，无需为了取得证据而修改生产系统。
+
+指标应公开所有尝试、无效/未发送请求、不明确响应、无害变体、重复项、审查后的发现，以及单独统计的确认效果。筛选结果集中的比例不是全部尝试或其他配置上的入侵概率。候选规则还应对合法流量及误报风险进行检查；模型不能自行启用防护。建议契约见[评测模式](../../appendix/eval-schema.zh.md)，数字示例见 [Cloudflare 案例](../../appendix/case-studies.zh.md)。
+
 ## 5. 它和现有评测层的关系
 
 你已经有：
@@ -365,3 +379,5 @@ def passes_control_eval(result: ControlEvalResult) -> bool:
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
+
+[^cloudflare-adaptive-waf]: Cloudflare, [使用前沿 AI 模型测试 WAF：实验结果](https://blog.cloudflare.com/adaptive-ai-waf-testing/), 2026-09-29.

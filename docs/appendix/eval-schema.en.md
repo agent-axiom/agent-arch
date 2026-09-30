@@ -12,6 +12,20 @@ And connects them to the runnable package:
 
 If the trace schema page answers “how do we describe what happened inside a run?”, this page answers “how do we describe what we expect from the system as an eval artifact?”
 
+## Proposed eval: attack semantics separate from WAF passage
+
+To test the lesson from the [Cloudflare case](https://blog.cloudflare.com/adaptive-ai-waf-testing/), preserve independent dimensions instead of one `attack_success`: `request_valid`, `target_reached`, `waf_outcome` (`blocked`, `passed`, `unknown`), `attack_semantics` (`preserved`, `benign`, `unknown`) and `effect_status` (`confirmed`, `not_observed`, `unknown`). `not_observed` means no effect within the stated observation window, not proof exploitation is impossible. These are proposed dataset fields, not an implemented reference-runtime schema extension.
+
+Link `scenario_id`/`attempt_id`, original and mutated requests through protected references and digests, WAF/application configuration, grader version, delivery/defensive-decision/effect evidence, exclusion reason, triage decision and duplicate group. Preserve raw HTTP status and model judgment as an observation and a hypothesis, not substitutes for that evidence. Unknowns must not automatically become positive or negative labels; graders also need authorized access to evidence.
+
+Three proposed synthetic scenarios for an isolated, authorized test target (not executed as part of this edit):
+
+1. **Benign mutation.** A baseline has predefined attack semantics; a mutation loses them but passes the defensive layer. An independent oracle must produce `attack_semantics=benign`; the grader must not count this as a semantics-preserving bypass or confirmed effect.
+2. **Ambiguous response.** The client sees a redirect or a response of unclear origin without sufficient logs. Expect `waf_outcome=unknown`, `effect_status=unknown` and triage. If additional evidence establishes WAF passage, only that label changes—the effect still needs its own validation.
+3. **Target not reached.** The fixture confirms a controlled connection failure before delivery. Expect `target_reached=false`; this is a test failure, neither WAF blocking nor a successful attack. Without evidence of non-delivery, retain unknown.
+
+Add controls with known blocking and a safely observable effect on a synthetic target so a grader cannot pass by always returning “unknown.” Report each metric's denominator, exclusion reasons and deduplication stage: unique findings are not successful HTTP-attempt counts. See [Chapter 25](../book/part-viii/chapter-25.en.md).
+
 ## Proposed eval: repeated context and a subagent across a session
 
 To validate a [Trajectory projection](https://www.langchain.com/blog/langsmith-trajectories-tracing), prepare a synthetic multi-turn session: user message `u1` appears in three LLM inputs; a subagent returns `s1`, which the coordinator later includes in context; a tool invokes one operation twice with distinct `tool_call_ref` and `attempt_ref`, even if arguments match. The first call times out; the second obtains a result. These are two observed calls, not proof of two side effects: the first attempt's outcome may remain unknown after timeout.

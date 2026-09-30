@@ -12,6 +12,20 @@
 
 如果追踪模式那一页回答的是“怎样描述一次运行里实际发生了什么”，这一页回答的就是“怎样把我们对系统的期待描述成评测工件”。
 
+## 建议评测：攻击语义与通过 WAF 分开记录
+
+为验证 [Cloudflare 案例](https://blog.cloudflare.com/adaptive-ai-waf-testing/)的结论，建议用独立维度替代单一 `attack_success`：`request_valid`、`target_reached`、`waf_outcome`（`blocked`、`passed`、`unknown`）、`attack_semantics`（`preserved`、`benign`、`unknown`）和 `effect_status`（`confirmed`、`not_observed`、`unknown`）。`not_observed` 仅指给定观察窗口内未见效果，不证明利用不可能。这些是建议的数据集字段，不是参考运行时已实现的模式扩展。
+
+记录应关联 `scenario_id`/`attempt_id`、通过受保护引用与摘要保存的原始及变更请求、WAF/应用配置、评分器版本、交付/防护决策/效果证据、排除原因、分诊决策及重复组。原始 HTTP 状态与模型判断分别是观察和假设，不能替代证据。未知值不能自动变为正负标签；评分器也必须获准访问证据。
+
+以下三个合成场景针对隔离、获准的测试目标，本次编辑并未执行这些测试：
+
+1. **无害变体。** 基线具有预先定义的攻击语义；变体丢失该语义却通过防护。独立基准应给出 `attack_semantics=benign`，评分器不能将其计为保留攻击语义的绕过或确认效果。
+2. **不明确响应。** 客户端收到重定向或来源不明的响应，且日志不足。预期为 `waf_outcome=unknown`、`effect_status=unknown`，并进入分诊。后续证据若证明通过 WAF，仅更新该标签；效果仍需独立验证。
+3. **请求未到达目标。** 测试装置确认交付前发生受控连接故障。预期 `target_reached=false`；这是测试失败，不是 WAF 阻止，也不是攻击成功。缺少未交付证据时仍应保留未知。
+
+加入已知阻止结果和合成目标上可安全观察效果的对照，防止评分器通过始终回答“未知”来通过测试。报告每项指标的分母、排除原因及去重阶段；独立发现数不等于成功 HTTP 尝试数。参见[第 25 章](../book/part-viii/chapter-25.zh.md)。
+
 ## 建议评估：含重复上下文和子代理的会话
 
 为验证 [Trajectory 投影](https://www.langchain.com/blog/langsmith-trajectories-tracing)，准备一个合成多轮会话：用户消息 `u1` 出现在三个大语言模型输入中；子代理返回 `s1`，随后协调者将其纳入上下文；工具对同一操作调用两次，使用不同 `tool_call_ref` 和 `attempt_ref`，即使参数相同。第一次超时，第二次取得结果。这是两个观察到的调用，不是两次副作用的证明：超时后第一次尝试的结果可能仍然未知。

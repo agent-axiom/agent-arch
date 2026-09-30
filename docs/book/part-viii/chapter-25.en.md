@@ -109,6 +109,20 @@ Its practical value is that it:
 
 Anthropic's recent work is especially useful here: stronger control-eval scaffolds and stronger red-team scenario generation. [^anthropic-redteam][^anthropic-bloom]
 
+### 4.1. Passing a WAF is not a successful attack
+
+An adaptive adversary can improve the observed metric by destroying the meaning of the test. A model changing requests until the WAF stops blocking them may accidentally make the input benign. Absence of blocking is therefore a triage lead, not proof of exploitation. In Cloudflare's experiment, human review was mandatory between a non-blocked request and a finding.[^cloudflare-adaptive-waf]
+
+Distinguish three independent questions:
+
+- **Passing the defensive boundary:** was a valid request actually sent to the authorized target, which layer handled it, and is absence of WAF blocking established?
+- **Preserving attack semantics:** does the modified request remain an attack for the application's specific parser, route and configuration? The model's claim of equivalence is insufficient.
+- **Confirmed effect:** is there independent evidence of an outcome at the controlled target, beyond an HTTP status, redirect or missing block page?
+
+Keep these dimensions separate, including `unknown`: a redirect without origin validation does not establish exploitation; an unknown effect is neither attack success nor proof of application safety. Reaching the WAF, reaching the application and executing a vulnerable path are also distinct observations. Semantics and effects need independent oracles or an instrumented test target in an authorized environment; production changes are not required to obtain evidence.
+
+Metrics should expose all attempts, invalid/unsent requests, ambiguous responses, benign mutations, duplicates, post-triage findings and separately confirmed effects. A proportion in a selected result set is not a compromise probability across all attempts or other configurations. Candidate rules must subsequently be checked against legitimate traffic and false-positive risk; the model does not gain authority to enable protection itself. See the [eval schema](../../appendix/eval-schema.en.md) for the proposed contract and the [Cloudflare case](../../appendix/case-studies.en.md) for the numeric example.
+
 ## 5. How this fits into the existing eval layer
 
 You already have:
@@ -365,3 +379,5 @@ This chapter should be read as a control-evidence layer, not as a list of extra 
 
 [^anthropic-redteam]: Anthropic, [Strengthening Red Teams](https://alignment.anthropic.com/2025/strengthening-red-teams/)
 [^anthropic-bloom]: Anthropic, [Introducing Bloom](https://www.anthropic.com/research/bloom)
+
+[^cloudflare-adaptive-waf]: Cloudflare, [We tested our own WAF with frontier AI models. Here’s what we found](https://blog.cloudflare.com/adaptive-ai-waf-testing/), 2026-09-29.
