@@ -19,6 +19,8 @@
 
 - Google Cloud, [Использование агентов для защиты инфраструктурного кода Google](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Cloudflare Issues: передача production-ошибок агенту](https://blog.cloudflare.com/real-time-issue-detection/); [Настройка автоматизации Issues](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.
+
 - Cloudflare, [Auto Router: цена переключения модели](https://blog.cloudflare.com/auto-router/), 2026-09-30.
 
 - Cloudflare, [Cloudflare Containers: обновлённая архитектура агентных песочниц](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.

@@ -185,6 +185,18 @@ Microsoft's observability guidance makes the coverage question more concrete: te
 
 **Observability case-spine note:** the [trace and telemetry coverage record](../../appendix/trace-schema.en.md) should show observability coverage for all three canonical cases. Support triage needs coverage for ticket-write paths, [approval linkage](../../appendix/approval-schema.en.md), `tool_principal`, [`policy_bundle`](../../appendix/policy-bundle-schema.en.md), `contract_version`, duplicate outcome, and bypass blind spots. Internal knowledge assistant needs coverage for [retrieval provenance](../../appendix/memory-retrieval-schema.en.md), source-grounding verdicts, tenant-filter decisions, [memory-write events](../../appendix/memory-retrieval-schema.en.md), and freshness drift. Incident coordination needs coverage for escalation path, notification delivery, responder-role identity, [incident-state transitions](../../appendix/incident-record-schema.en.md), rollback events, and [post-incident control changes](../../appendix/lifecycle-artifact-schema.en.md).
 
+### 6.1. An error group becomes an investigation job
+
+The `telemetry → investigation` transition needs its own contract: a stream of identical errors must not create a stream of independent coding agents. Cloudflare Issues groups production failures and hands off diagnostic context at an occurrence threshold or when an issue returns after inactivity. A threshold fires once when crossed, not for each subsequent occurrence; recurrence requires an earlier occurrence.[^cloudflare-issues]
+
+**Proposed handoff package**, not Cloudflare's API schema or an implemented reference-runtime feature: `issue_id`, grouping-rule version, service/environment and access scope, application version and corresponding code revision, `first_seen`, `last_seen`, event and ingestion times, observation count and aggregation window, trigger reason, reopening episode ID, sample log/trace references, and related earlier investigations, PRs and deployments. Mark unknown revisions explicitly; do not present current `main` as the code that failed. Similar-error grouping is a common-cause hypothesis, not proof: retain original observations and support splitting a group. Matching stack traces do not justify merging data across access boundaries.
+
+**Suppress duplicate launches, not evidence.** The receiver authenticates delivery and checks current authority, then durably records a processing key such as `(issue_id, scope, episode_id, workflow_version)`. Allow one active investigation per episode with an owner and a bounded ownership lease; append new observations to it. Bound concurrency and budgets by service/tenant and queue excess work. If a crash occurs between agent launch and recording its ID, reconcile by the same key rather than launch a second agent; lease expiry alone does not prove the first has stopped. Error counts and delivery counts are different quantities.
+
+Reopening creates a new episode linked to the previous decision and fix version. Define the inactivity window, allowed event lateness and recurrence rule explicitly. A late event from an old version enriches history but does not establish a new-version regression; during mixed rollouts check which version actually served the request. No errors during absent traffic or broken telemetry does not confirm a fix.
+
+Separate states: accepted for delivery → received by agent → investigation → proposed PR → review and deployment → verified outcome on the intended version with sufficient observed traffic. Cloudflare explicitly documents that an automation's `succeeded` status means Cloudflare Notifications accepted the event for delivery, with up to three handoff attempts.[^cloudflare-issues] This guarantees neither a single agent launch nor a fix. A PR is not production authorization. Logs remain untrusted data, not instructions; minimize sensitive data in the package, and grant access to further logs separately rather than expanding authority upon webhook receipt.
+
 ## 7. Why governance without observability is fragile
 
 Governance is often expressed as:
@@ -453,3 +465,5 @@ This chapter should be read as an evidence-readiness layer, not as a logging che
 [^azure-agentic-cloud-ops]: Microsoft Azure Blog, [From insight to action: The next phase of agentic cloud operations](https://azure.microsoft.com/en-us/blog/from-insight-to-action-the-next-phase-of-agentic-cloud-operations/)
 
 [^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
+
+[^cloudflare-issues]: Cloudflare, [Cloudflare Issues: production-error handoff to agents](https://blog.cloudflare.com/real-time-issue-detection/), 2026-09-30; [Set up an Issues automation](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.

@@ -185,6 +185,18 @@ Microsoft 的可观测性（observability）指南把覆盖问题（coverage）�
 
 **可观测性案例主线说明（Observability case-spine note）：**[追踪与遥测覆盖记录（trace and telemetry coverage record）](../../appendix/trace-schema.zh.md)应该展示三个规范案例（canonical cases）的可观测性覆盖（observability coverage）。支持分诊（Support triage）需要覆盖工单写入路径（ticket-write paths）、[审批链接（approval linkage）](../../appendix/approval-schema.zh.md)、`tool_principal`、[`policy_bundle`](../../appendix/policy-bundle-schema.zh.md)、`contract_version`、重复结果（duplicate outcome）和绕过盲点（bypass blind spots）。内部知识助手（Internal knowledge assistant）需要覆盖[检索来源追踪（retrieval provenance）](../../appendix/memory-retrieval-schema.zh.md)、来源扎根裁决（source-grounding verdicts）、租户过滤决策（tenant-filter decisions）、[记忆写入事件（memory-write events）](../../appendix/memory-retrieval-schema.zh.md)和新鲜度漂移（freshness drift）。事故协调（Incident coordination）需要覆盖升级路径（escalation path）、通知送达（notification delivery）、响应者角色身份（responder-role identity）、[事故状态转换（incident-state transitions）](../../appendix/incident-record-schema.zh.md)、回滚事件（rollback events）和[事故后控制变更（post-incident control changes）](../../appendix/lifecycle-artifact-schema.zh.md)。
 
+### 6.1. 错误分组成为调查任务
+
+`telemetry → investigation` 转换需要独立契约：大量相同错误不应启动大量独立编码智能体。Cloudflare Issues 对生产故障分组，在出现次数达到阈值或错误在静默期后再次出现时移交诊断上下文。阈值触发发生在越过阈值时，而不是此后每次出现都触发；复发触发要求至少有一次先前记录。[^cloudflare-issues]
+
+**建议的移交包**，并非 Cloudflare API 模式或参考运行时已实现功能：`issue_id`、分组规则版本、服务及环境和访问作用域、应用版本及对应代码修订、`first_seen`、`last_seen`、事件时间和接收时间、观测次数与聚合窗口、触发原因、重新打开的事件阶段标识、日志及追踪样本引用，以及相关先前调查、PR 和部署。未知修订应明确标注，不能将当前 `main` 当作出错代码。相似错误分组只是共同原因假设，不是证明：保留原始观测并允许拆分。堆栈相同不能成为跨访问边界合并数据的理由。
+
+**抑制重复启动，而非抑制证据。** 接收方验证投递真实性和当前权限，然后持久记录处理键，例如 `(issue_id, scope, episode_id, workflow_version)`。每个事件阶段只允许一个活动调查，有明确所有者及有限租约；新观测追加到已有调查。按服务或租户限制并发和预算，超出部分排队。若在启动智能体和记录其 ID 之间崩溃，应按同一键核对已有运行，而不是启动第二个智能体；租约到期本身不能证明第一个已经停止。错误次数与投递次数是不同指标。
+
+重新打开应创建新阶段，并关联先前决定与修复版本。明确静默窗口、允许的事件延迟及复发规则。旧版本的迟到事件可以补充历史，但不能证明新版本回归；混合部署时应核对实际处理请求的版本。没有流量或遥测损坏期间未出现错误，不能确认修复成功。
+
+区分状态：接受投递 → 智能体接收任务 → 调查 → 提议 PR → 审查与部署 → 在目标版本和足够可观测流量上确认结果。Cloudflare 文档明确说明，automation 的 `succeeded` 只意味着 Cloudflare Notifications 接受事件进行投递，移交最多尝试三次。[^cloudflare-issues] 这既不保证智能体只启动一次，也不证明修复完成。PR 不等于生产发布授权。日志仍是不可信数据，不是指令；移交包应最小化敏感数据，额外日志访问必须单独授权，不能因收到 webhook 而扩大权限。
+
 ## 7. 为什么没有可观测性的治理往往很脆
 
 治理往往会被写成：
@@ -455,3 +467,5 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 [^azure-agentic-cloud-ops]: Microsoft Azure Blog, [From insight to action: The next phase of agentic cloud operations](https://azure.microsoft.com/en-us/blog/from-insight-to-action-the-next-phase-of-agentic-cloud-operations/)
 
 [^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
+
+[^cloudflare-issues]: Cloudflare, [Cloudflare Issues：向智能体移交生产错误](https://blog.cloudflare.com/real-time-issue-detection/), 2026-09-30; [配置 Issues 自动化](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.

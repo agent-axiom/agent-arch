@@ -29,6 +29,18 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare Issues: repeated errors become bounded investigations
+
+In its [September 30, 2026 announcement](https://blog.cloudflare.com/real-time-issue-detection/), Cloudflare introduces Issues in open beta: repeated exceptions, 5xx responses and error logs are grouped into an issue. Threshold or recurrence-after-inactivity automations send a configured coding agent a summary, stack trace, logs, traces, Worker version and application-added context. Built-in integrations include Claude Code, Cursor and Devin; a webhook can connect a custom receiver. Access to Workers Observability MCP for deeper investigation is configured separately—issue delivery grants no account-query permission.
+
+The authors describe two cases found in Workflows: a migration retry loop caused by a SQLite foreign-key error and deletion that failed to finish after exceeding a subrequest limit. Cloudflare OS proposed fixes. This is author-reported experience, not independent replication or a promise to automatically fix arbitrary production failures. The [automation documentation](https://developers.cloudflare.com/workers/observability/issues/automations/) distinguishes acceptance for delivery from agent execution; users review and deploy changes.
+
+The chapter 26 contract and these three scenarios are book recommendations, not documented Cloudflare guarantees or executed product tests:
+
+1. **Identical-error burst:** a thousand observations in one episode plus duplicate notification delivery. Preserve accurate observation counts, create one active investigation and append new evidence; other jobs exceeding the global limit are queued. After a crash between launch and acknowledgment, reconcile the existing run.
+2. **Recurrence after a fix:** after verified deployment, the error returns on the new version. Create a new episode linked to the earlier PR and verification evidence; a permanent deduplication key must not suppress recurrence. Neither the earlier PR nor a period without traffic automatically closes the new episode.
+3. **Late old-version event:** an old log arrives after the fix is deployed. Retain event time and revision and enrich history, but do not declare a new-version regression without evidence. If the old version still serves traffic, that is a separate live signal, not a reason to discard the event.
+
 ### Cloudflare Auto Router: savings depend on transition cost
 
 In its [September 30, 2026 article](https://blog.cloudflare.com/auto-router/), Cloudflare announces Auto Router in public beta. After filtering compatible and available models, a classifier and scoring matrix combine expected quality and cost. For long sessions the article describes cache-read/write accounting and a switching penalty that grows with context; the gateway can try the next eligible candidate if the first is unavailable.
