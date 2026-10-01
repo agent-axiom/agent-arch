@@ -691,6 +691,14 @@ Record the current model/provider, turn ID, routing-policy version, eligible can
 
 Data-handling policy, permitted providers, required capabilities and budget limits are hard constraints before optimization. A warm cache never justifies a forbidden route; revocation or outage may require a forced transition with an explicit reason and cold-start accounting. If no candidate is eligible, stop or escalate. Switching does not reset budgets or authorize repeating an external effect: reconcile an ambiguous outcome first. A minimum expected benefit and a limit on discretionary switch frequency can prevent oscillation, but must not block mandatory transitions.
 
+### Shared paid-call budgets need reservations
+
+A payment controller must own a durable ledger outside an individual agent's memory. Before signing and sending, atomically reserve the maximum authorized amount against the payer's shared budget; parallel calls must not independently observe the same remaining balance. Within one currency/asset, enforce `settled_spend + outstanding_reservations <= budget_limit`. Account for applicable fees separately in their relevant budget; a principal-payment cap does not cap all costs.
+
+Link `operation_id`, `reservation_id`, payer, recipient, resource and argument digest, asset/network, amount units, maximum, expiry, policy version, and approval/receipt references. Authorized maximum and actual settlement are separate fields: after confirmed final settlement, book the actual spend and release the unused reservation exactly once. Local cancellation, timeout or controller restart does not prove that an already submitted authorization was canceled; an uncertain reservation remains held until reconciliation or confirmed impossibility of settlement. Duplicate receipt delivery must not book the charge again.
+
+This proposed contract extends general budgets and chapter 10 recovery, but is not implemented in the reference runtime. For `upto`, Cloudflare describes an authorization maximum and an origin-reported actual amount; the protocol alone supplies neither a shared application ledger nor atomic budget reservation or an API to reconcile arbitrary business effects.[^cloudflare-paid-call] Keep signing keys in a protected payment component; traces contain references and safe metadata, not private keys or reusable signatures.
+
 ## 14. Common Mistakes
 
 Very typical problems:
@@ -823,3 +831,5 @@ The next logical step in Part VII is to add an explicit policy layer and capabil
 [^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers, rebuilt to scale agent sandboxes](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
 
 [^cloudflare-auto-router]: Cloudflare, [Auto Router: model-switching cost](https://blog.cloudflare.com/auto-router/), 2026-09-30.
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta: paid calls over HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 protocol](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

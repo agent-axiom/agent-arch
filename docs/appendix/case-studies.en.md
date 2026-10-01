@@ -29,6 +29,20 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Monetization Gateway: authorization, execution and settlement are separate
+
+The [September 30, 2026 beta announcement](https://blog.cloudflare.com/monetization-gateway-beta/) extends the previously cited Monetization Gateway initiative. At announcement, it is a closed beta for eligible US buyers and sellers; settlement is described in USDC on Base through Coinbase's x402 Facilitator. The documentation uses x402 v2: `exact` for fixed prices and `upto` for a variable-price authorization ceiling.[^cloudflare-paid-call]
+
+The buyer receives `PAYMENT-REQUIRED`, signs selected terms and repeats the request with `PAYMENT-SIGNATURE`. The origin must validate signed `PAYMENT-CONTEXT`; for successful variable-price responses it reports the actual amount in `PAYMENT-SETTLEMENT`. These are internal gateway/origin headers, not the client payment contract. The gateway settles before delivering the result. Documentation states that an amount above the authorized maximum is capped at that maximum and zero is not settled; this guarantees neither business correctness nor response delivery. See the [origin validation documentation](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/).
+
+Three proposed scenarios using simulators, not executed financial transactions or provider guarantees established by testing:
+
+1. **Price changes:** price or recipient changes after approval. Re-evaluate before signing again; block charges above the delegated maximum or to an ineligible recipient. A change within an explicitly permitted range need not invent mandatory human approval, but remains a reviewable policy decision.
+2. **Response lost after settlement:** the simulator confirms settlement but the client receives no result. Preserve separate outcomes; reconcile and retrieve the existing result before any new payment or repeated external effect. If recovery is impossible, report a paid-but-undelivered result, not “no payment occurred.”
+3. **Parallel calls:** 10 notional units remain, and two calls each request a ceiling of 7. Only one reservation succeeds; the other waits or is rejected. Restart and duplicate receipts neither lose the reservation nor double-book spend; an unknown first outcome does not release money for the second.
+
+Chapters 10, 16 and 17 propose book contracts, not an implemented reference-runtime payment module or a transaction guarantee spanning payment and an arbitrary tool.
+
 ### Cloudflare Issues: repeated errors become bounded investigations
 
 In its [September 30, 2026 announcement](https://blog.cloudflare.com/real-time-issue-detection/), Cloudflare introduces Issues in open beta: repeated exceptions, 5xx responses and error logs are grouped into an issue. Threshold or recurrence-after-inactivity automations send a configured coding agent a summary, stack trace, logs, traces, Worker version and application-added context. Built-in integrations include Claude Code, Cursor and Devin; a webhook can connect a custom receiver. Access to Workers Observability MCP for deeper investigation is configured separately—issue delivery grants no account-query permission.
@@ -567,3 +581,5 @@ The best way to read them is not sequentially, but as a map:
 - then come back and check whether your design is becoming more complex than it needs to be.
 
 If the book is going to be useful to the community, these pages should eventually grow the fastest: they turn architecture into engineering leverage.
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta: paid calls over HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 protocol](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

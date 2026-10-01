@@ -29,6 +29,20 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### Monetization Gateway：授权、执行与结算是不同阶段
+
+[2026 年 9 月 30 日的 beta 公告](https://blog.cloudflare.com/monetization-gateway-beta/)扩展了此前引用的 Monetization Gateway 计划。公告时为面向符合条件的美国买卖双方的封闭测试，描述的结算方式是在 Base 上通过 Coinbase x402 Facilitator 使用 USDC。文档采用 x402 v2：固定价格使用 `exact`，变动价格授权上限使用 `upto`。[^cloudflare-paid-call]
+
+买方收到 `PAYMENT-REQUIRED`，签署所选条件并携带 `PAYMENT-SIGNATURE` 重发请求。源站必须验证签名的 `PAYMENT-CONTEXT`；成功的变动价格响应通过 `PAYMENT-SETTLEMENT` 报告实际金额。这些是网关和源站之间的内部请求头，不是客户端支付契约。网关在交付结果前结算。文档说明，超过授权上限的金额按上限结算，零金额不结算；这并不保证业务正确性或响应送达。详见[源站验证文档](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/)。
+
+以下三个场景建议使用模拟器，不涉及已执行的金融交易，也不是通过测试确认的提供商保证：
+
+1. **价格变化：** 批准后价格或收款方变化。重新签名前再次评估；超过委托上限或收款方不合格时阻止。在明确允许范围内的变化不必人为强制人工批准，但仍须是可审查的策略决定。
+2. **结算后响应丢失：** 模拟器确认结算，客户端却未收到结果。分别保存各项结果，先核对并获取原结果，不进行新付款或重复外部动作。无法恢复时应报告“已付款但未交付”，而非“没有付款”。
+3. **并发调用：** 剩余预算为 10 个假设单位，两个调用各请求上限 7。只能一个预留成功，另一个等待或被拒绝。重启和重复收据不能丢失预留或重复记账；第一个结果未知不能为第二个释放资金。
+
+第 10、16、17 章给出的是本书契约建议，并非参考运行时已实现的支付模块，也不保证付款与任意工具之间形成事务。
+
 ### Cloudflare Issues：将重复错误转为有边界的调查
 
 Cloudflare 在 [2026 年 9 月 30 日的公告](https://blog.cloudflare.com/real-time-issue-detection/)中推出公开测试版 Issues：重复异常、5xx 响应及错误日志被归为一个 issue。阈值或静默后复发自动化向配置好的编码智能体发送摘要、堆栈、日志、追踪、Worker 版本及应用补充的上下文。内置集成包括 Claude Code、Cursor 和 Devin，也可用 webhook 连接自定义接收方。深入调查所需的 Workers Observability MCP 权限必须单独配置；投递 issue 不会授予账户查询权限。
@@ -567,3 +581,5 @@ GitHub 报告其最佳调优配置相对 Opus 5 的结果：TerminalBench 2.1 �
 - 然后回来看一遍，检查自己的设计是不是已经被你自己过度复杂化了。
 
 如果这本书真的要对社区有用，这类页面最终应该增长得最快，因为它们能把架构真正变成工程上的支点。
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta：HTTP 402 付费调用](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 协议](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

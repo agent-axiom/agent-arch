@@ -252,6 +252,14 @@ OpenAI 指南里的另一个实践建议也很值得形式化：run loop 必须�
 - 在审计轨迹里记录它；
 - 用它做对账和调查。
 
+### 付费调用：重试请求不等于重试付款
+
+付费工具至少有三个独立结果：操作是否执行、支付是否结算、结果是否送达。Monetization Gateway 文档给出的顺序是：验证授权 → 源站执行并准备响应 → 结算 → 向买方交付。[^cloudflare-paid-call] 因此响应丢失不能证明未扣款，结算失败也不能证明源站未执行任何操作。
+
+本书建议：关联业务操作、请求及支付授权标识，但分别记录 `payment_state`、`execution_state` 和 `result_state`，明确保留 `unknown`。未签名的 HTTP 402 是付款条件，不是付款许可。使用首次获准签名重发请求是协议步骤；超时后的重试则需要核对。在检查结算、操作状态及已保存结果的获取方式前，不应签发新的支付授权或重复业务动作。
+
+支付幂等不意味着工具幂等。使用双方支持的键和核对渠道；任意添加一个请求头不会自动产生去重。若集成无法确定结果，应保留不确定性并升级处理，而非自动再次扣款。退款、业务补偿和结果重发是不同操作，分别需要权限。这是架构建议，不是 x402 或 Cloudflare 的恰好一次保证。
+
 ## 11. 常见错误
 
 这些问题非常典型：
@@ -292,3 +300,5 @@ OpenAI 指南里的另一个实践建议也很值得形式化：run loop 必须�
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^cloudflare-cryptolabe]: Cloudflare, [CryptoLabe：利用 AI 规划后量子迁移](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta：HTTP 402 付费调用](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 协议](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

@@ -690,6 +690,14 @@ solver 的变更保存在隔离的暂存工作区。只有通过验证的候选�
 
 数据处理策略、允许的提供商、必要能力和预算上限是优化前的硬约束。有效缓存不能成为使用被禁止路由的理由；权限撤销或故障可能要求强制切换，并记录原因及冷启动成本。没有合格候选时应停止或升级处理。切换不能重置预算，也不能授权重复外部副作用：应先核对不明确的结果。最低预期收益门槛和可选切换频率限制可以减少模型之间的反复切换，但不能阻止必要切换。
 
+### 共享付费调用预算需要预留
+
+支付控制器应在单个智能体内存之外维护持久账本。签名并发送前，在付款方共享预算中原子预留授权上限；并发调用不能各自认为同一余额仍可使用。同一货币或资产内应满足 `settled_spend + outstanding_reservations <= budget_limit`。适用手续费应在对应预算中单独计算；主付款上限不等于所有费用上限。
+
+关联 `operation_id`、`reservation_id`、付款方、收款方、资源及参数摘要、资产和网络、金额单位、上限、有效期、策略版本及批准和收据引用。授权上限与实际结算是不同字段：确认最终结算后，只记一次实际费用并释放未用预留。本地取消、超时或控制器重启不能证明已发送授权被取消；不确定预留应保留到完成核对或确认不可能结算。重复收据不能重复记账。
+
+这是对通用预算和第 10 章恢复机制的建议扩展，并非参考运行时已实现功能。Cloudflare 对 `upto` 描述了授权上限及源站报告的实际金额；协议本身不提供应用共享账本、预算原子预留或核对任意业务副作用的 API。[^cloudflare-paid-call] 签名密钥应保存在受保护支付组件中；追踪只记录引用及安全元数据，不记录私钥或可重放签名。
+
 ## 14. 常见错误
 
 非常典型的问题有：
@@ -822,3 +830,5 @@ solver 的变更保存在隔离的暂存工作区。只有通过验证的候选�
 [^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers：为大规模智能体沙箱重构](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
 
 [^cloudflare-auto-router]: Cloudflare, [Auto Router：模型切换成本](https://blog.cloudflare.com/auto-router/), 2026-09-30.
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta：HTTP 402 付费调用](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 协议](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

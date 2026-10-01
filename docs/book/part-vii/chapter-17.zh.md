@@ -482,6 +482,14 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 这同样看起来很“无聊”。很好。目录层本来就应该无聊、稳定、可审阅。
 
+### 支付许可绑定收款方、资源与上限
+
+第 9 章已介绍付费资源准入。具体 HTTP 402 还需要支付策略检查付款方、获准卖方及 `payTo`、源站和资源、操作方法及参数、`network`、`asset`、`exact` 或 `upto`、原子单位金额与有效期。[^cloudflare-paid-call] 货币、网络和单位是授权条件，不只是显示标签。格式正确的 JSON 不代表付款指令可信；应核对获准卖方及受保护通信渠道。
+
+变动价格上限不是最终价格承诺。在明确委托的上限内，新价格可以经过策略重新评估；超过上限或改变收款方、资产、资源及参数，需要新的有效决定，不能静默继承旧批准。重定向和重复 402 都不会扩大权限。不能声称 x402 在密码学上绑定上述所有业务字段：适配器必须补足所需绑定，否则拒绝调用。
+
+付款不能替代动作授权，也不能扩大数据权限。按第 16 章契约先预留共享预算再签名；结果不明时的重试由第 10 章规则控制。这是本书建议，不是 Cloudflare 内置策略。验证该建议不需要实际付款。
+
 ## 13. 常见错误
 
 这些问题非常常见：
@@ -564,3 +572,5 @@ def get_capability(name: str) -> CapabilitySpec | None:
 [^snowflake-cortex-analyst]: Snowflake Documentation, [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst).
 [^databricks-genie]: Databricks Documentation, [Genie Spaces](https://docs.databricks.com/aws/en/genie/).
 [^power-bi-copilot]: Microsoft Learn, [Copilot for Power BI overview](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction).
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta：HTTP 402 付费调用](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 协议](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

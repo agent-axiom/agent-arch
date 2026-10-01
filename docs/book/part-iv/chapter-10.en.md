@@ -252,6 +252,14 @@ Good practice:
 - log it in audit trails;
 - use it for reconciliation and investigations.
 
+### Paid calls: request retry is not payment retry
+
+A paid tool has at least three independent outcomes: whether the operation executed, whether payment settled, and whether the result was delivered. Monetization Gateway documents this order: authorization verification → origin execution and response preparation → settlement → delivery to the buyer.[^cloudflare-paid-call] A lost response therefore does not prove there was no charge, and settlement failure does not prove that the origin did nothing.
+
+Book recommendation: correlate business-operation, request and payment-authorization identities, but track `payment_state`, `execution_state` and `result_state` separately with explicit `unknown` values. An unsigned HTTP 402 is an offer of terms, not permission to pay. Retrying with the first approved signature is a protocol step; retrying after a timeout requires reconciliation. Do not issue a fresh payment authorization or repeat the business action before checking settlement, operation status and retrieval of any saved result.
+
+Payment idempotency does not imply tool idempotency. Use keys and reconciliation channels supported by both parties; an arbitrary header does not create deduplication. If the integration cannot determine the outcome, retain uncertainty and escalate rather than automatically charge again. Refunds, business compensation and result redelivery are separate operations with separate authority. This is an architectural recommendation, not an exactly-once guarantee from x402 or Cloudflare.
+
 ## 11. Common Mistakes
 
 Typical failures repeat:
@@ -292,3 +300,5 @@ Part IV now closes the basic execution layer: contracts, sandboxing, capability 
 [^cloudflare-workflows]: [Cloudflare Agents SDK, Workflows](https://developers.cloudflare.com/agents/concepts/workflows/)
 
 [^cloudflare-cryptolabe]: Cloudflare, [Using AI to chart a course for our post-quantum migration](https://blog.cloudflare.com/ai-driven-cryptography-discovery/), 2026-09-29.
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta: paid calls over HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 protocol](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.

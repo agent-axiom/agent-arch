@@ -19,6 +19,8 @@
 
 - Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [Monetization Gateway beta：HTTP 402 付费调用](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 协议](https://developers.cloudflare.com/monetization-gateway/x402/); [Monetization Gateway](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/), 2026-09-30.
+
 - Cloudflare, [Cloudflare Issues：向智能体移交生产错误](https://blog.cloudflare.com/real-time-issue-detection/); [配置 Issues 自动化](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.
 
 - Cloudflare, [Auto Router：模型切换成本](https://blog.cloudflare.com/auto-router/), 2026-09-30.

@@ -482,6 +482,14 @@ def get_capability(name: str) -> CapabilitySpec | None:
 
 This also looks boring. Good. The catalog layer should be boring, stable, and inspectable.
 
+### Payment permission binds recipient, resource and maximum
+
+Chapter 9 already introduces policy admission for paid resources. A specific HTTP 402 needs more: payment policy must check payer, approved seller and `payTo`, origin/resource, operation method and arguments, `network`, `asset`, `exact` or `upto`, the amount in atomic units and expiry.[^cloudflare-paid-call] Currency, network and units are part of the condition, not display labels. Well-formed JSON alone does not make payment instructions trustworthy; verify them against the approved seller and protected channel.
+
+A variable-price ceiling is not a promised final price. A new price within an explicitly delegated cap may pass renewed policy evaluation; exceeding the cap or changing recipient, asset, resource or arguments requires a new eligible decision rather than silently inheriting old approval. Neither redirects nor repeated 402 responses expand authority. Do not claim x402 cryptographically binds every listed business-operation field: the adapter must supply missing binding or decline the call.
+
+Payment does not replace action authorization or expand data access. Reserve the shared budget before signing under the chapter 16 contract; chapter 10 governs retries with uncertain outcomes. These are proposed book rules, not built-in Cloudflare policies. Validating this recommendation requires no real payments.
+
 ## 13. Common Mistakes
 
 These problems are very typical:
@@ -564,3 +572,5 @@ This chapter is the contract hinge for the rest of the runtime-control cluster. 
 [^snowflake-cortex-analyst]: Snowflake Documentation, [Cortex Analyst](https://docs.snowflake.com/en/user-guide/snowflake-cortex/cortex-analyst).
 [^databricks-genie]: Databricks Documentation, [Genie Spaces](https://docs.databricks.com/aws/en/genie/).
 [^power-bi-copilot]: Microsoft Learn, [Copilot for Power BI overview](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-introduction).
+
+[^cloudflare-paid-call]: Cloudflare, [Monetization Gateway beta: paid calls over HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 protocol](https://developers.cloudflare.com/monetization-gateway/x402/), 2026-09-30.
