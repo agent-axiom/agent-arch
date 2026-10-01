@@ -73,6 +73,17 @@
 
 **检索案例主线说明（Retrieval case-spine note）：**同一个检索循环（retrieval loop）应该用三个规范案例（canonical cases）来测试。支持分诊（Support triage）考验当前工单状态（current ticket state）和已批准 playbook（approved playbooks）；内部知识助手（Internal knowledge assistant）考验来源归因（source attribution）、新鲜度窗口（freshness windows）、租户过滤器（tenant filters）和陈旧索引检测（stale-index detection）；事故协调（Incident coordination）考验当前事故时间线（current incident timeline）、负责人交接（owner handoffs）、升级状态（escalation status），以及哪些事件后事实（post-incident facts）会被压缩成持久经验（durable lessons）。
 
+### 2.3. 图像、OCR 与描述文字是不同的证据
+
+[Cloudflare AI Search 正式发布](https://blog.cloudflare.com/ai-search-ga/)（2026 年 10 月 1 日）展示了多模态检索的边界：原生图像嵌入使用像素，描述文字传达模型选取的细节，OCR 提取文本。描述文字和 OCR 都不会自动保留图表几何关系、箭头方向或界面状态。原生嵌入同样是压缩表示，并不保证保留每一处细节。
+
+本书建议的契约把每种表示关联到原件标识与修订版本、页码/区域、转换方法及模型版本。分别记录查询与检索片段实际使用的表示，以及索引版本。OCR 和描述文字仍是派生数据，不是对原件的独立佐证；访问派生数据与原件都必须遵守同一用户的权限边界。
+
+AI Search 在嵌入模型支持图像时直接嵌入查询图像；纯文本嵌入模型则使用 ToMarkdown 生成的描述文字。这改变的是检索路径，不只是生成答案的聊天模型。必须明确标记这种转换造成的视觉信号损失。切换嵌入模型时，不应假定旧向量仍然兼容：需要一致的索引，并检查是否必须重新索引。
+
+当结论依赖视觉细节时，检索结果只是候选证据：应打开获准访问的原件，由合适的模型或人检查相关区域。如果无法检查，应说明限制或拒绝作出未经证实的结论，而不是根据描述文字断定某物不存在。搜索接口返回成功不等于找到了所需证据。这是建议契约，不代表参考运行时已实现该功能。
+
+
 ## 3. 一个好的提示爱的是高密度信号，不是完整性
 
 人很容易以为“上下文越多，智能体越聪明”。实践里，情况往往相反：你塞进提示的噪音越多，模型越难抓住真正的优先级。

@@ -73,6 +73,17 @@ There is also a useful operational signal here: if a support agent worked well f
 
 **Retrieval case-spine note:** the same retrieval loop should be tested against all three canonical cases. Support triage stresses current ticket state and approved playbooks; Internal knowledge assistant stresses source attribution, freshness windows, tenant filters, and stale-index detection; Incident coordination stresses current incident timeline, owner handoffs, escalation status, and which post-incident facts are compacted into durable lessons.
 
+### 2.3. Images, OCR, and captions are different evidence
+
+[Cloudflare AI Search GA](https://blog.cloudflare.com/ai-search-ga/) (October 1, 2026) illustrates a multimodal retrieval boundary: native image embeddings use pixels, captions convey details selected by a model, and OCR extracts text. Neither captions nor OCR automatically preserve chart geometry, arrow direction, or UI state. A native embedding is also a compressed representation, not a guarantee of preserving every detail.
+
+The book's proposed contract links each representation to the original's identifier and revision, page/region, transformation method, and model version. Record the actual representations used for both the query and retrieved fragment, plus the index version. OCR and captions remain derived data, not independent corroboration of the original; access to both derivatives and originals must respect the same user's permissions.
+
+AI Search embeds query images directly when its embedding model supports them; a text-only embedding model instead uses a caption produced by ToMarkdown. This changes the retrieval path, not merely the answer's chat model. Explicitly mark that transition as a loss of visual signal. When changing embedding models, do not assume old vectors remain compatible: use a consistent index and check whether reindexing is required.
+
+When a conclusion depends on a visual detail, a retrieved result is a candidate: open the authorized original and verify the relevant region with a suitable model or human. If that is impossible, report the limitation or abstain rather than infer absence from a caption. A successful search HTTP response does not mean the necessary evidence was found. This is a recommended contract, not a claim of implemented reference-runtime functionality.
+
+
 ## 3. A Good Prompt Loves Signal Density, Not Completeness
 
 It is very tempting to think "the more context, the smarter the agent." In practice, the opposite is often true: the more garbage you put into the prompt, the worse the model holds priorities.

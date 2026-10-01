@@ -29,6 +29,15 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### Cloudflare AI Search：找到截图不等于验证截图
+
+[2026 年 10 月 1 日的正式发布公告](https://blog.cloudflare.com/ai-search-ga/) 描述了通过 Qwen3-VL-Embedding 进行原生图像检索，同时保留描述文字，并支持为扫描 PDF 启用 OCR。使用纯文本嵌入模型时，查询图像由 ToMarkdown 转为描述文字。这并不保证识别所有细节，也不是任意答案生成模型都具备的属性。
+
+建议示例：支持智能体要查找开关处于关闭状态的截图。两张截图的描述都是“设置页面”，但开关状态不同。智能体记录检索路径和来源修订版本，打开检索到的原件，检查相关区域，然后才给出带引用的答案。若原件不可用或清晰度不足，应报告不确定性；描述文字不能证明开关状态。
+
+来源契约见[第 7 章](../book/part-iii/chapter-7.md)，三个建议场景见[第 13 章](../book/part-v/chapter-13.md)。这是本书的说明性示例，不是已执行的产品测试。应根据证据是否适合任务来比较原生检索、OCR 和描述文字，而不只是检查接口调用是否成功。
+
+
 ### Monetization Gateway：授权、执行与结算是不同阶段
 
 [2026 年 9 月 30 日的 beta 公告](https://blog.cloudflare.com/monetization-gateway-beta/)扩展了此前引用的 Monetization Gateway 计划。公告时为面向符合条件的美国买卖双方的封闭测试，描述的结算方式是在 Base 上通过 Coinbase x402 Facilitator 使用 USDC。文档采用 x402 v2：固定价格使用 `exact`，变动价格授权上限使用 `upto`。[^cloudflare-paid-call]

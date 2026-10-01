@@ -19,6 +19,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Google Cloud, [Using AI agents to secure Google infrastructure](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- Cloudflare, [AI Search GA: native image retrieval and OCR](https://blog.cloudflare.com/ai-search-ga/), 2026-10-01.
+
 - Cloudflare, [Monetization Gateway beta: paid calls over HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 protocol](https://developers.cloudflare.com/monetization-gateway/x402/); [Monetization Gateway](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/), 2026-09-30.
 
 - Cloudflare, [Cloudflare Issues: production-error handoff to agents](https://blog.cloudflare.com/real-time-issue-detection/); [Set up an Issues automation](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.

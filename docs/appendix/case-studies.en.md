@@ -29,6 +29,15 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Cloudflare AI Search: finding a screenshot is not verifying it
+
+The [October 1, 2026 GA announcement](https://blog.cloudflare.com/ai-search-ga/) describes native image retrieval with Qwen3-VL-Embedding alongside captions, plus opt-in OCR for scanned PDFs. With a text-only embedding model, a query image becomes a caption through ToMarkdown. This is neither a universal guarantee of fine-detail recognition nor a property of every answer-generation model.
+
+Proposed example: a support agent searches for a screenshot where a switch is off. Two screenshots share the caption “settings page” but show different switch states. The agent records the retrieval path and source revision, opens the retrieved original, verifies the relevant region, and only then answers with a reference. If the original is unavailable or insufficiently detailed, it reports uncertainty; the caption does not establish the switch state.
+
+The provenance contract is in [Chapter 7](../book/part-iii/chapter-7.md), and three proposed scenarios are in [Chapter 13](../book/part-v/chapter-13.md). This is a book illustration, not an executed product test. Compare native retrieval, OCR, and captions by fitness of evidence for the task, not merely by API success.
+
+
 ### Monetization Gateway: authorization, execution and settlement are separate
 
 The [September 30, 2026 beta announcement](https://blog.cloudflare.com/monetization-gateway-beta/) extends the previously cited Monetization Gateway initiative. At announcement, it is a closed beta for eligible US buyers and sellers; settlement is described in USDC on Base through Coinbase's x402 Facilitator. The documentation uses x402 v2: `exact` for fixed prices and `upto` for a variable-price authorization ceiling.[^cloudflare-paid-call]

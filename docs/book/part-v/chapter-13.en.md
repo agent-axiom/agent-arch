@@ -284,6 +284,17 @@ For your system, compare adaptive routing with fixed patterns on matched tasks a
 
 Measure verified success, complete cost across attempts, latency including p95, and escalation, fallback, failure, and gate false-acceptance rates. Report overall results and task slices, not only cases where critique activated. Repeats and uncertainty intervals distinguish improvement from variability; declare quality-regression tolerances in advance. Handle missing and cancelled results under a declared rule rather than removing them to improve savings. Follow offline validation with bounded online rollout, especially for multi-turn work; evidence fields are in the [eval schema](../../appendix/eval-schema.en.md).
 
+### Multimodal retrieval: evaluate preservation of evidence
+
+Inspired by [Cloudflare AI Search GA](https://blog.cloudflare.com/ai-search-ga/), use three proposed scenarios with synthetic images and independently annotated originals:
+
+1. **Same captions, different images.** Two diagrams share a generic caption but have opposite arrow directions. Check retrieval of the correct original in top-k and verification of direction from the image, not the caption.
+2. **OCR error.** A meaningful sign or digit in a scan is misrecognized. Check access to the correct page/region and correction against the original, or explicit abstention from an unsupported answer.
+3. **Switch to text retrieval.** Run the same visual query through native and caption-based paths with compatible indexes. Check that the actual mode and signal loss are recorded: technically successful fallback does not count as quality equivalence.
+
+Measure original-image recall@k, answer correctness against independent labels, unsupported visual claims, region-reference accuracy, latency, and total query cost including original inspection separately. Add answerable controls and count unnecessary abstentions so that always saying “unknown” cannot pass. Pin the corpus, transformations, embedding/chat models, and indexes; vary only the factor under study. These scenarios are not a report of experiments performed by Cloudflare or the book.
+
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.
