@@ -53,6 +53,33 @@ Do not attach or copy those files into public issues or this repository.
   implemented deduplication guarantee. A callback exception propagates and does
   not establish that no effect occurred.
 
+## Practice clarification: paired policy traces
+
+The default `export-events` request asks the demo planner to create a ticket;
+changing a `search_docs` rule alone does not exercise that rule. The demo planner
+does not select arbitrary tools from a natural-language prompt.
+
+For a reproducible read-only pair, run from a corrected checkout:
+
+```bash
+uv run python docs/companion/examples/export_policy_trace_pair.py \
+  --output-dir artifacts/ch27-policy-pair
+```
+
+The output directory must be absent or empty. `allow.jsonl`, `deny.jsonl` and
+`summary.json` record separate runs of the same request. Only the copied
+`search_docs` policy decision changes; the source config remains untouched.
+The helper replaces the model's choice, not the catalog, policy or executor.
+No LLM or external search service is contacted.
+
+With the default configs, allow yields a successful synthetic read; deny yields
+`permission_denied` and a failed run. Both report
+`side_effect_status=not_executed`: a successful read is not an external write.
+`tool_execution` is also recorded for a rejected request and does not by itself
+prove that an external adapter ran. Tests check the executor's post-policy
+stage separately. Other source-config guards remain active and can deny either
+case; the summary reports observed outcomes rather than forcing success.
+
 ## Publication status
 
 - The [online companion](index.md) contains working public practice materials.

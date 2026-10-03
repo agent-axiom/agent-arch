@@ -10,6 +10,11 @@ No `v1.0-book` tag exists as of this draft.
 
 ## Unreleased
 
+- Added `examples/export_policy_trace_pair.py` to export one deterministic
+  `search_docs` request through the normal reference policy/execution path with
+  allow and deny configurations. It preserves source configs and existing
+  output evidence. Tests cover both outcomes and verify that deny stops before
+  the executor's post-policy stage. The adapter remains synthetic and offline.
 - Replaced the fixed rejection JSON in
   `examples/run_lab_negative_scenario.py` with a version and lease-owner check
   before a local side-effect callback. The stale attempt has no callback effect;
