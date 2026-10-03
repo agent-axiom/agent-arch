@@ -19,6 +19,9 @@
 
 - Google Cloud, [使用 AI 代理保护 Google 基础设施代码](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- LangChain, [在执行框架内构建模型路由器](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness), 2026-10-01.
+- Cloudflare, [Clef 决策模型](https://blog.cloudflare.com/clef-decision-models/), 2026-10-01.
+
 - Cloudflare, [AI Search 正式发布：原生图像检索与 OCR](https://blog.cloudflare.com/ai-search-ga/), 2026-10-01.
 
 - Cloudflare, [Monetization Gateway beta：HTTP 402 付费调用](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 协议](https://developers.cloudflare.com/monetization-gateway/x402/); [Monetization Gateway](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/), 2026-09-30.

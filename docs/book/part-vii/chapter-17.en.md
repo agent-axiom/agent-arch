@@ -427,6 +427,14 @@ That is why policy-heavy systems benefit from making key artifacts structurally 
 
 The goal is not elegance for its own sake. The goal is to reduce silent drift between runtime logic, audit records, and the surrounding control surface.
 
+### Schema probabilities do not replace policy decisions
+
+[Cloudflare Clef](https://blog.cloudflare.com/clef-decision-models/) returns typed scores for schema options. Correct types constrain output shape, not category correctness or probability calibration. In the proposed contract, the runtime first checks model/schema versions, expected fields, and finite scores within range; require normalization only where field semantics specify mutually exclusive choices. Do not sum independent feature probabilities as one choice or multiply marginal field scores without justification for independence.
+
+Next apply a versioned threshold policy selected on separately labeled data and error costs. Different classes can require different thresholds; there is no universally safe value. The result is a proposed route or escalation with a reason. Unknown classes, conflicting fields, invalid output, or classifier unavailability must not become automatic admission. The maximum probability over known options does not establish that the input belongs to any known category: separate applicability checks and a human-review path are necessary.
+
+Record an input reference, schema/model/calibration/threshold versions, raw scores, proposed route, and final policy decision. Resource authorization and mandatory approval remain a separate gate before action: even a high “refund” score does not authorize a charge or refund. Revalidate thresholds after schema, model, or traffic-distribution changes. This is book guidance, not a Clef guarantee or an implemented runtime adapter.
+
 ## 11. A Simple Policy Decision Skeleton
 
 The point here is that the runtime receives not only permission, but a structured decision.

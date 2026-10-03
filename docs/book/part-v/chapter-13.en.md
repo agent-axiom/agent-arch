@@ -295,6 +295,18 @@ Inspired by [Cloudflare AI Search GA](https://blog.cloudflare.com/ai-search-ga/)
 Measure original-image recall@k, answer correctness against independent labels, unsupported visual claims, region-reference accuracy, latency, and total query cost including original inspection separately. Add answerable controls and count unnecessary abstentions so that always saying “unknown” cannot pass. Pin the corpus, transformations, embedding/chat models, and indexes; vary only the factor under study. These scenarios are not a report of experiments performed by Cloudflare or the book.
 
 
+### Router evaluation: non-significance is not non-inferiority
+
+The [LangChain experiment](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness) uses merged PRs per thread as its main metric. That helps for code-change tasks, but does not measure question-answer quality, post-merge defects, or human rework. In your comparison, stratify task types, include failures and rework in completion cost, and measure latency, interventions, and outcomes by group. Pin router, harness, model, and fallback-policy versions; separate training/tuning from held-out evaluation.
+
+To claim non-inferiority, predefine the acceptable quality loss, study size/power, and how a confidence interval is assessed against that margin. A large p-value in a difference test means only that a difference was not detected, not that quality is equal. Comparing against the most expensive model does not establish optimality against a good fixed middle-tier model. Test topic changes within a session, independent subagent selection, and a prohibited selected provider: fallback must preserve budgets and constraints. These are proposed checks, not results of an experiment we performed.
+
+### Clef: calibration and risk among automated decisions
+
+For probabilistic triage inspired by [Clef](https://blog.cloudflare.com/clef-decision-models/), separate tuning/calibration data from independent evaluation and prevent duplicate-ticket leakage. For mutually exclusive classes, evaluate Brier score and reliability diagrams, plus calibration by class and traffic group. A good aggregate can hide rare costly errors. Evaluate thresholds using a coverage-risk curve: error among automated decisions uses only automatically accepted cases as its denominator. Report escalation rate, missed urgent tickets, cost-weighted errors, and uncertainty separately; with zero automated decisions, risk is undefined, not zero.
+
+Proposed scenarios: a confident error on an unfamiliar category; a changed schema/model with stale thresholds; and a high-probability action prohibited by policy. Add answerable controls so escalating all traffic cannot pass. Compare Clef, Clef-flash, and a general LLM on identical inputs/categories and action policy, at comparable automation coverage or allowed risk. If the LLM lacks comparable probabilities, compare routes and outcomes rather than treating verbal confidence as calibrated probability. Include latency and cost of the entire path, including classification, retries, and human review. This is an experiment plan, not measured results.
+
 ## 5. Trace Grading Is Especially Useful for Agent Systems
 
 In ordinary applications, business KPI and error rate are often enough. In agent systems, they are not, because quality often lives inside the run, not just in the final answer.

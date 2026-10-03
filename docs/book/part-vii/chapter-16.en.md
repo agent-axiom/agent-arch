@@ -699,6 +699,14 @@ Link `operation_id`, `reservation_id`, payer, recipient, resource and argument d
 
 This proposed contract extends general budgets and chapter 10 recovery, but is not implemented in the reference runtime. For `upto`, Cloudflare describes an authorization maximum and an origin-reported actual amount; the protocol alone supplies neither a shared application ledger nor atomic budget reservation or an API to reconcile arbitrary business effects.[^cloudflare-paid-call] Keep signing keys in a protected payment component; traces contain references and safe metadata, not private keys or reusable signatures.
 
+### The harness router and gateway answer different questions
+
+[LangChain, October 1, 2026](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness), places model selection in the Open SWE harness, which knows the task type, tools, and domain context. The gateway remains an enforcement point for provider, access, data-handling, and shared-budget constraints. This is a responsibility split, not a ban on a task-aware routing service across a network boundary; what matters is its available context and authority.
+
+The book's proposed contract: the harness selects from admissible candidates and passes a task identifier, router/criteria version, selected tier and model, reason, and selection scope. The gateway rechecks constraints before dispatch and records the actual model, denial, or agreed fallback. It must not silently substitute a cheaper model that violates task requirements; a harness choice cannot expand access. The classifier itself is subject to data-transfer restrictions. No admissible candidate means stop or escalate.
+
+In the reported implementation, selection uses the first human message and stays fixed for the whole thread; changing complexity within a thread is not yet handled. Subagents choose independently of this router; integrating them into routing and mid-thread switching are future work. In your system, record each branch's decisions and aggregate spend; reassess task changes at a safe boundary while accounting for the switching and cache costs already discussed. This is a recommended contract, not newly implemented reference-runtime functionality.
+
 ## 14. Common Mistakes
 
 Very typical problems:

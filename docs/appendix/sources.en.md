@@ -19,6 +19,9 @@ Below is the main set of primary sources used by the current version of the book
 
 - Google Cloud, [Using AI agents to secure Google infrastructure](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- LangChain, [How to Build a Model Router in the Harness](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness), 2026-10-01.
+- Cloudflare, [Clef decision models](https://blog.cloudflare.com/clef-decision-models/), 2026-10-01.
+
 - Cloudflare, [AI Search GA: native image retrieval and OCR](https://blog.cloudflare.com/ai-search-ga/), 2026-10-01.
 
 - Cloudflare, [Monetization Gateway beta: paid calls over HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [x402 protocol](https://developers.cloudflare.com/monetization-gateway/x402/); [Monetization Gateway](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/), 2026-09-30.

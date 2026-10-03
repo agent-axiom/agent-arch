@@ -29,6 +29,18 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### LangChain Open SWE: model selection in the harness
+
+The [October 1, 2026 article](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness) reports an A/B test across 973 threads: half used a router, half the strongest baseline model. Median cost was $0.94 versus $2.61 (64% lower), mean cost fell 42%, and p90 fell 37%. Threads ending in merged PRs were 29.2% versus 27.3%, p = 0.49. These are author-reported results on specific traffic, not proof of equal quality or universal savings. User feedback was sparse; a second test against fast-only was stopped within a day after complaints, before statistically meaningful results.
+
+Selection was fixed per thread; subagents chose independently of the router. Unified subagent routing and mid-thread switching are future work. See [Chapter 16](../book/part-vii/chapter-16.md) for the harness/gateway split and [Chapter 13](../book/part-v/chapter-13.md) for non-inferiority evaluation. The Auto Router case already covers cache economics; the new angle here is ownership of task context and limits on interpreting experimental results.
+
+### Cloudflare Clef: probabilistic support triage
+
+The [October 1, 2026 Clef and Clef-flash announcement](https://blog.cloudflare.com/clef-decision-models/) describes scoring schema options and training with Brier loss for calibration. That training objective does not guarantee calibration on a new support stream. Author-reported speed and quality measurements concern their workloads, not proven superiority on the reader's data. At announcement time, fine-tuning is offered through an FDE team; a self-service platform is future development.
+
+Proposed example: score urgency and destination team for a support ticket, apply validated thresholds, and route to a team or human. The “billing” category does not authorize a refund. Comparison with a general LLM, unfamiliar categories, and errors among automated decisions are covered in [Chapter 13](../book/part-v/chapter-13.md); the policy contract is in [Chapter 17](../book/part-vii/chapter-17.md). This is an experiment plan, not an executed product test or a reason to remove mandatory human approval.
+
 ### Cloudflare AI Search: finding a screenshot is not verifying it
 
 The [October 1, 2026 GA announcement](https://blog.cloudflare.com/ai-search-ga/) describes native image retrieval with Qwen3-VL-Embedding alongside captions, plus opt-in OCR for scanned PDFs. With a text-only embedding model, a query image becomes a caption through ToMarkdown. This is neither a universal guarantee of fine-detail recognition nor a property of every answer-generation model.

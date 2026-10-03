@@ -19,6 +19,9 @@
 
 - Google Cloud, [Использование агентов для защиты инфраструктурного кода Google](https://cloud.google.com/blog/topics/systems/using-ai-agents-to-secure-google-infrastructure) (2026-09-18).
 
+- LangChain, [Маршрутизация моделей в harness](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness), 2026-10-01.
+- Cloudflare, [Clef: модели принятия решений](https://blog.cloudflare.com/clef-decision-models/), 2026-10-01.
+
 - Cloudflare, [AI Search GA: нативный поиск по изображениям и OCR](https://blog.cloudflare.com/ai-search-ga/), 2026-10-01.
 
 - Cloudflare, [Monetization Gateway beta: платные вызовы через HTTP 402](https://blog.cloudflare.com/monetization-gateway-beta/); [Протокол x402](https://developers.cloudflare.com/monetization-gateway/x402/); [Monetization Gateway](https://developers.cloudflare.com/monetization-gateway/configuration/payment-validation/), 2026-09-30.
