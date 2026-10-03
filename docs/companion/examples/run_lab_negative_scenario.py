@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from collections.abc import Callable
 from dataclasses import dataclass, replace
 from pathlib import Path
 from typing import Final, Sequence
@@ -26,6 +27,7 @@ SCENARIOS: Final[tuple[str, ...]] = (
     "platform-owner-removed",
     "high-risk-safe-transport",
     "stale-run-completion",
+    "lab26-negative-lease",
     "assurance-owner-missing",
 )
 DEFAULT_CONFIG_DIR = REPO_ROOT / "agent_runtime_ref/configs"
@@ -157,6 +159,35 @@ def _claim_run(run: _DurableRun, worker_id: str) -> _DurableRun:
     return replace(run, version=run.version + 1, lease_owner=worker_id)
 
 
+def _complete_run(
+    current: _DurableRun,
+    *,
+    expected_version: int,
+    worker_id: str,
+    effect: Callable[[], None],
+) -> dict[str, object]:
+    """Check a caller-supplied current snapshot before a local callback.
+
+    This sequential example is not an atomic storage operation. It provides no
+    lease expiry, durable completion, replay deduplication or external-effect
+    atomicity. Callback exceptions propagate; they do not prove no effect.
+    """
+    if expected_version != current.version:
+        return {
+            "accepted": False,
+            "reason": "expected_version_mismatch",
+            "effect_state": "not_executed",
+        }
+    if not worker_id or worker_id != current.lease_owner:
+        return {
+            "accepted": False,
+            "reason": "lease_owner_mismatch",
+            "effect_state": "not_executed",
+        }
+    effect()
+    return {"accepted": True, "reason": "completed", "effect_state": "executed"}
+
+
 def _run_stale_completion() -> dict[str, object]:
     queued = _DurableRun(
         run_id="run-lease-demo",
@@ -166,17 +197,34 @@ def _run_stale_completion() -> dict[str, object]:
     )
     worker_a_claim = _claim_run(queued, "worker-a")
     worker_b_claim = _claim_run(worker_a_claim, "worker-b")
+    stale_effects: list[str] = []
+    stale_result = _complete_run(
+        worker_b_claim,
+        expected_version=worker_a_claim.version,
+        worker_id=worker_a_claim.lease_owner,
+        effect=lambda: stale_effects.append(worker_a_claim.lease_owner),
+    )
+    valid_effects: list[str] = []
+    valid_result = _complete_run(
+        worker_b_claim,
+        expected_version=worker_b_claim.version,
+        worker_id=worker_b_claim.lease_owner,
+        effect=lambda: valid_effects.append(worker_b_claim.lease_owner),
+    )
     return {
         "scenario": "stale-run-completion",
-        "accepted": False,
-        "reason": "expected_version_mismatch",
+        "accepted": stale_result["accepted"],
+        "reason": stale_result["reason"],
         "run_id": worker_b_claim.run_id,
         "stale_worker": worker_a_claim.lease_owner,
         "lease_owner": worker_b_claim.lease_owner,
         "expected_version": worker_a_claim.version,
         "current_version": worker_b_claim.version,
         "idempotency_scope": worker_b_claim.idempotency_scope,
-        "effect_state": "not_executed",
+        "effect_state": stale_result["effect_state"],
+        "side_effects": stale_effects,
+        "positive_control": {**valid_result, "side_effects": valid_effects},
+        "evidence_scope": "local_sequential_check",
     }
 
 
@@ -216,8 +264,9 @@ def run_scenario(
 
     if scenario == "high-risk-safe-transport":
         payload = _run_high_risk_safe_transport()
-    elif scenario == "stale-run-completion":
+    elif scenario in {"stale-run-completion", "lab26-negative-lease"}:
         payload = _run_stale_completion()
+        payload["scenario"] = scenario
     elif scenario == "assurance-owner-missing":
         payload = _run_assurance_owner_missing()
     else:

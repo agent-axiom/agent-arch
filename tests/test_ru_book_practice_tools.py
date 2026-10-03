@@ -10,6 +10,7 @@ import pytest
 import yaml
 
 from agent_runtime_ref.evidence import verify_evidence_manifest
+from docs.companion.examples import run_lab_negative_scenario as negative_scenarios
 from docs.companion.examples.build_capstone_reference import build_capstone
 from docs.companion.examples.run_lab_negative_scenario import run_scenario
 
@@ -70,11 +71,12 @@ def test_high_risk_capability_requires_approval_before_safe_transport() -> None:
     }
 
 
-def test_stale_worker_cannot_complete_a_reclaimed_run() -> None:
-    payload = run_scenario("stale-run-completion", config_dir=CONFIG_DIR)
+@pytest.mark.parametrize("scenario", ["stale-run-completion", "lab26-negative-lease"])
+def test_stale_worker_cannot_complete_a_reclaimed_run(scenario: str) -> None:
+    payload = run_scenario(scenario, config_dir=CONFIG_DIR)
 
     assert payload == {
-        "scenario": "stale-run-completion",
+        "scenario": scenario,
         "accepted": False,
         "reason": "expected_version_mismatch",
         "run_id": "run-lease-demo",
@@ -84,7 +86,103 @@ def test_stale_worker_cannot_complete_a_reclaimed_run() -> None:
         "current_version": 3,
         "idempotency_scope": "run-lease-demo",
         "effect_state": "not_executed",
+        "side_effects": [],
+        "positive_control": {
+            "accepted": True,
+            "reason": "completed",
+            "effect_state": "executed",
+            "side_effects": ["worker-b"],
+        },
+        "evidence_scope": "local_sequential_check",
     }
+
+
+@pytest.mark.parametrize(
+    ("expected_version", "worker_id", "lease_owner", "reason"),
+    [
+        (2, "worker-a", "worker-b", "expected_version_mismatch"),
+        (2, "worker-b", "worker-b", "expected_version_mismatch"),
+        (4, "worker-b", "worker-b", "expected_version_mismatch"),
+        (3, "worker-a", "worker-b", "lease_owner_mismatch"),
+        (3, "", "worker-b", "lease_owner_mismatch"),
+        (3, "", "", "lease_owner_mismatch"),
+    ],
+)
+def test_completion_rejects_invalid_claim_before_side_effect(
+    expected_version: int, worker_id: str, lease_owner: str, reason: str
+) -> None:
+    current = negative_scenarios._DurableRun("run-test", 3, lease_owner, "run-test")
+    effects: list[str] = []
+
+    result = negative_scenarios._complete_run(
+        current,
+        expected_version=expected_version,
+        worker_id=worker_id,
+        effect=lambda: effects.append(current.run_id),
+    )
+
+    assert effects == []
+    assert result == {"accepted": False, "reason": reason, "effect_state": "not_executed"}
+
+
+def test_completion_accepts_current_claim_and_executes_side_effect() -> None:
+    current = negative_scenarios._DurableRun("run-test", 3, "worker-b", "run-test")
+    effects: list[str] = []
+
+    result = negative_scenarios._complete_run(
+        current,
+        expected_version=3,
+        worker_id="worker-b",
+        effect=lambda: effects.append(current.run_id),
+    )
+
+    assert effects == ["run-test"]
+    assert result == {"accepted": True, "reason": "completed", "effect_state": "executed"}
+
+
+def test_completion_does_not_report_success_when_side_effect_raises() -> None:
+    current = negative_scenarios._DurableRun("run-test", 3, "worker-b", "run-test")
+    effects: list[str] = []
+
+    def fail_after_effect() -> None:
+        effects.append(current.run_id)
+        raise RuntimeError("callback failed after effect")
+
+    with pytest.raises(RuntimeError, match="callback failed after effect"):
+        negative_scenarios._complete_run(
+            current, expected_version=3, worker_id="worker-b", effect=fail_after_effect
+        )
+
+    assert effects == ["run-test"]
+
+
+@pytest.mark.parametrize("scenario", ["stale-run-completion", "lab26-negative-lease"])
+def test_lease_cli_exports_observed_negative_and_positive_effects(
+    scenario: str, tmp_path: Path
+) -> None:
+    output = tmp_path / "evidence" / "lab26-negative-lease.json"
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "docs/companion/examples/run_lab_negative_scenario.py",
+            scenario,
+            "--output",
+            str(output),
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+
+    payload = json.loads(completed.stdout)
+    assert completed.stderr == ""
+    assert json.loads(output.read_text(encoding="utf-8")) == payload
+    assert payload["scenario"] == scenario
+    assert payload["accepted"] is False
+    assert payload["side_effects"] == []
+    assert payload["positive_control"]["accepted"] is True
+    assert payload["positive_control"]["side_effects"] == ["worker-b"]
 
 
 def test_assurance_decision_without_owner_fails_closed() -> None:
