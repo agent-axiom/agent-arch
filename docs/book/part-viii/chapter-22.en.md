@@ -129,19 +129,21 @@ For agent systems, it is better to think in several linked chains:
 - [data and retrieval chain](../../appendix/memory-retrieval-schema.en.md);
 - [eval chain](../../appendix/eval-schema.en.md).
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>It is more useful to think in several linked chains of trust, not one</p>
 
-``` mermaid
-flowchart LR
-    A["Code and build"] --> G["Approved release bundle"]
-    B["Model artifacts"] --> G
-    C["Prompt and routine bundles"] --> G
-    D["Policy bundles"] --> G
-    E["Capability contracts"] --> G
-    F["Approval and runtime-control schemas"] --> G
-    H["Eval datasets and reports"] --> G
-```
+<!-- excalidraw:en-part-viii-chapter-22-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="It is more useful to think in several linked chains of trust, not one" style="--diagram-native-width:516px">
+
+[![It is more useful to think in several linked chains of trust, not one](../../assets/diagrams/en/part-viii-chapter-22-01.svg){ width="516" height="832" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-22-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-22-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-22-01.excalidraw){ download="part-viii-chapter-22-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-22-01 -->
 
 </div>
 

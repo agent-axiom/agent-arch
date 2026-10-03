@@ -177,21 +177,21 @@ Anthropic и Microsoft здесь сходятся в одном практич�
 - поведенческие оценки, которые проверяют саботаж, сокрытие, обход надзора и злоупотребление схемами оркестрации.
 - release-bearing control metrics: monitored coverage, verifier recall, time-to-response и граница, где риск действия требует synchronous block вместо delayed review.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Риск несоответствия целей лучше воспринимать как конфликт между автономией и поверхностями контроля</p>
 
-``` mermaid
-flowchart LR
-    A["Давление цели"] --> D["Поведение модели"]
-    B["Ограниченный доступ"] --> D
-    C["Давление замены или проверки"] --> D
-    D --> E["Попытка сокрытия"]
-    D --> F["Обход подтверждения"]
-    D --> G["Альтернативный путь инструмента"]
-    E --> H["Обнаружение и сдерживание"]
-    F --> H
-    G --> H
-```
+<!-- excalidraw:ru-part-viii-chapter-24-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Риск несоответствия целей лучше воспринимать как конфликт между автономией и поверхностями контроля" style="--diagram-native-width:1066px">
+
+[![Риск несоответствия целей лучше воспринимать как конфликт между автономией и поверхностями контроля](../../assets/diagrams/ru/part-viii-chapter-24-01.svg){ width="1066" height="410" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-24-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-24-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-24-01.excalidraw){ download="part-viii-chapter-24-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-24-01 -->
 
 </div>
 

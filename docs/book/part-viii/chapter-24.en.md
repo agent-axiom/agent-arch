@@ -177,21 +177,21 @@ The most reliable measures here are not magical. They are boring and explicit:
 - behavioral evals that test sabotage, concealment, oversight evasion, and orchestration-pattern misuse.
 - release-bearing control metrics: monitored coverage, verifier recall, time-to-response, and the boundary where action risk requires synchronous blocking instead of delayed review.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Misalignment risk is easier to reason about as tension between autonomy and control surfaces</p>
 
-``` mermaid
-flowchart LR
-    A["Goal pressure"] --> D["Model behavior"]
-    B["Restricted access"] --> D
-    C["Replacement or review pressure"] --> D
-    D --> E["Concealment attempt"]
-    D --> F["Approval evasion"]
-    D --> G["Alternative tool path"]
-    E --> H["Detection and containment"]
-    F --> H
-    G --> H
-```
+<!-- excalidraw:en-part-viii-chapter-24-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Misalignment risk is easier to reason about as tension between autonomy and control surfaces" style="--diagram-native-width:1043px">
+
+[![Misalignment risk is easier to reason about as tension between autonomy and control surfaces](../../assets/diagrams/en/part-viii-chapter-24-01.svg){ width="1043" height="380" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-24-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-24-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-24-01.excalidraw){ download="part-viii-chapter-24-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-24-01 -->
 
 </div>
 

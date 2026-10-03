@@ -66,21 +66,21 @@
 
 Смысл не в идеальной терминологии. Смысл в том, чтобы связь оставалась проверяемой.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Полезно мыслить цепочку доказательств как цепочку связанных записей, а не как набор разрозненных артефактов</p>
 
-``` mermaid
-flowchart LR
-    A["run_id"] --> B["trace_id"]
-    A --> C["policy_bundle_version"]
-    A --> D["approval_id"]
-    A --> E["evaluation_result_id"]
-    C --> F["release_identity"]
-    C --> G["artifact_id"]
-    E --> H["verifier_contract_id"]
-    E --> I["incident_id"]
-    I --> J["rollout judgment"]
-```
+<!-- excalidraw:ru-part-v-evidence-spine-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Полезно мыслить цепочку доказательств как цепочку связанных записей, а не как набор разрозненных артефактов" style="--diagram-native-width:1021px">
+
+[![Полезно мыслить цепочку доказательств как цепочку связанных записей, а не как набор разрозненных артефактов](../../assets/diagrams/ru/part-v-evidence-spine-01.svg){ width="1021" height="437" loading="lazy" }](../../assets/diagrams/ru/part-v-evidence-spine-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-v-evidence-spine-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-v-evidence-spine-01.excalidraw){ download="part-v-evidence-spine-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-v-evidence-spine-01 -->
 
 </div>
 

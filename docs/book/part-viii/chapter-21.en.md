@@ -185,18 +185,21 @@ That is why assurance should be read as a response function, not merely as a det
 
 A budget can tell you that the system is now unhealthy. Assurance tells you who freezes the route, who tightens the control surface, and who owns the path back to safety.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>The assurance loop works as a continuous cycle: search, detect, contain, fix, learn</p>
 
-``` mermaid
-flowchart LR
-    A["Red teaming and incidents"] --> B["Findings"]
-    B --> C["Detection rules and monitors"]
-    C --> D["Response actions"]
-    D --> E["Remediation"]
-    E --> F["Updated policy, evals, and rollout rules"]
-    F --> A
-```
+<!-- excalidraw:en-part-viii-chapter-21-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="The assurance loop works as a continuous cycle: search, detect, contain, fix, learn" style="--diagram-native-width:314px">
+
+[![The assurance loop works as a continuous cycle: search, detect, contain, fix, learn](../../assets/diagrams/en/part-viii-chapter-21-01.svg){ width="314" height="834" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-21-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-21-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-21-01.excalidraw){ download="part-viii-chapter-21-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-21-01 -->
 
 </div>
 

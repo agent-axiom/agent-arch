@@ -59,22 +59,21 @@
 
 Это уже очень далеко от “просто чат с функциями”, и именно так и должно быть.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>У базовой среды исполнения уже есть несколько обязательных контрольных точек</p>
 
-``` mermaid
-flowchart LR
-    A["Вход"] --> B["Контекст запуска"]
-    B --> C["Предварительная проверка политик"]
-    C --> D["Память / извлечение"]
-    D --> E["Шаг модели"]
-    E --> F{"Нужен инструмент?"}
-    F -->|Нет| G["Сборка результата"]
-    F -->|Да| H["Слой исполнения"]
-    H --> I["Результат инструмента"]
-    I --> E
-    G --> J["Телеметрия + фоновые задачи"]
-```
+<!-- excalidraw:ru-part-vii-chapter-16-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="У базовой среды исполнения уже есть несколько обязательных контрольных точек" style="--diagram-native-width:570px">
+
+[![У базовой среды исполнения уже есть несколько обязательных контрольных точек](../../assets/diagrams/ru/part-vii-chapter-16-01.svg){ width="570" height="1310" loading="lazy" }](../../assets/diagrams/ru/part-vii-chapter-16-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-vii-chapter-16-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-vii-chapter-16-01.excalidraw){ download="part-vii-chapter-16-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-vii-chapter-16-01 -->
 
 </div>
 
@@ -358,18 +357,21 @@ Cloudflare Agents SDK changelog добавляет к этому более эк
 
 Следующий полезный паттерн Cloudflare — не складывать всю долгую работу в один цикл событий агента. Агент может быть **границей взаимодействия с состоянием** (**stateful interaction boundary**): держать идентичность экземпляра, WebSocket- или HTTP-сессию, локальное состояние, пользовательские обратные вызовы и текущую картину диалога. Рабочий процесс при этом становится **долговечной границей выполнения** (**durable execution boundary**): хранит шаги, повторы, ожидание внешних событий, длительные шлюзы подтверждения и восстановление после падения.[^cloudflare-workflows]
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Живой агент и долговечный рабочий процесс решают разные задачи</p>
 
-``` mermaid
-flowchart LR
-    S["Сессия / хранилище состояния"] --> A["Оболочка среды выполнения агента"]
-    A --> W["Долговечный стержень рабочего процесса"]
-    W --> E["Инструмент / внешнее событие / шаг подтверждения"]
-    W --> L["Журнал аудита и доказательств"]
-    A --> U["Пользовательский поток / WebSocket"]
-    E --> L
-```
+<!-- excalidraw:ru-part-vii-chapter-16-02 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Живой агент и долговечный рабочий процесс решают разные задачи" style="--diagram-native-width:522px">
+
+[![Живой агент и долговечный рабочий процесс решают разные задачи](../../assets/diagrams/ru/part-vii-chapter-16-02.svg){ width="522" height="956" loading="lazy" }](../../assets/diagrams/ru/part-vii-chapter-16-02.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-vii-chapter-16-02.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-vii-chapter-16-02.excalidraw){ download="part-vii-chapter-16-02.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-vii-chapter-16-02 -->
 
 </div>
 

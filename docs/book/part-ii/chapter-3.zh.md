@@ -61,21 +61,21 @@
 
 下面这张图有价值，是因为它展示的不是抽象安全，而是一个真实请求在哪些点上可能偏离正确路径。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>智能体系统的安全边界大致长这样</p>
 
-``` mermaid
-flowchart LR
-    input["User / API / Files / Web content"] --> ingress["Ingress controls"]
-    ingress --> prompt["提示组装边界"]
-    prompt --> model["模型网关"]
-    model --> retrieval["检索网关"]
-    model --> runtime["智能体运行时"]
-    runtime --> tools["工具网关 / 沙箱"]
-    tools --> systems["外部系统"]
-    runtime --> egress["出口过滤器"]
-    runtime --> audit["追踪 / 审计 / 事故轨迹"]
-```
+<!-- excalidraw:zh-part-ii-chapter-3-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="智能体系统的安全边界大致长这样" style="--diagram-native-width:687px">
+
+[![智能体系统的安全边界大致长这样](../../assets/diagrams/zh/part-ii-chapter-3-01.svg){ width="687" height="892" loading="lazy" }](../../assets/diagrams/zh/part-ii-chapter-3-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-ii-chapter-3-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-ii-chapter-3-01.excalidraw){ download="part-ii-chapter-3-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-ii-chapter-3-01 -->
 
 </div>
 

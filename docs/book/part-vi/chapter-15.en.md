@@ -69,16 +69,21 @@ Commercial platforms in 2026 are converging on the same pattern: a **shared AI g
 
 For an anti-zoo strategy, the lesson is direct: model/provider routing, cache policy, rate limits, DLP/redaction, retry/fallback policy, and cost attribution should live in one shared platform surface, not in each agent's local wrapper. Otherwise the organization gets a new zoo: one team uses the gateway as a billing proxy, another as an observability hook, another as a policy point, and no loop sees the full risk/cost path.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>The golden path should reduce the number of local implementations of critical layers</p>
 
-``` mermaid
-flowchart LR
-    A["Product team A"] --> D["Shared gateway and platform primitives"]
-    B["Product team B"] --> D
-    C["Product team C"] --> D
-    D --> E["Policy, tracing, approvals, capability access"]
-```
+<!-- excalidraw:en-part-vi-chapter-15-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="The golden path should reduce the number of local implementations of critical layers" style="--diagram-native-width:775px">
+
+[![The golden path should reduce the number of local implementations of critical layers](../../assets/diagrams/en/part-vi-chapter-15-01.svg){ width="775" height="290" loading="lazy" }](../../assets/diagrams/en/part-vi-chapter-15-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-vi-chapter-15-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-vi-chapter-15-01.excalidraw){ download="part-vi-chapter-15-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-vi-chapter-15-01 -->
 
 </div>
 

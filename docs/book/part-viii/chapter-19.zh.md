@@ -68,27 +68,21 @@ NIST 在面向生成式 AI 的 SSDF 配置文件里采取的也是同样的思�
 
 也就是说，新的生命周期不是因为“智能体很神秘”，而是因为现在有更多可变部件需要被发布、评估和治理。本章的主要工件是智能体开发生命周期状态模型（ADLC state model）：一张状态与转换地图，而不是又一个泛泛的治理清单。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>最稳妥的理解方式，是把 ADLC 看成 SDLC 的扩展，而不是替代品</p>
 
-``` mermaid
-flowchart LR
-    A["经典 SDLC"] --> B["需求"]
-    A --> C["设计"]
-    A --> D["实现"]
-    A --> E["测试"]
-    A --> F["发布"]
-    A --> G["运营"]
-    A --> H["退役"]
+<!-- excalidraw:zh-part-viii-chapter-19-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="最稳妥的理解方式，是把 ADLC 看成 SDLC 的扩展，而不是替代品" style="--diagram-native-width:846px">
 
-    H --> I["ADLC 增加"]
-    I --> J["模型行为"]
-    I --> K["提示与例程"]
-    I --> L["策略与审批"]
-    I --> M["检索与记忆"]
-    I --> N["工具副作用"]
-    I --> O["评测与受控自主性"]
-```
+[![最稳妥的理解方式，是把 ADLC 看成 SDLC 的扩展，而不是替代品](../../assets/diagrams/zh/part-viii-chapter-19-01.svg){ width="846" height="852" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-19-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-19-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-19-01.excalidraw){ download="part-viii-chapter-19-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-19-01 -->
 
 </div>
 
@@ -201,20 +195,21 @@ decided_at: "2026-07-23T09:30:00Z"
 
 完整示例位于 `docs/companion/examples/adlc-transition-support-ticket.yaml`。`hold` 表明文件存在并不等于可以进入金丝雀阶段：必需证据必须经过验证并由负责人接受。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>把 ADLC 看成持续循环，而不是“第一次上线之前的流程”，会更接近真实世界</p>
 
-``` mermaid
-flowchart LR
-    A["立项"] --> B["设计评审"]
-    B --> C["构建与集成"]
-    C --> D["评测基线"]
-    D --> E["分阶段 rollout"]
-    E --> F["运营"]
-    F --> G["事故与纠正行动"]
-    G --> H["退役或替换"]
-    H --> A
-```
+<!-- excalidraw:zh-part-viii-chapter-19-02 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="把 ADLC 看成持续循环，而不是“第一次上线之前的流程”，会更接近真实世界" style="--diagram-native-width:284px">
+
+[![把 ADLC 看成持续循环，而不是“第一次上线之前的流程”，会更接近真实世界](../../assets/diagrams/zh/part-viii-chapter-19-02.svg){ width="284" height="920" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-19-02.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-19-02.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-19-02.excalidraw){ download="part-viii-chapter-19-02.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-19-02 -->
 
 </div>
 

@@ -184,18 +184,21 @@ Google Research очень хорошо формулирует здесь гла
 
 Бюджет может сказать, что система теперь нездорова. Заверение говорит, кто замораживает маршрут, кто ужесточает контур управления и кто владеет путем назад к безопасному состоянию.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Контур заверения работает как постоянный цикл: искать, замечать, сдерживать, исправлять, учиться</p>
 
-``` mermaid
-flowchart LR
-    A["Соревновательное тестирование и инциденты"] --> B["Находки"]
-    B --> C["Detection rules и monitors"]
-    C --> D["Response actions"]
-    D --> E["Remediation"]
-    E --> F["Обновленные policy, evals и rollout rules"]
-    F --> A
-```
+<!-- excalidraw:ru-part-viii-chapter-21-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Контур заверения работает как постоянный цикл: искать, замечать, сдерживать, исправлять, учиться" style="--diagram-native-width:330px">
+
+[![Контур заверения работает как постоянный цикл: искать, замечать, сдерживать, исправлять, учиться](../../assets/diagrams/ru/part-viii-chapter-21-01.svg){ width="330" height="864" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-21-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-21-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-21-01.excalidraw){ download="part-viii-chapter-21-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-21-01 -->
 
 </div>
 

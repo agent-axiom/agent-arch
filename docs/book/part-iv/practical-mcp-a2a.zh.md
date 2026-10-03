@@ -183,18 +183,21 @@ A2A 委派的最低验收条件：
 
 在成熟平台中，这两者通常不是竞争关系，而是位于不同层次。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>MCP 和 A2A 是互补关系，不是替代关系</p>
 
-``` mermaid
-flowchart LR
-    A["Coordinator agent"] --> B["A2A handoff"]
-    B --> C["Specialist agent"]
-    A --> D["MCP client"]
-    C --> E["MCP client"]
-    D --> F["Tool / resource server"]
-    E --> G["Tool / resource server"]
-```
+<!-- excalidraw:zh-part-iv-practical-mcp-a2a-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="MCP 和 A2A 是互补关系，不是替代关系" style="--diagram-native-width:492px">
+
+[![MCP 和 A2A 是互补关系，不是替代关系](../../assets/diagrams/zh/part-iv-practical-mcp-a2a-01.svg){ width="492" height="656" loading="lazy" }](../../assets/diagrams/zh/part-iv-practical-mcp-a2a-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iv-practical-mcp-a2a-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iv-practical-mcp-a2a-01.excalidraw){ download="part-iv-practical-mcp-a2a-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iv-practical-mcp-a2a-01 -->
 
 </div>
 

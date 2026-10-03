@@ -73,16 +73,21 @@
 - 任务成功的验收标准；
 - 把平台基础能力集成进具体产品。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>平台和产品不应该互相复制，因为它们负责的是不同层</p>
 
-``` mermaid
-flowchart LR
-    A["平台团队"] --> B["运行时、策略、可观测性、网关"]
-    C["产品团队"] --> D["用户工作流、领域逻辑、UX 结果"]
-    B --> E["黄金路径与共享基础件"]
-    D --> E
-```
+<!-- excalidraw:zh-part-vi-chapter-14-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="平台和产品不应该互相复制，因为它们负责的是不同层" style="--diagram-native-width:718px">
+
+[![平台和产品不应该互相复制，因为它们负责的是不同层](../../assets/diagrams/zh/part-vi-chapter-14-01.svg){ width="718" height="282" loading="lazy" }](../../assets/diagrams/zh/part-vi-chapter-14-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-vi-chapter-14-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-vi-chapter-14-01.excalidraw){ download="part-vi-chapter-14-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-vi-chapter-14-01 -->
 
 </div>
 

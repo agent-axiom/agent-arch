@@ -81,22 +81,21 @@
 
 Это уже не "вызов инструментов". Это полноценная дисциплина выполнения.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Модель должна разговаривать не с внешним миром напрямую, а со слоем выполнения</p>
 
-``` mermaid
-flowchart LR
-    A["Подсказка + контекст политики"] --> B["Модель"]
-    B --> C["Запрос инструмента"]
-    C --> D["Слой выполнения"]
-    D --> E["Поиск в каталоге"]
-    D --> F["Политика / валидация"]
-    D --> G["Повтор / тайм-аут / идемпотентность"]
-    G --> H["Внешняя система"]
-    H --> D
-    D --> I["Структурированный результат инструмента"]
-    I --> B
-```
+<!-- excalidraw:ru-part-iv-chapter-8-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Модель должна разговаривать не с внешним миром напрямую, а со слоем выполнения" style="--diagram-native-width:1077px">
+
+[![Модель должна разговаривать не с внешним миром напрямую, а со слоем выполнения](../../assets/diagrams/ru/part-iv-chapter-8-01.svg){ width="1077" height="894" loading="lazy" }](../../assets/diagrams/ru/part-iv-chapter-8-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iv-chapter-8-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iv-chapter-8-01.excalidraw){ download="part-iv-chapter-8-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iv-chapter-8-01 -->
 
 </div>
 

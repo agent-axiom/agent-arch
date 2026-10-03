@@ -94,25 +94,21 @@ tools:
 
 Для них нужен не просто переключатель “требуется подтверждение”, а нормальный сценарий подтверждения.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Как выглядит поток подтверждения для опасного действия</p>
 
-``` mermaid
-sequenceDiagram
-    autonumber
-    participant R as Рантайм агента
-    participant P as Движок политик
-    participant H as Подтверждающий человек
-    participant T as Шлюз инструментов
-    participant A as След аудита
+<!-- excalidraw:ru-part-ii-chapter-4-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Как выглядит поток подтверждения для опасного действия" style="--diagram-native-width:1033px">
 
-    R->>P: Запросить рискованное действие
-    P-->>R: Требуется подтверждение
-    R->>H: Запросить подтверждение с контекстом
-    H-->>R: Подтвердить / отклонить
-    R->>T: Исполнить только после подтверждения
-    T->>A: Сохранить действие и запись подтверждения
-```
+[![Как выглядит поток подтверждения для опасного действия](../../assets/diagrams/ru/part-ii-chapter-4-01.svg){ width="1033" height="494" loading="lazy" }](../../assets/diagrams/ru/part-ii-chapter-4-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-ii-chapter-4-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-ii-chapter-4-01.excalidraw){ download="part-ii-chapter-4-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-ii-chapter-4-01 -->
 
 </div>
 

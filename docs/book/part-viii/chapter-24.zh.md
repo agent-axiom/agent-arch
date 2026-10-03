@@ -177,21 +177,21 @@ Anthropic 和 Microsoft 在这里给出的实践结论很一致：在过渡期�
 - 行为评测会专门测试破坏、隐瞒、规避监督以及编排模式滥用（orchestration-pattern misuse）。
 - 承载发布意义的控制指标（release-bearing control metrics）：被监控覆盖率（monitored coverage）、验证器召回率（verifier recall）、响应时间（time-to-response），以及动作风险何时要求 synchronous blocking 而不是 delayed review。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>失配风险最适合被看成自主性与控制面之间的张力</p>
 
-``` mermaid
-flowchart LR
-    A["目标压力（Goal pressure）"] --> D["模型行为（Model behavior）"]
-    B["受限访问（Restricted access）"] --> D
-    C["替换或评审压力（Replacement or review pressure）"] --> D
-    D --> E["隐藏尝试（Concealment attempt）"]
-    D --> F["审批规避（Approval evasion）"]
-    D --> G["替代工具路径（Alternative tool path）"]
-    E --> H["检测与遏制（Detection and containment）"]
-    F --> H
-    G --> H
-```
+<!-- excalidraw:zh-part-viii-chapter-24-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="失配风险最适合被看成自主性与控制面之间的张力" style="--diagram-native-width:1056px">
+
+[![失配风险最适合被看成自主性与控制面之间的张力](../../assets/diagrams/zh/part-viii-chapter-24-01.svg){ width="1056" height="485" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-24-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-24-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-24-01.excalidraw){ download="part-viii-chapter-24-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-24-01 -->
 
 </div>
 

@@ -68,27 +68,21 @@ NIST в своем ИИ-профиле к SSDF прямо исходит из т
 
 То есть новый жизненный цикл появляется не потому, что “агенты особенные”, а потому, что у них больше подвижных поверхностей, за которыми нужно отдельно следить при выпуске и эксплуатации. Главный артефакт этой главы — модель состояний ADLC: карта состояний и переходов, а не еще один общий управленческий чеклист.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Полезно думать об ADLC как о расширении классического SDLC, а не как о его замене</p>
 
-``` mermaid
-flowchart LR
-    A["Классический SDLC"] --> B["Требования"]
-    A --> C["Дизайн"]
-    A --> D["Реализация"]
-    A --> E["Тестирование"]
-    A --> F["Выпуск"]
-    A --> G["Эксплуатация"]
-    A --> H["Вывод из эксплуатации"]
+<!-- excalidraw:ru-part-viii-chapter-19-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Полезно думать об ADLC как о расширении классического SDLC, а не как о его замене" style="--diagram-native-width:1056px">
 
-    H --> I["ADLC добавляет"]
-    I --> J["Поведение модели"]
-    I --> K["Инструкции и рабочие процедуры"]
-    I --> L["Политики и подтверждения"]
-    I --> M["Извлечение и память"]
-    I --> N["Побочные эффекты инструментов"]
-    I --> O["Оценки и управляемая автономия"]
-```
+[![Полезно думать об ADLC как о расширении классического SDLC, а не как о его замене](../../assets/diagrams/ru/part-viii-chapter-19-01.svg){ width="1056" height="998" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-19-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-19-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-19-01.excalidraw){ download="part-viii-chapter-19-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-19-01 -->
 
 </div>
 
@@ -201,20 +195,21 @@ decided_at: "2026-07-23T09:30:00Z"
 
 Полный пример находится в `docs/companion/examples/adlc-transition-support-ticket.yaml`. Значение `hold` показывает, что наличие файлов не равно праву перейти к контрольной волне: обязательное доказательство должно быть проверено и принято владельцем.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>ADLC полезно мыслить как непрерывный контур, а не как путь до первой выкладки</p>
 
-``` mermaid
-flowchart LR
-    A["Прием инициативы"] --> B["Архитектурная проверка"]
-    B --> C["Сборка и интеграция"]
-    C --> D["Базовая линия оценок"]
-    D --> E["Поэтапный выпуск"]
-    E --> F["Эксплуатация"]
-    F --> G["Инциденты и исправительные действия"]
-    G --> H["Вывод из эксплуатации или замена"]
-    H --> A
-```
+<!-- excalidraw:ru-part-viii-chapter-19-02 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="ADLC полезно мыслить как непрерывный контур, а не как путь до первой выкладки" style="--diagram-native-width:321px">
+
+[![ADLC полезно мыслить как непрерывный контур, а не как путь до первой выкладки](../../assets/diagrams/ru/part-viii-chapter-19-02.svg){ width="321" height="1190" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-19-02.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-19-02.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-19-02.excalidraw){ download="part-viii-chapter-19-02.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-19-02 -->
 
 </div>
 

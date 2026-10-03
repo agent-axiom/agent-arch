@@ -74,20 +74,21 @@
 
 下面这张图的重要性不在“好看”，而在于它能告诉你故障到底可能发生在哪一层。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>成熟追踪不该只展示模型，还应展示关键控制点</p>
 
-``` mermaid
-flowchart LR
-    A["用户请求"] --> B["运行追踪"]
-    B --> C["策略 span"]
-    B --> D["检索 span"]
-    B --> E["模型 span"]
-    B --> F["工具 span：检查状态"]
-    B --> G["工具 span：创建工单"]
-    B --> H["审批 span"]
-    B --> I["记忆更新 span"]
-```
+<!-- excalidraw:zh-part-v-chapter-11-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="成熟追踪不该只展示模型，还应展示关键控制点" style="--diagram-native-width:649px">
+
+[![成熟追踪不该只展示模型，还应展示关键控制点](../../assets/diagrams/zh/part-v-chapter-11-01.svg){ width="649" height="742" loading="lazy" }](../../assets/diagrams/zh/part-v-chapter-11-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-v-chapter-11-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-v-chapter-11-01.excalidraw){ download="part-v-chapter-11-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-v-chapter-11-01 -->
 
 </div>
 

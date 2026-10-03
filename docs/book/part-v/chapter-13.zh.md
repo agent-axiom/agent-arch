@@ -142,19 +142,22 @@ SLO 帮你定义什么叫系统健康。
 - SLO 提供运行边界；
 - 回归门禁阻止质量悄悄下滑。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>最好把评测闭环理解成持续循环，而不是一次性检查</p>
 <p><strong>文本 fallback：</strong>code、prompt 或 policy 的变更会经过离线评测、回归门禁、生产 rollout、在线评测与追踪、失败分析，然后把经验反馈到下一轮变更。</p>
 
-``` mermaid
-flowchart LR
-    A["Code / prompt / policy change"] --> B["离线评测"]
-    B --> C["回归门禁"]
-    C --> D["生产 rollout"]
-    D --> E["在线评测 + 追踪"]
-    E --> F["失败分析与评分"]
-    F --> A
-```
+<!-- excalidraw:zh-part-v-chapter-13-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="文本 fallback：code、prompt 或 policy 的变更会经过离线评测、回归门禁、生产 rollout、在线评测与追踪、失败分析，然后把经验反馈到下一轮变更。" style="--diagram-native-width:310px">
+
+[![文本 fallback：code、prompt 或 policy 的变更会经过离线评测、回归门禁、生产 rollout、在线评测与追踪、失败分析，然后把经验反馈到下一轮变更。](../../assets/diagrams/zh/part-v-chapter-13-01.svg){ width="310" height="714" loading="lazy" }](../../assets/diagrams/zh/part-v-chapter-13-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-v-chapter-13-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-v-chapter-13-01.excalidraw){ download="part-v-chapter-13-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-v-chapter-13-01 -->
 
 </div>
 

@@ -68,27 +68,21 @@ The most practical engineering model is simple:
 
 The new lifecycle exists not because “agents are magical,” but because there are more moving parts that can change and must be released and governed. The main artifact of this chapter is the ADLC state model: a map of states and transitions, not another generic governance checklist.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>ADLC works best as an extension of SDLC, not a replacement for it</p>
 
-``` mermaid
-flowchart LR
-    A["Classical SDLC"] --> B["Requirements"]
-    A --> C["Design"]
-    A --> D["Implementation"]
-    A --> E["Testing"]
-    A --> F["Release"]
-    A --> G["Operations"]
-    A --> H["Retirement"]
+<!-- excalidraw:en-part-viii-chapter-19-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="ADLC works best as an extension of SDLC, not a replacement for it" style="--diagram-native-width:984px">
 
-    H --> I["ADLC adds"]
-    I --> J["Model behavior"]
-    I --> K["Prompts and routines"]
-    I --> L["Policies and approvals"]
-    I --> M["Retrieval and memory"]
-    I --> N["Tool side effects"]
-    I --> O["Evals and controlled autonomy"]
-```
+[![ADLC works best as an extension of SDLC, not a replacement for it](../../assets/diagrams/en/part-viii-chapter-19-01.svg){ width="984" height="908" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-19-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-19-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-19-01.excalidraw){ download="part-viii-chapter-19-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-19-01 -->
 
 </div>
 
@@ -201,20 +195,21 @@ decided_at: "2026-07-23T09:30:00Z"
 
 The complete example is in `docs/companion/examples/adlc-transition-support-ticket.yaml`. The `hold` decision shows that having files is not permission to enter canary: required evidence must be verified and accepted by its owner.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>ADLC should be treated as a continuous loop, not a path that ends at first launch</p>
 
-``` mermaid
-flowchart LR
-    A["Intake"] --> B["Design review"]
-    B --> C["Build and integration"]
-    C --> D["Eval baseline"]
-    D --> E["Staged rollout"]
-    E --> F["Operations"]
-    F --> G["Incidents and corrective actions"]
-    G --> H["Retirement or replacement"]
-    H --> A
-```
+<!-- excalidraw:en-part-viii-chapter-19-02 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="ADLC should be treated as a continuous loop, not a path that ends at first launch" style="--diagram-native-width:314px">
+
+[![ADLC should be treated as a continuous loop, not a path that ends at first launch](../../assets/diagrams/en/part-viii-chapter-19-02.svg){ width="314" height="1040" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-19-02.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-19-02.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-19-02.excalidraw){ download="part-viii-chapter-19-02.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-19-02 -->
 
 </div>
 

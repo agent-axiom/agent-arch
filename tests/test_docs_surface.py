@@ -30,6 +30,18 @@ def _read(path: str) -> str:
     return (ROOT / path).read_text(encoding="utf-8")
 
 
+def _diagram_labels(path: str) -> set[str]:
+    manifest = json.loads(_read("docs/assets/diagrams/manifest.json"))
+    scenes = [row["scene"] for row in manifest["diagrams"] if row["page"] == path]
+    assert scenes, f"No editable diagrams linked to {path}"
+    return {
+        "".join(element["text"].split())
+        for scene in scenes
+        for element in json.loads(_read(scene))["elements"]
+        if element["type"] == "text" and not element.get("isDeleted")
+    }
+
+
 @pytest.mark.parametrize(
     ("filename", "heading", "column_marker", "chapter_23_marker"),
     (
@@ -1078,10 +1090,10 @@ def test_render_export_qa_matrix_tracks_review_priority_pages() -> None:
 
 def test_public_book_canonical_redirects_are_configured() -> None:
     mkdocs_config = _load_mkdocs_config()
-    scripts = mkdocs_config["extra_javascript"]
+    scripts = mkdocs_config.get("extra_javascript", [])
 
     assert "javascripts/canonical-redirects.js" not in scripts
-    assert "javascripts/mermaid-init.js" in scripts
+    assert "javascripts/mermaid-init.js" not in scripts
 
     main_override = _read("overrides/main.html")
     assert "{{ 'javascripts/canonical-redirects.js' | url }}" in main_override
@@ -1828,6 +1840,7 @@ def test_chapter_23_chinese_intro_artifact_label_is_localized() -> None:
 
 def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-21.zh.md")
+    diagram_labels = _diagram_labels("docs/book/part-viii/chapter-21.zh.md")
     expected_markers = (
         "事故、检测、重新设计和发布（rollout）规则变更之间必须闭环",
         "不只是发布（rollout）工件，也是一种保障场景",
@@ -1839,7 +1852,9 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
         "事故会不会回流到评测和发布（rollout）规则？",
     )
     for expected_marker in expected_markers:
-        assert expected_marker in chinese_text, expected_marker
+        assert (
+            expected_marker in chinese_text or "".join(expected_marker.split()) in diagram_labels
+        ), expected_marker
 
     forbidden_markers = (
         "事故、检测、重新设计和 rollout 规则变更之间必须闭环",
@@ -1853,6 +1868,7 @@ def test_chapter_21_chinese_review_rollout_labels_are_localized() -> None:
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
+        assert "".join(forbidden_marker.split()) not in diagram_labels, forbidden_marker
 
 
 def test_chapter_21_chinese_intro_artifact_label_is_localized() -> None:
@@ -6080,7 +6096,7 @@ def test_chapter_24_chinese_control_principle_labels_are_localized() -> None:
 
 
 def test_chapter_24_chinese_diagram_labels_are_localized() -> None:
-    text = _read("docs/book/part-viii/chapter-24.zh.md")
+    labels = _diagram_labels("docs/book/part-viii/chapter-24.zh.md")
     expected_markers = (
         "目标压力（Goal pressure）",
         "模型行为（Model behavior）",
@@ -6092,20 +6108,20 @@ def test_chapter_24_chinese_diagram_labels_are_localized() -> None:
         "检测与遏制（Detection and containment）",
     )
     for expected_marker in expected_markers:
-        assert expected_marker in text, expected_marker
+        assert "".join(expected_marker.split()) in labels, expected_marker
 
     forbidden_markers = (
-        'A["Goal pressure"]',
-        'D["Model behavior"]',
-        'B["Restricted access"]',
-        'C["Replacement or review pressure"]',
-        'E["Concealment attempt"]',
-        'F["Approval evasion"]',
-        'G["Alternative tool path"]',
-        'H["Detection and containment"]',
+        "Goal pressure",
+        "Model behavior",
+        "Restricted access",
+        "Replacement or review pressure",
+        "Concealment attempt",
+        "Approval evasion",
+        "Alternative tool path",
+        "Detection and containment",
     )
     for forbidden_marker in forbidden_markers:
-        assert forbidden_marker not in text, forbidden_marker
+        assert "".join(forbidden_marker.split()) not in labels, forbidden_marker
 
 
 def test_chapter_24_misalignment_useful_refs_include_risk_evidence_contracts() -> None:
@@ -6961,6 +6977,7 @@ def test_chapter_26_evidence_model_links_verifier_evidence() -> None:
 
 def test_chapter_26_chinese_research_frontier_labels_are_localized() -> None:
     chinese_text = _read("docs/book/part-viii/chapter-26.zh.md")
+    diagram_labels = _diagram_labels("docs/book/part-viii/chapter-26.zh.md")
     expected_markers = (
         "追踪（traces）从“方便阅读的事件日志”",
         "追踪查看器（trace viewer）",
@@ -6985,7 +7002,9 @@ def test_chapter_26_chinese_research_frontier_labels_are_localized() -> None:
         "发布证据 / Release evidence",
     )
     for expected_marker in expected_markers:
-        assert expected_marker in chinese_text, expected_marker
+        assert (
+            expected_marker in chinese_text or "".join(expected_marker.split()) in diagram_labels
+        ), expected_marker
 
     forbidden_markers = (
         "把 traces 从“方便阅读的事件日志”",
@@ -6999,16 +7018,20 @@ def test_chapter_26_chinese_research_frontier_labels_are_localized() -> None:
         "session-aware traces；",
         "telemetry、approvals 和 lifecycle artifacts 之间的明确 linkage",
         "AI-native observability 最好被理解成 telemetry、inventory 与 governance evidence",
-        'A["Inventory coverage"]',
-        'B["Runtime telemetry"]',
-        'C["Policy and approval evidence"]',
-        'D --> E["Incident reconstruction"]',
-        'D --> F["Behavioral baselines"]',
-        'D --> G["Abuse detection"]',
-        'D --> H["Release evidence"]',
     )
     for forbidden_marker in forbidden_markers:
         assert forbidden_marker not in chinese_text, forbidden_marker
+
+    for label in (
+        "Inventory coverage",
+        "Runtime telemetry",
+        "Policy and approval evidence",
+        "Incident reconstruction",
+        "Behavioral baselines",
+        "Abuse detection",
+        "Release evidence",
+    ):
+        assert "".join(label.split()) not in diagram_labels, label
 
 
 def test_chapter_26_chinese_governance_action_labels_are_localized() -> None:
@@ -20963,27 +20986,27 @@ def test_mcp_a2a_security_governance_sections_are_present() -> None:
 
 
 def test_russian_practical_a2a_diagram_uses_localized_labels() -> None:
-    text = _read("docs/book/part-iv/practical-mcp-a2a.md")
+    labels = _diagram_labels("docs/book/part-iv/practical-mcp-a2a.md")
 
     expected_markers = (
-        'A["Координирующий агент"]',
-        'B["Передача управления A2A"]',
-        'C["Специализированный агент"]',
-        'D["MCP-клиент"]',
-        'F["Сервер инструментов / ресурсов"]',
+        "Координирующий агент",
+        "Передача управления A2A",
+        "Специализированный агент",
+        "MCP-клиент",
+        "Сервер инструментов / ресурсов",
     )
     forbidden_markers = (
-        'A["Coordinator agent"]',
-        'B["A2A handoff"]',
-        'C["Specialist agent"]',
-        'D["MCP client"]',
-        'F["Tool / resource server"]',
+        "Coordinator agent",
+        "A2A handoff",
+        "Specialist agent",
+        "MCP client",
+        "Tool / resource server",
     )
 
     for marker in expected_markers:
-        assert marker in text, marker
+        assert "".join(marker.split()) in labels, marker
     for marker in forbidden_markers:
-        assert marker not in text, marker
+        assert "".join(marker.split()) not in labels, marker
 
 
 def test_microsoft_mcp_tool_description_poisoning_case_is_documented() -> None:

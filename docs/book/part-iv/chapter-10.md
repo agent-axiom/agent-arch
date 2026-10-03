@@ -135,18 +135,21 @@
 
 То есть граница отката — это не “потом посмотрим”. Это часть контракта инструмента и рабочего процесса.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>После побочного эффекта слой выполнения должен различать безопасный повтор, сверку и остановку</p>
 
-``` mermaid
-flowchart TD
-    A["Запрос инструмента"] --> B["Выполнить действие записи"]
-    B --> C{"Исход известен?"}
-    C -->|Да, успех| D["Сохранить результат и продолжить"]
-    C -->|Ошибка, которую можно повторить| E["Повторить по политике с backoff"]
-    C -->|Неизвестный побочный эффект| F["Сверить или запросить проверку человеком"]
-    C -->|Ошибка валидации или доступа| G["Остановиться и показать ошибку"]
-```
+<!-- excalidraw:ru-part-iv-chapter-10-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="После побочного эффекта слой выполнения должен различать безопасный повтор, сверку и остановку" style="--diagram-native-width:996px">
+
+[![После побочного эффекта слой выполнения должен различать безопасный повтор, сверку и остановку](../../assets/diagrams/ru/part-iv-chapter-10-01.svg){ width="996" height="868" loading="lazy" }](../../assets/diagrams/ru/part-iv-chapter-10-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iv-chapter-10-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iv-chapter-10-01.excalidraw){ download="part-iv-chapter-10-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iv-chapter-10-01 -->
 
 </div>
 

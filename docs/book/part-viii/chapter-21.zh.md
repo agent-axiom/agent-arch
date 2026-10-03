@@ -185,18 +185,21 @@ Google Research 在这里给出的核心观点很清楚：生成式系统的安�
 
 预算可以告诉你系统现在已经不健康了；保障则告诉你，谁来冻结路由、谁来收紧控制面，以及谁负责把系统带回安全状态。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>保障闭环更像一个连续循环：发现、检测、遏制、修复、学习</p>
 
-``` mermaid
-flowchart LR
-    A["红队测试与事故"] --> B["发现"]
-    B --> C["检测规则与监控"]
-    C --> D["响应动作"]
-    D --> E["修复"]
-    E --> F["更新后的策略、评测和发布（rollout）规则"]
-    F --> A
-```
+<!-- excalidraw:zh-part-viii-chapter-21-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="保障闭环更像一个连续循环：发现、检测、遏制、修复、学习" style="--diagram-native-width:308px">
+
+[![保障闭环更像一个连续循环：发现、检测、遏制、修复、学习](../../assets/diagrams/zh/part-viii-chapter-21-01.svg){ width="308" height="744" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-21-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-21-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-21-01.excalidraw){ download="part-viii-chapter-21-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-21-01 -->
 
 </div>
 

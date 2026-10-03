@@ -61,21 +61,21 @@ For the support case, the same questions look like this:
 
 The diagram below is useful because it shows not abstract security, but the actual places where one request can go wrong.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>What the security perimeter of an agent system looks like</p>
 
-``` mermaid
-flowchart LR
-    input["User / API / Files / Web content"] --> ingress["Ingress controls"]
-    ingress --> prompt["Prompt assembly boundary"]
-    prompt --> model["Model gateway"]
-    model --> retrieval["Retrieval gateway"]
-    model --> runtime["Agent runtime"]
-    runtime --> tools["Tool gateway / sandbox"]
-    tools --> systems["External systems"]
-    runtime --> egress["Egress filters"]
-    runtime --> audit["Trace / audit / incident trail"]
-```
+<!-- excalidraw:en-part-ii-chapter-3-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="What the security perimeter of an agent system looks like" style="--diagram-native-width:714px">
+
+[![What the security perimeter of an agent system looks like](../../assets/diagrams/en/part-ii-chapter-3-01.svg){ width="714" height="1012" loading="lazy" }](../../assets/diagrams/en/part-ii-chapter-3-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-ii-chapter-3-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-ii-chapter-3-01.excalidraw){ download="part-ii-chapter-3-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-ii-chapter-3-01 -->
 
 </div>
 

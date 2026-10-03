@@ -94,25 +94,21 @@ There are actions the agent should not complete on its own at all:
 
 For those, you need more than a toggle called "approval required." You need a real confirmation flow.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>What an approval flow for a risky action looks like</p>
 
-``` mermaid
-sequenceDiagram
-    autonumber
-    participant R as Agent runtime
-    participant P as Policy engine
-    participant H as Human approver
-    participant T as Tool gateway
-    participant A as Audit trail
+<!-- excalidraw:en-part-ii-chapter-4-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="What an approval flow for a risky action looks like" style="--diagram-native-width:1032px">
 
-    R->>P: Request risky action
-    P-->>R: Approval required
-    R->>H: Ask for approval with context
-    H-->>R: Approve / reject
-    R->>T: Execute only if approved
-    T->>A: Persist action + approval record
-```
+[![What an approval flow for a risky action looks like](../../assets/diagrams/en/part-ii-chapter-4-01.svg){ width="1032" height="463" loading="lazy" }](../../assets/diagrams/en/part-ii-chapter-4-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-ii-chapter-4-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-ii-chapter-4-01.excalidraw){ download="part-ii-chapter-4-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-ii-chapter-4-01 -->
 
 </div>
 

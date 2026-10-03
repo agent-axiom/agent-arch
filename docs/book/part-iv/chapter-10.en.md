@@ -126,18 +126,21 @@ For every write capability, it helps to know in advance:
 
 Rollback boundary is not "we will decide later". It is part of the tool and workflow contract.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>After a side effect, the execution layer must distinguish safe retry, reconcile, and stop paths</p>
 
-``` mermaid
-flowchart TD
-    A["Tool request"] --> B["Execute write action"]
-    B --> C{"Outcome known?"}
-    C -->|Yes, success| D["Store result and continue"]
-    C -->|Retryable failure| E["Retry with policy and backoff"]
-    C -->|Unknown side effect| F["Reconcile or request human review"]
-    C -->|Validation or permission failure| G["Stop and surface error"]
-```
+<!-- excalidraw:en-part-iv-chapter-10-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="After a side effect, the execution layer must distinguish safe retry, reconcile, and stop paths" style="--diagram-native-width:996px">
+
+[![After a side effect, the execution layer must distinguish safe retry, reconcile, and stop paths](../../assets/diagrams/en/part-iv-chapter-10-01.svg){ width="996" height="778" loading="lazy" }](../../assets/diagrams/en/part-iv-chapter-10-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iv-chapter-10-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iv-chapter-10-01.excalidraw){ download="part-iv-chapter-10-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iv-chapter-10-01 -->
 
 </div>
 

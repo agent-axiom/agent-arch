@@ -172,10 +172,10 @@ Do not silently let translated pages drift on core concepts.
 
 The preferred visual stack is:
 
-- `Mermaid` for architecture and flow diagrams
+- `Excalidraw` for architecture and flow diagrams, with editable `.excalidraw` sources and SVG exports
 - `Observable Plot` for lightweight interactive charts
 
-Use Mermaid for:
+Use Excalidraw for:
 
 - system architecture
 - request flow
@@ -197,6 +197,11 @@ Guidelines:
 - prefer one idea per diagram
 - keep labels short
 - make visuals explain something, not decorate the page
+- store each editable scene next to its SVG in `docs/assets/diagrams/{ru,en,zh}/`
+- use regular readable fonts, restrained fills, and unambiguous arrow directions
+- preserve branch labels, trust boundaries, and the distinction between denial and an unknown external effect
+- export from the scene using [`tools/diagrams`](tools/diagrams/README.md); do not flatten a diagram into an embedded screenshot
+- verify all three language variants and inspect diagrams at normal reading size
 
 ## Code examples
 

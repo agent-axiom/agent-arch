@@ -81,22 +81,21 @@ This is where the scenarios that demos ignore start appearing:
 
 That is no longer just "tool calling." That is execution discipline.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>The model should not talk to the external world directly, but to the execution layer</p>
 
-``` mermaid
-flowchart LR
-    A["Prompt + policy context"] --> B["Model"]
-    B --> C["Tool request"]
-    C --> D["Execution layer"]
-    D --> E["Catalog lookup"]
-    D --> F["Policy / validation"]
-    D --> G["Retry / timeout / idempotency"]
-    G --> H["External system"]
-    H --> D
-    D --> I["Structured tool result"]
-    I --> B
-```
+<!-- excalidraw:en-part-iv-chapter-8-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="The model should not talk to the external world directly, but to the execution layer" style="--diagram-native-width:1007px">
+
+[![The model should not talk to the external world directly, but to the execution layer](../../assets/diagrams/en/part-iv-chapter-8-01.svg){ width="1007" height="744" loading="lazy" }](../../assets/diagrams/en/part-iv-chapter-8-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iv-chapter-8-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iv-chapter-8-01.excalidraw){ download="part-iv-chapter-8-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iv-chapter-8-01 -->
 
 </div>
 

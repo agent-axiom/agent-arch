@@ -56,21 +56,21 @@ When a team says "let's add memory," several different things usually get mixed 
 
 If all of this is pushed into one place, chaos starts quickly. So the first rule is simple: do not design memory as one abstract storage. Design it as a set of different boundaries with different lifetimes, owners, and write rules.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>It is more useful to think about agent memory as several state layers, not one database</p>
 
-``` mermaid
-flowchart TD
-    A["User request"] --> B["Session context"]
-    B --> C["Planner / runtime"]
-    C --> D["Short-term working memory"]
-    C --> E["Profile memory"]
-    C --> F["Knowledge retrieval"]
-    D --> G["Prompt assembly"]
-    E --> G
-    F --> G
-    G --> H["Model response"]
-```
+<!-- excalidraw:en-part-iii-chapter-5-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="It is more useful to think about agent memory as several state layers, not one database" style="--diagram-native-width:730px">
+
+[![It is more useful to think about agent memory as several state layers, not one database](../../assets/diagrams/en/part-iii-chapter-5-01.svg){ width="730" height="774" loading="lazy" }](../../assets/diagrams/en/part-iii-chapter-5-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iii-chapter-5-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iii-chapter-5-01.excalidraw){ download="part-iii-chapter-5-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iii-chapter-5-01 -->
 
 </div>
 

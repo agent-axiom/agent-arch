@@ -165,8 +165,35 @@
   font-weight: 700;
 }
 
-.md-typeset .mermaid {
+.md-typeset .excalidraw-diagram {
   overflow-x: auto;
+  margin: 0;
+  background: #fff;
+  color: #182735;
+}
+
+.md-typeset .excalidraw-diagram img {
+  display: block;
+  width: 100%;
+  max-width: var(--diagram-native-width);
+  height: auto;
+  margin: 0 auto;
+}
+
+.md-typeset .excalidraw-diagram > p {
+  margin: 0;
+}
+
+.md-typeset .excalidraw-source {
+  margin: 0.5rem 0 0;
+  font-size: 0.72rem;
+}
+
+@media print {
+  .md-typeset .excalidraw-diagram img {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 .md-typeset pre,

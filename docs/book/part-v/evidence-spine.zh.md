@@ -66,21 +66,21 @@ Evidence Spine 是一种最小但受治理的连续性，它能让操作员不�
 
 重点不在术语是否完美，而在这些链接是否可复核。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>把 Evidence Spine 看成一串相互链接的记录，会比把它看成一堆分散工件更有用</p>
 
-``` mermaid
-flowchart LR
-    A["run_id"] --> B["trace_id"]
-    A --> C["policy_bundle_version"]
-    A --> D["approval_id"]
-    A --> E["evaluation_result_id"]
-    C --> F["release_identity"]
-    C --> G["artifact_id"]
-    E --> H["verifier_contract_id"]
-    E --> I["incident_id"]
-    I --> J["发布判断"]
-```
+<!-- excalidraw:zh-part-v-evidence-spine-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="把 Evidence Spine 看成一串相互链接的记录，会比把它看成一堆分散工件更有用" style="--diagram-native-width:960px">
+
+[![把 Evidence Spine 看成一串相互链接的记录，会比把它看成一堆分散工件更有用](../../assets/diagrams/zh/part-v-evidence-spine-01.svg){ width="960" height="437" loading="lazy" }](../../assets/diagrams/zh/part-v-evidence-spine-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-v-evidence-spine-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-v-evidence-spine-01.excalidraw){ download="part-v-evidence-spine-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-v-evidence-spine-01 -->
 
 </div>
 

@@ -59,22 +59,21 @@
 
 这已经和“带函数调用的聊天”差得很远了，而且本来就应该如此。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>即使是基础运行时，也已经有若干必须存在的控制点</p>
 
-``` mermaid
-flowchart LR
-    A["入口"] --> B["运行上下文"]
-    B --> C["策略预检查"]
-    C --> D["记忆 / 检索"]
-    D --> E["模型步骤"]
-    E --> F{"需要工具？"}
-    F -->|No| G["结果组装"]
-    F -->|Yes| H["执行层"]
-    H --> I["工具结果"]
-    I --> E
-    G --> J["遥测 + 后台任务"]
-```
+<!-- excalidraw:zh-part-vii-chapter-16-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="即使是基础运行时，也已经有若干必须存在的控制点" style="--diagram-native-width:457px">
+
+[![即使是基础运行时，也已经有若干必须存在的控制点](../../assets/diagrams/zh/part-vii-chapter-16-01.svg){ width="457" height="1052" loading="lazy" }](../../assets/diagrams/zh/part-vii-chapter-16-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-vii-chapter-16-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-vii-chapter-16-01.excalidraw){ download="part-vii-chapter-16-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-vii-chapter-16-01 -->
 
 </div>
 
@@ -357,18 +356,21 @@ Delegated tools 还有相邻规则。当 sub-agent 通过 `clientTools` 和 `onC
 
 Cloudflare 的下一个有用模式是：不要把所有长时间工作都塞进同一个智能体事件循环（agent event loop）。智能体可以是**有状态交互边界（stateful interaction boundary）**：负责实例身份、WebSocket/HTTP 会话、本地状态、用户回调和当前对话视图。工作流则成为**持久执行边界（durable execution boundary）**：负责步骤、重试、等待外部事件、长时间审批门禁，以及故障后的恢复。[^cloudflare-workflows]
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>实时 agent 与 durable workflow 解决的是不同问题</p>
 
-``` mermaid
-flowchart LR
-    S["Session / state store"] --> A["Agent runtime shell"]
-    A --> W["Durable workflow spine"]
-    W --> E["Tool / external event / approval step"]
-    W --> L["Audit + evidence log"]
-    A --> U["User-facing stream / WebSocket"]
-    E --> L
-```
+<!-- excalidraw:zh-part-vii-chapter-16-02 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="实时 agent 与 durable workflow 解决的是不同问题" style="--diagram-native-width:496px">
+
+[![实时 agent 与 durable workflow 解决的是不同问题](../../assets/diagrams/zh/part-vii-chapter-16-02.svg){ width="496" height="776" loading="lazy" }](../../assets/diagrams/zh/part-vii-chapter-16-02.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-vii-chapter-16-02.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-vii-chapter-16-02.excalidraw){ download="part-vii-chapter-16-02.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-vii-chapter-16-02 -->
 
 </div>
 

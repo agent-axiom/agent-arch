@@ -174,24 +174,21 @@ If the map still feels dense at this point, do not try to memorize every block n
 
 Only now does it become useful to show the whole platform from above.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Reference diagram of a safe agent platform</p>
 
-``` mermaid
-flowchart TB
-    user["User / API / Event"] --> interface["Interface layer"]
-    interface --> identity["Identity & session layer"]
-    identity --> control["Agent control plane"]
-    control --> runtime["Orchestration runtime"]
-    runtime --> cognition["Cognition plane"]
-    runtime --> memory["Memory & knowledge plane"]
-    runtime --> tools["Tool execution plane"]
-    runtime --> telemetry["Telemetry & eval plane"]
-    tools --> external["External systems / MCP / SaaS"]
-    memory --> stores["Vector DB / KB / profile memory"]
-    control --> approval["Approval / policy / quotas"]
-    telemetry --> audit["Traces / metrics / audit"]
-```
+<!-- excalidraw:en-part-i-chapter-2-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Reference diagram of a safe agent platform" style="--diagram-native-width:985px">
+
+[![Reference diagram of a safe agent platform](../../assets/diagrams/en/part-i-chapter-2-01.svg){ width="985" height="1042" loading="lazy" }](../../assets/diagrams/en/part-i-chapter-2-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-i-chapter-2-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-i-chapter-2-01.excalidraw){ download="part-i-chapter-2-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-i-chapter-2-01 -->
 
 </div>
 

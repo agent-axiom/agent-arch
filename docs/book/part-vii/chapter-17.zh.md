@@ -61,19 +61,21 @@
 
 所以能力目录不是“为了方便的清单”，而是平台能力的中心控制点。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>策略层与能力目录一起构成参考实现的契约核心</p>
 
-``` mermaid
-flowchart LR
-    A["运行请求"] --> B["运行时编排器"]
-    B --> C["策略层"]
-    B --> D["能力目录"]
-    C --> E["允许 / 拒绝 / 审批"]
-    D --> F["能力契约"]
-    E --> G["执行层"]
-    F --> G
-```
+<!-- excalidraw:zh-part-vii-chapter-17-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="策略层与能力目录一起构成参考实现的契约核心" style="--diagram-native-width:428px">
+
+[![策略层与能力目录一起构成参考实现的契约核心](../../assets/diagrams/zh/part-vii-chapter-17-01.svg){ width="428" height="596" loading="lazy" }](../../assets/diagrams/zh/part-vii-chapter-17-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-vii-chapter-17-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-vii-chapter-17-01.excalidraw){ download="part-vii-chapter-17-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-vii-chapter-17-01 -->
 
 </div>
 

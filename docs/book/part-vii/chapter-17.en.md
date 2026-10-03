@@ -61,19 +61,21 @@ It is very easy to slide into a catalog that only stores a list of available too
 
 So the capability catalog is not "inventory for convenience". It is the central control point for platform capabilities.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Together, the policy layer and the capability catalog form the contract core of the reference implementation</p>
 
-``` mermaid
-flowchart LR
-    A["Run request"] --> B["Runtime orchestrator"]
-    B --> C["Policy layer"]
-    B --> D["Capability catalog"]
-    C --> E["Allow / deny / approve"]
-    D --> F["Capability contract"]
-    E --> G["Execution layer"]
-    F --> G
-```
+<!-- excalidraw:en-part-vii-chapter-17-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Together, the policy layer and the capability catalog form the contract core of the reference implementation" style="--diagram-native-width:496px">
+
+[![Together, the policy layer and the capability catalog form the contract core of the reference implementation](../../assets/diagrams/en/part-vii-chapter-17-01.svg){ width="496" height="656" loading="lazy" }](../../assets/diagrams/en/part-vii-chapter-17-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-vii-chapter-17-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-vii-chapter-17-01.excalidraw){ download="part-vii-chapter-17-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-vii-chapter-17-01 -->
 
 </div>
 

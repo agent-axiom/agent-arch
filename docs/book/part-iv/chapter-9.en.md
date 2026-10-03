@@ -224,22 +224,21 @@ Two practical consequences follow from that:
 
 That may sound like a minor terminology point, but it helps a lot. The MCP client is not the product UI and not “the agent itself.” It is the transport and contract layer between the host and one specific server boundary.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>MCP is useful as a contract layer between the runtime and external capabilities</p>
 
-``` mermaid
-flowchart LR
-    A["Agent runtime"] --> B["Execution layer"]
-    B --> C["Policy and validation"]
-    C --> D["MCP client"]
-    D --> E["MCP server"]
-    E --> F["Typed adapter"]
-    F --> G["External API / system"]
-    G --> F
-    F --> E
-    E --> D
-    D --> B
-```
+<!-- excalidraw:en-part-iv-chapter-9-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="MCP is useful as a contract layer between the runtime and external capabilities" style="--diagram-native-width:314px">
+
+[![MCP is useful as a contract layer between the runtime and external capabilities](../../assets/diagrams/en/part-iv-chapter-9-01.svg){ width="314" height="862" loading="lazy" }](../../assets/diagrams/en/part-iv-chapter-9-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iv-chapter-9-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iv-chapter-9-01.excalidraw){ download="part-iv-chapter-9-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iv-chapter-9-01 -->
 
 </div>
 

@@ -306,19 +306,21 @@ Azure agentic cloud operations показывает тот же сдвиг на 
 
 То есть исследования здесь полезны не как повод обещать «полную объяснимость», а как напоминание, что наблюдаемость должна постепенно эволюционировать от логирования к диагностике.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Наблюдаемость для ИИ-систем полезно мыслить как связку телеметрии, реестра и доказательств для управления</p>
 
-``` mermaid
-flowchart LR
-    A["Покрытие реестра"] --> D["Наблюдаемость агентных ИИ-систем"]
-    B["Телеметрия рантайма"] --> D
-    C["Доказательства политики и подтверждений"] --> D
-    D --> E["Реконструкция инцидента"]
-    D --> F["Поведенческие baseline"]
-    D --> G["Обнаружение злоупотреблений"]
-    D --> H["Доказательства выпуска"]
-```
+<!-- excalidraw:ru-part-viii-chapter-26-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Наблюдаемость для ИИ-систем полезно мыслить как связку телеметрии, реестра и доказательств для управления" style="--diagram-native-width:806px">
+
+[![Наблюдаемость для ИИ-систем полезно мыслить как связку телеметрии, реестра и доказательств для управления](../../assets/diagrams/ru/part-viii-chapter-26-01.svg){ width="806" height="508" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-26-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-26-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-26-01.excalidraw){ download="part-viii-chapter-26-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-26-01 -->
 
 </div>
 

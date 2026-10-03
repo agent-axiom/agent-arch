@@ -73,16 +73,21 @@ A good operating model usually splits responsibility roughly like this:
 - acceptance criteria for task success;
 - integration of platform primitives into the actual product.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Platform and product should not duplicate each other, because they own different responsibility layers</p>
 
-``` mermaid
-flowchart LR
-    A["Platform team"] --> B["Runtime, policy, observability, gateways"]
-    C["Product teams"] --> D["User workflows, domain logic, UX outcomes"]
-    B --> E["Golden paths and shared primitives"]
-    D --> E
-```
+<!-- excalidraw:en-part-vi-chapter-14-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Platform and product should not duplicate each other, because they own different responsibility layers" style="--diagram-native-width:765px">
+
+[![Platform and product should not duplicate each other, because they own different responsibility layers](../../assets/diagrams/en/part-vi-chapter-14-01.svg){ width="765" height="312" loading="lazy" }](../../assets/diagrams/en/part-vi-chapter-14-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-vi-chapter-14-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-vi-chapter-14-01.excalidraw){ download="part-vi-chapter-14-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-vi-chapter-14-01 -->
 
 </div>
 

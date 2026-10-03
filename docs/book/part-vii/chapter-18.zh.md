@@ -138,19 +138,21 @@
 - 读取能力可能在超时和遥测规范后就接近可用；
 - 写入能力没有幂等性、结果归一化和清晰回滚故事就还不算就绪。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>上线就绪性最好理解为多个轮廓的交集，而不是一个总状态灯</p>
 
-``` mermaid
-flowchart LR
-    A["运行时"] --> H["生产就绪"]
-    B["安全"] --> H
-    C["能力"] --> H
-    D["可观测性"] --> H
-    E["评测与 SLO"] --> H
-    F["运维就绪性"] --> H
-    G["负责人归属与回滚"] --> H
-```
+<!-- excalidraw:zh-part-vii-chapter-18-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="上线就绪性最好理解为多个轮廓的交集，而不是一个总状态灯" style="--diagram-native-width:448px">
+
+[![上线就绪性最好理解为多个轮廓的交集，而不是一个总状态灯](../../assets/diagrams/zh/part-vii-chapter-18-01.svg){ width="448" height="712" loading="lazy" }](../../assets/diagrams/zh/part-vii-chapter-18-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-vii-chapter-18-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-vii-chapter-18-01.excalidraw){ download="part-vii-chapter-18-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-vii-chapter-18-01 -->
 
 </div>
 

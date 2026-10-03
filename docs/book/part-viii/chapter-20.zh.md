@@ -84,19 +84,21 @@
 
 这不是完美分类，但它至少能帮助团队不再用同一种语气讨论所有变更。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>好的变更管理，第一步往往是先把变更分类说清楚</p>
 
-``` mermaid
-flowchart LR
-    A["提出变更"] --> B["变更分类"]
-    B --> C["低风险"]
-    B --> D["中风险"]
-    B --> E["高风险"]
-    C --> F["轻量验证"]
-    D --> G["评测 + 评审"]
-    E --> H["正式门禁 + 审批 + 分阶段 rollout"]
-```
+<!-- excalidraw:zh-part-viii-chapter-20-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="好的变更管理，第一步往往是先把变更分类说清楚" style="--diagram-native-width:830px">
+
+[![好的变更管理，第一步往往是先把变更分类说清楚](../../assets/diagrams/zh/part-viii-chapter-20-01.svg){ width="830" height="350" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-20-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-20-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-20-01.excalidraw){ download="part-viii-chapter-20-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-20-01 -->
 
 </div>
 

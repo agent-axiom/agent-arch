@@ -61,19 +61,21 @@
 
 То есть каталог возможностей это не “инвентарь для удобства”, а центральная точка управления способностями платформы.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Слой политик и каталог возможностей вместе образуют договорное ядро эталонной реализации</p>
 
-``` mermaid
-flowchart LR
-    A["Запрос запуска"] --> B["Оркестратор среды исполнения"]
-    B --> C["Слой политик"]
-    B --> D["Каталог возможностей"]
-    C --> E["Разрешить / запретить / запросить подтверждение"]
-    D --> F["Контракт возможности"]
-    E --> G["Слой исполнения"]
-    F --> G
-```
+<!-- excalidraw:ru-part-vii-chapter-17-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Слой политик и каталог возможностей вместе образуют договорное ядро эталонной реализации" style="--diagram-native-width:496px">
+
+[![Слой политик и каталог возможностей вместе образуют договорное ядро эталонной реализации](../../assets/diagrams/ru/part-vii-chapter-17-01.svg){ width="496" height="776" loading="lazy" }](../../assets/diagrams/ru/part-vii-chapter-17-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-vii-chapter-17-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-vii-chapter-17-01.excalidraw){ download="part-vii-chapter-17-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-vii-chapter-17-01 -->
 
 </div>
 

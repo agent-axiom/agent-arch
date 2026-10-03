@@ -118,20 +118,21 @@ Compaction can mean different things:
 - replace a large blob with a normalized record plus a source link;
 - lower the priority of old records instead of keeping them forever in the foreground.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>It is useful to think of retrieval and compaction as one maintenance loop for memory</p>
 
-``` mermaid
-flowchart TD
-    A["New run"] --> B["Query memory"]
-    B --> C["Apply filters and ranking"]
-    C --> D["Assemble prompt context"]
-    D --> E["Model + tools"]
-    E --> F["Create new memory candidates"]
-    F --> G["Background compaction and review"]
-    G --> H["Normalized memory store"]
-    H --> B
-```
+<!-- excalidraw:en-part-iii-chapter-7-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="It is useful to think of retrieval and compaction as one maintenance loop for memory" style="--diagram-native-width:314px">
+
+[![It is useful to think of retrieval and compaction as one maintenance loop for memory](../../assets/diagrams/en/part-iii-chapter-7-01.svg){ width="314" height="1130" loading="lazy" }](../../assets/diagrams/en/part-iii-chapter-7-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iii-chapter-7-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iii-chapter-7-01.excalidraw){ download="part-iii-chapter-7-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iii-chapter-7-01 -->
 
 </div>
 

@@ -114,17 +114,21 @@ A good end-of-life process rarely looks like one action. It is usually better to
 - [close principals, secrets, and connectors](../../appendix/lifecycle-artifact-schema.en.md);
 - [record the final audit state](../../appendix/trace-schema.en.md).
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Retirement works best as a stepwise narrowing of the operational surface</p>
 
-``` mermaid
-flowchart LR
-    A["Freeze rollout"] --> B["Disable risky capabilities"]
-    B --> C["Disable writes and background jobs"]
-    C --> D["Revoke egress and principals"]
-    D --> E["Archive audit and memory state"]
-    E --> F["Mark system retired"]
-```
+<!-- excalidraw:en-part-viii-chapter-23-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Retirement works best as a stepwise narrowing of the operational surface" style="--diagram-native-width:794px">
+
+[![Retirement works best as a stepwise narrowing of the operational surface](../../assets/diagrams/en/part-viii-chapter-23-01.svg){ width="794" height="341" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-23-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-23-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-23-01.excalidraw){ download="part-viii-chapter-23-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-23-01 -->
 
 </div>
 

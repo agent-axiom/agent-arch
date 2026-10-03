@@ -176,24 +176,21 @@
 
 Ниже уже полезно показать платформу "видом сверху".
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Референсная схема безопасной агентной платформы</p>
 
-``` mermaid
-flowchart TB
-    user["Пользователь / API / событие"] --> interface["Входной слой"]
-    interface --> identity["Идентичность и сессия"]
-    identity --> control["Плоскость управления агентом"]
-    control --> runtime["Оркестрационный рантайм"]
-    runtime --> cognition["Модельный слой"]
-    runtime --> memory["Память и знания"]
-    runtime --> tools["Исполнение инструментов"]
-    runtime --> telemetry["Телеметрия и оценки"]
-    tools --> external["Внешние системы / MCP / SaaS"]
-    memory --> stores["Векторная БД / база знаний / профильная память"]
-    control --> approval["Подтверждения / политики / квоты"]
-    telemetry --> audit["Трассы / метрики / аудит"]
-```
+<!-- excalidraw:ru-part-i-chapter-2-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Референсная схема безопасной агентной платформы" style="--diagram-native-width:996px">
+
+[![Референсная схема безопасной агентной платформы](../../assets/diagrams/ru/part-i-chapter-2-01.svg){ width="996" height="1102" loading="lazy" }](../../assets/diagrams/ru/part-i-chapter-2-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-i-chapter-2-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-i-chapter-2-01.excalidraw){ download="part-i-chapter-2-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-i-chapter-2-01 -->
 
 </div>
 

@@ -118,20 +118,21 @@ AI Search 在嵌入模型支持图像时直接嵌入查询图像；纯文本嵌�
 - 把大块数据替换成规范化记录加来源链接；
 - 让旧记录降权，而不是永远留在前景里。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>更适合把检索和压缩看成一整个记忆维护循环</p>
 
-``` mermaid
-flowchart TD
-    A["新运行"] --> B["查询记忆"]
-    B --> C["应用过滤器和排序"]
-    C --> D["组装提示上下文"]
-    D --> E["模型 + 工具"]
-    E --> F["创建新记忆候选"]
-    F --> G["后台压缩与审查"]
-    G --> H["规范化记忆存储"]
-    H --> B
-```
+<!-- excalidraw:zh-part-iii-chapter-7-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="更适合把检索和压缩看成一整个记忆维护循环" style="--diagram-native-width:310px">
+
+[![更适合把检索和压缩看成一整个记忆维护循环](../../assets/diagrams/zh/part-iii-chapter-7-01.svg){ width="310" height="950" loading="lazy" }](../../assets/diagrams/zh/part-iii-chapter-7-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iii-chapter-7-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iii-chapter-7-01.excalidraw){ download="part-iii-chapter-7-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iii-chapter-7-01 -->
 
 </div>
 
