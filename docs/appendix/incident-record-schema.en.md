@@ -72,6 +72,29 @@ The most important fields here are:
 !!! note "Canonical incident cases"
     The incident record should leave different corrective paths for the three canonical cases. **Support triage** records unknown write, `idempotency_key`, duplicate-ticket recovery, and eval/update gate. **Internal knowledge assistant** records stale retrieval, source attribution gaps, memory contamination, access control breach, and knowledge provenance repair. **Incident coordination** records escalation delay, notification side effects, response ownership gap, handoff failure, and post-incident learning update.
 
+### Extension for vulnerability review routes
+
+This proposed contract inspired by [Anthropic CVD](https://red.anthropic.com/2026/cvd/) links `finding_id` to `incident_id` when an incident actually exists: not every candidate is an incident. It extends the documentation schema, not implemented reference-runtime fields.
+
+| Field | Meaning |
+| --- | --- |
+| `finding_id`, `duplicate_of`, `discovered_at` | Stable finding, duplicate relationship, and cohort origin |
+| `review_requested_at`, `review_events[]` | Queue entry; reviewer, independence, time, revision, verdict, and protected evidence links |
+| `disclosure_events[]` | Recipient, time, report link, and `route_at_send: independently_reviewed / direct_unreviewed` at delivery |
+| `maintainer_response` | Response time and content, separate from a validity verdict |
+| `severity_assessments[]` | Value, assessor, time, and scope |
+| `remediation` | `unknown / pending / patched / wont_fix`, patch release/commit, time, and evidence; risk acceptance needs an owner and rationale |
+| `deployment_verification` | Affected resources, installed version, time, and regression result; unknown resources are not considered fixed |
+| `as_of`, `evidence_access_policy` | Data freshness and access/disclosure restrictions |
+
+`null` means missing information, not a negative result. Preserve late and conflicting assessments; sending a report, receiving a reply, or assigning a CVE cannot establish independent review. One finding may have multiple advisories.
+
+Proposed scenarios, not executed here:
+
+1. Direct report and maintainer reply without independent review: the record stays outside the independently reviewed denominator; later review adds an event without rewriting delivery history.
+2. Patch release without a report reply: upstream remediation is valid with evidence, but local risk remains open until deployment is verified.
+3. One defect has a CVE and GHSA, a duplicate report, and unknown deployment: metrics count unique findings; release does not become proof of installation.
+
 ## 4. Incident postmortem link
 
 `incident_postmortem_link` connects a specific incident to corrective actions and lifecycle artifacts.

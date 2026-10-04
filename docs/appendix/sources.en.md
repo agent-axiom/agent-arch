@@ -44,6 +44,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Cloudflare, [Containers — residual data and cross-tenant isolation](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) (2026-09-24).
 
+- Anthropic, [Coordinated vulnerability disclosure dashboard](https://red.anthropic.com/2026/cvd/), snapshot 2026-10-02 19:47 UTC; checked 2026-10-04.
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

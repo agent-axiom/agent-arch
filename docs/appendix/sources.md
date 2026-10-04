@@ -44,6 +44,8 @@
 
 - Cloudflare, [Containers — остаточные данные и межклиентская изоляция](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) (2026-09-24).
 
+- Anthropic, [Дашборд координированного раскрытия уязвимостей](https://red.anthropic.com/2026/cvd/), срез 2026-10-02 19:47 UTC; проверено 2026-10-04.
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

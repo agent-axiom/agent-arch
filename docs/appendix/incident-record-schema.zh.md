@@ -72,6 +72,29 @@ owner: platform-operations
 !!! note "规范事故案例（Canonical incident cases）"
     事故记录（incident record）应该为三个规范案例（canonical cases）留下不同的纠正路径（corrective paths）。**支持分流（Support triage）** 记录结果未知的写入（unknown write）、`idempotency_key`、重复工单恢复（duplicate-ticket recovery）和评测/更新门禁（eval/update gate）。**内部知识助手（Internal knowledge assistant）** 记录陈旧检索（stale retrieval）、来源归因缺口（source attribution gaps）、记忆污染（memory contamination）、访问控制违规（access control breach）和知识来源修复（knowledge provenance repair）。**事件协调（Incident coordination）** 记录升级延迟（escalation delay）、通知副作用（notification side effects）、响应归属缺口（response ownership gap）、交接失败（handoff failure）和事件后学习更新（post-incident learning update）。
 
+### 漏洞审核路径扩展
+
+这个参考 [Anthropic CVD](https://red.anthropic.com/2026/cvd/) 的建议契约仅在确有事件时将 `finding_id` 关联到 `incident_id`：并非每个候选项都是事件。这是文档模式扩展，不是参考运行时已实现的字段。
+
+| 字段 | 含义 |
+| --- | --- |
+| `finding_id`, `duplicate_of`, `discovered_at` | 稳定的发现项、重复关系及队列起点 |
+| `review_requested_at`, `review_events[]` | 进入审核队列；审核者、独立性、时间、代码版本、结论和受保护的证据链接 |
+| `disclosure_events[]` | 接收者、时间、报告链接及发送时的 `route_at_send: independently_reviewed / direct_unreviewed` |
+| `maintainer_response` | 回复时间和内容，与有效性判断分开 |
+| `severity_assessments[]` | 级别、评估者、时间和适用范围 |
+| `remediation` | `unknown / pending / patched / wont_fix`、补丁版本或提交、时间及证据；风险接受需责任人与理由 |
+| `deployment_verification` | 受影响资源、已安装版本、时间和回归结果；未知资源不视为已修复 |
+| `as_of`, `evidence_access_policy` | 数据时效及访问、披露限制 |
+
+`null` 表示缺少信息，不代表否定结论。保留迟到和相互矛盾的评估；发送报告、收到回复或分配 CVE 都不能证明独立审核。一项发现可对应多个公告。
+
+以下是建议的检查场景，本次未执行：
+
+1. 直接报告并收到维护者回复，但无独立审核：该记录不进入独立审核分母；后续审核增加事件，不改写发送历史。
+2. 未收到回复但补丁已发布：有证据即可记录上游修复，但在验证部署前不得关闭本地风险。
+3. 一个缺陷同时有 CVE、GHSA、重复报告且安装情况未知：指标按唯一发现项计数；发布不能变成安装证明。
+
 ## 4. 事故事后复盘链接
 
 `incident_postmortem_link` 把某个具体事故与纠正动作、生命周期工件连接起来。

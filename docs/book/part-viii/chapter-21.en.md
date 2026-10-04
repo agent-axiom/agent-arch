@@ -127,6 +127,14 @@ The [Google Cloud case](https://cloud.google.com/blog/topics/systems/using-ai-ag
 
 As a book recommendation, retain the checked revision and configuration, finding owner and evidence references for each loop. Require a targeted test that exposes the defect before the patch and passes afterward, plus renewed reachability validation on the new revision. Nightly findings should enter the same triage, remediation and regression process, with a separate containment and release decision. Do not authorize automatic patch application merely because an agent generated a convincing explanation. These are proposed acceptance conditions, not claimed Mantis guarantees or an implemented reference-runtime integration.
 
+### The review route does not replace remediation evidence
+
+[Anthropic CVD](https://red.anthropic.com/2026/cvd/) distinguishes independent review by external researchers from direct reporting to maintainers without the same check. Maintainers may request the latter; it establishes neither a false positive nor validity. Do not turn these routes into one mandatory linear status chain.
+
+The recommended contract separately stores review history (who assessed what revision, when, with which evidence), report delivery, maintainer response, patch release, and verification of deployment. A reply does not establish validity; no reply does not rule out a patch. A later independent review adds an event rather than rewriting the original reporting route. Preserve model, reviewer, and maintainer severity assessments with their authors instead of overwriting them.
+
+Closing risk in your own system requires a fixed version, a regression check, and evidence of deployment across the declared affected scope. A decision not to fix needs an owner and risk-acceptance rationale separate from `patched`. Evidence links retain access and disclosure restrictions: a ledger entry does not authorize publication of sensitive details. See the [incident schema](../../appendix/incident-record-schema.md) for fields and proposed checks; this is a book recommendation, not an implemented Anthropic integration.
+
 ## 5. Detection must look wider than error rate
 
 For ordinary services, detection often revolves around error rate, latency, and infrastructure signals. For agent systems, that is too narrow.

@@ -243,6 +243,16 @@ That is why it helps to track:
 
 For the support agent, this is critical: if escalation rate gets too high, automation quickly becomes decorative.
 
+### Finding-review metrics: a queue is not an outcome
+
+The [Anthropic CVD dashboard](https://red.anthropic.com/2026/cvd/) illustrates why agent report counts are not counts of eliminated risks. The recommended metrics contract separates independent review from direct reporting to maintainers without that check. Record the snapshot date, discovery-date cohort, route, severity-assessment source, and denominator for every metric.
+
+- **Review queue age:** time from review request to the snapshot for all still-unreviewed findings; show queue size and p50/p95, not just completed-job throughput. Direct reports without a review request belong in a separate population, not among reviewed or lost jobs.
+- **Time to remediation:** from maintainer notification to upstream patch release. For completed cases show observation count and latency distribution; alongside them show the count and age of unresolved cases in the same cohort. No patch information means unknown status, not proof that no fix exists. Comparing only fast closed cases hides the tail.
+- **Distinct denominators:** confirmed / independently reviewed; notified / selected candidate cohort; known patched / notified in that same cohort. State missing data, repeat reports, and deduplication rules. Do not mix advisory counts with defect counts.
+
+Patch release and deployment in an affected environment are different outcomes with different clocks and evidence. These are book recommendations, not an implemented runtime integration or Anthropic-published SLOs; the numerical snapshot is discussed in the [case study](../../appendix/case-studies.md).
+
 ## 9. Practical Rules for SLO Design
 
 If you need a short set of rules that actually helps, it usually looks like this:

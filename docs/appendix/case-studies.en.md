@@ -29,6 +29,17 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Anthropic CVD: reports, reviews, and patches are different outcomes
+
+The [Anthropic vulnerability disclosure dashboard](https://red.anthropic.com/2026/cvd/) snapshot at **October 2, 2026, 19:47 UTC** shows 29,439 candidates, 6,123 independently reviewed by external firms, and 5,674 confirmed valid — **92.7% of reviewed findings only**. Of 6,157 findings reported to maintainers, 1,333 followed the independent-review route and 4,824 were sent directly without the same check. Not all confirmed findings have been reported: the authors describe limited review and reporting capacity.
+
+There are 5,103 known maintainer responses and 516 known upstream patches. A reply does not establish validity, a patch may exist without a reply, and release does not guarantee user installation. The 584 identifiers (219 CVEs and 365 GHSAs) span the whole ledger: one finding may carry both, so these are not 584 uniquely fixed vulnerabilities.
+
+This is the process operator's report, not an independent model-quality evaluation on a random sample. Confirmation can include previously known bugs and `wont_fix`; researchers' assessments can also be wrong. Do not extrapolate 92.7% to unreviewed candidates or direct reports, or interpret 516 as all cases actually fixed. Date, severity, and assessment-source filters change the cohort.
+
+The transferable lesson is to preserve routes and evidence history ([chapter 21](../book/part-viii/chapter-21.md), [incident schema](incident-record-schema.md)) and measure open-queue age and remediation latency with separate denominators ([chapter 12](../book/part-v/chapter-12.md)). These are proposed book contracts, not claimed dashboard guarantees.
+
+
 ### LangChain Open SWE: model selection in the harness
 
 The [October 1, 2026 article](https://www.langchain.com/blog/how-to-build-a-model-router-in-the-harness) reports an A/B test across 973 threads: half used a router, half the strongest baseline model. Median cost was $0.94 versus $2.61 (64% lower), mean cost fell 42%, and p90 fell 37%. Threads ending in merged PRs were 29.2% versus 27.3%, p = 0.49. These are author-reported results on specific traffic, not proof of equal quality or universal savings. User feedback was sparse; a second test against fast-only was stopped within a day after complaints, before statistically meaningful results.

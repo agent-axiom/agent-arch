@@ -44,6 +44,8 @@
 
 - Cloudflare, [Containers：残留数据与跨租户隔离](https://blog.cloudflare.com/containers-cross-tenant-vulnerability/) (2026-09-24).
 
+- Anthropic，[协调漏洞披露仪表板](https://red.anthropic.com/2026/cvd/)，快照 2026-10-02 19:47 UTC；核验日期 2026-10-04。
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security
