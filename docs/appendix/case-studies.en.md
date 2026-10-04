@@ -29,6 +29,21 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### Protected Quick Tunnels: an external link as a governed publication
+
+In the [October 2, 2026 Cloudflare article](https://blog.cloudflare.com/protected-quick-tunnels/), authentication is centralized in Access while `cloudflared` performs authorization locally. The guest list stays on the machine; this does not mean all traffic or sign-in information stays local. A broker returns a short-lived signed assertion bound to the tunnel hostname and single-use browser state. The connector verifies it, consumes the state, and matches the email against the allowlist. The assertion travels through POST, not a URL; authentication credentials are stripped before forwarding to the app.
+
+The authors describe login state valid for 10 minutes and a local session lasting up to four hours, or less if the Access sign-in expires sooner. Connector termination ends access; this is not an automatic four-hour lifetime limit for the tunnel itself. The [documentation](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/) separates browser-only email sign-in from non-interactive clients and excludes SSE. These capabilities are source-reported, not the result of our own service test.
+
+Proposed checks in a controlled test environment, not executed as part of this addition:
+
+1. **Unconfirmed protection:** simulate missing confirmation of protected mode. Startup fails, the URL is not declared ready, and there is no public fallback; successful confirmation provides a positive control.
+2. **Wrong audience:** test a visitor without a session, a verified address outside the allowlist, and an allowed visitor. Only the last reaches the harmless origin endpoint; testing a domain rule is not replaced by testing one address.
+3. **Handoff replay:** in a protocol fixture, replay consumed state, an expired assertion, and an assertion for another hostname or browser state. All are rejected without reaching the origin; a fresh valid pair succeeds. This is not a recommendation to collect real codes or cookies in logs.
+4. **Termination:** stop the connector with an active session and check the old URL, existing connections, and reconnection; restart with a new audience. The old session must not grant access to the new publication. Reconcile already-started business actions separately, and ensure agent failure does not leave the tunnel without an owner and closure deadline.
+
+Book mapping: [chapter 9](../book/part-iv/chapter-9.md) distinguishes access channels; [chapter 16](../book/part-vii/chapter-16.md) defines the proposed publication contract. Permission to access a preview is not permission to invoke arbitrary application tools.
+
 ### Anthropic CVD: reports, reviews, and patches are different outcomes
 
 The [Anthropic vulnerability disclosure dashboard](https://red.anthropic.com/2026/cvd/) snapshot at **October 2, 2026, 19:47 UTC** shows 29,439 candidates, 6,123 independently reviewed by external firms, and 5,674 confirmed valid — **92.7% of reviewed findings only**. Of 6,157 findings reported to maintainers, 1,333 followed the independent-review route and 4,824 were sent directly without the same check. Not all confirmed findings have been reported: the authors describe limited review and reporting capacity.

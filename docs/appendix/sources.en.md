@@ -46,6 +46,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Anthropic, [Coordinated vulnerability disclosure dashboard](https://red.anthropic.com/2026/cvd/), snapshot 2026-10-02 19:47 UTC; checked 2026-10-04.
 
+- Cloudflare, [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/), 2026-10-02; [Quick Tunnels documentation](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/), checked 2026-10-04.
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

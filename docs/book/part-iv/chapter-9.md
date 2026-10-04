@@ -385,6 +385,14 @@ OpenAI Secure MCP Tunnel добавляет полезный deployment pattern 
 
 Архитектурный вывод уже, чем “tunnels make private systems safe”. Tunnel должен быть управляемым механизмом достижимости, not a general-purpose network bridge. Private MCP server все равно требует owner records, schema hashes, scoped authorization, output filtering, request correlation и audit events. Tunnel record должен говорить, какая product surface может его вызывать, к какому private MCP server он ведет, какая identity аутентифицировала tunnel-client и какая policy решает, разрешен ли request. Иными словами, Secure MCP Tunnel полезен, когда держит narrow path: product endpoint -> tunnel service -> authenticated tunnel-client -> private MCP server -> filtered response.
 
+#### Защищённый браузерный preview — не машинный MCP-туннель
+
+[Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/) Cloudflare (2 октября 2026) решают другую задачу: временный публично адресуемый URL локального HTTP-сервиса с доступом для выбранных email-адресов или доменов. Начиная с `cloudflared` 2026.9.3, режим `--allowed-mail` использует Cloudflare Access для проверки владения почтой, а локальный connector сопоставляет подтверждённый адрес со своим списком допуска. Отсутствие этого режима оставляет обычный Quick Tunnel публичным; случайный URL не является контролем доступа.
+
+[Документация](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/) требует интерактивного браузерного входа: неинтерактивные клиенты не поддерживаются. Quick Tunnels также не поддерживают SSE и предназначены для разработки и тестирования без гарантии uptime. Поэтому наличие HTTPS-ссылки не доказывает совместимость с MCP-клиентом или выбранным транспортом. Не переноси браузерную сессию человеку предназначенного preview в машинный клиент и не отключай защиту, чтобы он заработал; выбирай канал с подходящей машинной идентичностью и проверкой прав каждого инструмента.
+
+Проверка почты отвечает на вопрос о личности, но не о полномочиях выполнить операцию приложения. Защита входа не делает dev-сервис безопасным для любого приглашённого посетителя, не изолирует его зависимости и не защищает альтернативный прямой маршрут к origin. Контракт публикации и закрытия доступа см. в [главе 16](../part-vii/chapter-16.md), проверочные сценарии — в [кейсе](../../appendix/case-studies.md).
+
 ### 5.7. Code Mode превращает MCP portal в слой progressive disclosure
 
 Cloudflare отдельно показывает полезный паттерн для больших MCP estate: не отдавать модели все tool schemas заранее, а прятать широкую API-поверхность за порталом с двумя узкими операциями поиска и исполнения.[^cloudflare-code-mode] В их формулировке Code Mode позволяет модели сначала написать код для поиска нужных endpoint definitions, а затем написать код для вызова найденных операций; сам код исполняется на стороне MCP server portal в песочнице, а не внутри основной агентной сессии.

@@ -384,6 +384,14 @@ OpenAI Secure MCP Tunnel 为 private MCP server 增加了一种有用的部署�
 
 架构结论比“tunnels make private systems safe”更窄。Tunnel 应该是受治理的可达性机制，not a general-purpose network bridge。Private MCP server 仍然需要 owner records、schema hashes、scoped authorization、output filtering、request correlation 和 audit events。Tunnel record 应该说明哪个 product surface 可以调用它、它通向哪个 private MCP server、哪个 identity 认证了 tunnel-client，以及哪个 policy 决定 request 是否被允许。换句话说，Secure MCP Tunnel 有价值，是因为它把 narrow path 保持清楚：product endpoint -> tunnel service -> authenticated tunnel-client -> private MCP server -> filtered response。
 
+#### 受保护的浏览器预览不是机器 MCP 隧道
+
+Cloudflare 的 [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/)（2026 年 10 月 2 日）解决的是另一类需求：为本地 HTTP 服务提供临时、可从公网寻址的 URL，仅允许指定邮箱或域名访问。从 `cloudflared` 2026.9.3 起，`--allowed-mail` 模式使用 Cloudflare Access 验证邮箱控制权，再由本地连接器将已验证地址与允许列表匹配。省略该模式时，普通 Quick Tunnel 仍然公开；随机 URL 不是访问控制。
+
+[文档](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)要求交互式浏览器登录，不支持非交互客户端。Quick Tunnels 也不支持 SSE，只适用于开发和测试，不保证可用性。因此 HTTPS 链接不能证明 MCP 客户端或其传输方式可用。不要把面向人的预览浏览器会话转交给机器客户端，也不要为了兼容而关闭保护；应选择具有适当机器身份及逐工具授权的通道。
+
+邮箱验证证明身份，并不授予应用操作权限。入口保护不会使开发服务对所有受邀者都安全，不会隔离其依赖，也不会保护绕过隧道直达源站的其他路径。发布与关闭契约见[第 16 章](../part-vii/chapter-16.md)，验证场景见[案例](../../appendix/case-studies.md)。
+
 ### 5.7. Code Mode 会把 MCP portal 变成 progressive disclosure 层
 
 Cloudflare 还展示了一个适合大型 MCP estate 的模式：不要把所有 tool schemas 一次性交给模型，而是把宽 API 表面放到一个只有搜索和执行两类窄操作的 portal 后面。[^cloudflare-code-mode] 在这个模式里，Code Mode 让模型先写代码搜索所需 endpoint definitions，再写代码调用找到的操作；这些代码在 MCP server portal 侧的沙箱中执行，而不是在主智能体会话里执行。

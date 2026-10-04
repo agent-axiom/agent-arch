@@ -46,6 +46,8 @@
 
 - Anthropic, [Дашборд координированного раскрытия уязвимостей](https://red.anthropic.com/2026/cvd/), срез 2026-10-02 19:47 UTC; проверено 2026-10-04.
 
+- Cloudflare, [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/), 2026-10-02; [документация Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/), проверено 2026-10-04.
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

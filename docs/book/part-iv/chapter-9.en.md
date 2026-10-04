@@ -384,6 +384,14 @@ OpenAI's Secure MCP Tunnel adds a useful deployment pattern for private MCP serv
 
 The architectural lesson is narrower than "tunnels make private systems safe." A tunnel should be a governed reachability mechanism, not a general-purpose network bridge. The private MCP server still needs owner records, schema hashes, scoped authorization, output filtering, request correlation, and audit events. The tunnel record should say which product surface may call it, which private MCP server it reaches, which identity authenticated the tunnel-client, and which policy decides whether a request is allowed. In other words, Secure MCP Tunnel is useful when it keeps a narrow path: product endpoint -> tunnel service -> authenticated tunnel-client -> private MCP server -> filtered response.
 
+#### A protected browser preview is not a machine MCP tunnel
+
+Cloudflare [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/) (October 2, 2026) address a different need: a temporary publicly addressable URL for a local HTTP service, restricted to selected email addresses or domains. Starting with `cloudflared` 2026.9.3, `--allowed-mail` uses Cloudflare Access to verify mailbox control, while the local connector matches the verified address against its allowlist. Omitting this mode leaves a normal Quick Tunnel public; a random URL is not access control.
+
+The [documentation](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/) requires interactive browser sign-in: non-interactive clients are unsupported. Quick Tunnels also do not support SSE and are intended for development and testing without an uptime guarantee. An HTTPS link therefore does not prove compatibility with an MCP client or its transport. Do not transfer a human preview browser session into a machine client or disable protection to make it work; choose a channel with suitable machine identity and per-tool authorization.
+
+Mailbox verification establishes identity, not authority to perform an application operation. An access gate does not make a dev service safe for every invited visitor, isolate its dependencies, or protect an alternative direct origin route. See [chapter 16](../part-vii/chapter-16.md) for publication and shutdown contracts and the [case study](../../appendix/case-studies.md) for validation scenarios.
+
 ### 5.7. Code Mode Turns the MCP Portal into Progressive Disclosure
 
 Cloudflare also shows a useful pattern for a large MCP estate: do not give the model every tool schema upfront; put the broad API surface behind a portal with two narrow operations for search and execution.[^cloudflare-code-mode] In that pattern, Code Mode lets the model first write code to search for the endpoint definitions it needs, then write code to call the selected operations. That code runs inside a sandbox on the MCP server portal side, not inside the main agent session.

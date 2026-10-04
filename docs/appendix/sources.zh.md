@@ -46,6 +46,8 @@
 
 - Anthropic，[协调漏洞披露仪表板](https://red.anthropic.com/2026/cvd/)，快照 2026-10-02 19:47 UTC；核验日期 2026-10-04。
 
+- Cloudflare，[Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/)，2026-10-02；[Quick Tunnels 文档](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)，核验日期 2026-10-04。
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

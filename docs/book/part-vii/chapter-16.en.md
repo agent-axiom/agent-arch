@@ -457,6 +457,24 @@ Recheck that context, policy, arguments and required approval before execution. 
 
 For tools that can wait for human interaction, verify before launch that a human can participate in the same session, identify the responsible operator and bound the wait. Missing UI is not consent; the agent must not click instead of the human or automatically bypass the requirement through another tool. Channel loss or timeout produces a blocked/escalated state, but cancelling the client wait does not prove cancellation of the site's action. If execution has started and its outcome is unknown, reconcile before retrying or switching backends. A manual invocation in a separate playground does not resume the previous operation. See [Chapter 9, §5.5](../part-iv/chapter-9.en.md) for the capability matrix.
 
+### Temporarily publishing a local service is a separate capability
+
+Creating an external URL changes the access boundary even when the application still listens on localhost. Inspired by [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/), the following runtime contract is an architectural recommendation, not an implemented reference-runtime capability.
+
+| Contract part | What to verify |
+| --- | --- |
+| Target and owner | `publication_id`, owner, run, exact local service/port, and allowed application surface; not an arbitrary proxy into the local network |
+| Audience | Explicitly permitted visitors or domains and a policy-decision reference; an entire domain is not one person |
+| Protected startup | Connector version, requested and confirmed protection mode, binding to the current process and hostname; command text or rule count alone cannot verify the audience |
+| Lifetime | `expires_at`, shutdown owner, and inventory recovery after agent failure; visitor-session lifetime is not publication lifetime |
+| Closure | Connector termination, old-path reachability check, active connections, and already-started requests; an unknown outcome remains open |
+
+Before sharing the URL, the controller checks the confirmed mode against policy and verifies unauthorized denial on a harmless test endpoint. Unconfirmed protection means stop and fail, not retry without restrictions. Include a positive control for an allowed visitor and evidence that denied requests never reached the origin. Checks must not expose sensitive data or perform business actions.
+
+Cloudflare describes a connector that refuses startup if the service does not confirm the mode and never downgrades a protected tunnel to public. Changing the allowlist requires stopping and starting a new tunnel: the new publication has a separate identity, and approval for an old hostname cannot automatically transfer. A controller independent of the reasoning agent should enforce lifetime; this is our recommendation, not a claimed automatic Quick Tunnel TTL feature.
+
+Stopping the connector closes this access path but does not retrieve downloaded data, undo completed actions, or stop the dev service and its other ingress paths. Verify those separately within task scope. Log mode, outcome, and a protected-policy reference, not one-time codes, assertions, cookies, or address lists in public traces. See [chapter 9](../part-iv/chapter-9.md) for browser and machine access boundaries.
+
 ## 10. What Is Worth Building Into the Baseline From the Start
 
 Some things are tempting to "add later", but in practice it is better to include them from day one:
