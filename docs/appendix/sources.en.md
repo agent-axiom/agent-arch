@@ -48,6 +48,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Cloudflare, [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/), 2026-10-02; [Quick Tunnels documentation](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/), checked 2026-10-04.
 
+- OpenAI, [Cookbook: Agents API on AWS Lambda MicroVMs](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme) and [AWS Lambda MicroVMs guide](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws), checked 2026-10-05.
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

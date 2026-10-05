@@ -584,6 +584,24 @@ Shutdown uses the same coordination with incoming work and provisioning. An `idl
 
 Connection events report connectivity, not compute requests. Mid-turn disconnects guarantee neither a reconnection webhook nor restart of a killed command. A late connection does not replay input that already timed out; reconcile request outcome before retrying. Reusing an environment ID does not restore files on replacement compute: provider storage/snapshots are needed. This is a proposed adapter contract around the API documentation, not an implemented reference-runtime controller. Closure is covered in [Chapter 23](../part-viii/chapter-23.en.md).
 
+#### Shared MicroVMs: branch completion versus infrastructure idle
+
+[OpenAI Cookbook: AWS Lambda MicroVMs](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme) makes this lifecycle concrete for an environment shared by the main agent and subagents. One owner records `session_id → environment_id → microvmId`. Branch completion does not release the shared resource: cleanup follows stream events `agent.session.turn.completed`, `agent.session.turn.failed`, or `agent.session.turn.cancelled` for the **main agent**, where `event.turn.subagent_id` is `null`. These are stream events, not webhook subscriptions; `agent.session.failed` covers session failure, not every failed turn.
+
+The example defaults to one VM per turn. For multi-turn sessions, a main-turn terminal event prompts the controller to check reuse policy rather than unconditionally delete the VM. The recommended contract binds the decision to the current turn, VM generation, and owner, checking active tools/subagents and pending input under the same coordination as provisioning. A late old-turn event must not terminate new work. Before final deletion, retrieve required files, call `TerminateMicrovm`, and confirm `TERMINATED`; application errors also require cleanup. The general `idle` race is already covered above and needs no duplicate model.
+
+The [provider guide in OpenAI Docs](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws) distinguishes three infrastructure controls:
+
+| Setting | Implication for the agent |
+| --- | --- |
+| `maximumDurationInSeconds` | Total running + suspended lifetime ceiling; can interrupt active work. The example's 900 seconds is a test choice, not a universal SLO; the documentation specifies an eight-hour maximum |
+| `maxIdleDurationSeconds` | AWS measures inbound VM traffic; the executor's outbound OpenAI connection does not reset this timer. Model activity and absence of infrastructure idle are different facts |
+| `suspendedDurationSeconds` / `autoResumeEnabled` | Suspension duration and wake-up behavior. Automatic resume requires inbound VM traffic; sending Agents API input alone does not wake it |
+
+The controller must align these limits with expected workload duration, budget, and recovery rather than treat an open outbound connection as a provider heartbeat. Suspend only after tools and subagents finish; the example's hooks stop the executor and flush writes before snapshotting, then retrieve the key again and reconnect to the same environment on resume. The application-managed path explicitly resumes the VM; the webhook-managed path handles a current `environment_connection` action and resumes the recorded VM. This does not promise automatic replay of an interrupted command.
+
+A hard-limit stop is a protective bound, not proof of successful completion. Reconcile unknown external-action outcomes before retries; file survival after suspend/resume does not establish exactly-once execution of every action. These are proposed production-adapter requirements, not reference-runtime implementation. See the [case study](../../appendix/case-studies.md) for scenarios.
+
 ## 13. Example Runtime Configuration
 
 Here is an example config that defines the runtime shape without hardcoding every decision:

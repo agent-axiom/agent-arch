@@ -583,6 +583,24 @@ Webhook handler 验证签名并入队，只有入队成功才返回成功响应�
 
 连接事件报告连接状态，不请求 compute。Turn 中断线不保证产生重连 webhook 或重启被终止命令。迟到的连接不会重放已超时输入，重试前需核对请求结果。相同 environment ID 不会恢复新 compute 上的文件，必须使用提供方 storage/snapshots。这是基于 API 文档建议的适配器契约，不是 reference runtime 已实现的控制器。关闭流程见[第 23 章](../part-viii/chapter-23.zh.md)。
 
+#### 共享 MicroVM：分支完成不等于基础设施空闲
+
+[OpenAI Cookbook：AWS Lambda MicroVMs](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme)将上述生命周期具体化为主智能体与子智能体共享的环境。由一个负责人保存 `session_id → environment_id → microvmId`。分支完成不代表可释放共享资源：清理依据的是**主智能体**的流事件 `agent.session.turn.completed`、`agent.session.turn.failed` 或 `agent.session.turn.cancelled`，其中 `event.turn.subagent_id` 为 `null`。这些是流事件，不是 webhook 订阅；`agent.session.failed` 覆盖会话失败，但不覆盖每一种轮次失败。
+
+示例默认每轮使用一台 VM。对于多轮会话，主轮次终结事件应促使控制器检查复用策略，而不是无条件删除 VM。建议的契约将决策绑定到当前轮次、VM 代次和负责人，并在与资源配置相同的协调机制下检查活动工具、子智能体与等待输入。迟到的旧轮次事件不得终止新工作。最终删除前应取回所需文件，调用 `TerminateMicrovm` 并确认 `TERMINATED`；应用出错也必须清理。一般性的 `idle` 竞态已在上文说明，无需重复建模。
+
+[OpenAI Docs 中的提供商指南](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws)区分三类基础设施限制：
+
+| 设置 | 对智能体的意义 |
+| --- | --- |
+| `maximumDurationInSeconds` | running 与 suspended 的总生命周期上限，可中断活动工作。示例中的 900 秒是测试选择，不是通用 SLO；文档说明最大为八小时 |
+| `maxIdleDurationSeconds` | AWS 计量 VM 入站流量；executor 到 OpenAI 的出站连接不会重置此计时器。模型活跃与基础设施不空闲是不同事实 |
+| `suspendedDurationSeconds` / `autoResumeEnabled` | 挂起期限和唤醒方式。自动恢复需要 VM 入站流量；仅向 Agents API 发送输入不会唤醒它 |
+
+控制器应将这些限制与预期工作时长、预算和恢复方式对齐，不能把已建立的出站连接当作提供商心跳。只有工具和子智能体完成后才可挂起；示例 hooks 在快照前停止 executor 并刷写数据，恢复时重新获取密钥并连接同一 environment。应用管理路径显式恢复 VM；webhook 管理路径处理当前 `environment_connection` 请求并恢复已记录的 VM。这不承诺自动重放中断命令。
+
+硬期限触发的停止是保护性边界，不是成功完成的证据。重试前须核对未知的外部操作结果；挂起恢复后文件仍存在，并不能证明所有操作都只执行一次。这些是对生产适配器的建议要求，不是参考运行时实现。场景见[案例](../../appendix/case-studies.md)。
+
 ## 13. 一个运行时配置示例
 
 下面是一个通过配置定义运行时形态、而不是把所有决定都写死在代码里的例子：

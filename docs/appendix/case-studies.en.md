@@ -391,6 +391,20 @@ Proposed adapter checks:
 
 These are future implementation scenarios, not results of executed API tests. Contracts appear in [Chapter 16](../book/part-vii/chapter-16.en.md) and [Chapter 23](../book/part-viii/chapter-23.en.md).
 
+#### AWS Lambda MicroVMs: who may terminate the shared environment
+
+The [AWS OpenAI Cookbook example](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme) extends the preceding case with a concrete shared resource: the main agent and subagents use one MicroVM. The example checks creation and download of `hello.txt`, while suspend/resume mode checks file persistence between turns. This describes the example's check, not evidence that we ran AWS infrastructure or proved arbitrary application reliability.
+
+The new aspect is terminal-event scope and independent clocks. A subagent terminal stream event does not clean up the whole VM; the main agent is identified by `event.turn.subagent_id: null`. After the final turn, the application retrieves files, calls `TerminateMicrovm`, and verifies `TERMINATED`. The `agent.session.failed` webhook alone does not cover all turn failures. Infrastructure idle measures inbound traffic, not outbound executor activity; Agents API input alone does not wake a suspended VM. The total lifetime ceiling includes running and suspended intervals. See [chapter 16](../book/part-vii/chapter-16.md) for the contract.
+
+Proposed scenarios for a controlled test environment, not executed here:
+
+1. **Subagent finishes first:** deliver a child terminal event while the main turn is running. The VM remains alive; after the final main turn and file retrieval, cleanup confirms `TERMINATED`. A late duplicate old-turn event must not stop a new VM generation.
+2. **Idle before waiting input:** reproduce the lifecycle race already described above in the AWS adapter; the controller does not terminate on `idle` alone. For a suspended VM, new input proceeds through explicit resume or the launcher, then the executor connects and reads the preserved file; input submission alone is not proof of wake-up.
+3. **Outbound work without inbound traffic:** set a short idle limit and continue executor test work. Check the actual VM state transition and absence of a false success report; repeat with limits that cover the workload. Separately exhaust total lifetime with sufficient idle budget and verify suspended-time accounting. Recovery must not blindly repeat an action with unknown outcome.
+
+Do not turn a short-timer test into a production-SLO claim. Check consistency of owner, current turn, VM, and retained results; duplicate provisioning protection and session deletion separate from compute are already covered above.
+
 ### GitHub HydraFusion: routing execution patterns
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/), a September 4, 2026 research preview, lets the runtime choose `single`, `cascade`, or `critique`: direct solving, escalation after a gate, or drafting with independent read-only critique and one revision. The portable lesson is to optimize the whole execution pattern while preserving bounded legs, route validation, and no application of invalid results, rather than merely selecting the cheapest model.

@@ -48,6 +48,8 @@
 
 - Cloudflare，[Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/)，2026-10-02；[Quick Tunnels 文档](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/)，核验日期 2026-10-04。
 
+- OpenAI，[Cookbook：在 AWS Lambda MicroVMs 上运行 Agents API](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme)及 [AWS Lambda MicroVMs 指南](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws)，核验日期 2026-10-05。
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

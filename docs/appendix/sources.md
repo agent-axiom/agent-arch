@@ -48,6 +48,8 @@
 
 - Cloudflare, [Protected Quick Tunnels](https://blog.cloudflare.com/protected-quick-tunnels/), 2026-10-02; [документация Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/), проверено 2026-10-04.
 
+- OpenAI, [Cookbook: Agents API на AWS Lambda MicroVMs](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme) и [руководство AWS Lambda MicroVMs](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws), проверено 2026-10-05.
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

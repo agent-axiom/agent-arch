@@ -391,6 +391,20 @@ OpenAI 和 Hugging Face 在 2026 年 7 月的披露为本书增加了一个罕�
 
 这些是未来实现场景，不是已执行 API 测试的结果。契约见[第 16 章](../book/part-vii/chapter-16.zh.md)和[第 23 章](../book/part-viii/chapter-23.zh.md)。
 
+#### AWS Lambda MicroVMs：谁可以终止共享环境
+
+[OpenAI Cookbook 的 AWS 示例](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme)用具体共享资源扩展前述案例：主智能体与子智能体使用同一台 MicroVM。示例检查 `hello.txt` 的创建与下载，挂起恢复模式检查跨轮次文件持久性。这是在描述示例检查，不表示我们运行过 AWS 基础设施或证明了任意应用的可靠性。
+
+新增重点是终结事件范围及相互独立的时钟。子智能体终结流事件不能清理整台 VM；主智能体通过 `event.turn.subagent_id: null` 识别。最后一轮结束后，应用取回文件、调用 `TerminateMicrovm` 并验证 `TERMINATED`。仅有 `agent.session.failed` webhook 不能覆盖所有轮次失败。基础设施空闲计量入站流量，而非 executor 出站活动；仅向 Agents API 发输入不会唤醒挂起 VM。总生命周期包含运行和挂起时间。完整契约见[第 16 章](../book/part-vii/chapter-16.md)。
+
+以下是受控测试环境中的建议场景，本次未执行：
+
+1. **子智能体先完成：** 主轮次仍运行时交付子分支终结事件。VM 保持运行；最后一个主轮次完成并取回文件后，清理确认 `TERMINATED`。迟到的旧轮次重复事件不得停止新代次 VM。
+2. **等待输入前收到 idle：** 在 AWS 适配器中复现上文生命周期竞态；控制器不能仅因 `idle` 而终止。对挂起 VM，新输入需通过显式恢复或启动器，随后 executor 连接并读取保留文件；输入已提交不等于已唤醒。
+3. **只有出站工作、没有入站流量：** 设置较短 idle 限制并持续执行测试工作。验证 VM 的实际状态变化且没有虚假的成功报告，再用覆盖负载的限制重复测试。另在 idle 预算充足时耗尽总生命周期，并检查挂起时间计入情况。恢复不得盲目重复结果未知的操作。
+
+不要把短计时器测试当作生产 SLO 结论。应核对负责人、当前轮次、VM 与保留结果的一致性；防止重复资源配置以及会话删除与计算释放分离，已在上文说明。
+
 ### GitHub HydraFusion：路由执行模式
 
 [Project HydraFusion](https://github.blog/ai-and-ml/github-copilot/project-hydrafusion-frontier-quality-via-multi-model-orchestration/) 是 2026 年 9 月 4 日发布的 research preview，让运行时选择 `single`、`cascade` 或 `critique`：直接求解、gate 后升级，或草稿加独立只读审查及一次修改。可迁移的结论是优化完整执行模式，同时保留阶段上限、路由验证及禁止应用无效结果的边界，而不只是选择最便宜的模型。
