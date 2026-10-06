@@ -133,6 +133,12 @@ A good approval flow always stores:
 - at what time;
 - whether a policy gate was overridden.
 
+### Website access is not operation approval
+
+In OpenAI Agents API Computer use, the browser requests approval for every new origin, including public websites; enabling network access does not replace that step. However, `browser_origin_access` authorizes website access, not an individual purchase, deletion, or other consequential action. The documentation explicitly warns that confirmation through a separate function tool depends on the agent calling it.[^openai-hosted-browser-approval]
+
+An instruction to “ask before purchasing” is therefore not an enforced barrier. When confirmation is mandatory, restrict the hosted browser to resources incapable of those actions, or choose a browser runtime you control with a check before the side effect. Switching runtimes alone creates no protection: enforcement must cover every available action path and bind the decision to the specific operation. Website content cannot grant permission on the human's behalf.
+
 ## 4. Egress Needs Protection Too
 
 Many teams carefully filter incoming data, but barely think about the output side. That is a mistake.
@@ -279,3 +285,5 @@ First map the real execution boundaries and approval points, then carry that sam
 [^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).
+
+[^openai-hosted-browser-approval]: OpenAI, [Agents API — Computer use](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.

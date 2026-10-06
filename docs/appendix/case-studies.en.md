@@ -25,9 +25,23 @@ Keep these cases beside the main text as coverage checks:
 - **Chapter 18:** rollout readiness and pre-scale review;
 - **Chapters 21-27:** lifecycle, assurance, provenance, retirement, telemetry, and registry.
 
+
 ## Industrial runtime patterns
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
+
+### OpenAI hosted browser: origin access versus mandatory action confirmation
+
+In the [Computer use documentation](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), checked October 6, 2026, OpenAI distinguishes origin access from confirmation of individual actions. A separate approval tool does not guarantee that the model calls it before purchasing or deleting. For mandatory enforcement, the source recommends resources without those capabilities or a browser runtime you control.
+
+The following are **proposed book checks on a test website with synthetic data**, not hosted-browser test results or implemented reference-runtime guarantees:
+
+1. **Origin allowed, operation unauthorized.** Reading the test site works; deletion is blocked by technical resource permissions or a verified gate in the controlled runtime. Record origin permission, absence of operation approval, and unchanged resource state separately. A backend unable to provide that barrier is not admitted to this scenario.
+2. **The model skips the approval tool.** An executor simulator sends the action directly to the execution boundary. It must not pass: enforcement is tested independently of whether the model asks the human. A log saying “approval tool not called” is insufficient; inspect the test resource state.
+3. **Connection drops during approval.** A disconnect after submitting a decision but before acknowledgement does not restart the task. The application recovers the same session, reconciles current requests, and removes stale forms; `409` requires refreshing state, not submitting a new opposite decision. Check for duplicate tasks and unintended repeated actions. If the operation outcome is unknown, reconcile with the resource instead of retrying blindly.
+
+This case connects the [approval boundary in Chapter 4](../book/part-ii/chapter-4.en.md) to [browser runtime selection in Chapter 9](../book/part-iv/chapter-9.en.md). A screenshot and successful decision delivery are evidence of separate stages, not proof of an authorized, completed action.
+
 
 ### Protected Quick Tunnels: an external link as a governed publication
 

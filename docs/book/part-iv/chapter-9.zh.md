@@ -378,6 +378,14 @@ Chrome Lab 属于实验功能，文档明确不建议用于生产负载。Kitesu
 
 本书建议为每个后端版本与连接方式维护能力配置；“未验证”不能视为“支持”。敏感调用前，应检查工具来源、当前文档与会话，以及所需的确认路径。缺少这些保证时，应阻止该路径或明确交由人处理。发现的工具及其描述仍是不可信数据；方法名不是授权。执行契约见[第 16 章](../part-vii/chapter-16.zh.md)。
 
+#### 托管浏览器：根据批准边界选择运行时
+
+OpenAI Agents API Computer use 展示了不同于 WebMCP/Kitesurf 的限制：文档中的 origin 访问批准不保证在每次重要操作前暂停。[^openai-hosted-browser-approval] 应用能够处理 origin 批准或添加批准工具，并不意味着该后端支持强制购买确认。
+
+实际选择是：读取任务使用能力受到技术限制的资源和账户；需要强制确认的修改，则使用应用确实能够在副作用前拦截、阻止操作的运行时。域名白名单、“只读”指令和实时视图本身都不能强制只读。如果无法确认所需屏障，就禁用该执行路径或交由人类操作，而不是用额外提示词模拟保证。
+
+连接中断后，文档要求读取**同一个会话**，核对当前 `required_actions`，只恢复仍在等待的请求。重新连接不得自动重发任务或批准响应；确认回执丢失表示结果未知，而非拒绝。对于 origin 批准，文档允许在投递失败时重试同一决定，但更改已接受的决定会返回 `409`：应先刷新状态，不能将冲突当成取消。这是恢复 origin 许可，不是购买操作恰好执行一次的保证。建议检查见[实践案例](../../appendix/case-studies.zh.md)。
+
 ### 5.6. Secure MCP Tunnel 让私有可达性显式化
 
 OpenAI Secure MCP Tunnel 为 private MCP server 增加了一种有用的部署模式：私有侧主动建立 outbound-only 连接，而不是从公网接受 inbound traffic。[^openai-secure-mcp-tunnel] `tunnel-client` 运行在本来就能访问 private MCP server 的网络内，对 OpenAI-hosted endpoint 做 long-poll，拉取 queued MCP work，把 JSON-RPC requests 本地转发给 server，再通过同一路径返回 responses。这个形态还有天然的 backpressure 点：client 只请求自己准备好处理的工作量。
@@ -769,3 +777,5 @@ def dispatch_capability(spec: CapabilitySpec, args: dict) -> dict:
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
 
 [^cloudflare-webmcp]: Cloudflare, [WebMCP：能力与限制](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
+
+[^openai-hosted-browser-approval]: OpenAI, [Agents API — Computer use](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.

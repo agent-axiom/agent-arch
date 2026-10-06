@@ -131,6 +131,12 @@ sequenceDiagram
 - в какое время;
 - были ли переопределены проверочные ворота политики.
 
+### Разрешение на сайт не равно подтверждению операции
+
+В OpenAI Agents API Computer use браузер запрашивает разрешение на каждый новый origin, включая публичные сайты; включённый сетевой доступ не заменяет этот шаг. Но `browser_origin_access` разрешает доступ к сайту, а не отдельно покупку, удаление или другое существенное действие. Документация прямо предупреждает: подтверждение через отдельный function tool зависит от того, вызовет ли его агент.[^openai-hosted-browser-approval]
+
+Поэтому требование «спроси перед покупкой» в промпте — не принудительный барьер. Если подтверждение обязательно, нужно ограничить hosted browser ресурсами, которые не способны выполнить такие действия, либо выбрать подконтрольный браузерный runtime с проверкой до побочного эффекта. Одна лишь смена runtime не создаёт защиту: проверка должна покрывать все доступные пути действия и связывать решение с конкретной операцией. Содержимое сайта не может выдать разрешение от имени человека.
+
 ## 4. На выходе тоже нужна защита
 
 Многие команды старательно фильтруют входящие данные, но почти не думают о выходе. Это ошибка.
@@ -290,3 +296,5 @@ Containment ломается, если рантайм загружает кон�
 [^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).
+
+[^openai-hosted-browser-approval]: OpenAI, [Agents API — Computer use](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.

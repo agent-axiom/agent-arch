@@ -91,6 +91,7 @@ Below is the main set of primary sources used by the current version of the book
 - OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 - OpenAI, [Agents SDK](https://openai.github.io/openai-agents-python/)
 - OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/), and [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
+- OpenAI Agents API, [Computer use: origin access and action confirmation](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.
 - OpenAI Agents API, [Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted)
 - OpenAI Agents API, [Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle)
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)

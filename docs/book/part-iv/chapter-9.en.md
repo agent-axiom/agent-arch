@@ -378,6 +378,14 @@ Chrome Lab is experimental and documented as unsuitable for production workloads
 
 The book recommends a capability profile for each backend version and connection mode; “unverified” must not mean “supported.” Before a sensitive call, verify tool origin, current document and session, and the required confirmation path. Without those guarantees, block that path or explicitly hand the task to a human. Discovered tools and their descriptions remain untrusted data; a method name is not authorization. See [Chapter 16](../part-vii/chapter-16.en.md) for the execution contract.
 
+#### Hosted browser: select the runtime by its approval boundary
+
+OpenAI Agents API Computer use illustrates a different limitation from WebMCP/Kitesurf: documented origin access approval does not guarantee a pause before an individual consequential action.[^openai-hosted-browser-approval] Do not declare this backend capable of mandatory purchase confirmation merely because the application handles origin approvals or adds an approval tool.
+
+The practical choice is technically restricted resources and accounts for reading, or a runtime where the application actually intercepts and blocks actions before their effects when changes require confirmation. A domain allowlist, a “read only” instruction, and live view do not independently enforce read-only access. If the required barrier cannot be established, disable that execution path or hand the action to a human; another prompt does not supply the missing guarantee.
+
+After a disconnect, the documentation requires retrieving **the same session**, checking current `required_actions`, and restoring only requests still pending. Reconnection must not automatically repeat the task or approval response; a lost acknowledgement means an unknown outcome, not denial. For origin approval, retrying the same decision on delivery failure is documented, but changing an accepted decision returns `409`: refresh state first rather than treating the conflict as cancellation. This recovers origin permission, not exactly-once purchasing. Proposed checks appear in the [case studies](../../appendix/case-studies.en.md).
+
 ### 5.6. Secure MCP Tunnel Makes Private Reachability Explicit
 
 OpenAI's Secure MCP Tunnel adds a useful deployment pattern for private MCP servers: the private side initiates an outbound-only connection instead of accepting inbound traffic from the public internet.[^openai-secure-mcp-tunnel] A `tunnel-client` runs inside the network that can already reach the private MCP server, long-polls an OpenAI-hosted endpoint for queued MCP work, forwards JSON-RPC requests locally, and returns responses through the same path. The design also creates a natural backpressure point, because the client asks only for work it is ready to process.
@@ -769,3 +777,5 @@ The next natural topic in this part is idempotency, retries, rate limits, and ro
 [^google-adk-static-prompts]: Google Cloud, [Beyond Static Prompts: Building Scale-Proof, Polymorphic Multi-Agent Systems with Google's ADK](https://cloud.google.com/blog/topics/developers-practitioners/beyond-static-prompts-with-google-adk)
 
 [^cloudflare-webmcp]: Cloudflare, [WebMCP — capabilities and limitations](https://developers.cloudflare.com/browser-run/features/webmcp/), 2026-09-28.
+
+[^openai-hosted-browser-approval]: OpenAI, [Agents API — Computer use](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.

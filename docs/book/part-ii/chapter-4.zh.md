@@ -133,6 +133,12 @@ sequenceDiagram
 - 什么时间批准的；
 - 是否覆盖了某个策略门禁。
 
+### 网站访问许可不等于操作批准
+
+在 OpenAI Agents API Computer use 中，浏览器访问每个新的 origin 前都需要批准，包括公共网站；开启网络访问不能替代这一步。但 `browser_origin_access` 许可的是网站访问，而非某次购买、删除或其他重要操作。文档明确指出：通过单独的函数工具请求确认，依赖于代理是否调用该工具。[^openai-hosted-browser-approval]
+
+因此，提示词中的“购买前先询问”不是强制屏障。如果必须确认，应将托管浏览器限制在无法执行此类操作的资源上，或选择可控的浏览器运行时，在副作用发生前执行检查。仅更换运行时不会自动提供保护：检查必须覆盖所有可用操作路径，并将决定绑定到具体操作。网站内容不能代表人类授予权限。
+
 ## 4. 输出侧同样需要保护
 
 很多团队会认真过滤输入数据，却几乎不考虑输出侧。这是个错误。
@@ -279,3 +285,5 @@ Anthropic 的 containment 实践还给出一个有用结论：权限不应该只
 [^anthropic-containment]: Anthropic, [How we contain Claude across products](https://www.anthropic.com/engineering/how-we-contain-claude).
 [^microsoft-prompts-shells]: Microsoft Security Blog, [When prompts become shells: RCE vulnerabilities in AI agent frameworks](https://www.microsoft.com/en-us/security/blog/2026/05/07/prompts-become-shells-rce-vulnerabilities-ai-agent-frameworks/)
 [^cloudflare-ai-gateway-spend-limits]: Cloudflare Changelog, [Spend limits are now available for AI Gateway](https://developers.cloudflare.com/changelog/post/2026-06-05-spend-limits/); Cloudflare Docs, [AI Gateway spend limits](https://developers.cloudflare.com/ai-gateway/features/spend-limits/).
+
+[^openai-hosted-browser-approval]: OpenAI, [Agents API — Computer use](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.

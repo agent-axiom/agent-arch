@@ -91,6 +91,7 @@
 - OpenAI, [A practical guide to building agents (PDF)](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)
 - OpenAI, [Agents SDK](https://openai.github.io/openai-agents-python/)
 - OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/)、[Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/)、[Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) 与 [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
+- OpenAI Agents API, [Computer use：origin 访问与操作确认](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.
 - OpenAI Agents API, [Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted)
 - OpenAI Agents API, [Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle)
 - OpenAI, [Agent Builder](https://platform.openai.com/docs/guides/agent-builder)
