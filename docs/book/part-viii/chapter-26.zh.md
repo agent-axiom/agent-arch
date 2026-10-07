@@ -134,6 +134,16 @@ Microsoft 直接把完整生产清单视为可信遥测的前提。[^ms-inventor
 
 如果没有清单覆盖（inventory coverage），你就没有完整的可观测性（observability）。你只有一块被局部照亮的舞台。
 
+### 归属丢失：指标下降不等于使用量下降
+
+GitHub 于 2026 年 10 月 6 日描述了 Copilot 使用指标故障：部分基于 SDK 的 IDE 会话没有标明来源 IDE。多数此类活动被遗漏，部分被计入 CLI，计费未受影响。修复需要受影响客户端升级，因此完整性逐步恢复。缺失数据无法回填，历史上混入的非 CLI 活动也无法与真正的 CLI 使用分离。[^copilot-attribution-gap]
+
+本书建议平台采用归属契约：**来源客户端类型与 SDK/运行时分开记录**，并记录客户端和扩展版本、SDK 版本、事件模式与分类器版本、事件/会话标识、发生及接收时间。来源状态为 `known` 或 `unknown`，附带判断依据；缺失字段不得变成看似合理的默认值。这是建议契约，不是 GitHub 的事件格式，也不是参考运行时已实现的扩展。客户端元数据服务于测量，不用于授权。
+
+按指标、时段和版本群组标注完整性：`complete`、`partial` 或 `unknown`，附原因和证据链接。观测不完整不等于零；修复后的增长也不自动意味着使用量增长。展示观测值及覆盖限制，不编造历史。可基于独立清单和明确分母估计已升级客户端占比；仅凭已送达事件无法知道丢失比例。最后已知客户端版本只是线索，不能证明每个历史事件的版本。
+
+服务端活动可证明请求发生，却无法重建接受建议或新增代码行等编辑器细节。只对比定义和时间窗口兼容的指标：请求、会话、活跃用户和代码变更是不同单位。保留时间序列断点和混合发布边界；如需估算重建，应与观测值区分，不得冒充恢复的事实。客户端遥测缺失也可能源于隐私设置、网络限制或不受支持的客户端，而非没有工作。
+
 ## 5. 行为基线比原始流量更重要
 
 在智能体系统里，“请求量比平时更高”这个信号本身并不说明太多。
@@ -469,3 +479,5 @@ def observability_ready(state: ObservabilityCoverage) -> bool:
 [^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 
 [^cloudflare-issues]: Cloudflare, [Cloudflare Issues：向智能体移交生产错误](https://blog.cloudflare.com/real-time-issue-detection/), 2026-09-30; [配置 Issues 自动化](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.
+
+[^copilot-attribution-gap]: GitHub, [Update your IDE to restore agent activity in Copilot usage metrics](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/), 2026-10-06.

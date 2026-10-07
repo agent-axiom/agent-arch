@@ -185,6 +185,14 @@ For a run declared isolated, reject production targets, unknown destinations and
 
 For acceptance, retain Preview and build IDs, configuration version, the approved graph and evidence of actual accesses. A binding change after validation invalidates the previous approval. An HTTP test does not establish background-handler coverage: at the verification date, a Preview can produce messages but cannot be a queue consumer; Cron Triggers target production. Mark unsupported paths untested instead of silently redirecting them to production for a green result. Negative scenarios are in the [case study](../../appendix/case-studies.md); these are proposed checks, not executed cloud tests.
 
+### Runtime migrations must preserve event attribution
+
+A working agent does not establish telemetry compatibility. In GitHub's October incident, moving some IDEs to the Copilot SDK preserved task execution but lost the originating IDE in events: activity disappeared from reports or was counted as CLI.[^copilot-attribution-gap] SDK/runtime migrations therefore need to test **client → SDK → collector → classifier → report**, not merely event emission.
+
+The proposed release criterion is that identical synthetic actions before and after migration retain their expected source and metric meaning in the final report. Test old, affected, and fixed clients, a mixed rollout, and an unknown source. Define expected events and permitted schema differences for each test action; redelivery must not double-count it. A shared SDK library is not evidence that its caller is a CLI.
+
+The change packet includes client/extension, SDK, schema, and classification-rule versions, incomplete-period boundaries, and a recovery verification plan. Compare canaries using comparable client cohorts, separating execution quality from measurement quality. Rollback or upgrade resumes collection only where verified; it does not restore historical fields that were never recorded. See [Chapter 26](chapter-26.en.md) for the completeness contract and the [case studies](../../appendix/case-studies.en.md) for three scenarios.
+
 ## 7. High-risk changes should go through formal gates
 
 When a change affects autonomy, side effects, memory writes, or egress boundaries, visual review alone is not enough.
@@ -382,3 +390,5 @@ After change management, the natural next step is the assurance loop: red teamin
 [^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 
 [^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers, rebuilt to scale agent sandboxes](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
+
+[^copilot-attribution-gap]: GitHub, [Update your IDE to restore agent activity in Copilot usage metrics](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/), 2026-10-06.

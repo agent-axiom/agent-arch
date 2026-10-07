@@ -30,6 +30,20 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### GitHub Copilot：SDK 迁移破坏测量，而非执行
+
+[GitHub 于 2026 年 10 月 6 日发布的通知](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/)指出，多种 IDE 将代理会话迁移到 Copilot SDK 后，不再标明来源 IDE。仅这些版本受影响，较早版本仍被统计。多数受影响活动未出现在报表中，部分被错误归为 CLI。GitHub 表示计费未受影响，缺失数据无法回填，历史 CLI 数值也无法通过拆分混合来源来修正。
+
+通知发布时，VS Code 1.139.0 已提供修复；其他 IDE 的版本仍待发布，计划于 2026 年 11 月前完成。这记录的是公告状态，不意味着整个客户端群已经修复。升级前相关指标仍不完整；逐步恢复的覆盖率可能看起来像使用增长。Copilot CLI 用户本身无需为此问题升级。
+
+以下是**使用合成事件的本书建议检查**，不是已执行的 Copilot 测试：
+
+1. **来源丢失。** 操作已执行，但来源客户端字段缺失。最终报表显示归属不完整或 `unknown`，报告测量缺陷，不代入零活动或 CLI。已知来源的对照事件应正确分类。
+2. **新旧客户端混合。** 对旧版、缺陷版和修复版重放相同数量的测试操作，核对预期事件、最终报表及各群组覆盖率。升级后恢复统计不得被解释为执行了更多操作；重复投递不得重复计数。
+3. **未知客户端误归 CLI。** 真正的 CLI 与另一客户端使用相同 SDK。分类器保留前者的明确来源，将后者标为未知，不在缺少证据时追溯拆分历史聚合。修复规则不等于恢复丢失数据。
+
+迁移检查见[第 20 章](../book/part-viii/chapter-20.zh.md)，测量可信度见[第 26 章](../book/part-viii/chapter-26.zh.md)。计费正确、任务成功，都不能证明分析数据完整。
+
 ### AWS Lake Formation：用户权限贯穿代理工具链
 
 [AWS 于 2026 年 10 月 6 日发布的文章](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/)描述了在提示词和工具模式之外传递身份的方式：AgentCore 将头部交给 Lambda，由后者通过 IAM Identity Center 和 STS 交换凭据；Athena 以用户身份访问数据。示例中，具有 `SELECT` 的用户得到记录，没有授权的用户被拒绝。文章还描述了行列限制能力，但这不是完整过滤器测试的已发表结果。

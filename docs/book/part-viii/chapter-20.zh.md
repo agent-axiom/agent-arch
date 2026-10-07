@@ -185,6 +185,14 @@ API 变更后，后端可能仍然正常，但 SDK、CLI、文档和面向智能
 
 验收时保留预览与构建标识、配置版本、批准的依赖图及实际访问证据。验证后绑定发生变化，原批准即失效。HTTP 测试不能证明后台处理程序已覆盖：截至核验日期，预览能发送消息，但不能作为队列消费者；Cron Triggers 指向生产环境。应将不支持的路径标记为未测试，不能为了通过测试而默默转向生产。负向场景见[案例](../../appendix/case-studies.md)；它们是建议检查，不是已执行的云端测试。
 
+### 运行时迁移必须保留事件归属
+
+代理能够工作，并不能证明遥测兼容。GitHub 的十月事件中，部分 IDE 迁移到 Copilot SDK 后仍能执行任务，却丢失了事件的来源 IDE：活动从报表中消失，或被计入 CLI。[^copilot-attribution-gap] 因此 SDK/运行时迁移必须检查**客户端 → SDK → 收集器 → 分类器 → 报表**的完整路径，而不只是事件是否发出。
+
+建议的发布标准是：迁移前后相同的合成操作，在最终报表中保留预期来源和指标含义。应测试旧版、受影响版、修复版客户端、混合发布以及未知来源。为每个测试操作定义预期事件和允许的模式差异；重复投递不得重复计数。共享 SDK 库不能证明调用者是 CLI。
+
+变更包应包含客户端/扩展、SDK、事件模式和分类规则的版本、不完整时段边界以及恢复验证计划。通过可比客户端群组比较灰度发布，将执行质量与测量质量分开。回滚或升级只能在已验证的路径恢复采集，不能恢复从未记录的历史字段。完整性契约见[第 26 章](chapter-26.zh.md)，三个场景见[实践案例](../../appendix/case-studies.zh.md)。
+
 ## 7. 高风险变更应该经过正式门禁
 
 当一个变更会影响自主性、副作用、记忆写入或出口边界时，只靠人工“看起来没问题”已经不够了。
@@ -382,3 +390,5 @@ def classify_change(affected_surfaces: tuple[str, ...]) -> str:
 [^cloudflare-forge]: Cloudflare, [Introducing Forge: the open source pipeline for generating SDKs, CLIs, docs, and more](https://blog.cloudflare.com/forge-open-source-generation-pipeline/), 2026-09-28.
 
 [^cloudflare-workspace-image]: Cloudflare, [Cloudflare Containers：为大规模智能体沙箱重构](https://blog.cloudflare.com/faster-agent-sandboxes/), 2026-09-30.
+
+[^copilot-attribution-gap]: GitHub, [Update your IDE to restore agent activity in Copilot usage metrics](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/), 2026-10-06.

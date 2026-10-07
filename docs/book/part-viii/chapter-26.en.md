@@ -134,6 +134,16 @@ For an agent estate, that means you should know:
 
 If you do not have inventory coverage, you do not have full observability. You have only a partially lit stage.
 
+### Attribution loss: a falling metric does not prove falling usage
+
+On October 6, 2026, GitHub described a Copilot usage metrics failure: some SDK-based IDE sessions did not identify their originating IDE. Most of that activity was omitted, some was counted as CLI, and billing was unaffected. The fix requires affected clients to update, so completeness returns gradually. Missing data cannot be backfilled, and historical non-CLI activity cannot be separated from real CLI usage.[^copilot-attribution-gap]
+
+For a platform, the book proposes an attribution contract: **originating client type separate from SDK/runtime**, client and extension versions, SDK version, event-schema and classifier versions, event/session identifiers, and occurrence/receipt times. Store source state as `known` or `unknown` with the basis for its determination; missing fields must not become plausible defaults. This is a recommended contract, not GitHub's event format or an implemented reference-runtime extension. Client metadata supports measurement, not authorization.
+
+Mark completeness by metric, period, and version cohort: `complete`, `partial`, or `unknown`, with a reason and evidence link. Incomplete observation is not zero, and an increase after a fix is not automatically increased usage. Show the observed value and coverage limitation instead of inventing history. An independent inventory can estimate the fraction of updated clients with an explicit denominator; delivered events alone cannot reveal the fraction lost. A last-known client version is a clue, not proof of each historical event's version.
+
+Server-side activity can establish requests, but cannot reconstruct editor details such as accepted suggestions or added lines. Reconcile only compatible definitions and windows: request, session, active user, and code change are different units. Preserve the time-series break and mixed-rollout boundaries; any estimated reconstruction must remain separate from observations, not masquerade as recovered facts. Missing client telemetry can also result from privacy settings, network restrictions, or unsupported clients rather than lack of work.
+
 ## 5. Behavioral baselines matter more than raw volume
 
 In agent systems, the signal “we have more requests than usual” does not mean much by itself.
@@ -467,3 +477,5 @@ This chapter should be read as an evidence-readiness layer, not as a logging che
 [^nist-ai-rmf]: NIST, [Artificial Intelligence Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-ai-rmf-10)
 
 [^cloudflare-issues]: Cloudflare, [Cloudflare Issues: production-error handoff to agents](https://blog.cloudflare.com/real-time-issue-detection/), 2026-09-30; [Set up an Issues automation](https://developers.cloudflare.com/workers/observability/issues/automations/), 2026-09-30.
+
+[^copilot-attribution-gap]: GitHub, [Update your IDE to restore agent activity in Copilot usage metrics](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/), 2026-10-06.

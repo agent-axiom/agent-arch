@@ -30,6 +30,20 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### GitHub Copilot: SDK migration breaks measurement, not execution
+
+In [GitHub's October 6, 2026 notice](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/), several IDEs moved agent sessions to the Copilot SDK but stopped identifying their originating IDE. Only those versions were affected; earlier versions remained counted. Most affected activity was absent from reports and some was misclassified as CLI. GitHub states that billing was unaffected, missing data cannot be backfilled, and historical CLI values cannot be corrected by separating the mixed sources.
+
+At the notice date, the fix was available in VS Code 1.139.0; other IDE releases were still expected, with rollout planned to finish by November 2026. This records the announcement, not a claim that the entire fleet is fixed. Until clients update, their metrics remain incomplete; gradual recovery can resemble usage growth. Copilot CLI users themselves did not need to update for this issue.
+
+**Proposed book checks using synthetic events**, not executed Copilot tests:
+
+1. **Source lost.** An action executes but its originating-client field is absent. The final report shows incomplete attribution/`unknown`, signals a measurement defect, and does not substitute zero activity or CLI. A control event with a known source is classified correctly.
+2. **Old and new clients mixed.** Replay the same number of test actions for old, defective, and fixed versions. Reconcile expected events, the final report, and coverage per cohort. Restored reporting after upgrade must not be presented as more executed actions; redelivery must not double-count events.
+3. **Unknown client mistaken for CLI.** Genuine CLI and another client share an SDK. The classifier preserves the former's explicit source, keeps the latter unknown, and does not retroactively split a historical aggregate without evidence. Fixing the rule does not restore lost data.
+
+See [Chapter 20](../book/part-viii/chapter-20.en.md) for migration checks and [Chapter 26](../book/part-viii/chapter-26.en.md) for measurement validity. Correct billing and successful tasks do not prove complete analytics.
+
 ### AWS Lake Formation: user permissions through an agent tool chain
 
 [AWS, October 6, 2026](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/) describes identity propagation outside prompts and tool schemas: AgentCore delivers a header to Lambda, which exchanges it through IAM Identity Center and STS; Athena accesses data under the user's identity. In the example, a user with `SELECT` receives records and a user without a grant is denied. The article also describes row and column restrictions; this is not a published comprehensive filter test result.

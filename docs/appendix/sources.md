@@ -94,6 +94,7 @@
 - OpenAI, [Agents SDK](https://openai.github.io/openai-agents-python/)
 - OpenAI Agents SDK, [Sandbox Agents](https://openai.github.io/openai-agents-python/sandbox_agents/), [Sandbox Concepts](https://openai.github.io/openai-agents-python/sandbox/guide/), [Sandbox clients](https://openai.github.io/openai-agents-python/sandbox/clients/) и [Agent memory](https://openai.github.io/openai-agents-python/sandbox/memory/)
 - AWS, [Lake Formation: передача идентичности пользователя](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/), 2026-10-06.
+- GitHub, [Copilot: потеря атрибуции активности после миграции SDK](https://github.blog/changelog/2026-10-06-update-your-ide-to-restore-agent-activity-in-copilot-usage-metrics/), 2026-10-06.
 - OpenAI Agents API, [Computer use: разрешение origin и подтверждение действий](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), 2026-10-06.
 - OpenAI Agents API, [Self-hosted sandboxes](https://developers.openai.com/api/docs/guides/agents-api/environments/self-hosted)
 - OpenAI Agents API, [Sandbox lifecycle](https://developers.openai.com/api/docs/guides/agents-api/environments/lifecycle)
