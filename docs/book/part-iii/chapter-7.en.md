@@ -199,6 +199,14 @@ adaptive memory shaping is better treated as a research direction, not as a defa
 
 Practically, this means something simple: evolving memory is worth studying, but the live system contour should still rest on explainable retrieval, controlled compaction, and verifiable record provenance.
 
+### User permissions must reach the data layer
+
+In the October 6, 2026 AWS Lake Formation / Trusted Identity Propagation case, the same agent queries through Athena using a specific user's identity. Lake Formation applies user or group grants, including configured row and column restrictions; the tool's shared role does not substitute for them.[^aws-lake-identity] This makes “authorize before retrieval” concrete: inaccessible records must not enter context with the hope that the model will hide them in its answer.
+
+In the described configuration, the TIP role supplies IAM permissions to call services but has no Lake Formation data grants of its own. Configured identity propagation reuses existing data permissions instead of copying them into the prompt. It does not remove constraints on the tool itself, allowed queries, workgroups, or result destinations.
+
+The book recommends preserving protection after the query: in Athena result files, caches, conversation history, and derived summaries. A query authorized for one user does not make its result available to another; permission on the source does not replace access checks on a saved copy. Revocation needs separate checks for new queries and previously materialized results. See [Chapter 9](../part-iv/chapter-9.en.md) for the identity propagation chain.
+
 ## 7. Example Policy for Retrieval and Background Updates
 
 Here is a very practical template. It does not try to be universal, but it shows well which decisions are worth making explicit.
@@ -315,3 +323,5 @@ At this point, the basic part about memory is already coming together. From here
 - [Chapter 8. Execution Model and Tool Catalog](../part-iv/chapter-8.en.md)
 - [Part III. Memory and Knowledge](index.en.md)
 - [Sources](../../appendix/sources.en.md)
+
+[^aws-lake-identity]: AWS, [Identity-aware AI data agents with AWS Lake Formation and Trusted Identity Propagation](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/), 2026-10-06.

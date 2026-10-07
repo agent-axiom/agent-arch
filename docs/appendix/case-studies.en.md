@@ -30,6 +30,18 @@ Keep these cases beside the main text as coverage checks:
 
 These case studies are easier to read next to industrial examples. They do not mean the reader should copy a vendor product, but they show which production shapes are becoming recognizable.
 
+### AWS Lake Formation: user permissions through an agent tool chain
+
+[AWS, October 6, 2026](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/) describes identity propagation outside prompts and tool schemas: AgentCore delivers a header to Lambda, which exchanges it through IAM Identity Center and STS; Athena accesses data under the user's identity. In the example, a user with `SELECT` receives records and a user without a grant is denied. The article also describes row and column restrictions; this is not a published comprehensive filter test result.
+
+**Proposed book checks**, using synthetic tables and test users; these were not executed as part of this edit and are not reference-runtime guarantees:
+
+1. **User substitution.** Put another user's identifier into the prompt or arguments, then separately test valid tokens belonging to different users. Model text must not change the principal; the trusted layer rejects inconsistent context. Check actual rows/columns and audit identity, not merely a model-written refusal.
+2. **Missing or invalid identity.** Remove the header, expire the token, or change its audience. Exchange and data access must not fall back to a shared role; denial must not expose tokens. Inbound authentication does not prove that the separate identity token is valid.
+3. **Bypass through a shared role or saved result.** A user without a grant repeats an authorized user's query; separately test a path without identity context and access to stored results/caches. Alternative IAM/S3 permissions must not expose the data. An authorized control query from another user must continue to work.
+
+Correlate the request, verified principal, role, Athena query identifier, and access decision without logging tokens; check `onBehalfOf` together with query outcomes. A separate test series should measure grant revocation, credential lifetimes, and retries after disconnect: short token lifetime alone supplies neither immediate revocation nor protection against reuse. See [Chapter 7](../book/part-iii/chapter-7.en.md) and [Chapter 9](../book/part-iv/chapter-9.en.md).
+
 ### OpenAI hosted browser: origin access versus mandatory action confirmation
 
 In the [Computer use documentation](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use), checked October 6, 2026, OpenAI distinguishes origin access from confirmation of individual actions. A separate approval tool does not guarantee that the model calls it before purchasing or deleting. For mandatory enforcement, the source recommends resources without those capabilities or a browser runtime you control.

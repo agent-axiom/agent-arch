@@ -113,6 +113,16 @@ The practical contract for that boundary should answer at least five questions:
 If those answers are missing, MCP does not stop being a risk. It becomes an implicit trust boundary inside the platform surface.
 
 
+### Identity through AgentCore to Lake Formation: not a model argument
+
+In the [AWS case](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/), two tokens have different roles: `access_token` authenticates entry to AgentCore Runtime and Gateway, while `id_token` carries identity for server-side exchange with IAM Identity Center. This is a configured trust chain, not a recommendation to forward arbitrary tokens to any MCP server.
+
+The path is **OIDC sign-in → AgentCore Runtime → MCP Gateway → Lambda → IAM Identity Center / STS → Athena / Lake Formation**. Runtime allows required headers through `requestHeaderAllowlist`; Gateway propagates the selected header through `metadataConfiguration.allowedRequestHeaders`; Lambda receives it in `bedrockAgentCorePropagatedHeaders`, not tool arguments. After checking signature, expiry, issuer, audience, and token type, Lambda uses `CreateTokenWithIAM`, then `AssumeRole` with `ProvidedContexts`. The resulting identity context is used within the handler and is not returned to the model; the query uses short-lived credentials. In this configuration, Lake Formation checks user grants and the TIP role has no data grants of its own. AWS shows a two-user comparison and audit evidence with `onBehalfOf`.
+
+The boundary is **model context versus trusted transport code**, not “the token is inaccessible to the whole agent process”: container code reads and forwards the headers. A token-free tool schema prevents its normal delivery to the model, but does not itself protect against header debug logging, middleware leaks, or generated code accessing that process. Those paths need isolation and log redaction.
+
+Additional book requirements: a trusted layer must bind inbound authentication and propagated identity to the same authorized user context; two individually valid tokens belonging to different people are insufficient. Missing or invalid identity means denial, not fallback to a shared role. Service IAM permissions, data rules, and tool-call authorization remain separate checks. The publication does not establish immediate revocation of already issued credentials or replay protection: test these separately alongside lifetimes and session separation. Proposed scenarios appear in the [case studies](../../appendix/case-studies.en.md).
+
 ### 4.2. MCP Threat Model Matrix
 
 For MCP, the [MCP threat model](../../appendix/trace-schema.en.md) should not stay as a vague fear of integrations. It should become a review matrix for every connected capability. The MCP security and authorization material explicitly calls out token passthrough, scope selection, HTTPS/SSRF limits, and protection of application-state handles; that makes the matrix part of the authorization and runtime contract, not decorative security prose.[^mcp-security][^mcp-authorization] A minimal version looks like this:

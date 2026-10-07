@@ -113,6 +113,16 @@ Microsoft 的 MCP tool poisoning 案例把这条边界说得更尖锐：**tool d
 如果这些答案不存在，MCP 并不会因此不再是风险；它只是变成了平台表面里的隐式 trust boundary。
 
 
+### 经 AgentCore 传递到 Lake Formation 的身份：不是模型参数
+
+在 [AWS 案例](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/)中，两种令牌承担不同职责：`access_token` 用于进入 AgentCore Runtime 和 Gateway 时的认证，`id_token` 则携带身份，供服务端向 IAM Identity Center 交换。这是经过配置的信任链，不是向任意 MCP 服务器转发任意令牌的建议。
+
+路径为 **OIDC 登录 → AgentCore Runtime → MCP Gateway → Lambda → IAM Identity Center / STS → Athena / Lake Formation**。Runtime 通过 `requestHeaderAllowlist` 允许必要的头部；Gateway 通过 `metadataConfiguration.allowedRequestHeaders` 传递选定头部；Lambda 从 `bedrockAgentCorePropagatedHeaders` 获取它，而不是从工具参数获取。Lambda 检查签名、有效期、issuer、audience 和令牌类型后，调用 `CreateTokenWithIAM`，再通过带有 `ProvidedContexts` 的 `AssumeRole` 获取凭据。身份上下文在处理函数内使用，不返回模型；查询使用短期凭据。在此配置中，Lake Formation 检查用户授权，TIP 角色自身没有数据授权。AWS 展示了两个用户的对比，以及包含 `onBehalfOf` 的审计证据。
+
+这里的边界是**模型上下文与可信传输代码之间的边界**，并非“整个代理进程都无法访问令牌”：容器代码会读取并转发头部。工具模式不含令牌，可以避免正常流程将其交给模型，但不能自动防止头部调试日志、中间件泄漏或生成代码访问该进程。这些路径需要隔离和日志脱敏。
+
+本书补充要求：可信层应把入口认证和传播的身份绑定到同一个获授权用户上下文；两个分别有效、却属于不同用户的令牌并不足够。身份缺失或无效时应拒绝，不能退回共享角色。服务 IAM 权限、数据规则和工具调用授权仍是不同的检查。文章不能证明已签发凭据可立即撤销，也不能证明具备重放保护：这些能力必须连同有效期和会话隔离单独验证。建议场景见[实践案例](../../appendix/case-studies.zh.md)。
+
 ### 4.2. MCP 威胁模型矩阵
 
 对 MCP 来说，[MCP 威胁模型（MCP threat model）](../../appendix/trace-schema.zh.md) 不应该只是“外部集成有风险”这种笼统提醒，而应该成为每个接入能力的审查矩阵。MCP 的安全与授权材料已经明确讨论 token passthrough、scope selection、HTTPS/SSRF 限制和应用状态句柄保护；因此这张矩阵不是装饰性安全文字，而是授权与运行契约的一部分。[^mcp-security][^mcp-authorization] 一个最小版本可以这样看：

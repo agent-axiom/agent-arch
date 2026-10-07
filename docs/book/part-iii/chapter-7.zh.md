@@ -199,6 +199,14 @@ flowchart TD
 
 从工程上讲，这意味着一件很朴素的事：演化记忆值得研究，但当前在线系统轮廓仍然应该建立在可解释检索、受控压缩和可验证来源之上。
 
+### 用户权限必须传递到数据层
+
+在 AWS 于 2026 年 10 月 6 日发布的 Lake Formation / Trusted Identity Propagation 案例中，同一个代理通过 Athena 以具体用户的身份查询。Lake Formation 应用用户或组的授权，包括已配置的行列限制；工具的共享角色不能替代这些权限。[^aws-lake-identity] 这是“先授权，再检索”的具体实现：不能先把无权访问的记录放入上下文，再指望模型在回答中隐藏它们。
+
+在所述配置中，TIP 角色提供调用服务的 IAM 权限，但自身没有 Lake Formation 数据授权。配置好的身份传播复用现有数据权限，而非将其复制进提示词。这不取消对工具本身、允许的查询、工作组和结果保存位置的限制。
+
+本书建议在查询之后继续保护 Athena 结果文件、缓存、会话历史和派生摘要。某个用户获准执行查询，不意味着其结果可以供另一用户访问；源数据权限不能替代对保存副本的访问检查。撤销权限需要分别检查新查询和已物化的结果。身份传播链见[第 9 章](../part-iv/chapter-9.zh.md)。
+
 ## 7. 一个检索与后台更新的策略示例
 
 下面是一个很实用的模板。它不追求万能，但很清楚地展示了哪些决定应该被写明。
@@ -315,3 +323,5 @@ def select_for_prompt(records: list[RetrievedRecord], limit: int = 3) -> list[Re
 - [第 8 章：执行模型与工具目录](../part-iv/chapter-8.zh.md)
 - [第三部分：记忆与知识](index.zh.md)
 - [参考资料](../../appendix/sources.zh.md)
+
+[^aws-lake-identity]: AWS, [Identity-aware AI data agents with AWS Lake Formation and Trusted Identity Propagation](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/), 2026-10-06.

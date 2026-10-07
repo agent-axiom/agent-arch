@@ -30,6 +30,18 @@
 
 把这些案例放在工业实践旁边会更容易阅读。它们不是要求读者复制某个供应商产品，而是展示哪些生产形态已经变得可识别。
 
+### AWS Lake Formation：用户权限贯穿代理工具链
+
+[AWS 于 2026 年 10 月 6 日发布的文章](https://aws.amazon.com/blogs/security/identity-aware-ai-data-agents-with-aws-lake-formation-and-trusted-identity-propagation/)描述了在提示词和工具模式之外传递身份的方式：AgentCore 将头部交给 Lambda，由后者通过 IAM Identity Center 和 STS 交换凭据；Athena 以用户身份访问数据。示例中，具有 `SELECT` 的用户得到记录，没有授权的用户被拒绝。文章还描述了行列限制能力，但这不是完整过滤器测试的已发表结果。
+
+以下是使用合成表和测试用户的**本书建议检查**；此次文档修改没有执行这些检查，也不代表参考运行时已提供保证：
+
+1. **替换用户身份。** 在提示词或参数中放入另一用户的标识，再单独测试属于不同用户的有效令牌。模型文本不得改变 principal；可信层拒绝不一致的上下文。检查实际返回的行列和审计身份，而不只是模型生成的拒绝文字。
+2. **身份缺失或无效。** 删除头部、使令牌过期或修改 audience。交换和数据访问不得退回共享角色；拒绝信息不得暴露令牌。入口认证不能证明单独的身份令牌有效。
+3. **通过共享角色或保存结果绕过。** 无授权用户重复有权用户的查询；另行检查没有身份上下文的路径，以及保存结果或缓存的访问。其他 IAM/S3 权限不得暴露数据。另一用户的合法对照查询仍应正常工作。
+
+审计应关联请求、经验证的 principal、角色、Athena 查询标识和访问决定，不记录令牌；结合查询结果检查 `onBehalfOf`。还应单独测试授权撤销、凭据有效期以及断线后的重试：短期令牌本身既不保证立即撤销，也不防止重复使用。参见[第 7 章](../book/part-iii/chapter-7.zh.md)和[第 9 章](../book/part-iv/chapter-9.zh.md)。
+
 ### OpenAI 托管浏览器：origin 访问与强制操作确认
 
 在 2026 年 10 月 6 日核对的 [Computer use 文档](https://developers.openai.com/api/docs/guides/agents-api/tools/computer-use)中，OpenAI 区分了 origin 访问与单次操作确认。单独的批准工具不能保证模型在购买或删除前调用它。对于强制控制，来源建议使用不具备这些能力的资源，或使用自己能够控制的浏览器运行时。
