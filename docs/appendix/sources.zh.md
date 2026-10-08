@@ -52,6 +52,8 @@
 
 - OpenAI, [Advancing computer use with Ironclad](https://openai.com/index/advancing-computer-use-with-ironclad/), 2026-10-06. 研究案例：检查生成流程；11 个任务，不是生产保证。
 
+- Strands, [Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/). 开发者预览：语义策略、可信计算基及发布时序规则的限制。
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

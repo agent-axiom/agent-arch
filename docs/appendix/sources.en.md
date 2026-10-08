@@ -52,6 +52,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - OpenAI, [Advancing computer use with Ironclad](https://openai.com/index/advancing-computer-use-with-ironclad/), 2026-10-06. Research case: testing a generated process; 11 tasks, not a production guarantee.
 
+- Strands, [Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/). Developer preview: semantic policy, TCB and limits of temporal publication rules.
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

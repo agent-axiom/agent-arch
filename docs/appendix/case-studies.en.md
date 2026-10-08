@@ -21,6 +21,19 @@ Astra's average score is 55.0%, versus Sol's 41.6%; these are not fully successf
 The book proposes independently specified below/at/above-threshold cases and mandatory criteria that average scores cannot offset. The exact-threshold case is our recommendation, not a claimed part of the published benchmark. See [Chapter 13](../book/part-v/chapter-13.md) and the [evaluation schema](eval-schema.md). These scenarios were not executed against Ironclad; human oversight and business-rule validation remain necessary.
 
 
+### Strands Box: policy depth, trusted code and stale evidence
+
+[Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/) introduces a developer-preview local sandbox. OS isolation forces interactions through a semantic Dogwood layer; Strands Shell and Monty support policy on calls from generated code. The authors acknowledge the larger TCB of interpreters and interceptors and recommend an additional per-session MicroVM for cloud multi-tenant deployments. This is neither an isolation certification nor a promise of full compatibility with arbitrary Shell/Python programs.
+
+Proposed checks with synthetic data, **not Box tests we executed**:
+
+1. Request the same prohibited side effect directly and through MCP, Shell and Python. Every available route must deny before the effect; an unsupported route must not fall back to an unrestricted host. An allowed control operation must succeed with decision and execution evidence.
+2. Attempt to reach the same resource through an uncontrolled subprocess or direct network path. Lower-level isolation must block it rather than relying on the model voluntarily calling a policy tool. Check absence of the actual effect, not just a `deny` log.
+3. Successfully test tree A, then switch to a different tree B or change relevant files/dependencies. Publishing B with evidence for A must be rejected; retesting B plus independent authorization opens the permitted path. Include a change between decision and push.
+4. Restart the policy layer or lose event history. Unknown state must not become “tests passed”; recovery requires verifiable evidence or a new test.
+
+See [Chapter 9](../book/part-iv/chapter-9.md) for the layer comparison and [Chapter 17](../book/part-vii/chapter-17.md) for state-bound evidence. The product was not installed; these scenarios did not perform real code publication or external side effects.
+
 ## Cross-chapter route
 
 Keep these cases beside the main text as coverage checks:

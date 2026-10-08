@@ -66,6 +66,20 @@ That matters because many teams think they "have a sandbox" while in reality the
 
 A good practical question here is: **if the capability behaves worse than expected, what exactly stops it: logic, process boundaries, or the execution environment itself?**
 
+### Semantic enforcement and the trusted computing base: Strands Box
+
+[Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/) describes a developer-preview local sandbox: OS mechanisms are intended to leave only one route to resources, through Dogwood policy. That layer sees MCP, filesystem and network operations, as well as calls from Strands Shell and the Monty Python interpreter. This is the stated architecture, not independent proof that bypasses are impossible.
+
+| Layer | Natural controls | What the layer alone does not establish |
+| --- | --- | --- |
+| MicroVM / virtual devices | Session isolation; mandatory network routing through a gateway | Meaning of a TLS-protected MCP call or “this code was tested” |
+| System calls | Paths, process creation and connections | Business semantics of encrypted requests; complete coverage of an evolving syscall API |
+| Tool and language semantics | Operation arguments, call history and temporal conditions | Correctness of interpreters, interceptors and policy itself |
+
+These layers complement each other. Deeper inspection expands the trusted computing base (TCB): interpreter or protocol-interceptor defects can permit policy bypass. Rust, fuzzing and tests reduce risk, not eliminate it. The authors recommend a dedicated per-session MicroVM around Box for cloud multi-tenant deployments. This does not make an incorrect semantic policy correct.
+
+Book recommendation: inventory every route to the same side effect—direct tool, MCP, Shell, Python, subprocess and network—and deny uncontrolled routes. A verifiable contract records sandbox/interceptor/policy versions, session identity, trusted decision events and execution outcome. A checked top-level launch does not establish coverage of arbitrary nested code. Configuration-specific checks appear in the [case study](../../appendix/case-studies.md).
+
 ## 3. You Cannot Treat an External Integration Like a Simple Function
 
 A common mistake looks like this: an external service is wrapped in a function, and the agent sees it as just another call.

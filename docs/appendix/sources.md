@@ -52,6 +52,8 @@
 
 - OpenAI, [Advancing computer use with Ironclad](https://openai.com/index/advancing-computer-use-with-ironclad/), 2026-10-06. Исследовательский кейс: проверка созданного процесса; 11 задач, не производственная гарантия.
 
+- Strands, [Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/). Developer preview: семантические политики, TCB и ограничения временного правила публикации.
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

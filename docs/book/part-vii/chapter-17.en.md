@@ -312,6 +312,14 @@ Isolation requires one client per caller or a shared-store partition derived fro
 
 When a tool definition changes, the old plan and approval may no longer match the action. On detecting a new version or digest, refresh the catalog and recheck arguments, risk, and approval applicability; TTL alone cannot instantly detect a change. For sensitive operations, force refresh or use verifiable version binding. A client digest detects differences between snapshots but cannot force a server to execute the old version: that guarantee needs server-side version binding. See the [policy bundle contract](../../appendix/policy-bundle-schema.md) for fields and acceptance scenarios.
 
+### Passing tests are evidence about state, not indefinite authorization
+
+The [Strands Box example](https://strandsagents.com/blog/strands-box-the-big-picture/) forbids `git push` unless a successful `npm test` in a specified directory occurred after the last `git add` and within 15 minutes. The author explicitly notes that this is incomplete: `git switch` can invalidate the assumption about tested code. Event ordering is not proof that the published artifact matches the test.
+
+Book-proposed contract: a trusted runner binds the result to the repository, the digest of the actual tested tree (including relevant uncommitted files), test command and suite, dependency/environment versions and time. Before push, check the exact outgoing commit/tree, remote and target ref; a matching branch name or fresh `tests_passed` flag is insufficient. Policy separately decides which changes require retesting; evidence must not silently transfer to a different object.
+
+Coordinate checking with execution: pin the outgoing object and prevent substitution between decision and action, or revalidate and refuse. Branch changes, file/dependency changes and lost verifiable history after restart do not automatically grant permission. Passing tests replace neither repository authorization nor mandatory review. This is a recommendation, not an implemented Box or reference-runtime guarantee; the [proposed scenarios](../../appendix/case-studies.md) exercise both rejection and the permitted path.
+
 ## 8. Example Policy Contract
 
 Here is a very simple but practical template:
