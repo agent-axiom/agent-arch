@@ -12,6 +12,15 @@
 !!! note "规范案例对齐（Canonical case alignment）"
     这些场景对应书籍计划里的三个规范案例（canonical cases）。**支持分流（Support triage）** 是案例 1，用来承载写入能力（write capability）、审批（approvals）和重复工单恢复（duplicate-ticket recovery）。**内部知识助手（Internal knowledge assistant）** 是案例 2，用来承载检索（retrieval）、记忆（memory）、访问控制（access control）、新鲜度（freshness）和知识来源（knowledge provenance）。**事件协调（Incident coordination）** 是案例 3，用来承载追踪（traces）、服务级目标（SLO）、升级（escalation）、通知副作用（notification side effects）、响应归属（response ownership）和事件后学习（post-incident learning）。
 
+### OpenAI / Ironclad：检查智能体创建的流程
+
+[OpenAI 于 2026 年 10 月 6 日发表的文章](https://openai.com/index/advancing-computer-use-with-ironclad/)介绍了协议、审批和可复用法律条款的配置。智能体不仅要创建规则，还要检查金额高于和低于阈值时是否走正确路径。研究评估包含 11 个任务，每个任务有 8–50 项标准。
+
+Astra 平均得分为 55.0%，Sol 为 41.6%；这不是完全成功任务的比例。作者使用 Astra 的 Max 推理设置和 Sol 的 High 设置。每次尝试 19.2 分钟与 37.0 分钟是估算时间，不是生产 SLO。小规模专业任务集及作者开展的研究评估不能保证任意合同流程的正确性。
+
+本书建议独立定义低于、等于和高于阈值的矩阵，并设置不能由平均分抵消的强制标准。恰好等于阈值的场景是本书建议，不代表已发表基准的明确组成部分。参见[第 13 章](../book/part-v/chapter-13.md)和[评估模式](eval-schema.md)。这些场景并未在 Ironclad 上执行；人工监督和业务规则验证仍然必要。
+
+
 ## 跨章节路线
 
 阅读正文时，应把这三个案例当作覆盖检查：

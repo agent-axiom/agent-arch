@@ -12,6 +12,18 @@
 
 如果追踪模式那一页回答的是“怎样描述一次运行里实际发生了什么”，这一页回答的就是“怎样把我们对系统的期待描述成评测工件”。
 
+## 建议评估：生成流程的边界输入
+
+动机来自 [OpenAI / Ironclad 案例](https://openai.com/index/advancing-computer-use-with-ironclad/)。以下是本书建议的契约，不是 Ironclad API 模式，也不是已执行测试的报告。
+
+- 记录 `configuration_ref` 及其摘要、`business_rule_version`、`scenario_id`、规范化的金额/币种/舍入方式、`expected_route`、`required_approvals`、`observed_route`、`evidence_refs`、`mandatory_criteria` 和 `pass | fail | not_evaluated`。
+- 业务规则负责人独立于配置生成智能体确认预期结果。使用隔离的合成数据检查同一固定产出物；配置变化需要新版本和重新测试。无需真实合同或支付。
+- 对明确的 `amount > T` 规则检查三种情况：`T−δ` 和 `T` 不应仅因该规则触发财务审批；`T+δ` 必须触发财务审批且未经批准不能完成。其他安全/法务要求仍然有效。附加对照：缺失金额或不支持的币种不能默认为“低于阈值”。
+- 保存测试系统的状态转换和最终状态，而不只是模型断言。未执行、超时和证据不足应单独标记，且不能允许发布。部分得分不能抵消强制规则违规。
+
+分别报告带权重规则的平均标准得分、满足全部强制标准的任务比例和场景执行完整度。分母包括预先固定的全部集合；基础设施故障单独可见，不能暗中删除困难任务。矩阵仅验证选定情况，并不证明所有可能输入都正确。
+
+
 ## 建议评测：攻击语义与通过 WAF 分开记录
 
 为验证 [Cloudflare 案例](https://blog.cloudflare.com/adaptive-ai-waf-testing/)的结论，建议用独立维度替代单一 `attack_success`：`request_valid`、`target_reached`、`waf_outcome`（`blocked`、`passed`、`unknown`）、`attack_semantics`（`preserved`、`benign`、`unknown`）和 `effect_status`（`confirmed`、`not_observed`、`unknown`）。`not_observed` 仅指给定观察窗口内未见效果，不证明利用不可能。这些是建议的数据集字段，不是参考运行时已实现的模式扩展。

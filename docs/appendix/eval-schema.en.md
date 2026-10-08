@@ -12,6 +12,18 @@ And connects them to the runnable package:
 
 If the trace schema page answers “how do we describe what happened inside a run?”, this page answers “how do we describe what we expect from the system as an eval artifact?”
 
+## Proposed eval: generated workflow on boundary inputs
+
+The motivation is the [OpenAI / Ironclad case](https://openai.com/index/advancing-computer-use-with-ironclad/). This is a book-proposed contract, not an Ironclad API schema or a report of executed tests.
+
+- Record `configuration_ref` and its digest, `business_rule_version`, `scenario_id`, normalized amount/currency/rounding, `expected_route`, `required_approvals`, `observed_route`, `evidence_refs`, `mandatory_criteria`, and `pass | fail | not_evaluated`.
+- The business-rule owner approves expectations independently of the agent that created the configuration. Test one frozen artifact with isolated synthetic data; configuration changes require a new version and rerun. No real contracts or payments are needed.
+- For the explicit rule `amount > T`, test three cases: `T−δ` and `T` do not invoke Finance solely under this rule; `T+δ` invokes Finance and cannot complete without it. Other Security/Legal requirements remain mandatory. Additional control: a missing amount or unsupported currency must not silently become “below threshold.”
+- Preserve transitions and final state from the test system, not just model assertions. Mark missing execution, timeout and insufficient evidence separately; they do not permit release. Partial credit cannot compensate for violating a mandatory rule.
+
+Report average criterion score with its weighting rule, the fraction of tasks satisfying every mandatory criterion, and scenario execution completeness separately. Denominators cover the entire predefined set; infrastructure failures remain visible rather than silently removing difficult tasks. This matrix tests selected cases, not correctness for every possible input.
+
+
 ## Proposed eval: attack semantics separate from WAF passage
 
 To test the lesson from the [Cloudflare case](https://blog.cloudflare.com/adaptive-ai-waf-testing/), preserve independent dimensions instead of one `attack_success`: `request_valid`, `target_reached`, `waf_outcome` (`blocked`, `passed`, `unknown`), `attack_semantics` (`preserved`, `benign`, `unknown`) and `effect_status` (`confirmed`, `not_observed`, `unknown`). `not_observed` means no effect within the stated observation window, not proof exploitation is impossible. These are proposed dataset fields, not an implemented reference-runtime schema extension.

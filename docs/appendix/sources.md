@@ -50,6 +50,8 @@
 
 - OpenAI, [Cookbook: Agents API на AWS Lambda MicroVMs](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme) и [руководство AWS Lambda MicroVMs](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws), проверено 2026-10-05.
 
+- OpenAI, [Advancing computer use with Ironclad](https://openai.com/index/advancing-computer-use-with-ironclad/), 2026-10-06. Исследовательский кейс: проверка созданного процесса; 11 задач, не производственная гарантия.
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем

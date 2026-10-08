@@ -50,6 +50,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - OpenAI, [Cookbook: Agents API on AWS Lambda MicroVMs](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme) and [AWS Lambda MicroVMs guide](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws), checked 2026-10-05.
 
+- OpenAI, [Advancing computer use with Ironclad](https://openai.com/index/advancing-computer-use-with-ironclad/), 2026-10-06. Research case: testing a generated process; 11 tasks, not a production guarantee.
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

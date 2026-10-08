@@ -108,6 +108,15 @@ In practice, it is useful to persist not only the verdict text, but also a small
 
 Without that record, the verifier contract can remain a good prose idea but a weak operational control. With it, an eval verdict becomes comparable, disputable, and usable for release governance.
 
+### Test the generated process, not just its configuration
+
+When an agent produces a configurable process, saving a form successfully does not establish its future behavior. In [OpenAI and Ironclad's research](https://openai.com/index/advancing-computer-use-with-ironclad/), the agent configures procurement approvals and checks routing above and below a spending threshold. This evaluates the produced artifact in addition to the agent's actions.
+
+Book recommendation: freeze the configuration version and independently agreed business rules, then execute a synthetic input matrix in a test environment. For “Finance is required strictly above T,” test T−δ, T and T+δ, where δ is the smallest monetary unit after specified rounding. At T this rule does not require Finance; other mandatory approvals still apply. The rule owner must resolve “above” versus “at least,” currency and rounding before evaluation rather than letting the agent guess.
+
+Verify actual transitions and inability to complete without mandatory approval, not merely labels or a settings screenshot. A mandatory-criterion failure blocks release regardless of the average score. Report the fraction of tasks passing every mandatory scenario separately from average criterion coverage; untested scenarios are not successes. See the [evaluation schema](../../appendix/eval-schema.md) for independent expectations and evidence. This is a proposed method, not newly implemented runtime functionality.
+
+
 ## 3. Online Evals Matter Because the Real World Is Always Larger Than the Test Set
 
 Even very good offline evals do not cover everything that happens in production:

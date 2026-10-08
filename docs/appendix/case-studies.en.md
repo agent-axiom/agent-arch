@@ -12,6 +12,15 @@ If you need reusable policy artifacts rather than scenarios, go to [Policy Templ
 !!! note "Canonical case alignment"
     These scenarios correspond to the three canonical cases from the book plan. **Support triage** is Case 1 for write capability, approvals, and duplicate-ticket recovery. **Internal knowledge assistant** is Case 2 for retrieval, memory, access control, freshness, and knowledge provenance. **Incident coordination** is Case 3 for traces, SLOs, escalation, notification side effects, response ownership, and post-incident learning.
 
+### OpenAI / Ironclad: testing a process created by an agent
+
+[OpenAI, October 6, 2026](https://openai.com/index/advancing-computer-use-with-ironclad/), describes configuring agreements, approvals and reusable legal terms. An agent must not only create rules but check that requests above and below a threshold follow the correct routes. The research evaluation contains 11 tasks with 8–50 criteria each.
+
+Astra's average score is 55.0%, versus Sol's 41.6%; these are not fully successful task rates. The authors compare Astra at Max reasoning with Sol at High. The 19.2 versus 37.0 minutes per attempt are estimated times, not a production SLO. A small specialized set and author-run research evaluation do not guarantee correctness for arbitrary contracting workflows.
+
+The book proposes independently specified below/at/above-threshold cases and mandatory criteria that average scores cannot offset. The exact-threshold case is our recommendation, not a claimed part of the published benchmark. See [Chapter 13](../book/part-v/chapter-13.md) and the [evaluation schema](eval-schema.md). These scenarios were not executed against Ironclad; human oversight and business-rule validation remain necessary.
+
+
 ## Cross-chapter route
 
 Keep these cases beside the main text as coverage checks:

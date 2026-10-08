@@ -50,6 +50,8 @@
 
 - OpenAI，[Cookbook：在 AWS Lambda MicroVMs 上运行 Agents API](https://developers.openai.com/cookbook/examples/agents_api/sandboxes/aws/readme)及 [AWS Lambda MicroVMs 指南](https://developers.openai.com/api/docs/guides/agents-api/environments/providers/aws)，核验日期 2026-10-05。
 
+- OpenAI, [Advancing computer use with Ironclad](https://openai.com/index/advancing-computer-use-with-ironclad/), 2026-10-06. 研究案例：检查生成流程；11 个任务，不是生产保证。
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security
