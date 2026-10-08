@@ -54,6 +54,8 @@
 
 - Strands, [Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/). 开发者预览：语义策略、可信计算基及发布时序规则的限制。
 
+- Cloudflare, [Building an evidence-grounded agentic security operations harness on Cloudflare](https://blog.cloudflare.com/agentic-security-operations/), 2026-10-07. 版本化证据、覆盖缺口及拒绝无依据的结论。
+
 ## 规范性框架与治理轮廓
 
 ### Agent-specific security

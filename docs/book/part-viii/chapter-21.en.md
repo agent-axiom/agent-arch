@@ -169,6 +169,20 @@ This is also where the chapter should stay distinct from the observability layer
 
 It should also stay distinct from SLO. SLO state how much degradation or unsafe behavior can be tolerated. Assurance is the loop that escalates, contains, and assigns response once that tolerance is no longer acceptable.
 
+### No matches are not evidence of absence
+
+[Cloudflare describes](https://blog.cloudflare.com/agentic-security-operations/) application-code evidence collection and scope enforcement before model inference. A versioned package records subject, scope, time anchor, admitted evidence, policy versions, sources and coverage gaps. Specialists cite that package; synthesis cannot add new sources. Replaying the same snapshot compares interpretations without silently changing inputs, but does not itself establish truth or completeness.
+
+| Check state | Permitted conclusion |
+| --- | --- |
+| Not checked | The check did not run or its source was unavailable; absence cannot be inferred |
+| Checked, no matching result | A particular query found nothing; observation completeness is not established |
+| Checked, evidence supports absence | Data and verified coverage support absence of a specific event within the stated scope and time window |
+
+The last state needs explicit assumptions: which events the source must observe, whether ingestion is complete, whether pages are missing and whether sampling limits the result. Timeout, access denial, expired retention and ingestion delay remain visible. Positive findings are recorded separately: these three states are not an exhaustive investigation outcome taxonomy. With insufficient evidence, the agent may report established facts and missing checks but must not turn abstention into “safe” or automatically close the incident.
+
+Validating a citation and validating a claim are different jobs. Code checks existence, tenant/case membership and package version; the claim must also follow from the content and coverage assumptions. A valid citation identifier does not prove that. Doubtful support requires review or a narrower conclusion, not mechanical acceptance of a model verdict. Proposed fields and invariants are in the [incident schema](../../appendix/incident-record-schema.md); this is a book-contract extension, not implemented reference-runtime functionality.
+
 ## 6. Response should be its own operational function
 
 When an agent starts behaving unsafely, it is not enough to say “we will tune the prompt later.”

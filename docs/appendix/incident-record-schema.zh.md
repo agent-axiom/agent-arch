@@ -95,6 +95,18 @@ owner: platform-operations
 2. 未收到回复但补丁已发布：有证据即可记录上游修复，但在验证部署前不得关闭本地风险。
 3. 一个缺陷同时有 CVE、GHSA、重复报告且安装情况未知：指标按唯一发现项计数；发布不能变成安装证明。
 
+### 建议扩展：证据包与负面结果
+
+灵感来自 [Cloudflare Managed Defense](https://blog.cloudflare.com/agentic-security-operations/)；以下字段由本书建议，不是供应商 API 或已实现的运行时模式。
+
+- `evidence_package_id`、`package_version`、`package_digest`、`investigation_id`、`tenant_id`、`subject`、`scope`、`window_start`、`window_end`、`collected_at`、`policy_version` 固定快照边界。每个来源记录 API/查询版本、参数、观察时间、原始产出物引用和 `coverage_gaps`。
+- `check_id`、`claim_id`、`query_ref`、`execution_status`（`completed | timeout | unavailable | denied`）、`match_count`、`coverage_ref` 和 `evidence_refs` 描述具体检查。`match_count: 0` 只能用于已完成查询，不能替代错误；截断结果必须明确标记不完整。
+- `negative_evidence_state`：`not_checked | checked_no_match | absence_supported`。仅用于相应的负面或未知结果；正向发现单独保存。`absence_supported` 需要可验证的断言与范围/窗口绑定及充分覆盖证据，而不仅是零计数。
+- `citation_validation` 与 `claim_support_review` 分开；后者记录复核者/方法、结果和理由。其他租户、案件或证据包版本中的有效引用仍然不合法，无论文本多么可信。模型接收内容前先检查权限；允许的跨租户聚合需要单独的准入策略。
+- `recommendation_status`（`supported | insufficient_evidence | needs_review`）及不作建议的原因不能替代事故状态。证据不足既不表示误报，也不授予行动权限。
+
+重新获取数据应创建与旧版本明确关联的新证据包版本，而不是改变旧结论的输入。按访问、最小化和保留政策保存产出物；摘要不授予权限，也不保证真实性。重放还需记录模型、提示和复核者版本。四个建议场景见[事故协调案例](case-studies.md)。
+
 ## 4. 事故事后复盘链接
 
 `incident_postmortem_link` 把某个具体事故与纠正动作、生命周期工件连接起来。

@@ -635,6 +635,19 @@ Most of the time, it is enough to have:
 
 ## Case 3. Incident coordination
 
+### Cloudflare: fixed evidence and three negative states
+
+[Cloudflare's October 7, 2026 Managed Defense description](https://blog.cloudflare.com/agentic-security-operations/) places deterministic collection before analysis, gives specialists bounded evidence packages and preserves coverage gaps in the advisory. Insufficient evidence produces no classification or disposition recommendation. Analysts retain responsibility for decisions and remediation. The source describes an early beta for eligible alerts and cases, not a universal accuracy guarantee or automatic incident remediation.
+
+Proposed checks on synthetic fixtures, not service tests we executed:
+
+1. **Source timeout:** retain local observations and mark the unavailable global check `not_checked`; do not invent a conclusion about a widespread or absent campaign.
+2. **Empty result:** a completed query returns zero but collection gaps are known. Record `checked_no_match`, not “no threat”; withhold a recommendation that depends on completeness.
+3. **Supported absence:** a complete synthetic log with verified delivery of every event for a closed window shows no specific operation. Permit only the scoped conclusion `absence_supported`. Remove part of the log and that conclusion is no longer permitted; add the operation and record a positive finding. This does not establish absence of other threats.
+4. **Foreign citation:** an existing identifier points to another tenant's or investigation's record. Block admission before model exposure and reject a substituted citation in the advisory. A valid same-case citation that does not support the claim also fails support review.
+
+See [Chapter 21](../book/part-viii/chapter-21.md) and the [incident record schema](incident-record-schema.md). Compare results on the same retained package; new data require a new version and reconsideration of affected conclusions. No real customer data or remediation tools were used for these checks.
+
 ### What the system does
 
 The agent helps during an incident:

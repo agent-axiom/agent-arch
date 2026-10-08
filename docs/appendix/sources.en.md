@@ -54,6 +54,8 @@ Below is the main set of primary sources used by the current version of the book
 
 - Strands, [Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/). Developer preview: semantic policy, TCB and limits of temporal publication rules.
 
+- Cloudflare, [Building an evidence-grounded agentic security operations harness on Cloudflare](https://blog.cloudflare.com/agentic-security-operations/), 2026-10-07. Versioned evidence, coverage gaps and abstention from unsupported conclusions.
+
 ## Normative Frameworks and Governance Contours
 
 ### Agent-specific security

@@ -95,6 +95,18 @@ Proposed scenarios, not executed here:
 2. Patch release without a report reply: upstream remediation is valid with evidence, but local risk remains open until deployment is verified.
 3. One defect has a CVE and GHSA, a duplicate report, and unknown deployment: metrics count unique findings; release does not become proof of installation.
 
+### Proposed extension: evidence packages and negative results
+
+Inspired by [Cloudflare Managed Defense](https://blog.cloudflare.com/agentic-security-operations/); the field names below are book proposals, not provider APIs or an implemented runtime schema.
+
+- `evidence_package_id`, `package_version`, `package_digest`, `investigation_id`, `tenant_id`, `subject`, `scope`, `window_start`, `window_end`, `collected_at`, `policy_version` fix snapshot boundaries. Each source records API/query version, parameters, observation time, original artifact references and `coverage_gaps`.
+- `check_id`, `claim_id`, `query_ref`, `execution_status` (`completed | timeout | unavailable | denied`), `match_count`, `coverage_ref` and `evidence_refs` describe a particular check. `match_count: 0` is valid only for a completed query, never as an error substitute; truncated output needs an explicit incompleteness marker.
+- `negative_evidence_state`: `not_checked | checked_no_match | absence_supported`. Use only for applicable negative/unknown outcomes; store positive findings separately. `absence_supported` requires verifiable claim-to-scope/window binding and sufficient-coverage evidence, not merely a zero count.
+- Keep `citation_validation` separate from `claim_support_review`; record the latter's reviewer/method, result and rationale. An existing citation from another tenant, case or package version is invalid regardless of plausible prose. Check access before exposing content to the model; permitted cross-tenant aggregates require a separate admission policy.
+- `recommendation_status` (`supported | insufficient_evidence | needs_review`) and abstention reasons do not replace incident status. Insufficient evidence means neither false positive nor permission to act.
+
+Refetching data creates a new package version linked visibly to the old one, rather than changing the input of an earlier conclusion. Retain artifacts under access, minimization and retention policy; a digest grants neither authorization nor truth. Record model, prompt and reviewer versions for replay too. Four proposed scenarios appear in the [incident-coordination case](case-studies.md).
+
 ## 4. Incident postmortem link
 
 `incident_postmortem_link` connects a specific incident to corrective actions and lifecycle artifacts.

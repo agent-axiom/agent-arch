@@ -54,6 +54,8 @@
 
 - Strands, [Strands Box: The Big Picture](https://strandsagents.com/blog/strands-box-the-big-picture/). Developer preview: семантические политики, TCB и ограничения временного правила публикации.
 
+- Cloudflare, [Building an evidence-grounded agentic security operations harness on Cloudflare](https://blog.cloudflare.com/agentic-security-operations/), 2026-10-07. Версионированные свидетельства, пробелы покрытия и отказ от необоснованного вывода.
+
 ## Нормативные рамки и контуры управления
 
 ### Безопасность агентных систем
