@@ -129,19 +129,21 @@ Google Research очень точно показывает, что подтве�
 - [цепочкой данных и извлечения](../../appendix/memory-retrieval-schema.md);
 - [цепочкой оценки](../../appendix/eval-schema.md).
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Полезно думать не об одной цепочке поставки, а о наборе связанных цепочек доверия</p>
 
-``` mermaid
-flowchart LR
-    A["Код и сборка"] --> G["Утвержденный набор выпуска"]
-    B["Артефакты модели"] --> G
-    C["Наборы инструкций и процедур"] --> G
-    D["Наборы политик"] --> G
-    E["Контракты возможностей"] --> G
-    F["Схемы подтверждения и управления средой исполнения"] --> G
-    H["Наборы данных оценки и отчеты"] --> G
-```
+<!-- excalidraw:ru-part-viii-chapter-22-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Полезно думать не об одной цепочке поставки, а о наборе связанных цепочек доверия" style="--diagram-native-width:516px">
+
+[![Полезно думать не об одной цепочке поставки, а о наборе связанных цепочек доверия](../../assets/diagrams/ru/part-viii-chapter-22-01.svg){ width="516" height="1012" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-22-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-22-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-22-01.excalidraw){ download="part-viii-chapter-22-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-22-01 -->
 
 </div>
 

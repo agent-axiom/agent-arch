@@ -1,0 +1,1311 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://github.com/agent-axiom/agent-arch",
+  "elements": [
+    {
+      "id": "element-1",
+      "type": "arrow",
+      "x": 490,
+      "y": 100,
+      "width": 0,
+      "height": 52,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 101,
+      "version": 4,
+      "versionNonce": 1,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_B_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          52
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-18",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-2",
+      "type": "arrow",
+      "x": 490,
+      "y": 278,
+      "width": 0,
+      "height": 52,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a1",
+      "roundness": null,
+      "seed": 102,
+      "version": 4,
+      "versionNonce": 2,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_B_C_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          52
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-18",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-21",
+        "focus": -0.004132231404958678,
+        "gap": 4.272001872658765
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-3",
+      "type": "arrow",
+      "x": 408.09600830078125,
+      "y": 494.09600830078125,
+      "width": 293.09600830078125,
+      "height": 208.90399169921875,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a2",
+      "roundness": null,
+      "seed": 103,
+      "version": 4,
+      "versionNonce": 3,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_C_D_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -293.09600830078125,
+          140.29180908203125
+        ],
+        [
+          -293.09600830078125,
+          208.90399169921875
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-21",
+        "focus": 0.002868241819679358,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-24",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-4",
+      "type": "arrow",
+      "x": 440.24700927734375,
+      "y": 526.2470092773438,
+      "width": 75.24700927734375,
+      "height": 176.75299072265625,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a3",
+      "roundness": null,
+      "seed": 104,
+      "version": 4,
+      "versionNonce": 4,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_C_E_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -75.24700927734375,
+          107.95001220703125
+        ],
+        [
+          -75.24700927734375,
+          176.75299072265625
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-21",
+        "focus": 0.004875733460439338,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-27",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-5",
+      "type": "arrow",
+      "x": 539.7529907226562,
+      "y": 526.2470092773438,
+      "width": 75.24700927734375,
+      "height": 161.75299072265625,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a4",
+      "roundness": null,
+      "seed": 105,
+      "version": 4,
+      "versionNonce": 5,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_C_F_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          75.24700927734375,
+          107.91961669921875
+        ],
+        [
+          75.24700927734375,
+          161.75299072265625
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-21",
+        "focus": 0.0035043290809770133,
+        "gap": 1.0606601717798212
+      },
+      "endBinding": {
+        "elementId": "element-30",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-6",
+      "type": "arrow",
+      "x": 571.9039916992188,
+      "y": 494.09600830078125,
+      "width": 293.09600830078125,
+      "height": 208.90399169921875,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a5",
+      "roundness": null,
+      "seed": 106,
+      "version": 4,
+      "versionNonce": 6,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_C_G_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          293.09600830078125,
+          140.29180908203125
+        ],
+        [
+          293.09600830078125,
+          208.90399169921875
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-21",
+        "focus": 0.001087582913029553,
+        "gap": 1.0606601717798212
+      },
+      "endBinding": {
+        "elementId": "element-33",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-7",
+      "type": "rectangle",
+      "x": 67.7470703125,
+      "y": 619.5,
+      "width": 94.505859375,
+      "height": 29,
+      "angle": 0,
+      "strokeColor": "transparent",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 0,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "a6",
+      "roundness": null,
+      "seed": 107,
+      "version": 2,
+      "versionNonce": 7,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceKind": "label-backing"
+      }
+    },
+    {
+      "id": "element-8",
+      "type": "text",
+      "x": 70.7470703125,
+      "y": 621.5,
+      "width": 88.505859375,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "a7",
+      "roundness": null,
+      "seed": 108,
+      "version": 2,
+      "versionNonce": 8,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "diagram-ru-part-iv-chapter-10-01",
+        "sourceKind": "label"
+      },
+      "text": "Да, успех",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Да, успех",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-9",
+      "type": "rectangle",
+      "x": 278.5087890625,
+      "y": 607,
+      "width": 172.982421875,
+      "height": 54,
+      "angle": 0,
+      "strokeColor": "transparent",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 0,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "a8",
+      "roundness": null,
+      "seed": 109,
+      "version": 2,
+      "versionNonce": 9,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceKind": "label-backing"
+      }
+    },
+    {
+      "id": "element-10",
+      "type": "text",
+      "x": 281.5087890625,
+      "y": 609,
+      "width": 166.982421875,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "a9",
+      "roundness": null,
+      "seed": 110,
+      "version": 2,
+      "versionNonce": 10,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "diagram-ru-part-iv-chapter-10-01",
+        "sourceKind": "label"
+      },
+      "text": "Ошибка, которую\nможно повторить",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Ошибка, которую\nможно повторить",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-11",
+      "type": "rectangle",
+      "x": 525.1982421875,
+      "y": 607,
+      "width": 179.603515625,
+      "height": 54,
+      "angle": 0,
+      "strokeColor": "transparent",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 0,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "aA",
+      "roundness": null,
+      "seed": 111,
+      "version": 2,
+      "versionNonce": 11,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceKind": "label-backing"
+      }
+    },
+    {
+      "id": "element-12",
+      "type": "text",
+      "x": 528.1982421875,
+      "y": 609,
+      "width": 173.603515625,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "aB",
+      "roundness": null,
+      "seed": 112,
+      "version": 2,
+      "versionNonce": 12,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "diagram-ru-part-iv-chapter-10-01",
+        "sourceKind": "label"
+      },
+      "text": "Неизвестный\nпобочный эффект",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Неизвестный\nпобочный эффект",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-13",
+      "type": "rectangle",
+      "x": 769.6123046875,
+      "y": 607,
+      "width": 190.775390625,
+      "height": 54,
+      "angle": 0,
+      "strokeColor": "transparent",
+      "backgroundColor": "#ffffff",
+      "fillStyle": "solid",
+      "strokeWidth": 0,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aC",
+      "roundness": null,
+      "seed": 113,
+      "version": 2,
+      "versionNonce": 13,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceKind": "label-backing"
+      }
+    },
+    {
+      "id": "element-14",
+      "type": "text",
+      "x": 772.6123046875,
+      "y": 609,
+      "width": 184.775390625,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aD",
+      "roundness": null,
+      "seed": 114,
+      "version": 2,
+      "versionNonce": 14,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "diagram-ru-part-iv-chapter-10-01",
+        "sourceKind": "label"
+      },
+      "text": "Ошибка валидации\nили доступа",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Ошибка валидации\nили доступа",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-15",
+      "type": "rectangle",
+      "x": 383,
+      "y": 8,
+      "width": 214,
+      "height": 92,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aE",
+      "roundness": null,
+      "seed": 115,
+      "version": 3,
+      "versionNonce": 15,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-A-0"
+      }
+    },
+    {
+      "id": "element-17",
+      "type": "text",
+      "x": 429.697265625,
+      "y": 29,
+      "width": 120.60546875,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aF",
+      "roundness": null,
+      "seed": 116,
+      "version": 2,
+      "versionNonce": 16,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "label"
+      },
+      "text": "Запрос\nинструмента",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Запрос\nинструмента",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-18",
+      "type": "rectangle",
+      "x": 383,
+      "y": 156,
+      "width": 214,
+      "height": 122,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-6"
+      ],
+      "frameId": null,
+      "index": "aG",
+      "roundness": null,
+      "seed": 117,
+      "version": 4,
+      "versionNonce": 17,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        },
+        {
+          "id": "element-2",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-1",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-B-1"
+      }
+    },
+    {
+      "id": "element-20",
+      "type": "text",
+      "x": 437.8515625,
+      "y": 179.5,
+      "width": 104.296875,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-6"
+      ],
+      "frameId": null,
+      "index": "aH",
+      "roundness": null,
+      "seed": 118,
+      "version": 2,
+      "versionNonce": 18,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-1",
+        "sourceKind": "label"
+      },
+      "text": "Выполнить\nдействие\nзаписи",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Выполнить\nдействие\nзаписи",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-21",
+      "type": "diamond",
+      "x": 369.5,
+      "y": 334,
+      "width": 242,
+      "height": 242,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-7"
+      ],
+      "frameId": null,
+      "index": "aI",
+      "roundness": null,
+      "seed": 119,
+      "version": 7,
+      "versionNonce": 19,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-2",
+          "type": "arrow"
+        },
+        {
+          "id": "element-3",
+          "type": "arrow"
+        },
+        {
+          "id": "element-4",
+          "type": "arrow"
+        },
+        {
+          "id": "element-5",
+          "type": "arrow"
+        },
+        {
+          "id": "element-6",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceNode": "flowchart-C-3"
+      }
+    },
+    {
+      "id": "element-23",
+      "type": "text",
+      "x": 441.4404296875,
+      "y": 430,
+      "width": 97.119140625,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-7"
+      ],
+      "frameId": null,
+      "index": "aJ",
+      "roundness": null,
+      "seed": 120,
+      "version": 2,
+      "versionNonce": 20,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-3",
+        "sourceKind": "label"
+      },
+      "text": "Исход\nизвестен?",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Исход\nизвестен?",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-24",
+      "type": "rectangle",
+      "x": 8,
+      "y": 707,
+      "width": 214,
+      "height": 122,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-8"
+      ],
+      "frameId": null,
+      "index": "aK",
+      "roundness": null,
+      "seed": 121,
+      "version": 3,
+      "versionNonce": 21,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-3",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-5",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-D-5"
+      }
+    },
+    {
+      "id": "element-26",
+      "type": "text",
+      "x": 57.32421875,
+      "y": 730.5,
+      "width": 115.3515625,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-8"
+      ],
+      "frameId": null,
+      "index": "aL",
+      "roundness": null,
+      "seed": 122,
+      "version": 2,
+      "versionNonce": 22,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-5",
+        "sourceKind": "label"
+      },
+      "text": "Сохранить\nрезультат и\nпродолжить",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Сохранить\nрезультат и\nпродолжить",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-27",
+      "type": "rectangle",
+      "x": 258,
+      "y": 707,
+      "width": 214,
+      "height": 122,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-9"
+      ],
+      "frameId": null,
+      "index": "aM",
+      "roundness": null,
+      "seed": 123,
+      "version": 3,
+      "versionNonce": 23,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-4",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-E-7"
+      }
+    },
+    {
+      "id": "element-29",
+      "type": "text",
+      "x": 300.8837890625,
+      "y": 730.5,
+      "width": 128.232421875,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-9"
+      ],
+      "frameId": null,
+      "index": "aN",
+      "roundness": null,
+      "seed": 124,
+      "version": 2,
+      "versionNonce": 24,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "label"
+      },
+      "text": "Повторить по\nполитике с\nbackoff",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Повторить по\nполитике с\nbackoff",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-30",
+      "type": "rectangle",
+      "x": 508,
+      "y": 692,
+      "width": 214,
+      "height": 152,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-10"
+      ],
+      "frameId": null,
+      "index": "aO",
+      "roundness": null,
+      "seed": 125,
+      "version": 3,
+      "versionNonce": 25,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-5",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-F-9",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-F-9"
+      }
+    },
+    {
+      "id": "element-32",
+      "type": "text",
+      "x": 555.15625,
+      "y": 718,
+      "width": 119.6875,
+      "height": 100,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-10"
+      ],
+      "frameId": null,
+      "index": "aP",
+      "roundness": null,
+      "seed": 126,
+      "version": 2,
+      "versionNonce": 26,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-F-9",
+        "sourceKind": "label"
+      },
+      "text": "Сверить или\nзапросить\nпроверку\nчеловеком",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Сверить или\nзапросить\nпроверку\nчеловеком",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-33",
+      "type": "rectangle",
+      "x": 758,
+      "y": 707,
+      "width": 214,
+      "height": 122,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-11"
+      ],
+      "frameId": null,
+      "index": "aQ",
+      "roundness": null,
+      "seed": 127,
+      "version": 3,
+      "versionNonce": 27,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-6",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-G-11",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-G-11"
+      }
+    },
+    {
+      "id": "element-35",
+      "type": "text",
+      "x": 798.6474609375,
+      "y": 730.5,
+      "width": 132.705078125,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-11"
+      ],
+      "frameId": null,
+      "index": "aR",
+      "roundness": null,
+      "seed": 128,
+      "version": 2,
+      "versionNonce": 28,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-G-11",
+        "sourceKind": "label"
+      },
+      "text": "Остановиться\nи показать\nошибку",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Остановиться\nи показать\nошибку",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {},
+  "metadata": {
+    "language": "ru",
+    "sourcePage": "docs/book/part-iv/chapter-10.md",
+    "sourceSha256": "2072add6d7c7980fd0503de27a58aeb8f71c5ab58c362f536557457d9336b329",
+    "title": "После побочного эффекта слой выполнения должен различать безопасный повтор, сверку и остановку",
+    "logicalEdges": [
+      {
+        "from": "A",
+        "to": "B",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "B",
+        "to": "C",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "C",
+        "to": "D",
+        "label": "Да, успех",
+        "type": "arrow_point"
+      },
+      {
+        "from": "C",
+        "to": "E",
+        "label": "Ошибка, которую можно повторить",
+        "type": "arrow_point"
+      },
+      {
+        "from": "C",
+        "to": "F",
+        "label": "Неизвестный побочный эффект",
+        "type": "arrow_point"
+      },
+      {
+        "from": "C",
+        "to": "G",
+        "label": "Ошибка валидации или доступа",
+        "type": "arrow_point"
+      }
+    ]
+  }
+}

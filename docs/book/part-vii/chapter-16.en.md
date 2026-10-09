@@ -59,22 +59,21 @@ For a reference implementation, it is useful to think about a run roughly like t
 
 That is already far beyond "just chat with function calls", and it should be.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Even a baseline runtime already has several mandatory control points</p>
 
-``` mermaid
-flowchart LR
-    A["Ingress"] --> B["Run context"]
-    B --> C["Policy pre-check"]
-    C --> D["Memory / retrieval"]
-    D --> E["Model step"]
-    E --> F{"Tool needed?"}
-    F -->|No| G["Result assembly"]
-    F -->|Yes| H["Execution layer"]
-    H --> I["Tool result"]
-    I --> E
-    G --> J["Telemetry + background tasks"]
-```
+<!-- excalidraw:en-part-vii-chapter-16-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Even a baseline runtime already has several mandatory control points" style="--diagram-native-width:522px">
+
+[![Even a baseline runtime already has several mandatory control points](../../assets/diagrams/en/part-vii-chapter-16-01.svg){ width="522" height="1160" loading="lazy" }](../../assets/diagrams/en/part-vii-chapter-16-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-vii-chapter-16-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-vii-chapter-16-01.excalidraw){ download="part-vii-chapter-16-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-vii-chapter-16-01 -->
 
 </div>
 
@@ -357,18 +356,21 @@ Delegated tools add a neighboring rule. When a sub-agent receives **client-provi
 
 The next useful Cloudflare pattern is to avoid putting all long work into one agent event loop. The agent can be the **stateful interaction boundary**: it owns instance identity, WebSocket/HTTP session, local state, user callbacks, and the current conversation view. The workflow then becomes the **durable execution boundary**: it owns steps, retries, waiting for external events, long approval gates, and recovery after failure.[^cloudflare-workflows]
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>A live agent and a durable workflow solve different problems</p>
 
-``` mermaid
-flowchart LR
-    S["Session / state store"] --> A["Agent runtime shell"]
-    A --> W["Durable workflow spine"]
-    W --> E["Tool / external event / approval step"]
-    W --> L["Audit + evidence log"]
-    A --> U["User-facing stream / WebSocket"]
-    E --> L
-```
+<!-- excalidraw:en-part-vii-chapter-16-02 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="A live agent and a durable workflow solve different problems" style="--diagram-native-width:496px">
+
+[![A live agent and a durable workflow solve different problems](../../assets/diagrams/en/part-vii-chapter-16-02.svg){ width="496" height="776" loading="lazy" }](../../assets/diagrams/en/part-vii-chapter-16-02.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-vii-chapter-16-02.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-vii-chapter-16-02.excalidraw){ download="part-vii-chapter-16-02.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-vii-chapter-16-02 -->
 
 </div>
 

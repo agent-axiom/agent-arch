@@ -56,21 +56,21 @@
 
 Если все это складывается в одно место, хаос начинается очень быстро. Поэтому первое правило простое: не проектируй память как одно абстрактное хранилище. Проектируй ее как набор разных контуров с разным временем жизни, разным владельцем и разными правилами записи.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Память агента полезнее мыслить как несколько слоев состояния, а не как одну базу</p>
 
-``` mermaid
-flowchart TD
-    A["Запрос пользователя"] --> B["Контекст сессии"]
-    B --> C["Планировщик / рантайм"]
-    C --> D["Краткоживущая рабочая память"]
-    C --> E["Профильная память"]
-    C --> F["Извлечение знаний"]
-    D --> G["Сборка подсказки"]
-    E --> G
-    F --> G
-    G --> H["Ответ модели"]
-```
+<!-- excalidraw:ru-part-iii-chapter-5-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Память агента полезнее мыслить как несколько слоев состояния, а не как одну базу" style="--diagram-native-width:747px">
+
+[![Память агента полезнее мыслить как несколько слоев состояния, а не как одну базу](../../assets/diagrams/ru/part-iii-chapter-5-01.svg){ width="747" height="834" loading="lazy" }](../../assets/diagrams/ru/part-iii-chapter-5-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iii-chapter-5-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iii-chapter-5-01.excalidraw){ download="part-iii-chapter-5-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iii-chapter-5-01 -->
 
 </div>
 

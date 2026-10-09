@@ -114,21 +114,21 @@ GitHub Copilot Memory показывает следующий шаг: памят
 
 Это особенно важно для engineering agents: одно дело помнить “в этом репозитории принято использовать conventional commits”, и совсем другое — запомнить случайный workaround из неудачного pull request как устойчивое правило. Cross-agent memory полезна ровно тогда, когда она повышает преемственность между инструментами и не превращает личные предпочтения, факты репозитория и временные рабочие выводы в один неуправляемый слой.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Разные типы памяти решают разные задачи и не должны сливаться в одно хранилище</p>
 
-``` mermaid
-flowchart LR
-    A["Текущий запуск"] --> B["Краткосрочная память"]
-    A --> C["Долговременная память"]
-    A --> D["Профильная память"]
-    B --> E["Состояние планировщика"]
-    B --> F["Недавние результаты инструментов"]
-    C --> G["Проверенные факты"]
-    C --> H["Сводки сессий"]
-    D --> I["Предпочтения"]
-    D --> J["Ограничения пользователя"]
-```
+<!-- excalidraw:ru-part-iii-chapter-6-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Разные типы памяти решают разные задачи и не должны сливаться в одно хранилище" style="--diagram-native-width:793px">
+
+[![Разные типы памяти решают разные задачи и не должны сливаться в одно хранилище](../../assets/diagrams/ru/part-iii-chapter-6-01.svg){ width="793" height="734" loading="lazy" }](../../assets/diagrams/ru/part-iii-chapter-6-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iii-chapter-6-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iii-chapter-6-01.excalidraw){ download="part-iii-chapter-6-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iii-chapter-6-01 -->
 
 </div>
 

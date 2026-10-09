@@ -56,21 +56,21 @@
 
 如果这些都被塞进一个地方，混乱很快就会开始。所以第一条规则很简单：不要把记忆设计成一个抽象存储。要把它设计成几种不同的边界，它们有不同的生命周期、负责人和写入规则。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>更适合把智能体记忆理解为几层状态，而不是一个数据库</p>
 
-``` mermaid
-flowchart TD
-    A["用户请求"] --> B["会话上下文"]
-    B --> C["规划器 / 运行时"]
-    C --> D["短期工作记忆"]
-    C --> E["画像记忆"]
-    C --> F["知识检索"]
-    D --> G["提示组装"]
-    E --> G
-    F --> G
-    G --> H["模型响应"]
-```
+<!-- excalidraw:zh-part-iii-chapter-5-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="更适合把智能体记忆理解为几层状态，而不是一个数据库" style="--diagram-native-width:581px">
+
+[![更适合把智能体记忆理解为几层状态，而不是一个数据库](../../assets/diagrams/zh/part-iii-chapter-5-01.svg){ width="581" height="684" loading="lazy" }](../../assets/diagrams/zh/part-iii-chapter-5-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iii-chapter-5-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iii-chapter-5-01.excalidraw){ download="part-iii-chapter-5-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iii-chapter-5-01 -->
 
 </div>
 

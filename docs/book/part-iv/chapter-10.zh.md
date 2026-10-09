@@ -126,18 +126,21 @@
 
 也就是说，回滚边界不是“以后再说”，它本身就是工具和工作流契约的一部分。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>发生副作用之后，执行层必须区分安全重试、对账和停止路径</p>
 
-``` mermaid
-flowchart TD
-    A["工具请求"] --> B["执行写动作"]
-    B --> C{"结果已知？"}
-    C -->|是，成功| D["保存结果并继续"]
-    C -->|可重试失败| E["按策略与退避重试"]
-    C -->|未知副作用| F["对账或请求人工审查"]
-    C -->|校验或权限失败| G["停止并暴露错误"]
-```
+<!-- excalidraw:zh-part-iv-chapter-10-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="发生副作用之后，执行层必须区分安全重试、对账和停止路径" style="--diagram-native-width:981px">
+
+[![发生副作用之后，执行层必须区分安全重试、对账和停止路径](../../assets/diagrams/zh/part-iv-chapter-10-01.svg){ width="981" height="610" loading="lazy" }](../../assets/diagrams/zh/part-iv-chapter-10-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iv-chapter-10-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iv-chapter-10-01.excalidraw){ download="part-iv-chapter-10-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iv-chapter-10-01 -->
 
 </div>
 

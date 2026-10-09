@@ -1,0 +1,1236 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://github.com/agent-axiom/agent-arch",
+  "elements": [
+    {
+      "id": "element-1",
+      "type": "arrow",
+      "x": 182.49540730301734,
+      "y": 70.01414299016034,
+      "width": 0,
+      "height": 51.99869139592822,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 101,
+      "version": 4,
+      "versionNonce": 1,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_B_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          51.99869139592822
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-9",
+        "focus": 7.783120444026266e-8,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-12",
+        "focus": 7.315997457003565e-8,
+        "gap": 3.9998990733841
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-2",
+      "type": "arrow",
+      "x": 140.53746358687766,
+      "y": 218.01041850164836,
+      "width": 25.540357615113308,
+      "height": 51.99869139592823,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a1",
+      "roundness": null,
+      "seed": 102,
+      "version": 4,
+      "versionNonce": 2,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_B_C_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          -25.540357615113308,
+          28.418672630332537
+        ],
+        [
+          -25.540357615113308,
+          51.99869139592823
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-12",
+        "focus": 0.004166005768835915,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-15",
+        "focus": 3.4890097667789406e-9,
+        "gap": 3.999892787970282
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-3",
+      "type": "arrow",
+      "x": 114.99710597176436,
+      "y": 396.00593904924887,
+      "width": 0,
+      "height": 51.99869139592823,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a2",
+      "roundness": null,
+      "seed": 103,
+      "version": 4,
+      "versionNonce": 3,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_C_D_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          51.99869139592823
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": -3.489009623751474e-9,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-18",
+        "focus": 3.489009623751474e-9,
+        "gap": 3.9998861563854007
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-4",
+      "type": "arrow",
+      "x": 114.99710597176436,
+      "y": 574.0014595968494,
+      "width": 0,
+      "height": 51.99869139592818,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a3",
+      "roundness": null,
+      "seed": 104,
+      "version": 4,
+      "versionNonce": 4,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_D_E_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          51.99869139592818
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-18",
+        "focus": -3.489009623751474e-9,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-21",
+        "focus": 3.489009568027724e-9,
+        "gap": 3.9999100423787013
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-5",
+      "type": "arrow",
+      "x": 114.99710597176436,
+      "y": 721.9977351083373,
+      "width": 0,
+      "height": 51.99869139592829,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a4",
+      "roundness": null,
+      "seed": 105,
+      "version": 4,
+      "versionNonce": 5,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_E_F_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          51.99869139592829
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-21",
+        "focus": -3.4890094559304275e-9,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-24",
+        "focus": 3.489009623751474e-9,
+        "gap": 3.999911386359372
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-6",
+      "type": "arrow",
+      "x": 114.99710597176436,
+      "y": 899.9932556559379,
+      "width": 0,
+      "height": 51.99869139592818,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a5",
+      "roundness": null,
+      "seed": 106,
+      "version": 4,
+      "versionNonce": 6,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_F_G_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          51.99869139592818
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-24",
+        "focus": -3.489009623751474e-9,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-27",
+        "focus": 3.4890093670691345e-9,
+        "gap": 3.9998742371964227
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-7",
+      "type": "arrow",
+      "x": 114.99710597176436,
+      "y": 1077.9887762035382,
+      "width": 18.818526655287812,
+      "height": 52.81165921795173,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a6",
+      "roundness": null,
+      "seed": 107,
+      "version": 4,
+      "versionNonce": 7,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_G_H_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          0,
+          26.61334391790092
+        ],
+        [
+          0.9493932217366279,
+          29.25109491881767
+        ],
+        [
+          18.818526655287812,
+          52.81165921795173
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-27",
+        "focus": -3.4890097667789406e-9,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-30",
+        "focus": 0.000003705303845883771,
+        "gap": 3.186991336322535
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-8",
+      "type": "arrow",
+      "x": 228.7582506162098,
+      "y": 1133.9873669376148,
+      "width": 22.844426315672024,
+      "height": 913.0220209689007,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a7",
+      "roundness": null,
+      "seed": 108,
+      "version": 4,
+      "versionNonce": 8,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_H_B_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          21.23545801806054,
+          -28.82007549245668
+        ],
+        [
+          21.23545801806054,
+          -885.9138622330494
+        ],
+        [
+          20.606674403612914,
+          -888.6669820346856
+        ],
+        [
+          -1.608968297611483,
+          -913.0220209689007
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-30",
+        "focus": 0.007989776931392127,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-12",
+        "focus": -0.000002102751234690738,
+        "gap": 2.954924215784331
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-9",
+      "type": "rectangle",
+      "x": 87.02124786376953,
+      "y": 8.015703201293945,
+      "width": 190.94833374023438,
+      "height": 61.998443603515625,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "a8",
+      "roundness": null,
+      "seed": 109,
+      "version": 3,
+      "versionNonce": 9,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-A-0"
+      }
+    },
+    {
+      "id": "element-11",
+      "type": "text",
+      "x": 116.79716110229492,
+      "y": 26.514923095703125,
+      "width": 131.396484375,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "a9",
+      "roundness": null,
+      "seed": 110,
+      "version": 2,
+      "versionNonce": 10,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "label"
+      },
+      "text": "Новый запуск",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Новый запуск",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-12",
+      "type": "rectangle",
+      "x": 75.49810028076172,
+      "y": 126.01273345947266,
+      "width": 213.99459838867188,
+      "height": 91.99768829345703,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "aA",
+      "roundness": null,
+      "seed": 111,
+      "version": 5,
+      "versionNonce": 11,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        },
+        {
+          "id": "element-2",
+          "type": "arrow"
+        },
+        {
+          "id": "element-8",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-1",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-B-1"
+      }
+    },
+    {
+      "id": "element-14",
+      "type": "text",
+      "x": 132.75908660888672,
+      "y": 147.0115737915039,
+      "width": 99.47265625,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "aB",
+      "roundness": null,
+      "seed": 112,
+      "version": 2,
+      "versionNonce": 12,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-1",
+        "sourceKind": "label"
+      },
+      "text": "Запросить\nпамять",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Запросить\nпамять",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-15",
+      "type": "rectangle",
+      "x": 7.999798774719238,
+      "y": 274.0090026855469,
+      "width": 213.99461364746094,
+      "height": 121.9969482421875,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "aC",
+      "roundness": null,
+      "seed": 113,
+      "version": 4,
+      "versionNonce": 13,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-2",
+          "type": "arrow"
+        },
+        {
+          "id": "element-3",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-3",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-C-3"
+      }
+    },
+    {
+      "id": "element-17",
+      "type": "text",
+      "x": 45.558631896972656,
+      "y": 297.5074768066406,
+      "width": 138.876953125,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "aD",
+      "roundness": null,
+      "seed": 114,
+      "version": 2,
+      "versionNonce": 14,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-3",
+        "sourceKind": "label"
+      },
+      "text": "Применить\nфильтры и\nранжирование",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Применить\nфильтры и\nранжирование",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-18",
+      "type": "rectangle",
+      "x": 7.999798774719238,
+      "y": 452.0045166015625,
+      "width": 213.99461364746094,
+      "height": 121.9969482421875,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aE",
+      "roundness": null,
+      "seed": 115,
+      "version": 4,
+      "versionNonce": 15,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-3",
+          "type": "arrow"
+        },
+        {
+          "id": "element-4",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-5",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-D-5"
+      }
+    },
+    {
+      "id": "element-20",
+      "type": "text",
+      "x": 65.46097564697266,
+      "y": 475.5030059814453,
+      "width": 99.072265625,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aF",
+      "roundness": null,
+      "seed": 116,
+      "version": 2,
+      "versionNonce": 16,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-5",
+        "sourceKind": "label"
+      },
+      "text": "Собрать\nконтекст\nподсказки",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Собрать\nконтекст\nподсказки",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-21",
+      "type": "rectangle",
+      "x": 7.999798774719238,
+      "y": 630.0000610351562,
+      "width": 213.99461364746094,
+      "height": 91.9976806640625,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aG",
+      "roundness": null,
+      "seed": 117,
+      "version": 4,
+      "versionNonce": 17,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-4",
+          "type": "arrow"
+        },
+        {
+          "id": "element-5",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-E-7"
+      }
+    },
+    {
+      "id": "element-23",
+      "type": "text",
+      "x": 53.034217834472656,
+      "y": 650.9988708496094,
+      "width": 123.92578125,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aH",
+      "roundness": null,
+      "seed": 118,
+      "version": 2,
+      "versionNonce": 18,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "label"
+      },
+      "text": "Модель +\nинструменты",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Модель +\nинструменты",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-24",
+      "type": "rectangle",
+      "x": 7.999798774719238,
+      "y": 777.996337890625,
+      "width": 213.99461364746094,
+      "height": 121.9969482421875,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-6"
+      ],
+      "frameId": null,
+      "index": "aI",
+      "roundness": null,
+      "seed": 119,
+      "version": 4,
+      "versionNonce": 19,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-5",
+          "type": "arrow"
+        },
+        {
+          "id": "element-6",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-F-9",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-F-9"
+      }
+    },
+    {
+      "id": "element-26",
+      "type": "text",
+      "x": 54.401405334472656,
+      "y": 801.4947814941406,
+      "width": 121.19140625,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-6"
+      ],
+      "frameId": null,
+      "index": "aJ",
+      "roundness": null,
+      "seed": 120,
+      "version": 2,
+      "versionNonce": 20,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-F-9",
+        "sourceKind": "label"
+      },
+      "text": "Создать\nкандидаты в\nпамять",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Создать\nкандидаты в\nпамять",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-27",
+      "type": "rectangle",
+      "x": 7.999798774719238,
+      "y": 955.9918212890625,
+      "width": 213.99461364746094,
+      "height": 121.9969482421875,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-7"
+      ],
+      "frameId": null,
+      "index": "aK",
+      "roundness": null,
+      "seed": 121,
+      "version": 4,
+      "versionNonce": 21,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-6",
+          "type": "arrow"
+        },
+        {
+          "id": "element-7",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-G-11",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-G-11"
+      }
+    },
+    {
+      "id": "element-29",
+      "type": "text",
+      "x": 71.62796783447266,
+      "y": 979.4902954101562,
+      "width": 86.73828125,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-7"
+      ],
+      "frameId": null,
+      "index": "aL",
+      "roundness": null,
+      "seed": 122,
+      "version": 2,
+      "versionNonce": 22,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-G-11",
+        "sourceKind": "label"
+      },
+      "text": "Фоновое\nсжатие и\nразбор",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Фоновое\nсжатие и\nразбор",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-30",
+      "type": "rectangle",
+      "x": 62.5531120300293,
+      "y": 1133.9874267578125,
+      "width": 239.8845977783203,
+      "height": 121.996826171875,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-8"
+      ],
+      "frameId": null,
+      "index": "aM",
+      "roundness": null,
+      "seed": 123,
+      "version": 4,
+      "versionNonce": 23,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-7",
+          "type": "arrow"
+        },
+        {
+          "id": "element-8",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-H-13",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-H-13"
+      }
+    },
+    {
+      "id": "element-32",
+      "type": "text",
+      "x": 96.50419616699219,
+      "y": 1157.48583984375,
+      "width": 171.982421875,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-8"
+      ],
+      "frameId": null,
+      "index": "aN",
+      "roundness": null,
+      "seed": 124,
+      "version": 2,
+      "versionNonce": 24,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-H-13",
+        "sourceKind": "label"
+      },
+      "text": "Нормализованное\nхранилище\nпамяти",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Нормализованное\nхранилище\nпамяти",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {},
+  "metadata": {
+    "language": "ru",
+    "sourcePage": "docs/book/part-iii/chapter-7.md",
+    "sourceSha256": "46300ee0e66e5371401585772e222aa2448a085804ed2049f5343099b0814bc8",
+    "title": "Извлечение и сжатие контекста лучше мыслить как один цикл обслуживания памяти",
+    "logicalEdges": [
+      {
+        "from": "A",
+        "to": "B",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "B",
+        "to": "C",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "C",
+        "to": "D",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "D",
+        "to": "E",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "E",
+        "to": "F",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "F",
+        "to": "G",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "G",
+        "to": "H",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "H",
+        "to": "B",
+        "label": "",
+        "type": "arrow_point"
+      }
+    ]
+  }
+}

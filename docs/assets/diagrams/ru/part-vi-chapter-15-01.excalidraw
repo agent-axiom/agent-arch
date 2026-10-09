@@ -1,0 +1,711 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://github.com/agent-axiom/agent-arch",
+  "elements": [
+    {
+      "id": "element-1",
+      "type": "arrow",
+      "x": 222,
+      "y": 54,
+      "width": 98.0880126953125,
+      "height": 64.2959976196289,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 101,
+      "version": 4,
+      "versionNonce": 1,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_D_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          26.38116455078125,
+          0
+        ],
+        [
+          28.96710205078125,
+          0.8871803283691406
+        ],
+        [
+          98.0880126953125,
+          64.2959976196289
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-5",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-8",
+        "focus": -0.0000030907843122820814,
+        "gap": 2.7040023803710938
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-2",
+      "type": "arrow",
+      "x": 222,
+      "y": 182,
+      "width": 52,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a1",
+      "roundness": null,
+      "seed": 102,
+      "version": 4,
+      "versionNonce": 2,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_B_D_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          52,
+          0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-11",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-8",
+        "focus": 0,
+        "gap": 4
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-3",
+      "type": "arrow",
+      "x": 222,
+      "y": 310,
+      "width": 98.0880126953125,
+      "height": 64.29600524902344,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a2",
+      "roundness": null,
+      "seed": 103,
+      "version": 4,
+      "versionNonce": 3,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_C_D_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          26.38116455078125,
+          0
+        ],
+        [
+          28.96710205078125,
+          -0.887176513671875
+        ],
+        [
+          98.0880126953125,
+          -64.29600524902344
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-14",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-8",
+        "focus": 0.000003207900703766146,
+        "gap": 2.7039947509765625
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-4",
+      "type": "arrow",
+      "x": 501.06298828125,
+      "y": 182,
+      "width": 52,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a3",
+      "roundness": null,
+      "seed": 104,
+      "version": 4,
+      "versionNonce": 4,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_D_E_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          52,
+          0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-8",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-17",
+        "focus": 0,
+        "gap": 3.99951171875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-5",
+      "type": "rectangle",
+      "x": 8,
+      "y": 8,
+      "width": 214,
+      "height": 92,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "a4",
+      "roundness": null,
+      "seed": 105,
+      "version": 3,
+      "versionNonce": 5,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-A-0"
+      }
+    },
+    {
+      "id": "element-7",
+      "type": "text",
+      "x": 52.9345703125,
+      "y": 29,
+      "width": 124.130859375,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "a5",
+      "roundness": null,
+      "seed": 106,
+      "version": 2,
+      "versionNonce": 6,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "label"
+      },
+      "text": "Продуктовая\nкоманда A",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Продуктовая\nкоманда A",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-8",
+      "type": "rectangle",
+      "x": 278,
+      "y": 121,
+      "width": 223.0625,
+      "height": 122,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "a6",
+      "roundness": null,
+      "seed": 107,
+      "version": 6,
+      "versionNonce": 7,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        },
+        {
+          "id": "element-2",
+          "type": "arrow"
+        },
+        {
+          "id": "element-3",
+          "type": "arrow"
+        },
+        {
+          "id": "element-4",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-1",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-D-1"
+      }
+    },
+    {
+      "id": "element-10",
+      "type": "text",
+      "x": 312.0947265625,
+      "y": 144.5,
+      "width": 154.873046875,
+      "height": 75,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "a7",
+      "roundness": null,
+      "seed": 108,
+      "version": 2,
+      "versionNonce": 8,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-1",
+        "sourceKind": "label"
+      },
+      "text": "Общий шлюз и\nплатформенные\nпримитивы",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Общий шлюз и\nплатформенные\nпримитивы",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-11",
+      "type": "rectangle",
+      "x": 8,
+      "y": 136,
+      "width": 214,
+      "height": 92,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "a8",
+      "roundness": null,
+      "seed": 109,
+      "version": 3,
+      "versionNonce": 9,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-2",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-2",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-B-2"
+      }
+    },
+    {
+      "id": "element-13",
+      "type": "text",
+      "x": 52.9345703125,
+      "y": 157,
+      "width": 124.130859375,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "a9",
+      "roundness": null,
+      "seed": 110,
+      "version": 2,
+      "versionNonce": 10,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-2",
+        "sourceKind": "label"
+      },
+      "text": "Продуктовая\nкоманда B",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Продуктовая\nкоманда B",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-14",
+      "type": "rectangle",
+      "x": 8,
+      "y": 264,
+      "width": 214,
+      "height": 92,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aA",
+      "roundness": null,
+      "seed": 111,
+      "version": 3,
+      "versionNonce": 11,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-3",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-4",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-C-4"
+      }
+    },
+    {
+      "id": "element-16",
+      "type": "text",
+      "x": 52.9345703125,
+      "y": 285,
+      "width": 124.130859375,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aB",
+      "roundness": null,
+      "seed": 112,
+      "version": 2,
+      "versionNonce": 12,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-4",
+        "sourceKind": "label"
+      },
+      "text": "Продуктовая\nкоманда C",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Продуктовая\nкоманда C",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-17",
+      "type": "rectangle",
+      "x": 557.0625,
+      "y": 91,
+      "width": 219.3125,
+      "height": 182,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aC",
+      "roundness": null,
+      "seed": 113,
+      "version": 3,
+      "versionNonce": 13,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-4",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-E-7"
+      }
+    },
+    {
+      "id": "element-19",
+      "type": "text",
+      "x": 588.759765625,
+      "y": 119.5,
+      "width": 155.91796875,
+      "height": 125,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aD",
+      "roundness": null,
+      "seed": 114,
+      "version": 2,
+      "versionNonce": 14,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "label"
+      },
+      "text": "Политики,\nтрассировка,\nподтверждения,\nдоступ к\nвозможностям",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "Политики,\nтрассировка,\nподтверждения,\nдоступ к\nвозможностям",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {},
+  "metadata": {
+    "language": "ru",
+    "sourcePage": "docs/book/part-vi/chapter-15.md",
+    "sourceSha256": "c421805205f31302cbe33e024f89b1f066abd73b3fbd6ff0a6dbc1e077e74a2a",
+    "title": "Golden path должен снижать число локальных реализаций критичных слоев",
+    "logicalEdges": [
+      {
+        "from": "A",
+        "to": "D",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "B",
+        "to": "D",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "C",
+        "to": "D",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "D",
+        "to": "E",
+        "label": "",
+        "type": "arrow_point"
+      }
+    ]
+  }
+}

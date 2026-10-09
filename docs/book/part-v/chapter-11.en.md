@@ -74,20 +74,21 @@ The book's proposed contract retains stable message identity and version, actor/
 
 The point of the diagram below is not just to look nice. It is to show where the failure can actually happen.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>A mature trace should show not only the model, but all major control points</p>
 
-``` mermaid
-flowchart LR
-    A["User request"] --> B["Run trace"]
-    B --> C["Policy span"]
-    B --> D["Retrieval span"]
-    B --> E["Model span"]
-    B --> F["Tool span: check status"]
-    B --> G["Tool span: create ticket"]
-    B --> H["Approval span"]
-    B --> I["Memory update span"]
-```
+<!-- excalidraw:en-part-v-chapter-11-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="A mature trace should show not only the model, but all major control points" style="--diagram-native-width:687px">
+
+[![A mature trace should show not only the model, but all major control points](../../assets/diagrams/en/part-v-chapter-11-01.svg){ width="687" height="772" loading="lazy" }](../../assets/diagrams/en/part-v-chapter-11-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-v-chapter-11-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-v-chapter-11-01.excalidraw){ download="part-v-chapter-11-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-v-chapter-11-01 -->
 
 </div>
 

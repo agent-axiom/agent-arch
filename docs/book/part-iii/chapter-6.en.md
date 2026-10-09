@@ -99,21 +99,21 @@ Cloudflare Agents SDK highlights another boundary: a stateful agent instance may
 
 The practical rule is simple: durable state should have an owner instance, schema version, serialization constraints, and sync policy; a memory record should have a class, provenance, tenant boundary, retention rule, and retrieval semantics. Both layers may live in durable storage, but their operational contracts are different.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Different memory types solve different problems and should not collapse into one storage</p>
 
-``` mermaid
-flowchart LR
-    A["Current run"] --> B["Short-term memory"]
-    A --> C["Long-term memory"]
-    A --> D["Profile memory"]
-    B --> E["Planner state"]
-    B --> F["Recent tool outputs"]
-    C --> G["Validated facts"]
-    C --> H["Session summaries"]
-    D --> I["Preferences"]
-    D --> J["User constraints"]
-```
+<!-- excalidraw:en-part-iii-chapter-6-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Different memory types solve different problems and should not collapse into one storage" style="--diagram-native-width:737px">
+
+[![Different memory types solve different problems and should not collapse into one storage](../../assets/diagrams/en/part-iii-chapter-6-01.svg){ width="737" height="644" loading="lazy" }](../../assets/diagrams/en/part-iii-chapter-6-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iii-chapter-6-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iii-chapter-6-01.excalidraw){ download="part-iii-chapter-6-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iii-chapter-6-01 -->
 
 </div>
 

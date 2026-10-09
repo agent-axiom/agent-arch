@@ -183,18 +183,21 @@ a2a_trust_delegation:
 
 В зрелой платформе эти вещи обычно не конкурируют, а живут на разных слоях.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>MCP и A2A дополняют друг друга, а не заменяют</p>
 
-``` mermaid
-flowchart LR
-    A["Координирующий агент"] --> B["Передача управления A2A"]
-    B --> C["Специализированный агент"]
-    A --> D["MCP-клиент"]
-    C --> E["MCP-клиент"]
-    D --> F["Сервер инструментов / ресурсов"]
-    E --> G["Сервер инструментов / ресурсов"]
-```
+<!-- excalidraw:ru-part-iv-practical-mcp-a2a-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="MCP и A2A дополняют друг друга, а не заменяют" style="--diagram-native-width:556px">
+
+[![MCP и A2A дополняют друг друга, а не заменяют](../../assets/diagrams/ru/part-iv-practical-mcp-a2a-01.svg){ width="556" height="776" loading="lazy" }](../../assets/diagrams/ru/part-iv-practical-mcp-a2a-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iv-practical-mcp-a2a-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iv-practical-mcp-a2a-01.excalidraw){ download="part-iv-practical-mcp-a2a-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iv-practical-mcp-a2a-01 -->
 
 </div>
 

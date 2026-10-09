@@ -183,18 +183,21 @@ That is why multi-agent agreement is better treated as a signal, not as proof of
 
 In a mature platform, these ideas do not compete. They sit on different layers.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>MCP and A2A complement each other instead of replacing each other</p>
 
-``` mermaid
-flowchart LR
-    A["Coordinator agent"] --> B["A2A handoff"]
-    B --> C["Specialist agent"]
-    A --> D["MCP client"]
-    C --> E["MCP client"]
-    D --> F["Tool / resource server"]
-    E --> G["Tool / resource server"]
-```
+<!-- excalidraw:en-part-iv-practical-mcp-a2a-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="MCP and A2A complement each other instead of replacing each other" style="--diagram-native-width:492px">
+
+[![MCP and A2A complement each other instead of replacing each other](../../assets/diagrams/en/part-iv-practical-mcp-a2a-01.svg){ width="492" height="656" loading="lazy" }](../../assets/diagrams/en/part-iv-practical-mcp-a2a-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-iv-practical-mcp-a2a-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-iv-practical-mcp-a2a-01.excalidraw){ download="part-iv-practical-mcp-a2a-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-iv-practical-mcp-a2a-01 -->
 
 </div>
 

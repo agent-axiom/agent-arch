@@ -114,17 +114,21 @@
 - [关闭主体、密钥和连接器](../../appendix/lifecycle-artifact-schema.zh.md)；
 - [固化最终审计状态](../../appendix/trace-schema.zh.md)。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>更稳妥的退役，更像是一步步缩小运行面</p>
 
-``` mermaid
-flowchart LR
-    A["Freeze rollout"] --> B["Disable risky capabilities"]
-    B --> C["Disable writes and background jobs"]
-    C --> D["Revoke egress and principals"]
-    D --> E["Archive audit and memory state"]
-    E --> F["Mark system retired"]
-```
+<!-- excalidraw:zh-part-viii-chapter-23-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="更稳妥的退役，更像是一步步缩小运行面" style="--diagram-native-width:794px">
+
+[![更稳妥的退役，更像是一步步缩小运行面](../../assets/diagrams/zh/part-viii-chapter-23-01.svg){ width="794" height="341" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-23-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-23-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-23-01.excalidraw){ download="part-viii-chapter-23-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-23-01 -->
 
 </div>
 

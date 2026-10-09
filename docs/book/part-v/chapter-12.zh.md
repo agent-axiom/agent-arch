@@ -165,17 +165,21 @@ SLO 的价值就在于把“系统健康”从感觉变成可度量目标。
 
 随着评估与验证器层成为发布纪律的一部分，把它们的质量也纳入健康模型会越来越有价值。如果运行时行为看起来“没问题”只是因为验证器变得更嘈杂或更轻信，那系统其实并不健康。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>智能体系统的健康几乎总是多维的</p>
 
-``` mermaid
-flowchart LR
-    A["支持智能体健康度"] --> B["成功"]
-    A --> C["延迟"]
-    A --> D["安全"]
-    A --> E["成本"]
-    A --> F["升级"]
-```
+<!-- excalidraw:zh-part-v-chapter-12-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="智能体系统的健康几乎总是多维的" style="--diagram-native-width:407px">
+
+[![智能体系统的健康几乎总是多维的](../../assets/diagrams/zh/part-v-chapter-12-01.svg){ width="407" height="486" loading="lazy" }](../../assets/diagrams/zh/part-v-chapter-12-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-v-chapter-12-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-v-chapter-12-01.excalidraw){ download="part-v-chapter-12-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-v-chapter-12-01 -->
 
 </div>
 

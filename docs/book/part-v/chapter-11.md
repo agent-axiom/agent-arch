@@ -74,20 +74,21 @@
 
 Ниже важно не просто показать красивую схему, а увидеть, где именно может возникнуть сбой.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Зрелая трасса должна показывать не только модель, но и все ключевые контрольные точки</p>
 
-``` mermaid
-flowchart LR
-    A["Запрос пользователя"] --> B["Трасса запуска"]
-    B --> C["Span политики"]
-    B --> D["Span извлечения"]
-    B --> E["Span модели"]
-    B --> F["Span инструмента: проверка статуса"]
-    B --> G["Span инструмента: создание тикета"]
-    B --> H["Span подтверждения"]
-    B --> I["Span обновления памяти"]
-```
+<!-- excalidraw:ru-part-v-chapter-11-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Зрелая трасса должна показывать не только модель, но и все ключевые контрольные точки" style="--diagram-native-width:777px">
+
+[![Зрелая трасса должна показывать не только модель, но и все ключевые контрольные точки](../../assets/diagrams/ru/part-v-chapter-11-01.svg){ width="777" height="982" loading="lazy" }](../../assets/diagrams/ru/part-v-chapter-11-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-v-chapter-11-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-v-chapter-11-01.excalidraw){ download="part-v-chapter-11-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-v-chapter-11-01 -->
 
 </div>
 

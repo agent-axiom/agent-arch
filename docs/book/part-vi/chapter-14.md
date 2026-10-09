@@ -73,16 +73,21 @@
 - критерии приемки успешной задачи;
 - интеграцию платформенных примитивов в конкретный продукт.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Платформа и продукт не должны дублировать друг друга, у них разный слой ответственности</p>
 
-``` mermaid
-flowchart LR
-    A["Платформенная команда"] --> B["Рантайм, политики, наблюдаемость, шлюзы"]
-    C["Продуктовые команды"] --> D["Пользовательские рабочие процессы, доменная логика, пользовательские исходы"]
-    B --> E["Золотые пути и общие примитивы"]
-    D --> E
-```
+<!-- excalidraw:ru-part-vi-chapter-14-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Платформа и продукт не должны дублировать друг друга, у них разный слой ответственности" style="--diagram-native-width:821px">
+
+[![Платформа и продукт не должны дублировать друг друга, у них разный слой ответственности](../../assets/diagrams/ru/part-vi-chapter-14-01.svg){ width="821" height="432" loading="lazy" }](../../assets/diagrams/ru/part-vi-chapter-14-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-vi-chapter-14-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-vi-chapter-14-01.excalidraw){ download="part-vi-chapter-14-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-vi-chapter-14-01 -->
 
 </div>
 

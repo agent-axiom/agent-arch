@@ -114,17 +114,21 @@
 - [закрыть принципалы, секреты и соединители](../../appendix/lifecycle-artifact-schema.md);
 - [зафиксировать итоговое контрольное состояние](../../appendix/trace-schema.md).
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Вывод из эксплуатации лучше делать как последовательное сужение рабочей поверхности системы</p>
 
-``` mermaid
-flowchart LR
-    A["Заморозить поэтапный выпуск"] --> B["Отключить рискованные возможности"]
-    B --> C["Отключить записи и фоновые задачи"]
-    C --> D["Отозвать исходящий доступ и принципалы"]
-    D --> E["Архивировать контрольный след и состояние памяти"]
-    E --> F["Пометить систему как выведенную"]
-```
+<!-- excalidraw:ru-part-viii-chapter-23-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Вывод из эксплуатации лучше делать как последовательное сужение рабочей поверхности системы" style="--diagram-native-width:794px">
+
+[![Вывод из эксплуатации лучше делать как последовательное сужение рабочей поверхности системы](../../assets/diagrams/ru/part-viii-chapter-23-01.svg){ width="794" height="461" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-23-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-23-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-23-01.excalidraw){ download="part-viii-chapter-23-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-23-01 -->
 
 </div>
 

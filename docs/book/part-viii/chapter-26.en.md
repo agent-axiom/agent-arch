@@ -315,19 +315,21 @@ Second, causal diagnosis looks promising, but it is too early to present it as a
 
 In other words, the frontier matters here not because it lets us promise “full explainability,” but because it reminds us that observability should evolve from logging toward diagnosability.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>AI-native observability is best understood as the combination of telemetry, inventory, and governance evidence</p>
 
-``` mermaid
-flowchart LR
-    A["Inventory coverage"] --> D["AI-native observability"]
-    B["Runtime telemetry"] --> D
-    C["Policy and approval evidence"] --> D
-    D --> E["Incident reconstruction"]
-    D --> F["Behavioral baselines"]
-    D --> G["Abuse detection"]
-    D --> H["Release evidence"]
-```
+<!-- excalidraw:en-part-viii-chapter-26-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="AI-native observability is best understood as the combination of telemetry, inventory, and governance evidence" style="--diagram-native-width:786px">
+
+[![AI-native observability is best understood as the combination of telemetry, inventory, and governance evidence](../../assets/diagrams/en/part-viii-chapter-26-01.svg){ width="786" height="478" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-26-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-26-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-26-01.excalidraw){ download="part-viii-chapter-26-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-26-01 -->
 
 </div>
 

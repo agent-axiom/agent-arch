@@ -81,22 +81,21 @@
 
 这已经不是“工具调用”而已，而是执行纪律。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>模型不应该直接与外部世界通信，而应该通过执行层</p>
 
-``` mermaid
-flowchart LR
-    A["提示 + 策略上下文"] --> B["Model"]
-    B --> C["工具请求"]
-    C --> D["Execution layer"]
-    D --> E["Catalog lookup"]
-    D --> F["策略 / 校验"]
-    D --> G["重试 / 超时 / 幂等性"]
-    G --> H["External system"]
-    H --> D
-    D --> I["结构化工具结果"]
-    I --> B
-```
+<!-- excalidraw:zh-part-iv-chapter-8-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="模型不应该直接与外部世界通信，而应该通过执行层" style="--diagram-native-width:948px">
+
+[![模型不应该直接与外部世界通信，而应该通过执行层](../../assets/diagrams/zh/part-iv-chapter-8-01.svg){ width="948" height="744" loading="lazy" }](../../assets/diagrams/zh/part-iv-chapter-8-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iv-chapter-8-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iv-chapter-8-01.excalidraw){ download="part-iv-chapter-8-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iv-chapter-8-01 -->
 
 </div>
 

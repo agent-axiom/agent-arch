@@ -122,20 +122,21 @@
 - заменить большой фрагмент на нормализованную запись плюс ссылку на источник;
 - понизить приоритет старых записей вместо вечного хранения “на первом плане”.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Извлечение и сжатие контекста лучше мыслить как один цикл обслуживания памяти</p>
 
-``` mermaid
-flowchart TD
-    A["Новый запуск"] --> B["Запросить память"]
-    B --> C["Применить фильтры и ранжирование"]
-    C --> D["Собрать контекст подсказки"]
-    D --> E["Модель + инструменты"]
-    E --> F["Создать кандидаты в память"]
-    F --> G["Фоновое сжатие и разбор"]
-    G --> H["Нормализованное хранилище памяти"]
-    H --> B
-```
+<!-- excalidraw:ru-part-iii-chapter-7-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Извлечение и сжатие контекста лучше мыслить как один цикл обслуживания памяти" style="--diagram-native-width:326px">
+
+[![Извлечение и сжатие контекста лучше мыслить как один цикл обслуживания памяти](../../assets/diagrams/ru/part-iii-chapter-7-01.svg){ width="326" height="1280" loading="lazy" }](../../assets/diagrams/ru/part-iii-chapter-7-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iii-chapter-7-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iii-chapter-7-01.excalidraw){ download="part-iii-chapter-7-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iii-chapter-7-01 -->
 
 </div>
 

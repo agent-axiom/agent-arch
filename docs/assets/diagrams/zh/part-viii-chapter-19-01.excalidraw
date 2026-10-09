@@ -1,0 +1,2241 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://github.com/agent-axiom/agent-arch",
+  "elements": [
+    {
+      "id": "element-1",
+      "type": "arrow",
+      "x": 107.89900207519531,
+      "y": 196.5,
+      "width": 115.77299499511719,
+      "height": 157.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a0",
+      "roundness": null,
+      "seed": 101,
+      "version": 4,
+      "versionNonce": 1,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_B_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          91.85566711425781,
+          -157.5
+        ],
+        [
+          115.77299499511719,
+          -157.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": -0.00016477484367568811,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-18",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-2",
+      "type": "arrow",
+      "x": 127.45899963378906,
+      "y": 196.5,
+      "width": 96.21299743652344,
+      "height": 59.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a1",
+      "roundness": null,
+      "seed": 102,
+      "version": 4,
+      "versionNonce": 2,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_C_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          72.69940185546875,
+          -59.5
+        ],
+        [
+          96.21299743652344,
+          -59.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": -0.0021212172975698463,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-21",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-3",
+      "type": "arrow",
+      "x": 171.6719970703125,
+      "y": 233.08799743652344,
+      "width": 52,
+      "height": 1.9120025634765625,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a2",
+      "roundness": null,
+      "seed": 103,
+      "version": 4,
+      "versionNonce": 3,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_D_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          28.859909057617188,
+          1.9120025634765625
+        ],
+        [
+          52,
+          1.9120025634765625
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": 0.004564946899400003,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-24",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-4",
+      "type": "arrow",
+      "x": 122.11000061035156,
+      "y": 258.5,
+      "width": 101.56199645996094,
+      "height": 74.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a3",
+      "roundness": null,
+      "seed": 104,
+      "version": 4,
+      "versionNonce": 4,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_E_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          77.64457702636719,
+          74.5
+        ],
+        [
+          101.56199645996094,
+          74.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": 0.00030153559459593934,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-27",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-5",
+      "type": "arrow",
+      "x": 106.56800079345703,
+      "y": 258.5,
+      "width": 117.10399627685547,
+      "height": 172.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a4",
+      "roundness": null,
+      "seed": 105,
+      "version": 4,
+      "versionNonce": 5,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_F_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          93.31783294677734,
+          172.5
+        ],
+        [
+          117.10399627685547,
+          172.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": 0.00038636545002892304,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-30",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-6",
+      "type": "arrow",
+      "x": 101.12899780273438,
+      "y": 258.5,
+      "width": 122.54299926757812,
+      "height": 270.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a5",
+      "roundness": null,
+      "seed": 106,
+      "version": 4,
+      "versionNonce": 6,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_G_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          98.55142211914062,
+          270.5
+        ],
+        [
+          122.54299926757812,
+          270.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": 0.000012753153226127263,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-33",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-7",
+      "type": "arrow",
+      "x": 98.35900115966797,
+      "y": 258.5,
+      "width": 125.31299591064453,
+      "height": 368.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a6",
+      "roundness": null,
+      "seed": 107,
+      "version": 4,
+      "versionNonce": 7,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_A_H_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          101.42044830322266,
+          368.5
+        ],
+        [
+          125.31299591064453,
+          368.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-15",
+        "focus": 0.00009864510231954224,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-36",
+        "focus": 0,
+        "gap": 3.9998779296875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-8",
+      "type": "arrow",
+      "x": 332.43798828125,
+      "y": 627,
+      "width": 52,
+      "height": 0,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a7",
+      "roundness": null,
+      "seed": 108,
+      "version": 4,
+      "versionNonce": 8,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_H_I_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          52,
+          0
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-36",
+        "focus": 0,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-39",
+        "focus": 0,
+        "gap": 3.99951171875
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-9",
+      "type": "arrow",
+      "x": 479.9880065917969,
+      "y": 596,
+      "width": 158.35598754882812,
+      "height": 319.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a8",
+      "roundness": null,
+      "seed": 109,
+      "version": 4,
+      "versionNonce": 9,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_I_J_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          99.72665405273438,
+          -318.24151611328125
+        ],
+        [
+          101.77987670898438,
+          -319.5
+        ],
+        [
+          158.35598754882812,
+          -319.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-39",
+        "focus": 0.0000018163826875773058,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-42",
+        "focus": 0,
+        "gap": 3.999755859375
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-10",
+      "type": "arrow",
+      "x": 483.75799560546875,
+      "y": 596,
+      "width": 144.39801025390625,
+      "height": 221.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "a9",
+      "roundness": null,
+      "seed": 110,
+      "version": 4,
+      "versionNonce": 10,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_I_K_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          96.629638671875,
+          -221.5
+        ],
+        [
+          144.39801025390625,
+          -221.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-39",
+        "focus": -0.0004113769931247001,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-45",
+        "focus": 0,
+        "gap": 4.000244140625
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-11",
+      "type": "arrow",
+      "x": 492.31201171875,
+      "y": 596,
+      "width": 135.843994140625,
+      "height": 123.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aA",
+      "roundness": null,
+      "seed": 111,
+      "version": 4,
+      "versionNonce": 11,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_I_L_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          88.1844482421875,
+          -123.5
+        ],
+        [
+          135.843994140625,
+          -123.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-39",
+        "focus": -0.0009309622125285613,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-48",
+        "focus": 0,
+        "gap": 4.000244140625
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-12",
+      "type": "arrow",
+      "x": 530.5369873046875,
+      "y": 596,
+      "width": 97.6190185546875,
+      "height": 25.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aB",
+      "roundness": null,
+      "seed": 112,
+      "version": 4,
+      "versionNonce": 12,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_I_M_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          50.17071533203125,
+          -25.5
+        ],
+        [
+          97.6190185546875,
+          -25.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-39",
+        "focus": -0.005099149258632557,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-51",
+        "focus": 0,
+        "gap": 4.000244140625
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-13",
+      "type": "arrow",
+      "x": 552.1090087890625,
+      "y": 657.9210205078125,
+      "width": 76.0469970703125,
+      "height": 10.5789794921875,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aC",
+      "roundness": null,
+      "seed": 113,
+      "version": 4,
+      "versionNonce": 13,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_I_N_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          28.05999755859375,
+          10.5789794921875
+        ],
+        [
+          76.0469970703125,
+          10.5789794921875
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-39",
+        "focus": 0.001098714490132633,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-54",
+        "focus": 0,
+        "gap": 4.000244140625
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-14",
+      "type": "arrow",
+      "x": 492.31201171875,
+      "y": 658,
+      "width": 111.7969970703125,
+      "height": 123.5,
+      "angle": 0,
+      "strokeColor": "#566778",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [],
+      "frameId": null,
+      "index": "aD",
+      "roundness": null,
+      "seed": 114,
+      "version": 4,
+      "versionNonce": 14,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "L_I_O_0",
+        "sourceKind": "path"
+      },
+      "points": [
+        [
+          0,
+          0
+        ],
+        [
+          87.9967041015625,
+          123.5
+        ],
+        [
+          111.7969970703125,
+          123.5
+        ]
+      ],
+      "lastCommittedPoint": null,
+      "startBinding": {
+        "elementId": "element-39",
+        "focus": 0.0004779185853821451,
+        "gap": 1
+      },
+      "endBinding": {
+        "elementId": "element-57",
+        "focus": 0,
+        "gap": 4.0003662109375
+      },
+      "startArrowhead": null,
+      "endArrowhead": "arrow",
+      "elbowed": false
+    },
+    {
+      "id": "element-15",
+      "type": "rectangle",
+      "x": 8,
+      "y": 196.5,
+      "width": 163.671875,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "aE",
+      "roundness": null,
+      "seed": 115,
+      "version": 9,
+      "versionNonce": 15,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        },
+        {
+          "id": "element-2",
+          "type": "arrow"
+        },
+        {
+          "id": "element-3",
+          "type": "arrow"
+        },
+        {
+          "id": "element-4",
+          "type": "arrow"
+        },
+        {
+          "id": "element-5",
+          "type": "arrow"
+        },
+        {
+          "id": "element-6",
+          "type": "arrow"
+        },
+        {
+          "id": "element-7",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-A-0"
+      }
+    },
+    {
+      "id": "element-17",
+      "type": "text",
+      "x": 40.0028076171875,
+      "y": 215,
+      "width": 99.666259765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-1"
+      ],
+      "frameId": null,
+      "index": "aF",
+      "roundness": null,
+      "seed": 116,
+      "version": 2,
+      "versionNonce": 16,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-A-0",
+        "sourceKind": "label"
+      },
+      "text": "经典 SDLC",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "经典 SDLC",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-18",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 8,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "aG",
+      "roundness": null,
+      "seed": 117,
+      "version": 3,
+      "versionNonce": 17,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-1",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-1",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-B-1"
+      }
+    },
+    {
+      "id": "element-20",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 26.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-2"
+      ],
+      "frameId": null,
+      "index": "aH",
+      "roundness": null,
+      "seed": 118,
+      "version": 2,
+      "versionNonce": 18,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-B-1",
+        "sourceKind": "label"
+      },
+      "text": "需求",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "需求",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-21",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 106,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "aI",
+      "roundness": null,
+      "seed": 119,
+      "version": 3,
+      "versionNonce": 19,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-2",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-3",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-C-3"
+      }
+    },
+    {
+      "id": "element-23",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 124.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-3"
+      ],
+      "frameId": null,
+      "index": "aJ",
+      "roundness": null,
+      "seed": 120,
+      "version": 2,
+      "versionNonce": 20,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-C-3",
+        "sourceKind": "label"
+      },
+      "text": "设计",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "设计",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-24",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 204,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aK",
+      "roundness": null,
+      "seed": 121,
+      "version": 3,
+      "versionNonce": 21,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-3",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-5",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-D-5"
+      }
+    },
+    {
+      "id": "element-26",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 222.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-4"
+      ],
+      "frameId": null,
+      "index": "aL",
+      "roundness": null,
+      "seed": 122,
+      "version": 2,
+      "versionNonce": 22,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-D-5",
+        "sourceKind": "label"
+      },
+      "text": "实现",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "实现",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-27",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 302,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aM",
+      "roundness": null,
+      "seed": 123,
+      "version": 3,
+      "versionNonce": 23,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-4",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-E-7"
+      }
+    },
+    {
+      "id": "element-29",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 320.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-5"
+      ],
+      "frameId": null,
+      "index": "aN",
+      "roundness": null,
+      "seed": 124,
+      "version": 2,
+      "versionNonce": 24,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-E-7",
+        "sourceKind": "label"
+      },
+      "text": "测试",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "测试",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-30",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 400,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-6"
+      ],
+      "frameId": null,
+      "index": "aO",
+      "roundness": null,
+      "seed": 125,
+      "version": 3,
+      "versionNonce": 25,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-5",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-F-9",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-F-9"
+      }
+    },
+    {
+      "id": "element-32",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 418.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-6"
+      ],
+      "frameId": null,
+      "index": "aP",
+      "roundness": null,
+      "seed": 126,
+      "version": 2,
+      "versionNonce": 26,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-F-9",
+        "sourceKind": "label"
+      },
+      "text": "发布",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "发布",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-33",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 498,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-7"
+      ],
+      "frameId": null,
+      "index": "aQ",
+      "roundness": null,
+      "seed": 127,
+      "version": 3,
+      "versionNonce": 27,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-6",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-G-11",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-G-11"
+      }
+    },
+    {
+      "id": "element-35",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 516.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-7"
+      ],
+      "frameId": null,
+      "index": "aR",
+      "roundness": null,
+      "seed": 128,
+      "version": 2,
+      "versionNonce": 28,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-G-11",
+        "sourceKind": "label"
+      },
+      "text": "运营",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "运营",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-36",
+      "type": "rectangle",
+      "x": 227.671875,
+      "y": 596,
+      "width": 104.765625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-8"
+      ],
+      "frameId": null,
+      "index": "aS",
+      "roundness": null,
+      "seed": 129,
+      "version": 4,
+      "versionNonce": 29,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-7",
+          "type": "arrow"
+        },
+        {
+          "id": "element-8",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-H-13",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-H-13"
+      }
+    },
+    {
+      "id": "element-38",
+      "type": "text",
+      "x": 259.6746826171875,
+      "y": 614.5,
+      "width": 40.760009765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-8"
+      ],
+      "frameId": null,
+      "index": "aT",
+      "roundness": null,
+      "seed": 130,
+      "version": 2,
+      "versionNonce": 30,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-H-13",
+        "sourceKind": "label"
+      },
+      "text": "退役",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "退役",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-39",
+      "type": "rectangle",
+      "x": 388.4375,
+      "y": 596,
+      "width": 163.671875,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-9"
+      ],
+      "frameId": null,
+      "index": "aU",
+      "roundness": null,
+      "seed": 131,
+      "version": 9,
+      "versionNonce": 31,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-8",
+          "type": "arrow"
+        },
+        {
+          "id": "element-9",
+          "type": "arrow"
+        },
+        {
+          "id": "element-10",
+          "type": "arrow"
+        },
+        {
+          "id": "element-11",
+          "type": "arrow"
+        },
+        {
+          "id": "element-12",
+          "type": "arrow"
+        },
+        {
+          "id": "element-13",
+          "type": "arrow"
+        },
+        {
+          "id": "element-14",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-I-15",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-I-15"
+      }
+    },
+    {
+      "id": "element-41",
+      "type": "text",
+      "x": 420.4403076171875,
+      "y": 614.5,
+      "width": 99.666259765625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-9"
+      ],
+      "frameId": null,
+      "index": "aV",
+      "roundness": null,
+      "seed": 132,
+      "version": 2,
+      "versionNonce": 32,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-I-15",
+        "sourceKind": "label"
+      },
+      "text": "ADLC 增加",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "ADLC 增加",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-42",
+      "type": "rectangle",
+      "x": 642.34375,
+      "y": 245.5,
+      "width": 145.53125,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-10"
+      ],
+      "frameId": null,
+      "index": "aW",
+      "roundness": null,
+      "seed": 133,
+      "version": 3,
+      "versionNonce": 33,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-9",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-J-17",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-J-17"
+      }
+    },
+    {
+      "id": "element-44",
+      "type": "text",
+      "x": 674.349365234375,
+      "y": 264,
+      "width": 81.52001953125,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-10"
+      ],
+      "frameId": null,
+      "index": "aX",
+      "roundness": null,
+      "seed": 134,
+      "version": 2,
+      "versionNonce": 34,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-J-17",
+        "sourceKind": "label"
+      },
+      "text": "模型行为",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "模型行为",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-45",
+      "type": "rectangle",
+      "x": 632.15625,
+      "y": 343.5,
+      "width": 165.90625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-11"
+      ],
+      "frameId": null,
+      "index": "aY",
+      "roundness": null,
+      "seed": 135,
+      "version": 3,
+      "versionNonce": 35,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-10",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-K-19",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-K-19"
+      }
+    },
+    {
+      "id": "element-47",
+      "type": "text",
+      "x": 664.1593627929688,
+      "y": 362,
+      "width": 101.9000244140625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-11"
+      ],
+      "frameId": null,
+      "index": "aZ",
+      "roundness": null,
+      "seed": 136,
+      "version": 2,
+      "versionNonce": 36,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-K-19",
+        "sourceKind": "label"
+      },
+      "text": "提示与例程",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "提示与例程",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-48",
+      "type": "rectangle",
+      "x": 632.15625,
+      "y": 441.5,
+      "width": 165.90625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-12"
+      ],
+      "frameId": null,
+      "index": "aa",
+      "roundness": null,
+      "seed": 137,
+      "version": 3,
+      "versionNonce": 37,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-11",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-L-21",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-L-21"
+      }
+    },
+    {
+      "id": "element-50",
+      "type": "text",
+      "x": 664.1593627929688,
+      "y": 460,
+      "width": 101.9000244140625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-12"
+      ],
+      "frameId": null,
+      "index": "ab",
+      "roundness": null,
+      "seed": 138,
+      "version": 2,
+      "versionNonce": 38,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-L-21",
+        "sourceKind": "label"
+      },
+      "text": "策略与审批",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "策略与审批",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-51",
+      "type": "rectangle",
+      "x": 632.15625,
+      "y": 539.5,
+      "width": 165.90625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-13"
+      ],
+      "frameId": null,
+      "index": "ac",
+      "roundness": null,
+      "seed": 139,
+      "version": 3,
+      "versionNonce": 39,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-12",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-M-23",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-M-23"
+      }
+    },
+    {
+      "id": "element-53",
+      "type": "text",
+      "x": 664.1593627929688,
+      "y": 558,
+      "width": 101.9000244140625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-13"
+      ],
+      "frameId": null,
+      "index": "ad",
+      "roundness": null,
+      "seed": 140,
+      "version": 2,
+      "versionNonce": 40,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-M-23",
+        "sourceKind": "label"
+      },
+      "text": "检索与记忆",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "检索与记忆",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-54",
+      "type": "rectangle",
+      "x": 632.15625,
+      "y": 637.5,
+      "width": 165.90625,
+      "height": 62,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-14"
+      ],
+      "frameId": null,
+      "index": "ae",
+      "roundness": null,
+      "seed": 141,
+      "version": 3,
+      "versionNonce": 41,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-13",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-N-25",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-N-25"
+      }
+    },
+    {
+      "id": "element-56",
+      "type": "text",
+      "x": 664.1593627929688,
+      "y": 656,
+      "width": 101.9000244140625,
+      "height": 25,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-14"
+      ],
+      "frameId": null,
+      "index": "af",
+      "roundness": null,
+      "seed": 142,
+      "version": 2,
+      "versionNonce": 42,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-N-25",
+        "sourceKind": "label"
+      },
+      "text": "工具副作用",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "工具副作用",
+      "autoResize": true,
+      "lineHeight": 1.25
+    },
+    {
+      "id": "element-57",
+      "type": "rectangle",
+      "x": 608.109375,
+      "y": 735.5,
+      "width": 214,
+      "height": 92,
+      "angle": 0,
+      "strokeColor": "#45627a",
+      "backgroundColor": "rgb(238, 244, 250)",
+      "fillStyle": "solid",
+      "strokeWidth": 1,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-15"
+      ],
+      "frameId": null,
+      "index": "ag",
+      "roundness": null,
+      "seed": 143,
+      "version": 3,
+      "versionNonce": 43,
+      "isDeleted": false,
+      "boundElements": [
+        {
+          "id": "element-14",
+          "type": "arrow"
+        }
+      ],
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-O-27",
+        "sourceKind": "rect",
+        "sourceNode": "flowchart-O-27"
+      }
+    },
+    {
+      "id": "element-59",
+      "type": "text",
+      "x": 643.7793579101562,
+      "y": 756.5,
+      "width": 142.6600341796875,
+      "height": 50,
+      "angle": 0,
+      "strokeColor": "#182735",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "groupIds": [
+        "group-15"
+      ],
+      "frameId": null,
+      "index": "ah",
+      "roundness": null,
+      "seed": 144,
+      "version": 2,
+      "versionNonce": 44,
+      "isDeleted": false,
+      "boundElements": null,
+      "updated": 1,
+      "link": null,
+      "locked": false,
+      "customData": {
+        "sourceId": "flowchart-O-27",
+        "sourceKind": "label"
+      },
+      "text": "评测与受控自主\n性",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "top",
+      "containerId": null,
+      "originalText": "评测与受控自主\n性",
+      "autoResize": true,
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {
+    "viewBackgroundColor": "#ffffff",
+    "gridSize": null
+  },
+  "files": {},
+  "metadata": {
+    "language": "zh",
+    "sourcePage": "docs/book/part-viii/chapter-19.zh.md",
+    "sourceSha256": "4f3cda522a23a8e4fb8a8f545039f491f2c13584c02f1b31441e91f4ba5e59d2",
+    "title": "最稳妥的理解方式，是把 ADLC 看成 SDLC 的扩展，而不是替代品",
+    "logicalEdges": [
+      {
+        "from": "A",
+        "to": "B",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "A",
+        "to": "C",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "A",
+        "to": "D",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "A",
+        "to": "E",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "A",
+        "to": "F",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "A",
+        "to": "G",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "A",
+        "to": "H",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "H",
+        "to": "I",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "I",
+        "to": "J",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "I",
+        "to": "K",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "I",
+        "to": "L",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "I",
+        "to": "M",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "I",
+        "to": "N",
+        "label": "",
+        "type": "arrow_point"
+      },
+      {
+        "from": "I",
+        "to": "O",
+        "label": "",
+        "type": "arrow_point"
+      }
+    ]
+  }
+}

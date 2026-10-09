@@ -165,17 +165,21 @@ This matters especially after incidents like duplicate tickets or unsafe memory 
 
 As eval and verifier layers become part of release discipline, it also becomes useful to watch their quality as a health dimension. A system is not fully healthy if runtime behavior looks acceptable only because the verifier has become noisy or over-trusting.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Agent-system health is almost always multidimensional</p>
 
-``` mermaid
-flowchart LR
-    A["Support agent health"] --> B["Success"]
-    A --> C["Latency"]
-    A --> D["Safety"]
-    A --> E["Cost"]
-    A --> F["Escalation"]
-```
+<!-- excalidraw:en-part-v-chapter-12-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Agent-system health is almost always multidimensional" style="--diagram-native-width:458px">
+
+[![Agent-system health is almost always multidimensional](../../assets/diagrams/en/part-v-chapter-12-01.svg){ width="458" height="486" loading="lazy" }](../../assets/diagrams/en/part-v-chapter-12-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-v-chapter-12-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-v-chapter-12-01.excalidraw){ download="part-v-chapter-12-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-v-chapter-12-01 -->
 
 </div>
 

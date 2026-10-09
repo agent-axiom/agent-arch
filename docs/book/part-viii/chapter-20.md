@@ -84,19 +84,21 @@
 
 Это не идеальная классификация, но она помогает перестать обсуждать все изменения в одном тоне.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Сильное управление изменениями начинается с явной классификации изменений</p>
 
-``` mermaid
-flowchart LR
-    A["Изменение предложено"] --> B["Классифицировать изменение"]
-    B --> C["Низкий риск"]
-    B --> D["Средний риск"]
-    B --> E["Высокий риск"]
-    C --> F["Легкая проверка"]
-    D --> G["Оценка и проверка"]
-    E --> H["Формальный шлюз, подтверждение и поэтапный выпуск"]
-```
+<!-- excalidraw:ru-part-viii-chapter-20-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Сильное управление изменениями начинается с явной классификации изменений" style="--diagram-native-width:746px">
+
+[![Сильное управление изменениями начинается с явной классификации изменений](../../assets/diagrams/ru/part-viii-chapter-20-01.svg){ width="746" height="628" loading="lazy" }](../../assets/diagrams/ru/part-viii-chapter-20-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-viii-chapter-20-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-viii-chapter-20-01.excalidraw){ download="part-viii-chapter-20-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-viii-chapter-20-01 -->
 
 </div>
 

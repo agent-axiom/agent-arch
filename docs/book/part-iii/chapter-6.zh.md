@@ -99,21 +99,21 @@ Cloudflare Agents SDK 很好地暴露了另一条边界：一个 stateful agent 
 
 实用规则很简单：durable state 应该有 owner instance、schema version、serialization constraints 和 sync policy；memory record 应该有 class、provenance、tenant boundary、retention rule 和 retrieval semantics。两个层都可以存放在 durable storage 中，但它们的 operational contract 不同。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>不同类型的记忆解决不同问题，不应该挤进同一个存储</p>
 
-``` mermaid
-flowchart LR
-    A["当前运行"] --> B["短期记忆"]
-    A --> C["长期记忆"]
-    A --> D["画像记忆"]
-    B --> E["规划器状态"]
-    B --> F["最近工具输出"]
-    C --> G["已验证事实"]
-    C --> H["会话摘要"]
-    D --> I["偏好"]
-    D --> J["用户约束"]
-```
+<!-- excalidraw:zh-part-iii-chapter-6-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="不同类型的记忆解决不同问题，不应该挤进同一个存储" style="--diagram-native-width:621px">
+
+[![不同类型的记忆解决不同问题，不应该挤进同一个存储](../../assets/diagrams/zh/part-iii-chapter-6-01.svg){ width="621" height="584" loading="lazy" }](../../assets/diagrams/zh/part-iii-chapter-6-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iii-chapter-6-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iii-chapter-6-01.excalidraw){ download="part-iii-chapter-6-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iii-chapter-6-01 -->
 
 </div>
 

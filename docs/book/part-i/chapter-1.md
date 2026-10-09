@@ -197,18 +197,21 @@ Anthropic довольно прямо разделяет рабочие проц
 
 Если агент "выглядит умным", но в системе нет следов выполнения, оценок и служебных данных по шагам, команда не управляет системой.[^openai-sdk][^openai-evals]
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Короткая визуальная формула главы: агенту нужна платформа, а не магия</p>
 
-``` mermaid
-flowchart LR
-    A["Запрос"] --> B["Контекст выполнения"]
-    B --> C["Политики / подтверждения"]
-    C --> D["Путь выполнения"]
-    D --> E["Модель / память / инструменты"]
-    E --> F["Следы выполнения / оценочные сигналы"]
-    F --> G["Выпуск / жизненный цикл"]
-```
+<!-- excalidraw:ru-part-i-chapter-1-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Короткая визуальная формула главы: агенту нужна платформа, а не магия" style="--diagram-native-width:794px">
+
+[![Короткая визуальная формула главы: агенту нужна платформа, а не магия](../../assets/diagrams/ru/part-i-chapter-1-01.svg){ width="794" height="618" loading="lazy" }](../../assets/diagrams/ru/part-i-chapter-1-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-i-chapter-1-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-i-chapter-1-01.excalidraw){ download="part-i-chapter-1-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-i-chapter-1-01 -->
 
 </div>
 

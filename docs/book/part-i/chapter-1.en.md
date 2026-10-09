@@ -187,18 +187,21 @@ Long-running tasks should not lose steps, approvals, or side effects just becaus
 
 If the agent "looks smart" but you have no traces, evals, or step metadata, then you do not control the system.[^openai-sdk][^openai-evals]
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>The chapter's short visual formula: an agent needs a platform, not magic</p>
 
-``` mermaid
-flowchart LR
-    A["Request"] --> B["Execution context"]
-    B --> C["Policy / approvals"]
-    C --> D["Runtime path"]
-    D --> E["Model / memory / tools"]
-    E --> F["Trace / eval evidence"]
-    F --> G["Rollout / lifecycle"]
-```
+<!-- excalidraw:en-part-i-chapter-1-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="The chapter&#x27;s short visual formula: an agent needs a platform, not magic" style="--diagram-native-width:794px">
+
+[![The chapter's short visual formula: an agent needs a platform, not magic](../../assets/diagrams/en/part-i-chapter-1-01.svg){ width="794" height="438" loading="lazy" }](../../assets/diagrams/en/part-i-chapter-1-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-i-chapter-1-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-i-chapter-1-01.excalidraw){ download="part-i-chapter-1-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-i-chapter-1-01 -->
 
 </div>
 

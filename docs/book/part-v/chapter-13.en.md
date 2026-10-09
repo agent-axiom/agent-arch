@@ -151,19 +151,22 @@ A very workable model looks like this:
 - SLO define the operational frame;
 - regression gates stop silent quality drift.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>It helps to think about evals as a continuous loop, not a one-time check</p>
 <p><strong>Text fallback:</strong> a code, prompt, or policy change moves through offline evals, regression gates, production rollout, online evals with traces, and failure analysis before feeding lessons back into the next change cycle.</p>
 
-``` mermaid
-flowchart LR
-    A["Code / prompt / policy change"] --> B["Offline evals"]
-    B --> C["Regression gates"]
-    C --> D["Production rollout"]
-    D --> E["Online evals + traces"]
-    E --> F["Failure analysis and grading"]
-    F --> A
-```
+<!-- excalidraw:en-part-v-chapter-13-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Text fallback: a code, prompt, or policy change moves through offline evals, regression gates, production rollout, online evals with traces, and failure analysis before feeding lessons back into the next change cycle." style="--diagram-native-width:314px">
+
+[![Text fallback: a code, prompt, or policy change moves through offline evals, regression gates, production rollout, online evals with traces, and failure analysis before feeding lessons back into the next change cycle.](../../assets/diagrams/en/part-v-chapter-13-01.svg){ width="314" height="834" loading="lazy" }](../../assets/diagrams/en/part-v-chapter-13-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-v-chapter-13-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-v-chapter-13-01.excalidraw){ download="part-v-chapter-13-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-v-chapter-13-01 -->
 
 </div>
 

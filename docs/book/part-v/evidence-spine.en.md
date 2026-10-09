@@ -66,21 +66,21 @@ In more mature systems, the chain often also includes:
 
 The point is not perfect terminology. The point is reviewable linkage.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>It helps to think about an evidence spine as a chain of linked records, not as a pile of disconnected artifacts</p>
 
-``` mermaid
-flowchart LR
-    A["run_id"] --> B["trace_id"]
-    A --> C["policy_bundle_version"]
-    A --> D["approval_id"]
-    A --> E["evaluation_result_id"]
-    C --> F["release_identity"]
-    C --> G["artifact_id"]
-    E --> H["verifier_contract_id"]
-    E --> I["incident_id"]
-    I --> J["rollout judgment"]
-```
+<!-- excalidraw:en-part-v-evidence-spine-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="It helps to think about an evidence spine as a chain of linked records, not as a pile of disconnected artifacts" style="--diagram-native-width:1021px">
+
+[![It helps to think about an evidence spine as a chain of linked records, not as a pile of disconnected artifacts](../../assets/diagrams/en/part-v-evidence-spine-01.svg){ width="1021" height="437" loading="lazy" }](../../assets/diagrams/en/part-v-evidence-spine-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-v-evidence-spine-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-v-evidence-spine-01.excalidraw){ download="part-v-evidence-spine-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-v-evidence-spine-01 -->
 
 </div>
 

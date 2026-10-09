@@ -249,22 +249,21 @@ Microsoft Research отдельно показывает, что риск мен
 
 Это кажется терминологической мелочью, но она полезна. MCP-клиент — это не пользовательский интерфейс и не "сам агент". Это транспортный и контрактный слой между узлом и конкретной серверной границей.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>MCP удобен как слой контракта между рантаймом и внешними возможностями</p>
 
-``` mermaid
-flowchart LR
-    A["Рантайм агента"] --> B["Слой выполнения"]
-    B --> C["Политика и валидация"]
-    C --> D["MCP-клиент"]
-    D --> E["MCP-сервер"]
-    E --> F["Типизированный адаптер"]
-    F --> G["Внешний API / система"]
-    G --> F
-    F --> E
-    E --> D
-    D --> B
-```
+<!-- excalidraw:ru-part-iv-chapter-9-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="MCP удобен как слой контракта между рантаймом и внешними возможностями" style="--diagram-native-width:319px">
+
+[![MCP удобен как слой контракта между рантаймом и внешними возможностями](../../assets/diagrams/ru/part-iv-chapter-9-01.svg){ width="319" height="922" loading="lazy" }](../../assets/diagrams/ru/part-iv-chapter-9-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-iv-chapter-9-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-iv-chapter-9-01.excalidraw){ download="part-iv-chapter-9-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-iv-chapter-9-01 -->
 
 </div>
 

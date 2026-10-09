@@ -138,19 +138,21 @@ In our support agent, `create_support_ticket` and `check_access_request_status` 
 - a read capability may be ready after sane timeout handling and telemetry;
 - a write capability is not ready without idempotency, outcome normalization, and a clear rollback story.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Go-live readiness is best understood as the intersection of several contours, not one overall status flag</p>
 
-``` mermaid
-flowchart LR
-    A["Runtime"] --> H["Production ready"]
-    B["Safety"] --> H
-    C["Capabilities"] --> H
-    D["Observability"] --> H
-    E["Eval and SLO"] --> H
-    F["Ops readiness"] --> H
-    G["Ownership and rollback"] --> H
-```
+<!-- excalidraw:en-part-vii-chapter-18-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Go-live readiness is best understood as the intersection of several contours, not one overall status flag" style="--diagram-native-width:516px">
+
+[![Go-live readiness is best understood as the intersection of several contours, not one overall status flag](../../assets/diagrams/en/part-vii-chapter-18-01.svg){ width="516" height="712" loading="lazy" }](../../assets/diagrams/en/part-vii-chapter-18-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-vii-chapter-18-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-vii-chapter-18-01.excalidraw){ download="part-vii-chapter-18-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-vii-chapter-18-01 -->
 
 </div>
 

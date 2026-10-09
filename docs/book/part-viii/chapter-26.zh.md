@@ -317,19 +317,21 @@ Azure agentic cloud operations 在基础设施控制闭环中展示了同一变�
 
 也就是说，前沿研究的价值不在于让我们承诺“完全可解释性”，而在于提醒我们：可观测性的长期方向应该是从日志记录走向可诊断性。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>AI 原生可观测性（AI-native observability）最好被理解成遥测（telemetry）、清单（inventory）与治理证据（governance evidence）的组合</p>
 
-``` mermaid
-flowchart LR
-    A["清单覆盖 / Inventory coverage"] --> D["AI 原生可观测性 / AI-native observability"]
-    B["运行时遥测 / Runtime telemetry"] --> D
-    C["策略与审批证据 / Policy and approval evidence"] --> D
-    D --> E["事故重建 / Incident reconstruction"]
-    D --> F["行为基线 / Behavioral baselines"]
-    D --> G["滥用检测 / Abuse detection"]
-    D --> H["发布证据 / Release evidence"]
-```
+<!-- excalidraw:zh-part-viii-chapter-26-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="AI 原生可观测性（AI-native observability）最好被理解成遥测（telemetry）、清单（inventory）与治理证据（governance evidence）的组合" style="--diagram-native-width:786px">
+
+[![AI 原生可观测性（AI-native observability）最好被理解成遥测（telemetry）、清单（inventory）与治理证据（governance evidence）的组合](../../assets/diagrams/zh/part-viii-chapter-26-01.svg){ width="786" height="598" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-26-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-26-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-26-01.excalidraw){ download="part-viii-chapter-26-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-26-01 -->
 
 </div>
 

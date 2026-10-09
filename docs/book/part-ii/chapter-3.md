@@ -61,21 +61,21 @@
 
 Ниже схема полезна именно потому, что она показывает не абстрактную безопасность, а места, где запрос реально может уйти не туда.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Как выглядит контур безопасности у агентной системы</p>
 
-``` mermaid
-flowchart LR
-    input["Пользователь / API / файлы / web-контент"] --> ingress["Входные проверки"]
-    ingress --> prompt["Граница сборки подсказки"]
-    prompt --> model["Шлюз модели"]
-    model --> retrieval["Шлюз поиска"]
-    model --> runtime["Рантайм агента"]
-    runtime --> tools["Шлюз инструментов / песочница"]
-    tools --> systems["Внешние системы"]
-    runtime --> egress["Выходные фильтры"]
-    runtime --> audit["Трасса / аудит / след инцидента"]
-```
+<!-- excalidraw:ru-part-ii-chapter-3-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Как выглядит контур безопасности у агентной системы" style="--diagram-native-width:746px">
+
+[![Как выглядит контур безопасности у агентной системы](../../assets/diagrams/ru/part-ii-chapter-3-01.svg){ width="746" height="1042" loading="lazy" }](../../assets/diagrams/ru/part-ii-chapter-3-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-ii-chapter-3-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-ii-chapter-3-01.excalidraw){ download="part-ii-chapter-3-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-ii-chapter-3-01 -->
 
 </div>
 

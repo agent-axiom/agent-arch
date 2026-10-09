@@ -94,25 +94,21 @@ tools:
 
 对于这些操作，你需要的不只是一个“需要审批”开关，而是一条完整的确认流程。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>高风险动作的审批流程大致是这样</p>
 
-``` mermaid
-sequenceDiagram
-    autonumber
-    participant R as 智能体运行时
-    participant P as 策略引擎
-    participant H as 人工审批人
-    participant T as 工具网关
-    participant A as 审计轨迹
+<!-- excalidraw:zh-part-ii-chapter-4-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="高风险动作的审批流程大致是这样" style="--diagram-native-width:1028px">
 
-    R->>P: 请求高风险动作
-    P-->>R: 需要审批
-    R->>H: 带上下文请求审批
-    H-->>R: 批准 / 拒绝
-    R->>T: 仅在批准后执行
-    T->>A: 持久化动作与审批记录
-```
+[![高风险动作的审批流程大致是这样](../../assets/diagrams/zh/part-ii-chapter-4-01.svg){ width="1028" height="446" loading="lazy" }](../../assets/diagrams/zh/part-ii-chapter-4-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-ii-chapter-4-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-ii-chapter-4-01.excalidraw){ download="part-ii-chapter-4-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-ii-chapter-4-01 -->
 
 </div>
 

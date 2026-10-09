@@ -165,17 +165,21 @@ SLO нужны именно для этого: переводить разгов
 
 По мере того как слои оценки и verifier становятся частью дисциплины релизов, полезно отслеживать и их качество как отдельное измерение здоровья. Система не вполне здорова, если поведение рантайма кажется приемлемым только потому, что verifier стал шумным или слишком доверчивым.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>У агентной системы здоровье почти всегда многомерно</p>
 
-``` mermaid
-flowchart LR
-    A["Здоровье агента поддержки"] --> B["Успешность"]
-    A --> C["Задержка"]
-    A --> D["Безопасность"]
-    A --> E["Стоимость"]
-    A --> F["Эскалация"]
-```
+<!-- excalidraw:ru-part-v-chapter-12-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="У агентной системы здоровье почти всегда многомерно" style="--diagram-native-width:494px">
+
+[![У агентной системы здоровье почти всегда многомерно](../../assets/diagrams/ru/part-v-chapter-12-01.svg){ width="494" height="486" loading="lazy" }](../../assets/diagrams/ru/part-v-chapter-12-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-v-chapter-12-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-v-chapter-12-01.excalidraw){ download="part-v-chapter-12-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-v-chapter-12-01 -->
 
 </div>
 

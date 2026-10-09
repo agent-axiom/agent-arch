@@ -118,16 +118,21 @@ golden_path:
 
 Для антизоопарк-стратегии вывод прямой: model/provider routing, cache policy, rate limits, DLP/redaction, retry/fallback policy и cost attribution должны жить в общей платформенной поверхности, а не в локальной обвязке каждого агента. Иначе организация получает новый зоопарк: одни команды используют gateway как billing proxy, другие как observability hook, третьи как policy point, и ни один контур не видит полный risk/cost path.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Golden path должен снижать число локальных реализаций критичных слоев</p>
 
-``` mermaid
-flowchart LR
-    A["Продуктовая команда A"] --> D["Общий шлюз и платформенные примитивы"]
-    B["Продуктовая команда B"] --> D
-    C["Продуктовая команда C"] --> D
-    D --> E["Политики, трассировка, подтверждения, доступ к возможностям"]
-```
+<!-- excalidraw:ru-part-vi-chapter-15-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Golden path должен снижать число локальных реализаций критичных слоев" style="--diagram-native-width:800px">
+
+[![Golden path должен снижать число локальных реализаций критичных слоев](../../assets/diagrams/ru/part-vi-chapter-15-01.svg){ width="800" height="380" loading="lazy" }](../../assets/diagrams/ru/part-vi-chapter-15-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-vi-chapter-15-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-vi-chapter-15-01.excalidraw){ download="part-vi-chapter-15-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-vi-chapter-15-01 -->
 
 </div>
 

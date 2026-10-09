@@ -69,16 +69,21 @@
 
 对反动物园策略来说，结论很直接：model/provider routing、cache policy、rate limits、DLP/redaction、retry/fallback policy 和 cost attribution 应该属于同一个共享平台表面，而不是每个 agent 的本地封装。否则组织会得到一个新的动物园：有的团队把 gateway 当 billing proxy，有的当 observability hook，有的当 policy point，但没有任何一个回路能看见完整的 risk/cost path。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>黄金路径应该减少关键层的本地实现数量</p>
 
-``` mermaid
-flowchart LR
-    A["产品团队 A"] --> D["共享网关与平台基础件"]
-    B["产品团队 B"] --> D
-    C["产品团队 C"] --> D
-    D --> E["策略、追踪、审批、能力访问"]
-```
+<!-- excalidraw:zh-part-vi-chapter-15-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="黄金路径应该减少关键层的本地实现数量" style="--diagram-native-width:738px">
+
+[![黄金路径应该减少关键层的本地实现数量](../../assets/diagrams/zh/part-vi-chapter-15-01.svg){ width="738" height="290" loading="lazy" }](../../assets/diagrams/zh/part-vi-chapter-15-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-vi-chapter-15-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-vi-chapter-15-01.excalidraw){ download="part-vi-chapter-15-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-vi-chapter-15-01 -->
 
 </div>
 

@@ -84,19 +84,21 @@ For example:
 
 This is not a perfect classification, but it stops the team from discussing every change in the same tone.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Strong change management starts with explicit change classification</p>
 
-``` mermaid
-flowchart LR
-    A["Change proposed"] --> B["Classify change"]
-    B --> C["Low risk"]
-    B --> D["Medium risk"]
-    B --> E["High risk"]
-    C --> F["Light validation"]
-    D --> G["Eval + review"]
-    E --> H["Formal gate + approval + staged rollout"]
-```
+<!-- excalidraw:en-part-viii-chapter-20-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Strong change management starts with explicit change classification" style="--diagram-native-width:1005px">
+
+[![Strong change management starts with explicit change classification](../../assets/diagrams/en/part-viii-chapter-20-01.svg){ width="1005" height="350" loading="lazy" }](../../assets/diagrams/en/part-viii-chapter-20-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Open diagram](../../assets/diagrams/en/part-viii-chapter-20-01.svg) · [Editable Excalidraw source](../../assets/diagrams/en/part-viii-chapter-20-01.excalidraw){ download="part-viii-chapter-20-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:en-part-viii-chapter-20-01 -->
 
 </div>
 

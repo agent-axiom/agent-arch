@@ -131,19 +131,21 @@ Google Research 的一个关键观点是：AI 系统的来源证明不只是正�
 - [数据与检索链](../../appendix/memory-retrieval-schema.zh.md)；
 - [评测链](../../appendix/eval-schema.zh.md)。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>与其只想一条供应链，不如把它看成几条相互关联的信任链</p>
 
-``` mermaid
-flowchart LR
-    A["代码与构建"] --> G["已批准发布包"]
-    B["模型工件"] --> G
-    C["提示与例程包"] --> G
-    D["策略包"] --> G
-    E["能力契约"] --> G
-    F["审批与运行时控制模式"] --> G
-    H["评测数据集与报告"] --> G
-```
+<!-- excalidraw:zh-part-viii-chapter-22-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="与其只想一条供应链，不如把它看成几条相互关联的信任链" style="--diagram-native-width:488px">
+
+[![与其只想一条供应链，不如把它看成几条相互关联的信任链](../../assets/diagrams/zh/part-viii-chapter-22-01.svg){ width="488" height="742" loading="lazy" }](../../assets/diagrams/zh/part-viii-chapter-22-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-viii-chapter-22-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-viii-chapter-22-01.excalidraw){ download="part-viii-chapter-22-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-viii-chapter-22-01 -->
 
 </div>
 

@@ -174,24 +174,21 @@ OpenAI 的实用指南有一个很好的起点：最小的智能体系统通常�
 
 现在再回头看平台全图，就更容易理解它为什么存在。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>安全智能体平台的参考结构图</p>
 
-``` mermaid
-flowchart TB
-    user["User / API / Event"] --> interface["Interface layer"]
-    interface --> identity["Identity & session layer"]
-    identity --> control["智能体控制平面"]
-    control --> runtime["编排运行时"]
-    runtime --> cognition["认知平面"]
-    runtime --> memory["记忆与知识平面"]
-    runtime --> tools["工具执行平面"]
-    runtime --> telemetry["遥测与评测平面"]
-    tools --> external["外部系统 / MCP / SaaS"]
-    memory --> stores["Vector DB / KB / 画像记忆"]
-    control --> approval["审批 / 策略 / 配额"]
-    telemetry --> audit["追踪 / 指标 / 审计"]
-```
+<!-- excalidraw:zh-part-i-chapter-2-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="安全智能体平台的参考结构图" style="--diagram-native-width:924px">
+
+[![安全智能体平台的参考结构图](../../assets/diagrams/zh/part-i-chapter-2-01.svg){ width="924" height="922" loading="lazy" }](../../assets/diagrams/zh/part-i-chapter-2-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-i-chapter-2-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-i-chapter-2-01.excalidraw){ download="part-i-chapter-2-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-i-chapter-2-01 -->
 
 </div>
 

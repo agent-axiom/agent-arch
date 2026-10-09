@@ -248,22 +248,21 @@ MCP 周围常常会出现一些没必要的混乱，因为这些词听起来都�
 
 这看起来像术语细节，但其实很有帮助。MCP client 不是产品界面，也不是“智能体本体”。它是 host 和某个具体 server 边界之间的传输与契约层。
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>MCP 适合作为运行时和外部能力之间的契约层</p>
 
-``` mermaid
-flowchart LR
-    A["智能体运行时"] --> B["执行层"]
-    B --> C["策略与验证"]
-    C --> D["MCP client"]
-    D --> E["MCP server"]
-    E --> F["类型化适配器"]
-    F --> G["外部 API / 系统"]
-    G --> F
-    F --> E
-    E --> D
-    D --> B
-```
+<!-- excalidraw:zh-part-iv-chapter-9-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="MCP 适合作为运行时和外部能力之间的契约层" style="--diagram-native-width:270px">
+
+[![MCP 适合作为运行时和外部能力之间的契约层](../../assets/diagrams/zh/part-iv-chapter-9-01.svg){ width="270" height="802" loading="lazy" }](../../assets/diagrams/zh/part-iv-chapter-9-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[打开图表](../../assets/diagrams/zh/part-iv-chapter-9-01.svg) · [可编辑的 Excalidraw 源文件](../../assets/diagrams/zh/part-iv-chapter-9-01.excalidraw){ download="part-iv-chapter-9-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:zh-part-iv-chapter-9-01 -->
 
 </div>
 

@@ -138,19 +138,21 @@
 - читающая возможность может быть готова уже после нормального ограничения времени и телеметрии;
 - пишущая возможность не готова без идемпотентности, нормализации результата и понятной истории отката.
 
-<div class="diagram-card">
+<div class="diagram-card" markdown="1">
 <p>Готовность к запуску полезно мыслить как пересечение нескольких контуров, а не как один общий статус</p>
 
-``` mermaid
-flowchart LR
-    A["Рантайм"] --> H["Готовность к промышленной среде"]
-    B["Безопасность"] --> H
-    C["Возможности"] --> H
-    D["Наблюдаемость"] --> H
-    E["Оценки и SLO"] --> H
-    F["Операционная готовность"] --> H
-    G["Владение и откат"] --> H
-```
+<!-- excalidraw:ru-part-vii-chapter-18-01 -->
+<div class="excalidraw-diagram" markdown="1" tabindex="0" role="region" aria-label="Готовность к запуску полезно мыслить как пересечение нескольких контуров, а не как один общий статус" style="--diagram-native-width:517px">
+
+[![Готовность к запуску полезно мыслить как пересечение нескольких контуров, а не как один общий статус](../../assets/diagrams/ru/part-vii-chapter-18-01.svg){ width="517" height="742" loading="lazy" }](../../assets/diagrams/ru/part-vii-chapter-18-01.svg)
+
+</div>
+<div class="excalidraw-source" markdown="1">
+
+[Открыть схему](../../assets/diagrams/ru/part-vii-chapter-18-01.svg) · [Редактируемая схема Excalidraw](../../assets/diagrams/ru/part-vii-chapter-18-01.excalidraw){ download="part-vii-chapter-18-01.excalidraw" }
+
+</div>
+<!-- /excalidraw:ru-part-vii-chapter-18-01 -->
 
 </div>
 
